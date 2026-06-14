@@ -2,6 +2,8 @@
 
 รวบรวมจากเว็บเดิม `https://www.friendsay.com/` และ WooCommerce Store API วันที่ 2026-06-14
 
+ยืนยันซ้ำจากรายการ URL ที่เจ้าของเว็บส่งมาใน Codex วันที่ 2026-06-14 จำนวน 11 URL ครบตรงกัน
+
 เป้าหมายคือเก็บ URL เดิมแบบ `/product/.../` ไว้ในเว็บ Astro/Cloudflare Pages เพื่อไม่ให้ traffic และ backlink เก่ากลายเป็น 404 จากนั้นทยอยเขียนรีวิวใหม่ตามมาตรฐาน Friendsay v2
 
 | Priority | Old URL | Product | Category | Old price | New action |

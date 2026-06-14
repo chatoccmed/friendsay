@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { legacyProducts } from "../../../data/legacyProducts";
+
+const highPriorityCount = legacyProducts.filter((product) => product.rewritePriority === "สูง").length;
+const waterHeaterCount = legacyProducts.filter((product) => product.category === "เครื่องทำน้ำอุ่น").length;
+const medicalCount = legacyProducts.length - waterHeaterCount;
+const canonical = "https://friendsay.com/th/legacy-reviews/";
+---
+
+<BaseLayout
+  title="รายการ URL รีวิวเก่าที่ต้องนำกลับมาใช้ | Friendsay"
+  description="หน้ารวม URL รีวิวสินค้าเก่าของ Friendsay ที่ต้องเก็บไว้และนำกลับมารีวิวใหม่ เพื่อรักษา SEO และช่วยให้คนซื้อยังเจอข้อมูลเดิม"
+  canonical={canonical}
+>
+  <section class="legacy-hero legacy-index-hero">
+    <div class="container legacy-hero-grid">
+      <div class="legacy-copy">
+        <span class="eyebrow">Legacy Review Migration</span>
+        <h1>URL รีวิวเก่าที่ต้องนำกลับมาใช้</h1>
+        <p>
+          เราจะเก็บ URL เดิมทั้งหมดไว้ก่อน แล้วทยอยรีวิวใหม่ให้ละเอียดขึ้น โปร่งใสขึ้น
+          และตอบคำถามคนซื้อได้ดีกว่าเดิม เพื่อไม่ให้ traffic, backlink และความน่าเชื่อถือเดิมหายไป
+        </p>
+      </div>
+      <div class="legacy-dashboard">
+        <div>
+          <span>ทั้งหมด</span>
+          <strong>{legacyProducts.length}</strong>
+          <small>URL เดิม</small>
+        </div>
+        <div>
+          <span>Priority สูง</span>
+          <strong>{highPriorityCount}</strong>
+          <small>ควรรีไรต์ก่อน</small>
+        </div>
+        <div>
+          <span>เครื่องทำน้ำอุ่น</span>
+          <strong>{waterHeaterCount}</strong>
+          <small>ทำเป็น cluster ได้</small>
+        </div>
+        <div>
+          <span>สุขภาพ</span>
+          <strong>{medicalCount}</strong>
+          <small>ต้องระวังคำเคลม</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section legacy-section">
+    <div class="container">
+      <div class="legacy-status-bar">
+        <div>
+          <strong>สถานะตอนนี้</strong>
+          <span>สร้างหน้าเก็บ URL เดิมครบแล้ว เหลือรีไรต์เนื้อหาและ export รูปจาก WordPress ก่อนย้ายโดเมนหลัก</span>
+        </div>
+        <a class="button button-primary" href="/product/waterheater-haier-ei35m/">ดูตัวอย่างหน้า URL เดิม</a>
+      </div>
+
+      <div class="legacy-index-grid">
+        {
+          legacyProducts.map((product) => (
+            <article class="legacy-index-card">
+              <a class="legacy-index-image" href={product.preservedPath}>
+                <img src={product.oldImageUrl} alt={`ภาพสินค้า ${product.productName}`} loading="lazy" />
+              </a>
+              <div class="legacy-index-content">
+                <div class="badge-row">
+                  <span class={product.rewritePriority === "สูง" ? "badge badge-coral" : "badge badge-teal"}>
+                    Priority {product.rewritePriority}
+                  </span>
+                  <span class="badge badge-blue">{product.category}</span>
+                </div>
+                <h2>
+                  <a href={product.preservedPath}>{product.productName}</a>
+                </h2>
+                <p>{product.reviewAngle}</p>
+                <dl class="legacy-mini-meta">
+                  <div>
+                    <dt>แบรนด์</dt>
+                    <dd>{product.brand}</dd>
+                  </div>
+                  <div>
+                    <dt>ราคาเดิม</dt>
+                    <dd>{product.oldPrice.toLocaleString("th-TH")} บาท</dd>
+                  </div>
+                  <div>
+                    <dt>URL เดิม</dt>
+                    <dd><code>{product.preservedPath}</code></dd>
+                  </div>
+                </dl>
+                <div class="legacy-index-actions">
+                  <a class="button" href={product.preservedPath}>เปิดหน้าใหม่</a>
+                  <a class="button" href={product.oldUrl} target="_blank" rel="noopener">ดูเว็บเก่า</a>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
