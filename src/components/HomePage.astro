@@ -1,140 +1,162 @@
 ---
+import { topAirFryerPicks } from "../data/airFryers";
 import { legacyProducts } from "../data/legacyProducts";
 
-const legacyFeatured = legacyProducts.slice(0, 4);
-
-const categories = [
-  { title: "บ้านและครัว", label: "หม้อทอด เครื่องดูดฝุ่น เครื่องกรองน้ำ", index: "01", href: "/th/best/air-fryers/" },
-  { title: "Gadget", label: "หูฟัง Power bank ที่ชาร์จ", index: "02", href: "/th/best/air-fryers/" },
-  { title: "Work setup", label: "เก้าอี้ โต๊ะ โคมไฟ จอเสริม", index: "03", href: "/th/best/air-fryers/" },
-  { title: "Beauty", label: "กันแดด ไดร์เป่าผม ของใช้ส่วนตัว", index: "04", href: "/th/best/air-fryers/" },
-  { title: "Travel Thailand", label: "ของที่ควรมีเมื่อมาเที่ยวไทย", index: "05", href: "/en/tourist/" }
+const heroSignals = [
+  { value: "11", label: "รีวิวเดิมที่นำกลับมารีไรต์", href: "/th/legacy-reviews/" },
+  { value: "6", label: "หมวดสินค้าที่กำลังต่อยอด", href: "#product-worlds" },
+  { value: "3", label: "เช็กราคา Shopee Lazada TikTok", href: "/affiliate-disclosure/" },
+  { value: "2", label: "อ่านสรุปเร็ว หรือเจาะลึกรายรุ่น", href: "/editorial-policy/" }
 ];
+
+const productWorlds = [
+  {
+    title: "บ้านและครัว",
+    label: "หม้อทอดไร้น้ำมัน เครื่องครัว เครื่องใช้ในบ้าน",
+    href: "/th/best/air-fryers/",
+    image: "/images/air-fryers/air-fryer-family-photo.png",
+    alt: "หม้อทอดไร้น้ำมันในครัวพร้อมตะกร้าด้านหน้า",
+    status: "กำลังทำรีวิวรวม"
+  },
+  {
+    title: "เครื่องทำน้ำอุ่น",
+    label: "รีวิวเก่าที่มี SEO เดิม และควรนำกลับมาเขียนใหม่",
+    href: "/th/legacy-reviews/",
+    image: legacyProducts[0].oldImageUrl,
+    alt: "เครื่องทำน้ำอุ่น Haier จากรีวิวเดิม",
+    status: "มี 10 URL"
+  },
+  {
+    title: "สุขภาพในบ้าน",
+    label: "อุปกรณ์ตรวจวัดเบื้องต้น ต้องระวังคำเคลมและแหล่งอ้างอิง",
+    href: "/product/pulse-oximeter-choicemmed-md300c29/",
+    image: legacyProducts[2].oldImageUrl,
+    alt: "เครื่องวัดออกซิเจนปลายนิ้ว ChoiceMMed",
+    status: "ต้องตรวจ claims"
+  },
+  {
+    title: "นักท่องเที่ยวในไทย",
+    label: "ของควรซื้อ ซิม ของใช้เดินทาง และคำแนะนำสำหรับต่างชาติ",
+    href: "/en/tourist/",
+    image: "/images/friendsay-hero.png",
+    alt: "โต๊ะรีวิวสินค้าพร้อมของใช้หลายหมวด",
+    status: "English hub"
+  },
+  {
+    title: "Gadget และงาน",
+    label: "ของใช้ทำงาน อุปกรณ์เสริม และไอเท็มที่ต้องเทียบก่อนซื้อ",
+    href: "/th/legacy-reviews/",
+    image: legacyProducts[8].oldImageUrl,
+    alt: "สินค้ารีวิวเดิมที่รอจัดกลุ่มเป็นหมวด gadget และ work setup",
+    status: "รอเปิด cluster"
+  },
+  {
+    title: "ดีไซน์และไลฟ์สไตล์",
+    label: "ของที่หน้าตาดีต้องตอบด้วยว่าใช้ดีจริงไหม",
+    href: "/product/waterheater-sharp-modi-wh-md135-md145/",
+    image: legacyProducts[9].oldImageUrl,
+    alt: "เครื่องทำน้ำอุ่น Sharp Modi จากรีวิวเดิม",
+    status: "รีวิวสายดีไซน์"
+  }
+];
+
+const legacyFeatured = legacyProducts.slice(0, 4);
+const flagship = topAirFryerPicks[0];
 ---
 
-<section class="home-hero" aria-labelledby="home-hero-title">
+<section class="home-hero home-hero-v2" aria-labelledby="home-hero-title">
   <img class="home-hero-image" src="/images/friendsay-hero.png" alt="โต๊ะรีวิวสินค้าพรีเมี่ยมพร้อมของใช้หลายหมวดสำหรับเปรียบเทียบ" loading="eager" />
   <div class="home-hero-shade" aria-hidden="true"></div>
-  <div class="wide-container home-hero-inner">
+  <div class="wide-container home-hero-inner home-hero-inner-v2">
     <div class="home-hero-copy">
-      <div class="promise-row" aria-label="Friendsay review promises">
-        <span>รีวิวมีข้อเสีย</span>
-        <span>เทียบให้เห็นภาพ</span>
-        <span>อัปเดตราคา</span>
+      <div class="promise-row" aria-label="คำมั่นของ Friendsay">
+        <span>มีข้อเสียให้เห็น</span>
+        <span>เทียบให้เข้าใจง่าย</span>
+        <span>ไม่ให้ affiliate นำคำตอบ</span>
       </div>
       <h1 id="home-hero-title" class="home-brand-title">Friendsay</h1>
-      <p class="home-hero-kicker">รีวิวสินค้าแบบเพื่อนช่วยเลือก ที่ทำการบ้านหนักกว่าคนขาย</p>
+      <p class="home-hero-kicker">เว็บรีวิวสินค้าแบบเพื่อนช่วยเลือก ที่จริงใจกับคนอ่านก่อนจริงใจกับยอดขาย</p>
       <p class="home-hero-subhead">
-        อ่านสั้นก็เลือกได้ อ่านยาวก็มั่นใจขึ้น เราเทียบให้เห็นทั้งราคา ความคุ้มค่า ข้อเสียจากรีวิวจริง และช่องทางซื้อที่ควรเช็กก่อนจ่ายเงิน
+        เราทำให้การซื้อของออนไลน์ตัดสินใจง่ายขึ้นด้วยรีวิวรวม รีวิวเจาะลึก ตารางเทียบ กราฟ ภาพสินค้า
+        และข้อควรระวังจากรีวิวจริง เพื่อให้คุณรู้ว่าอะไรเหมาะกับคุณ และอะไรควรข้าม
       </p>
       <form class="hero-search" action="/th/best/air-fryers/" method="get">
-        <input name="q" type="search" placeholder="ค้นหา: หม้อทอด, power bank, eSIM" aria-label="ค้นหาสินค้า" />
+        <input name="q" type="search" placeholder="ค้นหา: หม้อทอด เครื่องทำน้ำอุ่น ของใช้ในไทย" aria-label="ค้นหาสินค้า" />
         <button class="button button-primary" type="submit">ค้นหารีวิว</button>
       </form>
       <div class="home-hero-actions">
-        <a class="button button-dark" href="/th/best/air-fryers/">ดูรีวิวรวมตัวอย่าง</a>
-        <a class="hero-text-link" href="/editorial-policy/">อ่านมาตรฐานรีวิว</a>
+        <a class="button button-dark" href="/th/best/air-fryers/">ดูรีวิวเด่น</a>
+        <a class="hero-text-link" href="/th/legacy-reviews/">ดูรีวิวเก่าที่นำกลับมาใช้</a>
       </div>
     </div>
-    <aside class="hero-brief" aria-label="ตัวอย่างสรุปรีวิว">
-      <span class="badge badge-coral">Buyer’s brief</span>
-      <strong>ถ้าเลือกไม่ถูก ให้เริ่มจาก “เหมาะกับใคร” ไม่ใช่เริ่มจาก “คะแนนสูงสุด”</strong>
-      <div class="hero-brief-grid">
-        <div>
-          <span>Review depth</span>
-          <strong>2 ชั้น</strong>
-        </div>
-        <div>
-          <span>Roundup</span>
-          <strong>10 รุ่น</strong>
-        </div>
-        <div>
-          <span>Verdict</span>
-          <strong>มีข้อเสีย</strong>
-        </div>
-      </div>
-    </aside>
-  </div>
-</section>
 
-<section class="section home-decision-band">
-  <div class="wide-container home-decision-grid">
-    <div class="decision-intro">
-      <p class="eyebrow">Decision-first reviews</p>
-      <h2>หน้าเว็บต้องตอบคำถามก่อนขายของ</h2>
-    </div>
-    <div class="decision-points" aria-label="Friendsay trust principles">
-      <div>
-        <span>01</span>
-        <strong>ข้อเสียต้องเห็นก่อนกดซื้อ</strong>
-      </div>
-      <div>
-        <span>02</span>
-        <strong>รีวิวรวมต้องพาไปรีวิวลึกได้</strong>
-      </div>
-      <div>
-        <span>03</span>
-        <strong>Affiliate ต้องไม่เปลี่ยนคำแนะนำ</strong>
-      </div>
+    <div class="home-proof-strip" aria-label="สถานะเว็บ Friendsay">
+      {heroSignals.map((signal) => (
+        <a href={signal.href}>
+          <strong>{signal.value}</strong>
+          <span>{signal.label}</span>
+        </a>
+      ))}
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="container">
-    <div class="section-heading">
-      <p class="eyebrow">Shop by real-life context</p>
-      <h2 class="headline">เริ่มจากสถานการณ์จริง ไม่ใช่เริ่มจากสเปกที่อ่านแล้วงง</h2>
-    </div>
-    <div class="category-grid">
-      {
-        categories.map((category) => (
-          <a class="category-tile" href={category.href}>
-            <span class="tile-index">{category.index}</span>
-            <span>
-              <strong>{category.title}</strong>
-              <br />
-              <span class="muted">{category.label}</span>
-            </span>
-          </a>
-        ))
-      }
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container feature-grid">
-    <a class="article-card featured" href="/th/best/air-fryers/">
+<section class="section home-showcase-section">
+  <div class="wide-container home-showcase-grid">
+    <a class="home-feature-story" href="/th/best/air-fryers/">
+      <img src={flagship.image.url} alt={flagship.image.alt} loading="lazy" />
       <div>
-        <div class="badge-row">
-          <span class="badge badge-coral">Flagship guide</span>
-          <span class="badge badge-teal">มีกราฟ + ตาราง</span>
-        </div>
-        <h2>หม้อทอดไร้น้ำมันรุ่นไหนดี 2026: เทียบ 10 รุ่นให้เลือกง่ายขึ้น</h2>
-        <p class="lede">ตัวอย่างหน้ารีวิวรวมแบบ Friendsay: สรุปเร็ว ตารางเปรียบเทียบ กราฟราคาเทียบความจุ และรีวิวสั้นรายรุ่น</p>
+        <span class="eyebrow">Flagship Review</span>
+        <h2>หม้อทอดไร้น้ำมันรุ่นไหนดี 2026</h2>
+        <p>บทความตัวอย่างที่แสดงแนวทางเว็บใหม่: อ่านเร็วได้ เทียบลึกได้ มีภาพ มีตาราง มีกราฟ และมีรีวิวแยกรายรุ่นต่อยอด</p>
       </div>
-      <div class="article-preview">
-        <span>10 รุ่น</span>
-        <span>กราฟราคา</span>
-        <span>รีวิวสั้น</span>
+      <div class="home-feature-meta">
+        <span>{topAirFryerPicks.length} รุ่นเด่น</span>
+        <span>Compare Lab</span>
+        <span>สรุปตามความต้องการ</span>
       </div>
     </a>
-    <div class="summary-stack">
-      <a class="article-card" href="/th/reviews/sample-air-fryer-pro/">
-        <div>
-          <span class="badge badge-blue">Deep review</span>
-          <h2>รีวิวละเอียดรายรุ่น</h2>
-          <p class="lede">โครงบทความ 1,500-2,500 คำ พร้อมข้อดี จุดสังเกต และรีวิวจริงที่พบซ้ำ</p>
-        </div>
+
+    <div class="home-editorial-rail" aria-label="ทางลัดสำคัญ">
+      <a href="/th/legacy-reviews/">
+        <span>Archive Revival</span>
+        <strong>เก็บ 11 URL เดิมไว้ ไม่ให้ SEO เก่าหาย</strong>
       </a>
-      <a class="article-card" href="/en/tourist/">
-        <div>
-          <span class="badge badge-teal">Tourist hub</span>
-          <h2>Shopping guides for tourists in Thailand</h2>
-          <p class="lede">คอนเทนต์ภาษาอังกฤษสำหรับนักท่องเที่ยวที่ต้องซื้อของใช้ในไทยอย่างมั่นใจ</p>
-        </div>
+      <a href="/editorial-policy/">
+        <span>Review Standard</span>
+        <strong>บอกก่อนว่าเราตรวจอะไร และยังไม่ฟันธงอะไร</strong>
       </a>
+      <a href="/en/tourist/">
+        <span>Tourist Mode</span>
+        <strong>ต่อยอดเป็นรีวิวของที่นักท่องเที่ยวควรซื้อในไทย</strong>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section home-world-section" id="product-worlds">
+  <div class="container">
+    <div class="section-heading home-section-split">
+      <div>
+        <p class="eyebrow">Product worlds</p>
+        <h2 class="headline">ไม่ได้เป็นเว็บหมวดเดียว แต่เป็นแผนที่ช่วยซื้อของให้ฉลาดขึ้น</h2>
+      </div>
+      <p>
+        หน้าแรกต้องทำให้คนรู้ทันทีว่า Friendsay มีหลายหมวด และทุกหมวดใช้มาตรฐานเดียวกัน:
+        เหมาะกับใคร ไม่เหมาะกับใคร จุดเด่น จุดเสี่ยง และควรเช็กราคาที่ไหน
+      </p>
+    </div>
+    <div class="home-world-grid">
+      {productWorlds.map((world) => (
+        <a class="home-world-card" href={world.href}>
+          <img src={world.image} alt={world.alt} loading="lazy" />
+          <div>
+            <span>{world.status}</span>
+            <strong>{world.title}</strong>
+            <p>{world.label}</p>
+          </div>
+        </a>
+      ))}
     </div>
   </div>
 </section>
@@ -144,47 +166,45 @@ const categories = [
     <div class="section-heading legacy-home-head">
       <div>
         <p class="eyebrow">Back from the archive</p>
-        <h2 class="headline">รีวิวเก่าที่เราจะนำกลับมาเขียนใหม่ให้ดีกว่าเดิม</h2>
+        <h2 class="headline">รีวิวเก่าที่จะนำกลับมาเขียนใหม่ให้มีประโยชน์กว่าเดิม</h2>
       </div>
       <a class="button button-primary" href="/th/legacy-reviews/">ดูทั้งหมด 11 รีวิว</a>
     </div>
     <div class="legacy-home-grid">
-      {
-        legacyFeatured.map((product) => (
-          <a class="legacy-home-card" href={product.preservedPath}>
-            <img src={product.oldImageUrl} alt={`ภาพสินค้า ${product.productName}`} loading="lazy" />
-            <span>{product.category}</span>
-            <strong>{product.productName}</strong>
-            <small>{product.rewritePriority === "สูง" ? "ควรรีไรต์ก่อน" : "รอจัดคิวรีไรต์"}</small>
-          </a>
-        ))
-      }
+      {legacyFeatured.map((product) => (
+        <a class="legacy-home-card" href={product.preservedPath}>
+          <img src={product.oldImageUrl} alt={`ภาพสินค้า ${product.productName}`} loading="lazy" />
+          <span>{product.category}</span>
+          <strong>{product.productName}</strong>
+          <small>{product.rewritePriority === "สูง" ? "ควรรีไรต์ก่อน" : "รอจัดคิวรีไรต์"}</small>
+        </a>
+      ))}
     </div>
   </div>
 </section>
 
-<section class="section band">
-  <div class="container">
-    <div class="section-heading">
-      <p class="eyebrow">Review architecture</p>
-      <h2 class="headline">คอนเทนต์ทุกชิ้นต้องช่วยให้คนซื้อของฉลาดขึ้น</h2>
+<section class="section home-trust-section">
+  <div class="container home-trust-grid">
+    <div>
+      <p class="eyebrow">Why trust Friendsay</p>
+      <h2 class="headline">หน้าแรกต้องทำให้คนรู้สึกว่าเราอยู่ข้างเขา ไม่ใช่ข้างปุ่มซื้อ</h2>
     </div>
-    <div class="principle-grid">
-      <div class="principle-item">
+    <div class="home-trust-points">
+      <article>
         <span>01</span>
-        <h3>รีวิวรวมช่วยเลือกเร็ว</h3>
-        <p>บทความแบบ “รุ่นไหนดี” จะมีรีวิวสั้นรายรุ่นประมาณ 200 คำ พร้อมตารางและกราฟเพื่อให้เห็นความต่างทันที</p>
-      </div>
-      <div class="principle-item">
+        <h3>รีวิวรวมเพื่อ shortlist</h3>
+        <p>ช่วยตัดจากหลายสิบรุ่นให้เหลือรุ่นที่ควรดูจริง พร้อมเหตุผลตามสถานการณ์ใช้งาน</p>
+      </article>
+      <article>
         <span>02</span>
-        <h3>รีวิวรายรุ่นช่วยตัดสินใจลึก</h3>
-        <p>รีวิวละเอียดจะแยกไปอีกหน้า อธิบายประสบการณ์ใช้งาน จุดเด่น จุดสังเกต และคำถามที่คนมักสงสัย</p>
-      </div>
-      <div class="principle-item">
+        <h3>รีวิวเดี่ยวเพื่อความมั่นใจ</h3>
+        <p>ลงลึกข้อดี จุดสังเกต รีวิวผู้ใช้จริง ราคา และเงื่อนไขที่ทำให้รุ่นนั้นเหมาะหรือไม่เหมาะ</p>
+      </article>
+      <article>
         <span>03</span>
-        <h3>Affiliate ที่ไม่ทำลายความเชื่อใจ</h3>
-        <p>ปุ่มซื้อช่วยเช็กราคา แต่บทสรุปต้องขึ้นกับประโยชน์ของคนอ่าน ไม่ใช่ค่าคอมมิชชันของแพลตฟอร์ม</p>
-      </div>
+        <h3>โปร่งใสเรื่อง affiliate</h3>
+        <p>ปุ่มซื้อช่วยให้เว็บอยู่ได้ แต่บทสรุปต้องเริ่มจากประโยชน์ของคนอ่านเสมอ</p>
+      </article>
     </div>
   </div>
 </section>
