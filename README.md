@@ -19,6 +19,7 @@ Friendsay is configured as a static Astro site for Cloudflare Pages.
 - Build command: `npm run build`
 - Build output directory: `dist`
 - Wrangler config: `wrangler.toml`
+- Production branch: `main`
 
 For the fastest first preview, build the project and upload the `dist` folder or a zip of it through Cloudflare Pages Direct Upload. For the long-term workflow, connect the GitHub repository to Cloudflare Pages so every push to the production branch deploys automatically.
 
