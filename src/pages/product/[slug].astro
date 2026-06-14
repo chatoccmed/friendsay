@@ -1,0 +1,118 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { legacyProducts } from "../../data/legacyProducts";
+
+export function getStaticPaths() {
+  return legacyProducts.map((product) => ({
+    params: { slug: product.slug },
+    props: { product }
+  }));
+}
+
+const { product } = Astro.props;
+const canonical = `https://friendsay.com${product.preservedPath}`;
+const priceText = product.oldPrice.toLocaleString("th-TH");
+const regularPriceText = product.oldRegularPrice.toLocaleString("th-TH");
+const productJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: product.productName,
+  brand: {
+    "@type": "Brand",
+    name: product.brand
+  },
+  image: product.oldImageUrl,
+  description: product.reviewAngle,
+  offers: {
+    "@type": "Offer",
+    priceCurrency: "THB",
+    price: product.oldPrice,
+    availability: "https://schema.org/LimitedAvailability",
+    url: canonical
+  }
+};
+---
+
+<BaseLayout
+  title={`${product.title} | Friendsay`}
+  description={`เก็บ URL เดิมและเตรียมรีวิวใหม่ของ ${product.productName} แบบละเอียดตามมาตรฐาน Friendsay v2`}
+  canonical={canonical}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(productJsonLd)} />
+  <section class="legacy-hero">
+    <div class="container legacy-hero-grid">
+      <div class="legacy-copy">
+        <span class="eyebrow">Legacy URL Preserved</span>
+        <h1>{product.title}</h1>
+        <p>
+          หน้านี้คือ URL เดิมจาก Friendsay เวอร์ชันเก่า เราเก็บไว้เพื่อไม่ให้ลิงก์เก่าหาย
+          และกำลังนำกลับมาเขียนรีวิวใหม่ให้ละเอียด โปร่งใส และใช้ประโยชน์กับคนซื้อได้จริงกว่าเดิม
+        </p>
+        <div class="legacy-actions">
+          <a class="button button-primary" href="/th/best/air-fryers/">ดูรูปแบบรีวิวใหม่</a>
+          <a class="button" href="/editorial-policy/">มาตรฐานรีวิว</a>
+        </div>
+      </div>
+      <figure class="legacy-product-figure">
+        <img src={product.oldImageUrl} alt={`ภาพสินค้า ${product.productName} จากรีวิวเดิม`} loading="eager" />
+        <figcaption>ภาพจากหน้ารีวิวเดิม ต้อง export เก็บเข้าระบบใหม่ก่อนย้ายโดเมนหลักถาวร</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section legacy-section">
+    <div class="container legacy-layout">
+      <aside class="legacy-summary">
+        <span class="eyebrow">Old Review Snapshot</span>
+        <h2>{product.productName}</h2>
+        <dl>
+          <div>
+            <dt>หมวด</dt>
+            <dd>{product.category}</dd>
+          </div>
+          <div>
+            <dt>แบรนด์</dt>
+            <dd>{product.brand}</dd>
+          </div>
+          <div>
+            <dt>ราคาเดิม</dt>
+            <dd>{priceText} บาท</dd>
+          </div>
+          <div>
+            <dt>ราคาเต็มเดิม</dt>
+            <dd>{regularPriceText} บาท</dd>
+          </div>
+          <div>
+            <dt>Priority</dt>
+            <dd>{product.rewritePriority}</dd>
+          </div>
+        </dl>
+      </aside>
+
+      <article class="legacy-review-plan">
+        <span class="eyebrow">Review Refresh Plan</span>
+        <h2>รีวิวใหม่ควรตอบอะไรให้คนซื้อ</h2>
+        <p class="lead">{product.reviewAngle}</p>
+        <div class="legacy-card-grid">
+          <div class="legacy-info-card">
+            <strong>เหมาะกับใคร</strong>
+            <p>{product.bestFor}</p>
+          </div>
+          <div class="legacy-info-card">
+            <strong>สถานะ URL</strong>
+            <p>เก็บ slug เดิมไว้ที่ <code>{product.preservedPath}</code> เพื่อรักษา SEO และลิงก์เก่า</p>
+          </div>
+        </div>
+        <h3>สิ่งที่ต้องตรวจใหม่ก่อนแนะนำซื้อ</h3>
+        <ul class="check-list">
+          {product.verifyList.map((item) => <li>{item}</li>)}
+        </ul>
+        <div class="legacy-note">
+          <strong>แนวทางของ Friendsay:</strong>
+          หน้านี้ยังไม่ใช่รีวิวฉบับสมบูรณ์ เราจะไม่สรุปว่า “ควรซื้อ” จนกว่าจะตรวจราคา รีวิวผู้ใช้จริง
+          ข้อดี ข้อควรระวัง และเงื่อนไข affiliate ล่าสุดครบถ้วน
+        </div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
