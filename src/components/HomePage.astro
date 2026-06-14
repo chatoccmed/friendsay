@@ -9,6 +9,12 @@ const heroSignals = [
   { value: "2", label: "อ่านสรุปเร็ว หรือเจาะลึกรายรุ่น", href: "/editorial-policy/" }
 ];
 
+const decisionPaths = [
+  { label: "เริ่มจากคนใช้", value: "คอนโด ครอบครัว นักท่องเที่ยว" },
+  { label: "ตัดตัวเลือกเสี่ยง", value: "เสียง ขนาด ราคา เคลมเกินจริง" },
+  { label: "ค่อยกดซื้อ", value: "เทียบ Shopee Lazada TikTok" }
+];
+
 const productWorlds = [
   {
     title: "บ้านและครัว",
@@ -89,6 +95,26 @@ const flagship = topAirFryerPicks[0];
         <a class="hero-text-link" href="/th/legacy-reviews/">ดูรีวิวเก่าที่นำกลับมาใช้</a>
       </div>
     </div>
+
+    <aside class="home-hero-lens" aria-label="ระบบคัดเลือกสินค้าของ Friendsay">
+      <div class="lens-media">
+        <img src={flagship.image.url} alt={flagship.image.alt} loading="lazy" />
+        <span>{flagship.score.toFixed(1)} / 10</span>
+      </div>
+      <div class="lens-copy">
+        <span>Editor’s desk</span>
+        <strong>เริ่มจาก “เหมาะกับใคร” ก่อน “ซื้อที่ไหน”</strong>
+        <p>ทุกบทความต้องช่วยตัดสินใจให้เร็วขึ้น โดยยังเหลือรายละเอียดให้คนที่อยากอ่านลึกตรวจต่อได้</p>
+      </div>
+      <div class="lens-steps">
+        {decisionPaths.map((path) => (
+          <div>
+            <span>{path.label}</span>
+            <strong>{path.value}</strong>
+          </div>
+        ))}
+      </div>
+    </aside>
 
     <div class="home-proof-strip" aria-label="สถานะเว็บ Friendsay">
       {heroSignals.map((signal) => (
