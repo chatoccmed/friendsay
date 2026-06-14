@@ -27,3 +27,5 @@
 - หน้า legacy ต้องบอกชัดว่ากำลังรีวิวใหม่ ไม่อ้างว่าทดสอบแล้วถ้ายังไม่ได้ทดสอบจริง
 - ก่อนชี้โดเมน `friendsay.com` หรือ `www.friendsay.com` มาที่ Cloudflare ต้อง export รูปจาก WordPress (`/wp-content/uploads/...`) มาไว้ใน `public/images/legacy-products/`
 - สินค้าสุขภาพต้องมี disclaimer และหลีกเลี่ยง medical claims
+
+ดู checklist ก่อนย้ายโดเมนจริงที่ `docs/pre-domain-migration-checklist.md`
