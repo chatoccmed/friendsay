@@ -15,6 +15,30 @@ const decisionPaths = [
   { label: "ค่อยกดซื้อ", value: "เทียบ Shopee Lazada TikTok" }
 ];
 
+const readingPaths = [
+  {
+    step: "01",
+    title: "อ่านสรุปใน 3 นาที",
+    text: "เหมาะกับวันที่อยากได้คำตอบเร็ว เห็นตัวเลือกเด่น ข้อควรระวัง และรุ่นที่ควรข้ามก่อน",
+    href: "/th/best/air-fryers/",
+    cue: "เริ่มจาก shortlist"
+  },
+  {
+    step: "02",
+    title: "เทียบให้เห็นภาพ",
+    text: "ดูราคา ความจุ คะแนน จุดเด่น และข้อสังเกตในกราฟหรือตารางเดียว ก่อนเสียเวลาเปิดหลายร้าน",
+    href: "/th/best/air-fryers/#compare-lab",
+    cue: "เหมาะก่อนกดซื้อ"
+  },
+  {
+    step: "03",
+    title: "เจาะลึกรายรุ่น",
+    text: "อ่านข้อดี ข้อเสีย เสียงจากผู้ใช้จริง และเงื่อนไขที่ทำให้รุ่นนั้นเหมาะหรือไม่เหมาะกับคุณ",
+    href: "/th/reviews/sample-air-fryer-pro/",
+    cue: "อ่านก่อนจ่ายจริง"
+  }
+];
+
 const productWorlds = [
   {
     title: "บ้านและครัว",
@@ -121,6 +145,26 @@ const flagship = topAirFryerPicks[0];
         <a href={signal.href}>
           <strong>{signal.value}</strong>
           <span>{signal.label}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="home-reading-section" aria-labelledby="home-reading-title">
+  <div class="wide-container home-reading-shell">
+    <div class="home-reading-intro">
+      <p class="eyebrow">How to read Friendsay</p>
+      <h2 id="home-reading-title">เลือกทางอ่านที่เหมาะกับเวลาของคุณ</h2>
+      <p>บางวันอยากได้คำตอบเร็ว บางวันอยากเทียบให้ชัวร์ หน้าแรกควรพาคุณไปถูกทางตั้งแต่คลิกแรก</p>
+    </div>
+    <div class="home-reading-grid">
+      {readingPaths.map((path) => (
+        <a class="home-reading-card" href={path.href}>
+          <span>{path.step}</span>
+          <strong>{path.title}</strong>
+          <p>{path.text}</p>
+          <small>{path.cue}</small>
         </a>
       ))}
     </div>
