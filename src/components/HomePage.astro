@@ -3,10 +3,10 @@ import { topAirFryerPicks } from "../data/airFryers";
 import { legacyProducts } from "../data/legacyProducts";
 
 const heroSignals = [
-  { value: "11", label: "รีวิวเดิมที่นำกลับมารีไรต์", href: "/th/legacy-reviews/" },
-  { value: "6", label: "หมวดสินค้าที่กำลังต่อยอด", href: "#product-worlds" },
+  { value: "50+", label: "หมวดสินค้ายอดนิยมที่วางแผนรีวิว", href: "#product-worlds" },
   { value: "3", label: "เช็กราคา Shopee Lazada TikTok", href: "/affiliate-disclosure/" },
-  { value: "2", label: "อ่านสรุปเร็ว หรือเจาะลึกรายรุ่น", href: "/editorial-policy/" }
+  { value: "2", label: "รีวิวรวมและรีวิวเจาะลึกรายรุ่น", href: "/editorial-policy/" },
+  { value: "100%", label: "บอกจุดควรระวังก่อนปุ่มซื้อ", href: "/editorial-policy/" }
 ];
 
 const decisionPaths = [
@@ -42,55 +42,70 @@ const readingPaths = [
 const productWorlds = [
   {
     title: "บ้านและครัว",
-    label: "หม้อทอดไร้น้ำมัน เครื่องครัว เครื่องใช้ในบ้าน",
+    label: "หม้อทอดไร้น้ำมัน เครื่องครัว อุปกรณ์ทำอาหาร และของที่ใช้ทุกวันในบ้าน",
     href: "/th/best/air-fryers/",
     image: "/images/air-fryers/air-fryer-family-photo.png",
     alt: "หม้อทอดไร้น้ำมันในครัวพร้อมตะกร้าด้านหน้า",
-    status: "กำลังทำรีวิวรวม"
+    status: "เปิดอ่านแล้ว"
   },
   {
-    title: "เครื่องทำน้ำอุ่น",
-    label: "รีวิวเก่าที่มี SEO เดิม และควรนำกลับมาเขียนใหม่",
-    href: "/th/legacy-reviews/",
+    title: "เครื่องใช้ไฟฟ้าในบ้าน",
+    label: "เครื่องทำน้ำอุ่น เครื่องฟอกอากาศ พัดลม เครื่องดูดฝุ่น และของที่ควรเทียบสเปกให้ชัด",
+    href: "#product-worlds",
     image: legacyProducts[0].oldImageUrl,
-    alt: "เครื่องทำน้ำอุ่น Haier จากรีวิวเดิม",
-    status: "มี 10 URL"
+    alt: "เครื่องทำน้ำอุ่น Haier สีขาว",
+    status: "หมวดยอดนิยม"
   },
   {
-    title: "สุขภาพในบ้าน",
-    label: "อุปกรณ์ตรวจวัดเบื้องต้น ต้องระวังคำเคลมและแหล่งอ้างอิง",
-    href: "/product/pulse-oximeter-choicemmed-md300c29/",
+    title: "สุขภาพและความปลอดภัย",
+    label: "อุปกรณ์ตรวจวัดเบื้องต้น เครื่องฟอกอากาศ ไฟฉุกเฉิน และของที่ต้องระวังคำเคลมเป็นพิเศษ",
+    href: "#product-worlds",
     image: legacyProducts[2].oldImageUrl,
     alt: "เครื่องวัดออกซิเจนปลายนิ้ว ChoiceMMed",
-    status: "ต้องตรวจ claims"
+    status: "ต้องเช็กแหล่งอ้างอิง"
   },
   {
     title: "นักท่องเที่ยวในไทย",
-    label: "ของควรซื้อ ซิม ของใช้เดินทาง และคำแนะนำสำหรับต่างชาติ",
+    label: "ซิม ของใช้เดินทาง ปลั๊ก อุปกรณ์กันแดด ของฝาก และของที่ต่างชาติควรซื้อในไทย",
     href: "/en/tourist/",
     image: "/images/friendsay-hero.png",
     alt: "โต๊ะรีวิวสินค้าพร้อมของใช้หลายหมวด",
-    status: "English hub"
+    status: "Tourist guide"
   },
   {
     title: "Gadget และงาน",
-    label: "ของใช้ทำงาน อุปกรณ์เสริม และไอเท็มที่ต้องเทียบก่อนซื้อ",
-    href: "/th/legacy-reviews/",
-    image: legacyProducts[8].oldImageUrl,
-    alt: "สินค้ารีวิวเดิมที่รอจัดกลุ่มเป็นหมวด gadget และ work setup",
-    status: "รอเปิด cluster"
+    label: "หูฟัง ที่ชาร์จ โต๊ะทำงาน เก้าอี้ คีย์บอร์ด และของที่ช่วยให้ชีวิตประจำวันลื่นขึ้น",
+    href: "#product-worlds",
+    image: "/images/friendsay-hero.png",
+    alt: "โต๊ะรีวิวสินค้าหลากหลายหมวดสำหรับเปรียบเทียบ",
+    status: "ของใช้ทุกวัน"
+  },
+  {
+    title: "Beauty และของใช้ส่วนตัว",
+    label: "กันแดด ไดร์เป่าผม เครื่องโกนหนวด อุปกรณ์ดูแลผิว และของที่ต้องดูผลลัพธ์จริง",
+    href: "#product-worlds",
+    image: "/images/air-fryers/air-fryer-cleaning-photo.png",
+    alt: "มือกำลังดูแลทำความสะอาดอุปกรณ์ในบ้าน",
+    status: "ใช้จริงสำคัญกว่าเคลม"
+  },
+  {
+    title: "แม่และเด็ก",
+    label: "คาร์ซีท รถเข็น เครื่องนึ่งขวดนม กล้องดูเด็ก และของที่ต้องคิดเรื่องความปลอดภัยก่อนราคา",
+    href: "#product-worlds",
+    image: "/images/friendsay-hero.png",
+    alt: "สินค้าหลายหมวดบนโต๊ะสำหรับรีวิวก่อนเลือกซื้อ",
+    status: "ต้องเลือกละเอียด"
   },
   {
     title: "ดีไซน์และไลฟ์สไตล์",
-    label: "ของที่หน้าตาดีต้องตอบด้วยว่าใช้ดีจริงไหม",
-    href: "/product/waterheater-sharp-modi-wh-md135-md145/",
+    label: "ของที่หน้าตาดีต้องตอบด้วยว่าใช้ดีจริงไหม คุ้มไหม และเหมาะกับบ้านแบบไหน",
+    href: "#product-worlds",
     image: legacyProducts[9].oldImageUrl,
-    alt: "เครื่องทำน้ำอุ่น Sharp Modi จากรีวิวเดิม",
-    status: "รีวิวสายดีไซน์"
+    alt: "เครื่องทำน้ำอุ่น Sharp Modi ดีไซน์เรียบ",
+    status: "ของสวยต้องใช้ดี"
   }
 ];
 
-const legacyFeatured = legacyProducts.slice(0, 4);
 const flagship = topAirFryerPicks[0];
 ---
 
@@ -116,7 +131,7 @@ const flagship = topAirFryerPicks[0];
       </form>
       <div class="home-hero-actions">
         <a class="button button-dark" href="/th/best/air-fryers/">ดูรีวิวเด่น</a>
-        <a class="hero-text-link" href="/th/legacy-reviews/">ดูรีวิวเก่าที่นำกลับมาใช้</a>
+        <a class="hero-text-link" href="#product-worlds">ดูหมวดสินค้ายอดนิยม</a>
       </div>
     </div>
 
@@ -188,9 +203,9 @@ const flagship = topAirFryerPicks[0];
     </a>
 
     <div class="home-editorial-rail" aria-label="ทางลัดสำคัญ">
-      <a href="/th/legacy-reviews/">
-        <span>Archive Revival</span>
-        <strong>เก็บ 11 URL เดิมไว้ ไม่ให้ SEO เก่าหาย</strong>
+      <a href="#product-worlds">
+        <span>Popular in Thailand</span>
+        <strong>เริ่มจากสินค้าที่คนไทยค้นหาก่อนซื้อจริง</strong>
       </a>
       <a href="/editorial-policy/">
         <span>Review Standard</span>
@@ -208,12 +223,12 @@ const flagship = topAirFryerPicks[0];
   <div class="container">
     <div class="section-heading home-section-split">
       <div>
-        <p class="eyebrow">Product worlds</p>
-        <h2 class="headline">ไม่ได้เป็นเว็บหมวดเดียว แต่เป็นแผนที่ช่วยซื้อของให้ฉลาดขึ้น</h2>
+        <p class="eyebrow">Popular Thai product reviews</p>
+        <h2 class="headline">รีวิวสินค้ายอดนิยมที่คนไทยค้นหาก่อนซื้อ</h2>
       </div>
       <p>
-        หน้าแรกต้องทำให้คนรู้ทันทีว่า Friendsay มีหลายหมวด และทุกหมวดใช้มาตรฐานเดียวกัน:
-        เหมาะกับใคร ไม่เหมาะกับใคร จุดเด่น จุดเสี่ยง และควรเช็กราคาที่ไหน
+        เป้าหมายของ Friendsay คือรีวิวทุกหมวดสินค้าที่คนไทยใช้จริง ตั้งแต่เครื่องใช้ไฟฟ้า ของใช้ในบ้าน สุขภาพ ความงาม
+        Gadget แม่และเด็ก ไปจนถึงของที่นักท่องเที่ยวควรซื้อในไทย โดยทุกหมวดต้องตอบให้ชัดว่าเหมาะกับใคร ไม่เหมาะกับใคร จุดเด่น จุดเสี่ยง และควรเช็กราคาที่ไหน
       </p>
     </div>
     <div class="home-world-grid">
@@ -225,28 +240,6 @@ const flagship = topAirFryerPicks[0];
             <strong>{world.title}</strong>
             <p>{world.label}</p>
           </div>
-        </a>
-      ))}
-    </div>
-  </div>
-</section>
-
-<section class="section legacy-home-section">
-  <div class="container">
-    <div class="section-heading legacy-home-head">
-      <div>
-        <p class="eyebrow">Back from the archive</p>
-        <h2 class="headline">รีวิวเก่าที่จะนำกลับมาเขียนใหม่ให้มีประโยชน์กว่าเดิม</h2>
-      </div>
-      <a class="button button-primary" href="/th/legacy-reviews/">ดูทั้งหมด 11 รีวิว</a>
-    </div>
-    <div class="legacy-home-grid">
-      {legacyFeatured.map((product) => (
-        <a class="legacy-home-card" href={product.preservedPath}>
-          <img src={product.oldImageUrl} alt={`ภาพสินค้า ${product.productName}`} loading="lazy" />
-          <span>{product.category}</span>
-          <strong>{product.productName}</strong>
-          <small>{product.rewritePriority === "สูง" ? "ควรรีไรต์ก่อน" : "รอจัดคิวรีไรต์"}</small>
         </a>
       ))}
     </div>
