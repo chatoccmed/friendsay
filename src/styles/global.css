@@ -24,6 +24,218 @@
   color: var(--ink);
 }
 
+.water-hero .roundup-hero-image {
+  object-fit: contain;
+  object-position: 74% 50%;
+  padding: clamp(22px, 4vw, 58px);
+  background: #fff;
+}
+
+.water-system-panel .roundup-picks {
+  grid-template-columns: 1fr;
+}
+
+.water-system-panel .roundup-picks a {
+  min-height: 88px;
+}
+
+.water-method-section {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(237, 245, 255, 0.5)),
+    var(--paper);
+}
+
+.water-method-grid,
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.water-method-grid article,
+.source-grid article {
+  display: grid;
+  min-height: 210px;
+  align-content: space-between;
+  gap: 14px;
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+.water-method-grid span,
+.source-grid span {
+  color: var(--coral-dark);
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+}
+
+.water-method-grid h3,
+.water-method-grid p,
+.source-grid h3,
+.source-grid p {
+  margin: 0;
+}
+
+.water-method-grid h3,
+.source-grid h3 {
+  color: var(--ink);
+  font-size: 1.28rem;
+  line-height: 1.18;
+}
+
+.water-method-grid p,
+.source-grid p {
+  color: var(--muted);
+  line-height: 1.52;
+}
+
+.water-disclosure {
+  margin-top: 18px;
+}
+
+.water-scenario-grid .scenario-card {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.water-bubble-chart .bubble {
+  box-shadow: 0 18px 46px rgba(23, 32, 42, 0.14);
+}
+
+.water-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.water-product-card {
+  min-height: 100%;
+}
+
+.water-product-card .product-photo img {
+  object-fit: contain;
+  background: #fff;
+  padding: 16px;
+}
+
+.water-checklist {
+  border: 1px solid rgba(46, 196, 182, 0.24);
+  border-radius: var(--radius);
+  background: rgba(233, 251, 247, 0.62);
+  padding: 14px;
+}
+
+.water-checklist strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #164f4b;
+}
+
+.water-checklist ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.water-checklist li {
+  border-radius: 999px;
+  background: #fff;
+  padding: 6px 9px;
+  color: #24434a;
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+.water-source-section {
+  border-top: 1px solid rgba(223, 208, 186, 0.72);
+  background:
+    linear-gradient(180deg, rgba(245, 251, 249, 0.82), rgba(255, 253, 248, 0.96)),
+    var(--paper);
+}
+
+.source-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.source-links a {
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.86);
+  padding: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.source-links span {
+  color: var(--coral-dark);
+  font-size: 0.76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.source-links strong {
+  color: var(--ink);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.source-links small {
+  color: var(--muted);
+  font-weight: 850;
+}
+
+@media (max-width: 980px) {
+  .water-method-grid,
+  .source-grid,
+  .source-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .water-product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .water-hero .roundup-hero-image {
+    object-position: center top;
+    padding: 18px;
+    opacity: 0.78;
+  }
+
+  .water-method-grid,
+  .source-grid,
+  .source-links {
+    grid-template-columns: 1fr;
+  }
+
+  .water-method-grid article,
+  .source-grid article {
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .water-checklist ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .water-checklist li {
+    border-radius: calc(var(--radius) - 2px);
+    line-height: 1.25;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -4131,5 +4343,233 @@ button {
 
   .footer-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Water-heater review system: final compact overrides */
+.water-product-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.water-product-card .product-review-preview {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.water-product-card .not-for-strip span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+@media (max-width: 980px) {
+  .water-method-grid,
+  .source-grid,
+  .source-links {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(240px, 74%);
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+  }
+
+  .water-method-grid article,
+  .source-grid article,
+  .source-links a {
+    min-height: 164px;
+    scroll-snap-align: start;
+  }
+
+  .water-product-card .product-photo img {
+    height: 220px;
+  }
+}
+
+@media (max-width: 680px) {
+  .roundup-signal-band .roundup-signals {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .roundup-signal-band .roundup-signals div {
+    min-height: 78px;
+    padding: 14px;
+    border-right: 1px solid var(--line);
+  }
+
+  .roundup-signal-band .roundup-signals div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .water-method-grid,
+  .source-grid {
+    grid-auto-columns: minmax(228px, 82%);
+  }
+
+  .source-links {
+    grid-auto-columns: minmax(210px, 78%);
+  }
+
+  .water-method-grid article,
+  .source-grid article {
+    min-height: 150px;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .water-method-grid p,
+  .source-grid p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .water-product-grid {
+    gap: 12px;
+  }
+
+  .water-product-card {
+    gap: 10px;
+    padding: 0 14px 14px;
+  }
+
+  .water-product-card .product-photo {
+    margin-inline: -14px;
+    border-radius: 0;
+  }
+
+  .water-product-card .product-photo img {
+    height: 150px;
+    padding: 10px;
+  }
+
+  .water-product-card .product-photo span {
+    bottom: 8px;
+    left: 8px;
+    padding: 5px 8px;
+    font-size: 0.72rem;
+  }
+
+  .water-product-card .product-card-head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .water-product-card .product-card-head h3 {
+    margin-top: 8px;
+    font-size: 1.22rem;
+  }
+
+  .water-product-card .product-card-head .muted {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 6px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .water-product-card .badge-row {
+    gap: 6px;
+  }
+
+  .water-product-card .badge {
+    padding: 5px 8px;
+    font-size: 0.66rem;
+  }
+
+  .water-product-card .product-score {
+    width: 58px;
+    min-width: 58px;
+    height: 58px;
+    align-self: start;
+  }
+
+  .water-product-card .product-score span {
+    font-size: 1.28rem;
+  }
+
+  .water-product-card .buyer-snapshot {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .water-product-card .buyer-snapshot div {
+    min-height: 66px;
+    padding: 10px;
+  }
+
+  .water-product-card .buyer-snapshot strong {
+    font-size: 0.96rem;
+    line-height: 1.25;
+  }
+
+  .water-product-card .product-mini-scores {
+    gap: 6px;
+  }
+
+  .water-product-card .product-mini-scores span {
+    padding: 6px 8px;
+    font-size: 0.72rem;
+  }
+
+  .water-product-card .product-review-preview {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    -webkit-line-clamp: 3;
+  }
+
+  .water-product-card .not-for-strip {
+    padding: 10px;
+  }
+
+  .water-product-card .not-for-strip span {
+    -webkit-line-clamp: 1;
+  }
+
+  .water-checklist {
+    padding: 10px;
+  }
+
+  .water-checklist strong {
+    margin-bottom: 7px;
+    font-size: 0.88rem;
+  }
+
+  .water-checklist ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .water-checklist li {
+    padding: 6px 7px;
+    font-size: 0.72rem;
+  }
+
+  .water-checklist li:nth-child(n + 5) {
+    display: none;
+  }
+
+  .water-product-card .price-buttons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .water-product-card .price-button {
+    min-height: 42px;
+    padding: 10px 6px;
+    font-size: 0.78rem;
+  }
+
+  .water-product-card .product-actions {
+    grid-template-columns: 1fr;
+    gap: 7px;
   }
 }

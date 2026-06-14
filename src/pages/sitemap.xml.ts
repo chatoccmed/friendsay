@@ -6,6 +6,7 @@ const staticPaths = [
   "/",
   "/th/",
   "/th/best/air-fryers/",
+  "/th/best/water-heaters/",
   "/th/legacy-reviews/",
   "/th/reviews/sample-air-fryer-pro/",
   "/en/tourist/",

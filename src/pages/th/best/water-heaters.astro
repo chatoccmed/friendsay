@@ -1,0 +1,364 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PriceButtons from "../../../components/PriceButtons.astro";
+import { topWaterHeaterPicks, waterHeaterSourcePlan, waterHeaters } from "../../../data/waterHeaters";
+
+const minPrice = Math.min(...waterHeaters.map((product) => product.price));
+const maxPrice = Math.max(...waterHeaters.map((product) => product.price));
+const minWatt = Math.min(...waterHeaters.map((product) => product.watt));
+const maxWatt = Math.max(...waterHeaters.map((product) => product.watt));
+
+const normalize = (value: number, min: number, max: number) => {
+  if (max === min) return 50;
+  return 12 + ((value - min) / (max - min)) * 76;
+};
+
+const palette = ["#ff6b5a", "#2ec4b6", "#3a86ff", "#ffc857"];
+
+const scenarioPicks = [
+  {
+    label: "คอนโด / บ้านน้ำแรง",
+    product: waterHeaters.find((item) => item.slug === "waterheater-haier-ei35m") ?? waterHeaters[1],
+    reason: "เริ่มง่าย ราคาไม่แรง และไม่ต้องจ่ายเกินความจำเป็นถ้าน้ำประปาแรงพอ"
+  },
+  {
+    label: "อยากได้ตัวพรีเมียม",
+    product: waterHeaters.find((item) => item.slug === "waterheater-stiebeleltronxg45ec") ?? waterHeaters[0],
+    reason: "เหมาะกับคนที่ให้ความสำคัญกับงานประกอบ ดีไซน์ และความสบายใจระยะยาว"
+  },
+  {
+    label: "อยากได้แบรนด์ญี่ปุ่น",
+    product: waterHeaters.find((item) => item.slug === "waterheater-toshibatwh-38wth") ?? waterHeaters[3],
+    reason: "กำลังไฟกลาง ๆ ราคาไม่กระโดด และเหมาะทำ shortlist ก่อนเทียบ Toshiba รุ่นใกล้กัน"
+  },
+  {
+    label: "งบจำกัดมาก",
+    product: waterHeaters.find((item) => item.slug === "waterheater-icic6500") ?? waterHeaters[9],
+    reason: "ราคาเย้ายวน แต่ต้องเช็กมาตรฐาน ระบบไฟ และร้านค้าหนักกว่ารุ่นแบรนด์ใหญ่"
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "เครื่องทำน้ำอุ่นรุ่นไหนดี 2026",
+  description: "รีวิวรวมเครื่องทำน้ำอุ่นยอดนิยม 10 รุ่น พร้อมตารางเทียบ คะแนน ข้อดี จุดควรระวัง และลิงก์ซื้อผ่าน Shopee Lazada TikTok",
+  inLanguage: "th",
+  dateModified: "2026-06-14",
+  author: { "@type": "Organization", name: "Friendsay" },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: waterHeaters.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: product.name,
+      url: `https://friendsay.com/th/best/water-heaters/#${product.slug}`
+    }))
+  }
+};
+---
+
+<BaseLayout
+  title="เครื่องทำน้ำอุ่นรุ่นไหนดี 2026 | เทียบ 10 รุ่นยอดนิยม | Friendsay"
+  description="รีวิวรวมเครื่องทำน้ำอุ่นยอดนิยม 10 รุ่นปี 2026 แบบอ่านง่าย มีตารางเทียบ คะแนน ข้อดี จุดควรระวัง แหล่งข้อมูล และปุ่มซื้อ Shopee Lazada TikTok"
+  canonical="https://friendsay.com/th/best/water-heaters/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="roundup-hero water-hero">
+    <img
+      class="roundup-hero-image"
+      src={waterHeaters[0].image.url}
+      alt="เครื่องทำน้ำอุ่นรุ่นยอดนิยมสำหรับเปรียบเทียบก่อนซื้อ"
+      loading="eager"
+    />
+    <div class="roundup-hero-shade" aria-hidden="true"></div>
+    <div class="wide-container roundup-hero-inner">
+      <div class="roundup-hero-copy">
+        <div class="badge-row">
+          <span class="badge badge-coral">2026 buying guide</span>
+          <span class="badge badge-teal">Affiliate ready system</span>
+        </div>
+        <h1>เครื่องทำน้ำอุ่นรุ่นไหนดี 2026</h1>
+        <p>
+          เทียบ 10 รุ่นจาก archive เดิมของ Friendsay แล้วจัดใหม่ให้ซื้อของง่ายขึ้น:
+          ดูรุ่นที่เหมาะกับบ้านคุณ จุดที่ต้องระวัง แหล่งเช็กข้อมูล และปุ่มซื้อผ่าน Shopee Lazada TikTok ในหน้าเดียว
+        </p>
+        <div class="roundup-actions">
+          <a class="button button-primary" href="#quick-picks">ดูรุ่นที่เหมาะกับคุณ</a>
+          <a class="button button-dark" href="#comparison">ตารางเทียบ 10 รุ่น</a>
+        </div>
+      </div>
+
+      <aside class="roundup-panel water-system-panel" aria-label="ระบบผลิตรีวิว Friendsay">
+        <span>How this page is made</span>
+        <strong>ระบบนี้เริ่มจากข้อมูลเก่า แล้วบังคับให้ทุกคำแนะนำมีขั้นตอนตรวจซ้ำก่อนขายจริง</strong>
+        <div class="roundup-picks">
+          {waterHeaterSourcePlan.map((step) => (
+            <a href="#method">
+              <span>{step.step}</span>
+              <strong>{step.title}</strong>
+              <small>{step.detail}</small>
+            </a>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="roundup-signal-band">
+    <div class="wide-container roundup-signals">
+      <div>
+        <span>Models</span>
+        <strong>{waterHeaters.length} รุ่น</strong>
+      </div>
+      <div>
+        <span>Source base</span>
+        <strong>URL เก่า + Marketplace</strong>
+      </div>
+      <div>
+        <span>Buy links</span>
+        <strong>Shopee Lazada TikTok</strong>
+      </div>
+      <div>
+        <span>Updated</span>
+        <strong>14 มิ.ย. 2026</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="section water-method-section" id="method">
+    <div class="wide-container">
+      <div class="section-heading home-section-split">
+        <div>
+          <p class="eyebrow">Review operating system</p>
+          <h2 class="headline">สั่งหมวดสินค้าใหม่ได้ด้วยระบบเดียวกัน</h2>
+        </div>
+        <p>
+          หน้ารีวิวนี้ไม่ได้เริ่มจากการเขียนขายของ แต่เริ่มจากการเก็บข้อมูลเป็นโครงเดียวกันก่อน:
+          รุ่น ราคา สเปก ข้อดี จุดเสี่ยง แหล่งเช็ก และลิงก์ซื้อ
+        </p>
+      </div>
+      <div class="water-method-grid">
+        {waterHeaterSourcePlan.map((step) => (
+          <article>
+            <span>{step.step}</span>
+            <h3>{step.title}</h3>
+            <p>{step.detail}</p>
+          </article>
+        ))}
+      </div>
+      <div class="disclosure water-disclosure">
+        <strong>สถานะลิงก์ซื้อ:</strong>
+        ปุ่ม Shopee, Lazada และ TikTok ตอนนี้เป็นลิงก์ค้นหาสินค้าตามชื่อรุ่น เพื่อให้คนอ่านกดเช็กของจริงได้ทันที
+        เมื่อมี affiliate link จากบัญชีของคุณ ให้นำมาแทนในไฟล์ข้อมูลกลางทีละรุ่นได้เลย โดยหน้าเว็บจะอัปเดตอัตโนมัติ
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="quick-picks">
+    <div class="wide-container">
+      <p class="eyebrow">Best by need</p>
+      <h2 class="headline">ถ้าไม่อยากอ่านเยอะ เริ่มจาก 4 สถานการณ์นี้ก่อน</h2>
+      <div class="scenario-grid water-scenario-grid">
+        {scenarioPicks.map((item) => (
+          <a class="scenario-card" href={`#${item.product.slug}`}>
+            <img src={item.product.image.url} alt={item.product.image.alt} loading="lazy" />
+            <div>
+              <span>{item.label}</span>
+              <strong>{item.product.name}</strong>
+              <p>{item.reason}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="comparison">
+    <div class="wide-container">
+      <p class="eyebrow">Comparison table</p>
+      <h2 class="headline">ตารางเปรียบเทียบ 10 เครื่องทำน้ำอุ่น</h2>
+      <p class="lede">
+        ใช้ตารางนี้ตัดตัวเลือกเร็ว: ถ้าระบบไฟบ้านยังไม่แน่ใจ อย่าเลือกจากราคาหรือวัตต์อย่างเดียว ให้เช็กกับช่างก่อนซื้อจริง
+      </p>
+      <div class="compare-shell">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>รุ่น</th>
+              <th>เหมาะกับ</th>
+              <th>ราคาอ้างอิงเดิม</th>
+              <th>กำลังไฟ</th>
+              <th>คะแนน</th>
+              <th>จุดเด่น</th>
+              <th>จุดต้องระวัง</th>
+            </tr>
+          </thead>
+          <tbody>
+            {waterHeaters.map((product) => (
+              <tr>
+                <td>
+                  <strong>{product.name}</strong>
+                  <br />
+                  <span class="badge badge-teal">{product.award}</span>
+                </td>
+                <td>{product.bestFor}</td>
+                <td>{product.price.toLocaleString("th-TH")} บาท</td>
+                <td>{product.wattLabel}</td>
+                <td><span class="score-pill">{product.score.toFixed(1)}</span></td>
+                <td>{product.pros.join(", ")}</td>
+                <td>{product.watch.join(", ")}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wide-container">
+      <p class="eyebrow">Visual comparison</p>
+      <h2 class="headline">กราฟราคาเทียบกำลังไฟ ช่วยเห็นภาพเร็วกว่าอ่านสเปกทีละบรรทัด</h2>
+      <div class="chart-card">
+        <p class="muted">
+          แกนนอนคือราคาอ้างอิงจาก archive เดิม แกนตั้งคือกำลังไฟ ขนาดจุดคือคะแนนรวม
+          รุ่นที่วัตต์สูงมากอาจดูน่าสนใจ แต่ต้องเช็กระบบไฟและความปลอดภัยก่อนเสมอ
+        </p>
+        <div class="bubble-chart water-bubble-chart" role="img" aria-label="กราฟเปรียบเทียบราคาและกำลังไฟเครื่องทำน้ำอุ่น 10 รุ่น">
+          <span class="chart-axis axis-y">วัตต์สูง</span>
+          <span class="chart-axis axis-x">ราคาสูง</span>
+          {
+            waterHeaters.map((product, index) => (
+              <a
+                class="bubble"
+                href={`#${product.slug}`}
+                style={`--x:${normalize(product.price, minPrice, maxPrice)}%; --y:${normalize(product.watt, minWatt, maxWatt)}%; --size:${34 + product.score * 3}px; --color:${palette[index % palette.length]}`}
+                aria-label={`${product.name} ราคา ${product.price} บาท กำลังไฟ ${product.wattLabel} คะแนน ${product.score}`}
+              >
+                <span>{product.shortName}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wide-container">
+      <p class="eyebrow">Short reviews</p>
+      <h2 class="headline">รีวิวสั้นรายรุ่น พร้อมลิงก์ซื้อ 3 ช่องทาง</h2>
+      <div class="water-product-grid">
+        {waterHeaters.map((product) => (
+          <article class="product-card water-product-card" id={product.slug}>
+            <a class="product-photo" href={product.image.source} target="_blank" rel="noopener">
+              <img src={product.image.url} alt={product.image.alt} loading="lazy" />
+              <span>ภาพจาก archive เดิม</span>
+            </a>
+            <div class="product-card-head">
+              <div>
+                <div class="badge-row">
+                  <span class="badge badge-coral">{product.award}</span>
+                  <span class="badge badge-blue">{product.reviewType}</span>
+                </div>
+                <h3>{product.name}</h3>
+                <p class="muted">{product.bestFor}</p>
+              </div>
+              <div class="product-score">
+                <span>{product.score.toFixed(1)}</span>
+                <small>/10</small>
+              </div>
+            </div>
+            <div class="buyer-snapshot" aria-label="สรุปก่อนซื้อ">
+              <div>
+                <span>ราคาเดิม</span>
+                <strong>{product.price.toLocaleString("th-TH")} บาท</strong>
+              </div>
+              <div>
+                <span>กำลังไฟ</span>
+                <strong>{product.wattLabel}</strong>
+              </div>
+              <div>
+                <span>ความปลอดภัย</span>
+                <strong>{product.safety.toFixed(1)}</strong>
+              </div>
+              <div class="watch">
+                <span>ระวัง</span>
+                <strong>{product.watch[0]}</strong>
+              </div>
+            </div>
+            <div class="product-mini-scores" aria-label="คะแนนย่อย">
+              <span>คุ้มค่า {product.value.toFixed(1)}</span>
+              <span>ติดตั้ง {product.install.toFixed(1)}</span>
+              <span>สบายตอนใช้ {product.comfort.toFixed(1)}</span>
+            </div>
+            <p class="product-review-preview">{product.reviewShort}</p>
+            <div class="not-for-strip">
+              <strong>ไม่เหมาะถ้า</strong>
+              <span>{product.notFor}</span>
+            </div>
+            <div class="water-checklist">
+              <strong>ก่อนเขียนรีวิวเดี่ยวต้องเช็ก</strong>
+              <ul>
+                {product.verifyChecklist.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+            <PriceButtons links={product.links} label={`ดูราคาของ ${product.name}`} />
+            <div class="product-actions">
+              <a class="button" href={product.preservedPath}>ดู URL เดิมที่เก็บไว้</a>
+              <a class="button" href={product.legacyUrl} target="_blank" rel="noopener">ดู archive เดิม</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section water-source-section">
+    <div class="wide-container">
+      <div class="section-heading home-section-split">
+        <div>
+          <p class="eyebrow">Source map</p>
+          <h2 class="headline">แหล่งข้อมูลที่ต้องใช้ทุกครั้งก่อนเผยแพร่รีวิวจริง</h2>
+        </div>
+        <p>
+          เพื่อให้บทความทำเงินได้โดยไม่เสียความน่าเชื่อถือ ทุกช่องทางซื้อควรถูกใช้ทั้งเป็นแหล่งราคา
+          แหล่งรีวิวผู้ใช้ และแหล่งตรวจว่าร้านไหนน่าไว้ใจ
+        </p>
+      </div>
+      <div class="source-grid">
+        <article>
+          <span>01</span>
+          <h3>Shopee</h3>
+          <p>ดูยอดขาย รีวิวรูปภาพ ร้าน official, Mall, Flash Sale และคำบ่นซ้ำ เช่น น้ำไม่ร้อน ติดตั้งยาก ส่งช้า หรือเคลมยาก</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Lazada</h3>
+          <p>ใช้เทียบราคา ร้าน LazMall คูปอง และรีวิวอีกกลุ่มหนึ่ง เพื่อไม่ให้สรุปจาก platform เดียว</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>TikTok</h3>
+          <p>ใช้ดูสินค้าที่กำลังถูกดัน คลิปติดตั้งจริง และคำถามในคอมเมนต์ แต่ต้องระวังคอนเทนต์ขายของเกินจริง</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Brand / ห้าง</h3>
+          <p>ใช้ยืนยันสเปก กำลังไฟ ระบบตัดไฟ มาตรฐานกันน้ำ คู่มือ การติดตั้ง ประกัน และศูนย์บริการ</p>
+        </article>
+      </div>
+      <div class="source-links">
+        {topWaterHeaterPicks.map((product) => (
+          <a href={product.legacyUrl} target="_blank" rel="noopener">
+            <span>{product.brand}</span>
+            <strong>{product.name}</strong>
+            <small>Archive source</small>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
