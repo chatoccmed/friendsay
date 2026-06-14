@@ -18,22 +18,22 @@ const decisionPaths = [
 const readingPaths = [
   {
     step: "01",
-    title: "อ่านสรุปใน 3 นาที",
-    text: "เห็นรุ่นเด่น ข้อควรระวัง และตัวที่ควรข้าม",
+    title: "สรุป 3 นาที",
+    text: "รุ่นเด่น + ตัวที่ควรข้าม",
     href: "/th/best/air-fryers/",
     cue: "เริ่มจาก shortlist"
   },
   {
     step: "02",
-    title: "เทียบให้เห็นภาพ",
-    text: "ดูราคา คะแนน จุดเด่น และจุดเสี่ยงในที่เดียว",
+    title: "เทียบเร็ว",
+    text: "ราคา คะแนน จุดเด่น จุดเสี่ยง",
     href: "/th/best/air-fryers/#compare-lab",
     cue: "เหมาะก่อนกดซื้อ"
   },
   {
     step: "03",
-    title: "เจาะลึกรายรุ่น",
-    text: "อ่านข้อดี ข้อเสีย และเสียงผู้ใช้ก่อนจ่ายจริง",
+    title: "อ่านลึก",
+    text: "ข้อดี ข้อเสีย เสียงผู้ใช้",
     href: "/th/reviews/sample-air-fryer-pro/",
     cue: "อ่านก่อนจ่ายจริง"
   }
@@ -77,7 +77,7 @@ const buyerJourneys = [
 const productWorlds = [
   {
     title: "บ้านและครัว",
-    label: "หม้อทอด เครื่องครัว และของใช้ประจำวัน",
+    label: "หม้อทอด เครื่องครัว ของใช้ทุกวัน",
     href: "/th/best/air-fryers/",
     image: "/images/air-fryers/air-fryer-family-photo.png",
     alt: "หม้อทอดไร้น้ำมันในครัวพร้อมตะกร้าด้านหน้า",
@@ -85,7 +85,7 @@ const productWorlds = [
   },
   {
     title: "เครื่องใช้ไฟฟ้าในบ้าน",
-    label: "น้ำอุ่น ฟอกอากาศ พัดลม และเครื่องดูดฝุ่น",
+    label: "น้ำอุ่น ฟอกอากาศ พัดลม ดูดฝุ่น",
     href: "#product-worlds",
     image: legacyProducts[0].oldImageUrl,
     alt: "เครื่องทำน้ำอุ่น Haier สีขาว",
@@ -93,7 +93,7 @@ const productWorlds = [
   },
   {
     title: "สุขภาพและความปลอดภัย",
-    label: "อุปกรณ์ตรวจวัด ไฟฉุกเฉิน และของที่ต้องเช็กเคลม",
+    label: "เครื่องวัด ไฟฉุกเฉิน ของจำเป็น",
     href: "#product-worlds",
     image: legacyProducts[2].oldImageUrl,
     alt: "เครื่องวัดออกซิเจนปลายนิ้ว ChoiceMMed",
@@ -101,7 +101,7 @@ const productWorlds = [
   },
   {
     title: "นักท่องเที่ยวในไทย",
-    label: "ซิม ปลั๊ก กันแดด ของฝาก และของใช้เดินทาง",
+    label: "ซิม ปลั๊ก กันแดด ของฝาก",
     href: "/en/tourist/",
     image: "/images/friendsay-hero.png",
     alt: "โต๊ะรีวิวสินค้าพร้อมของใช้หลายหมวด",
@@ -109,7 +109,7 @@ const productWorlds = [
   },
   {
     title: "Gadget และงาน",
-    label: "หูฟัง ที่ชาร์จ โต๊ะ เก้าอี้ และคีย์บอร์ด",
+    label: "หูฟัง ชาร์จ โต๊ะ เก้าอี้",
     href: "#product-worlds",
     image: "/images/friendsay-hero.png",
     alt: "โต๊ะรีวิวสินค้าหลากหลายหมวดสำหรับเปรียบเทียบ",
@@ -117,7 +117,7 @@ const productWorlds = [
   },
   {
     title: "Beauty และของใช้ส่วนตัว",
-    label: "กันแดด ไดร์เป่าผม โกนหนวด และดูแลผิว",
+    label: "กันแดด ไดร์ โกนหนวด ดูแลผิว",
     href: "#product-worlds",
     image: "/images/air-fryers/air-fryer-cleaning-photo.png",
     alt: "มือกำลังดูแลทำความสะอาดอุปกรณ์ในบ้าน",
@@ -125,7 +125,7 @@ const productWorlds = [
   },
   {
     title: "แม่และเด็ก",
-    label: "คาร์ซีท รถเข็น เครื่องนึ่งขวดนม และกล้องดูเด็ก",
+    label: "คาร์ซีท รถเข็น กล้องดูเด็ก",
     href: "#product-worlds",
     image: "/images/friendsay-hero.png",
     alt: "สินค้าหลายหมวดบนโต๊ะสำหรับรีวิวก่อนเลือกซื้อ",
@@ -133,21 +133,12 @@ const productWorlds = [
   },
   {
     title: "ดีไซน์และไลฟ์สไตล์",
-    label: "ของสวยที่ต้องใช้ดีจริงและคุ้มจริง",
+    label: "ของสวย ใช้ดี คุ้มจริง",
     href: "#product-worlds",
     image: legacyProducts[9].oldImageUrl,
     alt: "เครื่องทำน้ำอุ่น Sharp Modi ดีไซน์เรียบ",
     status: "ของสวยต้องใช้ดี"
   }
-];
-
-const marketRadar = [
-  { group: "บ้านและครัว", items: ["หม้อทอดไร้น้ำมัน", "เครื่องชงกาแฟ", "เครื่องดูดฝุ่นไร้สาย", "กล่องถนอมอาหาร"] },
-  { group: "ไฟฟ้าในบ้าน", items: ["เครื่องทำน้ำอุ่น", "เครื่องฟอกอากาศ", "พัดลมไอเย็น", "กล้องวงจรปิด"] },
-  { group: "Beauty & personal care", items: ["กันแดด", "ไดร์เป่าผม", "เครื่องโกนหนวด", "แปรงสีฟันไฟฟ้า"] },
-  { group: "Gadget", items: ["หูฟัง", "Power bank", "หัวชาร์จ", "Smart watch"] },
-  { group: "แม่และเด็ก", items: ["คาร์ซีท", "รถเข็น", "เครื่องนึ่งขวดนม", "กล้องดูเด็ก"] },
-  { group: "Travel in Thailand", items: ["ซิม", "กระเป๋าเดินทาง", "ปลั๊ก", "ของฝาก"] }
 ];
 
 const flagship = topAirFryerPicks[0];
@@ -213,9 +204,9 @@ const flagship = topAirFryerPicks[0];
   <div class="wide-container home-persona-layout">
     <div class="home-persona-intro">
       <p class="eyebrow">Start with real life</p>
-      <h2 id="home-persona-title" class="headline">หน้าแรกควรเริ่มจากชีวิตของคนซื้อ ไม่ใช่เริ่มจากสินค้า</h2>
+      <h2 id="home-persona-title" class="headline">เลือกจากชีวิตจริง</h2>
       <p>
-        เลือกจากสถานการณ์จริงก่อน แล้วค่อยลงไปดูสินค้า รุ่น ราคา และข้อควรระวัง
+        คอนโด ครอบครัว สุขภาพ หรือนักท่องเที่ยว แตะภาพแล้วไปต่อทันที
       </p>
     </div>
     <div class="home-persona-grid">
@@ -239,8 +230,8 @@ const flagship = topAirFryerPicks[0];
   <div class="wide-container home-reading-shell">
     <div class="home-reading-intro">
       <p class="eyebrow">How to read Friendsay</p>
-      <h2 id="home-reading-title">เลือกทางอ่านที่เหมาะกับเวลาของคุณ</h2>
-      <p>บางวันอยากได้คำตอบเร็ว บางวันอยากเทียบให้ชัวร์ หน้าแรกควรพาคุณไปถูกทางตั้งแต่คลิกแรก</p>
+      <h2 id="home-reading-title">มีเวลาแค่ไหน</h2>
+      <p>เลือกทางลัดแล้วไปคำตอบที่ต้องใช้จริง</p>
     </div>
     <div class="home-reading-grid">
       {readingPaths.map((path) => (
@@ -274,15 +265,15 @@ const flagship = topAirFryerPicks[0];
     <div class="home-editorial-rail" aria-label="ทางลัดสำคัญ">
       <a href="#product-worlds">
         <span>Popular in Thailand</span>
-        <strong>เริ่มจากสินค้าที่คนไทยค้นหาก่อนซื้อจริง</strong>
+        <strong>หมวดฮิต</strong>
       </a>
       <a href="/editorial-policy/">
         <span>Review Standard</span>
-        <strong>บอกก่อนว่าเราตรวจอะไร และยังไม่ฟันธงอะไร</strong>
+        <strong>วิธีให้คะแนน</strong>
       </a>
       <a href="/en/tourist/">
         <span>Tourist Mode</span>
-        <strong>ต่อยอดเป็นรีวิวของที่นักท่องเที่ยวควรซื้อในไทย</strong>
+        <strong>Tourist picks</strong>
       </a>
     </div>
   </div>
@@ -293,11 +284,8 @@ const flagship = topAirFryerPicks[0];
     <div class="section-heading home-section-split">
       <div>
         <p class="eyebrow">Popular Thai product reviews</p>
-        <h2 class="headline">รีวิวสินค้ายอดนิยมที่คนไทยค้นหาก่อนซื้อ</h2>
+        <h2 class="headline">หมวดสินค้ายอดนิยม</h2>
       </div>
-      <p>
-        ครอบคลุมของที่คนไทยซื้อจริง ตั้งแต่เครื่องใช้ไฟฟ้า สุขภาพ ความงาม Gadget แม่และเด็ก ไปจนถึงของที่นักท่องเที่ยวควรซื้อในไทย
-      </p>
     </div>
     <div class="home-world-grid">
       {productWorlds.map((world) => (
@@ -314,49 +302,27 @@ const flagship = topAirFryerPicks[0];
   </div>
 </section>
 
-<section class="section home-radar-section" aria-labelledby="home-radar-title">
-  <div class="container">
-    <div class="home-radar-head">
-      <p class="eyebrow">Review radar</p>
-      <h2 id="home-radar-title" class="headline">หมวดที่ Friendsay จะค่อย ๆ ครอบคลุมให้ครบ</h2>
-      <p>
-        หมวดที่จะทยอยทำเป็นรีวิวรวมและรีวิวเจาะลึกต่อไป
-      </p>
-    </div>
-    <div class="home-radar-board">
-      {marketRadar.map((lane) => (
-        <section class="home-radar-lane">
-          <h3>{lane.group}</h3>
-          <div>
-            {lane.items.map((item) => <span>{item}</span>)}
-          </div>
-        </section>
-      ))}
-    </div>
-  </div>
-</section>
-
 <section class="section home-trust-section">
   <div class="container home-trust-grid">
     <div>
       <p class="eyebrow">Why trust Friendsay</p>
-      <h2 class="headline">หน้าแรกต้องทำให้คนรู้สึกว่าเราอยู่ข้างเขา ไม่ใช่ข้างปุ่มซื้อ</h2>
+      <h2 class="headline">ไว้ใจได้ เพราะเริ่มจากคนอ่าน</h2>
     </div>
     <div class="home-trust-points">
       <article>
         <span>01</span>
-        <h3>รีวิวรวมเพื่อ shortlist</h3>
-        <p>ตัดจากหลายสิบรุ่นให้เหลือรุ่นที่ควรดูจริง</p>
+        <h3>คัดให้เหลือรุ่นน่าดู</h3>
+        <p>ตัดตัวเลือกให้เร็วขึ้น</p>
       </article>
       <article>
         <span>02</span>
-        <h3>รีวิวเดี่ยวเพื่อความมั่นใจ</h3>
-        <p>ลงลึกข้อดี จุดสังเกต ราคา และเสียงผู้ใช้</p>
+        <h3>บอกข้อเสียชัด</h3>
+        <p>ไม่ขายฝันเกินจริง</p>
       </article>
       <article>
         <span>03</span>
         <h3>โปร่งใสเรื่อง affiliate</h3>
-        <p>ปุ่มซื้อช่วยให้เว็บอยู่ได้ แต่คำตอบต้องเริ่มจากคนอ่าน</p>
+        <p>รายได้ไม่ควรนำคำตอบ</p>
       </article>
     </div>
   </div>
