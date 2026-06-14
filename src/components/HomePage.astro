@@ -39,6 +39,41 @@ const readingPaths = [
   }
 ];
 
+const buyerJourneys = [
+  {
+    title: "เริ่มบ้านใหม่หรือคอนโด",
+    text: "ของชิ้นแรกควรเล็กพอดี วางง่าย ไม่กินไฟ และไม่ทำให้ครัวดูรก",
+    href: "#product-worlds",
+    image: "/images/air-fryers/air-fryer-compact-photo.png",
+    alt: "หม้อทอดไร้น้ำมันขนาดกะทัดรัดสำหรับคอนโด",
+    picks: ["หม้อทอด 3-4L", "เครื่องกรองน้ำ", "เครื่องดูดฝุ่น", "ปลั๊กพ่วง"]
+  },
+  {
+    title: "ครอบครัวที่ซื้อแล้วต้องใช้ยาว",
+    text: "ต้องดูความทน ความจุ บริการหลังขาย และค่าใช้จ่ายที่ตามมา",
+    href: "#product-worlds",
+    image: "/images/air-fryers/air-fryer-family-photo.png",
+    alt: "เครื่องใช้ในครัวสำหรับครอบครัว",
+    picks: ["เครื่องใช้ไฟฟ้า", "คาร์ซีท", "เครื่องฟอกอากาศ", "เครื่องทำน้ำอุ่น"]
+  },
+  {
+    title: "สุขภาพและความปลอดภัย",
+    text: "สินค้ากลุ่มนี้ต้องอ่านคำเคลมอย่างระวัง และดูแหล่งอ้างอิงมากกว่าคะแนนดาว",
+    href: "#product-worlds",
+    image: legacyProducts[2].oldImageUrl,
+    alt: "อุปกรณ์ตรวจวัดสุขภาพสำหรับใช้ในบ้าน",
+    picks: ["เครื่องวัดสุขภาพ", "ไฟฉุกเฉิน", "เครื่องฟอกอากาศ", "อุปกรณ์ผู้สูงอายุ"]
+  },
+  {
+    title: "นักท่องเที่ยวในไทย",
+    text: "เลือกของที่ซื้อในไทยแล้วคุ้ม ใช้ง่าย ไม่โดนราคาเกินจริง และพกกลับสะดวก",
+    href: "/en/tourist/",
+    image: "/images/friendsay-hero.png",
+    alt: "ของใช้หลายหมวดสำหรับนักท่องเที่ยวในไทย",
+    picks: ["ซิม", "กันแดด", "ปลั๊ก", "ของฝาก"]
+  }
+];
+
 const productWorlds = [
   {
     title: "บ้านและครัว",
@@ -106,6 +141,51 @@ const productWorlds = [
   }
 ];
 
+const reviewSpotlights = [
+  {
+    type: "รีวิวรวม",
+    title: "หม้อทอดไร้น้ำมันรุ่นไหนดี 2026",
+    text: "หน้าแม่แบบสำหรับบทความเปรียบเทียบ: มี shortlist, compare lab, กราฟ, ตาราง และรีวิวสั้นรายรุ่น",
+    href: "/th/best/air-fryers/",
+    image: topAirFryerPicks[0].image.url,
+    alt: topAirFryerPicks[0].image.alt
+  },
+  {
+    type: "รีวิวละเอียด",
+    title: "เจาะลึกหนึ่งรุ่นก่อนซื้อจริง",
+    text: "โครงรีวิวเดี่ยวแบบ 2,000 คำ: เหมาะกับใคร จุดเด่น จุดสังเกต รีวิวผู้ใช้จริง และราคาที่ควรจ่าย",
+    href: "/th/reviews/sample-air-fryer-pro/",
+    image: "/images/air-fryers/air-fryer-food-photo.png",
+    alt: "อาหารที่ทำด้วยหม้อทอดไร้น้ำมัน"
+  },
+  {
+    type: "Tourist guide",
+    title: "ของที่นักท่องเที่ยวควรซื้อในไทย",
+    text: "ต่อยอด Friendsay ให้ช่วยทั้งคนไทยและชาวต่างชาติที่อยากซื้อของในไทยแบบไม่หลงทาง",
+    href: "/en/tourist/",
+    image: "/images/friendsay-hero.png",
+    alt: "โต๊ะรีวิวสินค้าหลายหมวด"
+  }
+];
+
+const marketRadar = [
+  { group: "บ้านและครัว", items: ["หม้อทอดไร้น้ำมัน", "เครื่องชงกาแฟ", "เครื่องดูดฝุ่นไร้สาย", "กล่องถนอมอาหาร"] },
+  { group: "ไฟฟ้าในบ้าน", items: ["เครื่องทำน้ำอุ่น", "เครื่องฟอกอากาศ", "พัดลมไอเย็น", "กล้องวงจรปิด"] },
+  { group: "Beauty & personal care", items: ["กันแดด", "ไดร์เป่าผม", "เครื่องโกนหนวด", "แปรงสีฟันไฟฟ้า"] },
+  { group: "Gadget", items: ["หูฟัง", "Power bank", "หัวชาร์จ", "Smart watch"] },
+  { group: "แม่และเด็ก", items: ["คาร์ซีท", "รถเข็น", "เครื่องนึ่งขวดนม", "กล้องดูเด็ก"] },
+  { group: "Travel in Thailand", items: ["ซิม", "กระเป๋าเดินทาง", "ปลั๊ก", "ของฝาก"] }
+];
+
+const reviewStandards = [
+  { title: "เริ่มจากคนใช้จริง", text: "ระบุให้ชัดว่าสินค้านี้เหมาะกับชีวิตแบบไหน และไม่เหมาะกับใคร" },
+  { title: "เทียบให้เห็นภาพ", text: "ใช้ตาราง กราฟ ภาพ และภาษาง่าย เพื่อให้ตัดสินใจได้เร็วขึ้น" },
+  { title: "ฟังทั้งคำชมและคำบ่น", text: "ดึงข้อดี จุดสังเกต และปัญหาที่ผู้ใช้พูดซ้ำบ่อยมาเล่าอย่างตรงไปตรงมา" },
+  { title: "ราคาต้องมีบริบท", text: "ไม่ดูแค่ถูกสุด แต่ดูความคุ้ม ร้านที่น่าเชื่อถือ เงื่อนไขส่งคืน และประกัน" },
+  { title: "Affiliate โปร่งใส", text: "ลิงก์ซื้อช่วยให้เว็บอยู่ได้ แต่คำแนะนำต้องเริ่มจากประโยชน์ของคนอ่าน" },
+  { title: "อัปเดตเมื่อข้อมูลเปลี่ยน", text: "สินค้า ราคา และรีวิวผู้ใช้เปลี่ยนได้ เราจึงออกแบบเว็บให้ปรับปรุงต่อเนื่อง" }
+];
+
 const flagship = topAirFryerPicks[0];
 ---
 
@@ -166,6 +246,33 @@ const flagship = topAirFryerPicks[0];
   </div>
 </section>
 
+<section class="section home-persona-section" aria-labelledby="home-persona-title">
+  <div class="wide-container home-persona-layout">
+    <div class="home-persona-intro">
+      <p class="eyebrow">Start with real life</p>
+      <h2 id="home-persona-title" class="headline">หน้าแรกควรเริ่มจากชีวิตของคนซื้อ ไม่ใช่เริ่มจากสินค้า</h2>
+      <p>
+        คนไม่ได้เข้ามาเพื่ออ่านสเปกอย่างเดียว เขาเข้ามาเพราะกำลังจะย้ายคอนโด ซื้อของให้ครอบครัว ดูแลสุขภาพ
+        หรือมาเที่ยวไทยแล้วไม่อยากซื้อผิด Friendsay จึงจัดทางเข้าแบบเข้าใจสถานการณ์จริงก่อน
+      </p>
+    </div>
+    <div class="home-persona-grid">
+      {buyerJourneys.map((journey) => (
+        <a class="home-persona-card" href={journey.href}>
+          <img src={journey.image} alt={journey.alt} loading="lazy" />
+          <div>
+            <strong>{journey.title}</strong>
+            <p>{journey.text}</p>
+            <ul>
+              {journey.picks.map((pick) => <li>{pick}</li>)}
+            </ul>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
 <section class="home-reading-section" aria-labelledby="home-reading-title">
   <div class="wide-container home-reading-shell">
     <div class="home-reading-intro">
@@ -219,6 +326,33 @@ const flagship = topAirFryerPicks[0];
   </div>
 </section>
 
+<section class="section home-spotlight-section" aria-labelledby="home-spotlight-title">
+  <div class="container">
+    <div class="section-heading home-section-split">
+      <div>
+        <p class="eyebrow">Featured review paths</p>
+        <h2 id="home-spotlight-title" class="headline">เริ่มอ่านได้ทั้งแบบเร็ว แบบเทียบ และแบบเจาะลึก</h2>
+      </div>
+      <p>
+        หน้าแรกควรพาคนอ่านไปถึงคำตอบเร็ว แต่ยังเปิดทางให้คนที่อยากตรวจละเอียดอ่านต่อได้ครบ
+        เหมือนมีเพื่อนที่สรุปให้ก่อน แล้ววางหลักฐานไว้ให้ดูเอง
+      </p>
+    </div>
+    <div class="home-spotlight-grid">
+      {reviewSpotlights.map((story) => (
+        <a class="home-spotlight-card" href={story.href}>
+          <img src={story.image} alt={story.alt} loading="lazy" />
+          <div>
+            <span>{story.type}</span>
+            <strong>{story.title}</strong>
+            <p>{story.text}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
 <section class="section home-world-section" id="product-worlds">
   <div class="container">
     <div class="section-heading home-section-split">
@@ -246,6 +380,28 @@ const flagship = topAirFryerPicks[0];
   </div>
 </section>
 
+<section class="section home-radar-section" aria-labelledby="home-radar-title">
+  <div class="container">
+    <div class="home-radar-head">
+      <p class="eyebrow">Review radar</p>
+      <h2 id="home-radar-title" class="headline">หมวดที่ Friendsay จะค่อย ๆ ครอบคลุมให้ครบ</h2>
+      <p>
+        เป้าหมายคือเป็นคลังรีวิวสินค้ายอดนิยมของไทยที่อ่านง่าย เชื่อถือได้ และใช้งานได้จริงก่อนกดซื้อ
+      </p>
+    </div>
+    <div class="home-radar-board">
+      {marketRadar.map((lane) => (
+        <section class="home-radar-lane">
+          <h3>{lane.group}</h3>
+          <div>
+            {lane.items.map((item) => <span>{item}</span>)}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 <section class="section home-trust-section">
   <div class="container home-trust-grid">
     <div>
@@ -268,6 +424,39 @@ const flagship = topAirFryerPicks[0];
         <h3>โปร่งใสเรื่อง affiliate</h3>
         <p>ปุ่มซื้อช่วยให้เว็บอยู่ได้ แต่บทสรุปต้องเริ่มจากประโยชน์ของคนอ่านเสมอ</p>
       </article>
+    </div>
+  </div>
+</section>
+
+<section class="section home-standard-section" aria-labelledby="home-standard-title">
+  <div class="container">
+    <div class="section-heading home-section-split">
+      <div>
+        <p class="eyebrow">Friendsay review system</p>
+        <h2 id="home-standard-title" class="headline">ทุกรีวิวต้องช่วยคนซื้อ ไม่ใช่แค่ช่วยให้คลิก</h2>
+      </div>
+      <p>
+        เราจะเติบโตด้วยมาตรฐานเดียวกันในทุกหมวดสินค้า: จริงใจ อ่านง่าย เห็นข้อเสีย และมีเหตุผลพอให้คนตัดสินใจด้วยตัวเอง
+      </p>
+    </div>
+    <div class="home-standard-grid">
+      {reviewStandards.map((standard, index) => (
+        <article class="home-standard-card">
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <h3>{standard.title}</h3>
+          <p>{standard.text}</p>
+        </article>
+      ))}
+    </div>
+    <div class="home-bottom-cta">
+      <div>
+        <p class="eyebrow">Next best step</p>
+        <h2>เริ่มจากบทความตัวอย่าง แล้วขยายไปทุกหมวดที่คนไทยซื้อจริง</h2>
+      </div>
+      <div class="home-bottom-actions">
+        <a class="button button-primary" href="/th/best/air-fryers/">อ่านรีวิวรวมตัวอย่าง</a>
+        <a class="button button-dark" href="/affiliate-disclosure/">ดูความโปร่งใส Affiliate</a>
+      </div>
     </div>
   </div>
 </section>
