@@ -549,7 +549,7 @@ button {
 }
 
 .home-reading-section {
-  padding: 24px 0 58px;
+  padding: 22px 0 46px;
   border-bottom: 1px solid rgba(223, 208, 186, 0.72);
   background:
     linear-gradient(180deg, rgba(255, 253, 248, 1), rgba(245, 251, 249, 0.76)),
@@ -600,15 +600,15 @@ button {
 .home-reading-card {
   position: relative;
   display: grid;
-  min-height: 214px;
+  min-height: 178px;
   align-content: space-between;
-  gap: 16px;
+  gap: 12px;
   overflow: hidden;
   border: 1px solid rgba(223, 208, 186, 0.86);
   border-radius: var(--radius);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 253, 248, 0.82));
-  padding: 22px;
+  padding: 18px;
   box-shadow: 0 18px 54px rgba(23, 32, 42, 0.08);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
@@ -642,7 +642,7 @@ button {
 .home-reading-card p {
   margin: 0;
   color: var(--muted);
-  line-height: 1.5;
+  line-height: 1.42;
 }
 
 .home-reading-card small {
@@ -664,21 +664,15 @@ button {
 
 .home-persona-layout {
   display: grid;
-  grid-template-columns: minmax(280px, 0.5fr) minmax(0, 1fr);
-  gap: 22px;
-  align-items: stretch;
+  grid-template-columns: 1fr;
+  gap: 24px;
 }
 
 .home-persona-intro {
   display: grid;
   align-content: center;
-  min-height: 460px;
-  border: 1px solid rgba(223, 208, 186, 0.84);
-  border-radius: var(--radius);
-  background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(255, 248, 238, 0.84));
-  padding: clamp(26px, 4vw, 44px);
-  box-shadow: var(--shadow-soft);
+  max-width: 920px;
+  min-height: 0;
 }
 
 .home-persona-intro .headline,
@@ -687,21 +681,22 @@ button {
 }
 
 .home-persona-intro > p:not(.eyebrow) {
-  margin: 18px 0 0;
+  max-width: 660px;
+  margin: 14px 0 0;
   color: var(--muted);
-  font-size: 1.06rem;
+  font-size: 1.02rem;
 }
 
 .home-persona-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
 .home-persona-card {
   display: grid;
-  min-height: 222px;
-  grid-template-columns: minmax(128px, 0.44fr) minmax(0, 1fr);
+  min-height: 0;
+  grid-template-columns: 1fr;
   overflow: hidden;
   border: 1px solid rgba(223, 208, 186, 0.9);
   border-radius: var(--radius);
@@ -718,17 +713,18 @@ button {
 
 .home-persona-card img {
   width: 100%;
-  height: 100%;
-  min-height: 222px;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  min-height: 0;
   object-fit: cover;
   background: #fff;
 }
 
 .home-persona-card div {
   display: grid;
-  align-content: center;
-  gap: 10px;
-  padding: 18px;
+  align-content: start;
+  gap: 9px;
+  padding: 16px;
 }
 
 .home-persona-card strong {
@@ -741,7 +737,7 @@ button {
   margin: 0;
   color: var(--muted);
   font-size: 0.94rem;
-  line-height: 1.48;
+  line-height: 1.42;
 }
 
 .home-persona-card ul {
@@ -780,7 +776,7 @@ button {
 
 .home-feature-story {
   display: grid;
-  min-height: 510px;
+  min-height: 460px;
   grid-template-columns: minmax(320px, 0.88fr) minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) auto;
   overflow: hidden;
@@ -801,7 +797,7 @@ button {
 .home-feature-story > img {
   width: 100%;
   height: 100%;
-  min-height: 510px;
+  min-height: 460px;
   grid-row: 1 / span 2;
   object-fit: cover;
   background: #fff;
@@ -829,7 +825,7 @@ button {
 .home-feature-story p {
   max-width: 620px;
   color: rgba(255, 255, 255, 0.76);
-  font-size: 1.05rem;
+  font-size: 1rem;
 }
 
 .home-feature-story .eyebrow {
@@ -861,7 +857,7 @@ button {
 
 .home-editorial-rail a {
   display: grid;
-  min-height: 158px;
+  min-height: 136px;
   align-content: space-between;
   gap: 18px;
   border: 1px solid rgba(223, 208, 186, 0.9);
@@ -1000,6 +996,12 @@ button {
     var(--paper);
 }
 
+.home-world-section .container,
+.home-radar-section .container,
+.home-trust-section .container {
+  width: min(1380px, calc(100% - 32px));
+}
+
 .home-section-split {
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.52fr);
   gap: 28px;
@@ -1014,15 +1016,14 @@ button {
 
 .home-world-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
 .home-world-card {
   display: grid;
-  grid-column: span 2;
-  min-height: 190px;
-  grid-template-columns: 138px minmax(0, 1fr);
+  min-height: 0;
+  grid-template-columns: 1fr;
   overflow: hidden;
   border: 1px solid rgba(223, 208, 186, 0.9);
   border-radius: var(--radius);
@@ -1033,29 +1034,28 @@ button {
 
 .home-world-card:nth-child(1),
 .home-world-card:nth-child(4) {
-  grid-column: span 3;
-  min-height: 286px;
-  grid-template-columns: minmax(190px, 0.45fr) minmax(0, 1fr);
+  grid-column: auto;
+  min-height: 0;
+  grid-template-columns: 1fr;
 }
 
 .home-world-card:nth-child(4) {
-  border-color: rgba(23, 32, 42, 0.18);
-  background:
-    linear-gradient(135deg, #17202a, #263445);
+  border-color: rgba(223, 208, 186, 0.9);
+  background: rgba(255, 255, 255, 0.86);
 }
 
 .home-world-card:nth-child(4) strong,
 .home-world-card:nth-child(4) p {
-  color: #fff;
+  color: var(--ink);
 }
 
 .home-world-card:nth-child(4) p {
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
 }
 
 .home-world-card:nth-child(1) strong,
 .home-world-card:nth-child(4) strong {
-  font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+  font-size: 1.22rem;
 }
 
 .home-world-card:nth-child(1) img,
@@ -1066,7 +1066,7 @@ button {
 
 .home-world-card:nth-child(1) p,
 .home-world-card:nth-child(4) p {
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 2;
 }
 
 .home-world-card:hover {
@@ -1077,19 +1077,20 @@ button {
 
 .home-world-card img {
   width: 100%;
-  height: 100%;
-  min-height: 190px;
-  object-fit: contain;
-  border-right: 1px solid rgba(223, 208, 186, 0.66);
+  height: 156px;
+  min-height: 0;
+  object-fit: cover;
+  border-right: 0;
+  border-bottom: 1px solid rgba(223, 208, 186, 0.66);
   background: #fff;
-  padding: 14px;
+  padding: 0;
 }
 
 .home-world-card div {
   display: grid;
-  align-content: center;
+  align-content: start;
   gap: 8px;
-  padding: 18px;
+  padding: 16px;
 }
 
 .home-world-card span {
@@ -1104,7 +1105,7 @@ button {
 
 .home-world-card strong {
   color: var(--ink);
-  font-size: 1.28rem;
+  font-size: 1.22rem;
   line-height: 1.15;
 }
 
@@ -1115,7 +1116,7 @@ button {
   color: var(--muted);
   line-height: 1.45;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
 }
 
 .home-radar-section {
@@ -1145,7 +1146,7 @@ button {
 
 .home-radar-board {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   overflow: hidden;
   border: 1px solid rgba(223, 208, 186, 0.9);
@@ -1157,8 +1158,8 @@ button {
 .home-radar-lane {
   display: grid;
   align-content: start;
-  gap: 16px;
-  min-height: 286px;
+  gap: 12px;
+  min-height: 0;
   background: rgba(255, 255, 255, 0.88);
   padding: 20px;
 }
@@ -1227,7 +1228,7 @@ button {
 
 .home-trust-points article {
   display: grid;
-  min-height: 290px;
+  min-height: 210px;
   align-content: space-between;
   gap: 18px;
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -3477,13 +3478,13 @@ button {
   .home-world-card:nth-child(1),
   .home-world-card:nth-child(4) {
     grid-column: auto;
-    min-height: 190px;
-    grid-template-columns: 138px minmax(0, 1fr);
+    min-height: 0;
+    grid-template-columns: 1fr;
   }
 
   .home-world-card:nth-child(1) strong,
   .home-world-card:nth-child(4) strong {
-    font-size: 1.28rem;
+    font-size: 1.22rem;
   }
 
   .home-decision-grid {
@@ -3501,7 +3502,7 @@ button {
   }
 
   .home-radar-lane {
-    min-height: 220px;
+    min-height: 0;
   }
 
   .roundup-hero-inner {
@@ -3942,16 +3943,18 @@ button {
   }
 
   .home-persona-card {
-    grid-template-columns: 1fr;
+    grid-template-columns: 104px minmax(0, 1fr);
+    min-height: 150px;
   }
 
   .home-persona-card img {
-    aspect-ratio: 16 / 9.2;
-    min-height: 0;
+    height: 100%;
+    min-height: 150px;
+    aspect-ratio: auto;
   }
 
   .home-persona-card div {
-    padding: 16px;
+    padding: 14px;
   }
 
   .home-world-card {
@@ -3969,6 +3972,16 @@ button {
 
   .home-world-card strong {
     font-size: 1.12rem;
+  }
+
+  .home-radar-lane {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .home-radar-lane span {
+    padding: 6px 8px;
+    font-size: 0.78rem;
   }
 
   .home-spotlight-card img {

@@ -19,21 +19,21 @@ const readingPaths = [
   {
     step: "01",
     title: "อ่านสรุปใน 3 นาที",
-    text: "เหมาะกับวันที่อยากได้คำตอบเร็ว เห็นตัวเลือกเด่น ข้อควรระวัง และรุ่นที่ควรข้ามก่อน",
+    text: "เห็นรุ่นเด่น ข้อควรระวัง และตัวที่ควรข้าม",
     href: "/th/best/air-fryers/",
     cue: "เริ่มจาก shortlist"
   },
   {
     step: "02",
     title: "เทียบให้เห็นภาพ",
-    text: "ดูราคา ความจุ คะแนน จุดเด่น และข้อสังเกตในกราฟหรือตารางเดียว ก่อนเสียเวลาเปิดหลายร้าน",
+    text: "ดูราคา คะแนน จุดเด่น และจุดเสี่ยงในที่เดียว",
     href: "/th/best/air-fryers/#compare-lab",
     cue: "เหมาะก่อนกดซื้อ"
   },
   {
     step: "03",
     title: "เจาะลึกรายรุ่น",
-    text: "อ่านข้อดี ข้อเสีย เสียงจากผู้ใช้จริง และเงื่อนไขที่ทำให้รุ่นนั้นเหมาะหรือไม่เหมาะกับคุณ",
+    text: "อ่านข้อดี ข้อเสีย และเสียงผู้ใช้ก่อนจ่ายจริง",
     href: "/th/reviews/sample-air-fryer-pro/",
     cue: "อ่านก่อนจ่ายจริง"
   }
@@ -42,7 +42,7 @@ const readingPaths = [
 const buyerJourneys = [
   {
     title: "เริ่มบ้านใหม่หรือคอนโด",
-    text: "ของชิ้นแรกควรเล็กพอดี วางง่าย ไม่กินไฟ และไม่ทำให้ครัวดูรก",
+    text: "เล็กพอดี วางง่าย ไม่รก",
     href: "#product-worlds",
     image: "/images/air-fryers/air-fryer-compact-photo.png",
     alt: "หม้อทอดไร้น้ำมันขนาดกะทัดรัดสำหรับคอนโด",
@@ -50,7 +50,7 @@ const buyerJourneys = [
   },
   {
     title: "ครอบครัวที่ซื้อแล้วต้องใช้ยาว",
-    text: "ต้องดูความทน ความจุ บริการหลังขาย และค่าใช้จ่ายที่ตามมา",
+    text: "ดูความจุ ความทน และประกัน",
     href: "#product-worlds",
     image: "/images/air-fryers/air-fryer-family-photo.png",
     alt: "เครื่องใช้ในครัวสำหรับครอบครัว",
@@ -58,7 +58,7 @@ const buyerJourneys = [
   },
   {
     title: "สุขภาพและความปลอดภัย",
-    text: "สินค้ากลุ่มนี้ต้องอ่านคำเคลมอย่างระวัง และดูแหล่งอ้างอิงมากกว่าคะแนนดาว",
+    text: "เช็กคำเคลมและแหล่งอ้างอิง",
     href: "#product-worlds",
     image: legacyProducts[2].oldImageUrl,
     alt: "อุปกรณ์ตรวจวัดสุขภาพสำหรับใช้ในบ้าน",
@@ -66,7 +66,7 @@ const buyerJourneys = [
   },
   {
     title: "นักท่องเที่ยวในไทย",
-    text: "เลือกของที่ซื้อในไทยแล้วคุ้ม ใช้ง่าย ไม่โดนราคาเกินจริง และพกกลับสะดวก",
+    text: "ซื้อคุ้ม ใช้ง่าย พกกลับสะดวก",
     href: "/en/tourist/",
     image: "/images/friendsay-hero.png",
     alt: "ของใช้หลายหมวดสำหรับนักท่องเที่ยวในไทย",
@@ -77,7 +77,7 @@ const buyerJourneys = [
 const productWorlds = [
   {
     title: "บ้านและครัว",
-    label: "หม้อทอดไร้น้ำมัน เครื่องครัว อุปกรณ์ทำอาหาร และของที่ใช้ทุกวันในบ้าน",
+    label: "หม้อทอด เครื่องครัว และของใช้ประจำวัน",
     href: "/th/best/air-fryers/",
     image: "/images/air-fryers/air-fryer-family-photo.png",
     alt: "หม้อทอดไร้น้ำมันในครัวพร้อมตะกร้าด้านหน้า",
@@ -85,7 +85,7 @@ const productWorlds = [
   },
   {
     title: "เครื่องใช้ไฟฟ้าในบ้าน",
-    label: "เครื่องทำน้ำอุ่น เครื่องฟอกอากาศ พัดลม เครื่องดูดฝุ่น และของที่ควรเทียบสเปกให้ชัด",
+    label: "น้ำอุ่น ฟอกอากาศ พัดลม และเครื่องดูดฝุ่น",
     href: "#product-worlds",
     image: legacyProducts[0].oldImageUrl,
     alt: "เครื่องทำน้ำอุ่น Haier สีขาว",
@@ -93,7 +93,7 @@ const productWorlds = [
   },
   {
     title: "สุขภาพและความปลอดภัย",
-    label: "อุปกรณ์ตรวจวัดเบื้องต้น เครื่องฟอกอากาศ ไฟฉุกเฉิน และของที่ต้องระวังคำเคลมเป็นพิเศษ",
+    label: "อุปกรณ์ตรวจวัด ไฟฉุกเฉิน และของที่ต้องเช็กเคลม",
     href: "#product-worlds",
     image: legacyProducts[2].oldImageUrl,
     alt: "เครื่องวัดออกซิเจนปลายนิ้ว ChoiceMMed",
@@ -101,7 +101,7 @@ const productWorlds = [
   },
   {
     title: "นักท่องเที่ยวในไทย",
-    label: "ซิม ของใช้เดินทาง ปลั๊ก อุปกรณ์กันแดด ของฝาก และของที่ต่างชาติควรซื้อในไทย",
+    label: "ซิม ปลั๊ก กันแดด ของฝาก และของใช้เดินทาง",
     href: "/en/tourist/",
     image: "/images/friendsay-hero.png",
     alt: "โต๊ะรีวิวสินค้าพร้อมของใช้หลายหมวด",
@@ -109,7 +109,7 @@ const productWorlds = [
   },
   {
     title: "Gadget และงาน",
-    label: "หูฟัง ที่ชาร์จ โต๊ะทำงาน เก้าอี้ คีย์บอร์ด และของที่ช่วยให้ชีวิตประจำวันลื่นขึ้น",
+    label: "หูฟัง ที่ชาร์จ โต๊ะ เก้าอี้ และคีย์บอร์ด",
     href: "#product-worlds",
     image: "/images/friendsay-hero.png",
     alt: "โต๊ะรีวิวสินค้าหลากหลายหมวดสำหรับเปรียบเทียบ",
@@ -117,7 +117,7 @@ const productWorlds = [
   },
   {
     title: "Beauty และของใช้ส่วนตัว",
-    label: "กันแดด ไดร์เป่าผม เครื่องโกนหนวด อุปกรณ์ดูแลผิว และของที่ต้องดูผลลัพธ์จริง",
+    label: "กันแดด ไดร์เป่าผม โกนหนวด และดูแลผิว",
     href: "#product-worlds",
     image: "/images/air-fryers/air-fryer-cleaning-photo.png",
     alt: "มือกำลังดูแลทำความสะอาดอุปกรณ์ในบ้าน",
@@ -125,7 +125,7 @@ const productWorlds = [
   },
   {
     title: "แม่และเด็ก",
-    label: "คาร์ซีท รถเข็น เครื่องนึ่งขวดนม กล้องดูเด็ก และของที่ต้องคิดเรื่องความปลอดภัยก่อนราคา",
+    label: "คาร์ซีท รถเข็น เครื่องนึ่งขวดนม และกล้องดูเด็ก",
     href: "#product-worlds",
     image: "/images/friendsay-hero.png",
     alt: "สินค้าหลายหมวดบนโต๊ะสำหรับรีวิวก่อนเลือกซื้อ",
@@ -133,38 +133,11 @@ const productWorlds = [
   },
   {
     title: "ดีไซน์และไลฟ์สไตล์",
-    label: "ของที่หน้าตาดีต้องตอบด้วยว่าใช้ดีจริงไหม คุ้มไหม และเหมาะกับบ้านแบบไหน",
+    label: "ของสวยที่ต้องใช้ดีจริงและคุ้มจริง",
     href: "#product-worlds",
     image: legacyProducts[9].oldImageUrl,
     alt: "เครื่องทำน้ำอุ่น Sharp Modi ดีไซน์เรียบ",
     status: "ของสวยต้องใช้ดี"
-  }
-];
-
-const reviewSpotlights = [
-  {
-    type: "รีวิวรวม",
-    title: "หม้อทอดไร้น้ำมันรุ่นไหนดี 2026",
-    text: "หน้าแม่แบบสำหรับบทความเปรียบเทียบ: มี shortlist, compare lab, กราฟ, ตาราง และรีวิวสั้นรายรุ่น",
-    href: "/th/best/air-fryers/",
-    image: topAirFryerPicks[0].image.url,
-    alt: topAirFryerPicks[0].image.alt
-  },
-  {
-    type: "รีวิวละเอียด",
-    title: "เจาะลึกหนึ่งรุ่นก่อนซื้อจริง",
-    text: "โครงรีวิวเดี่ยวแบบ 2,000 คำ: เหมาะกับใคร จุดเด่น จุดสังเกต รีวิวผู้ใช้จริง และราคาที่ควรจ่าย",
-    href: "/th/reviews/sample-air-fryer-pro/",
-    image: "/images/air-fryers/air-fryer-food-photo.png",
-    alt: "อาหารที่ทำด้วยหม้อทอดไร้น้ำมัน"
-  },
-  {
-    type: "Tourist guide",
-    title: "ของที่นักท่องเที่ยวควรซื้อในไทย",
-    text: "ต่อยอด Friendsay ให้ช่วยทั้งคนไทยและชาวต่างชาติที่อยากซื้อของในไทยแบบไม่หลงทาง",
-    href: "/en/tourist/",
-    image: "/images/friendsay-hero.png",
-    alt: "โต๊ะรีวิวสินค้าหลายหมวด"
   }
 ];
 
@@ -175,15 +148,6 @@ const marketRadar = [
   { group: "Gadget", items: ["หูฟัง", "Power bank", "หัวชาร์จ", "Smart watch"] },
   { group: "แม่และเด็ก", items: ["คาร์ซีท", "รถเข็น", "เครื่องนึ่งขวดนม", "กล้องดูเด็ก"] },
   { group: "Travel in Thailand", items: ["ซิม", "กระเป๋าเดินทาง", "ปลั๊ก", "ของฝาก"] }
-];
-
-const reviewStandards = [
-  { title: "เริ่มจากคนใช้จริง", text: "ระบุให้ชัดว่าสินค้านี้เหมาะกับชีวิตแบบไหน และไม่เหมาะกับใคร" },
-  { title: "เทียบให้เห็นภาพ", text: "ใช้ตาราง กราฟ ภาพ และภาษาง่าย เพื่อให้ตัดสินใจได้เร็วขึ้น" },
-  { title: "ฟังทั้งคำชมและคำบ่น", text: "ดึงข้อดี จุดสังเกต และปัญหาที่ผู้ใช้พูดซ้ำบ่อยมาเล่าอย่างตรงไปตรงมา" },
-  { title: "ราคาต้องมีบริบท", text: "ไม่ดูแค่ถูกสุด แต่ดูความคุ้ม ร้านที่น่าเชื่อถือ เงื่อนไขส่งคืน และประกัน" },
-  { title: "Affiliate โปร่งใส", text: "ลิงก์ซื้อช่วยให้เว็บอยู่ได้ แต่คำแนะนำต้องเริ่มจากประโยชน์ของคนอ่าน" },
-  { title: "อัปเดตเมื่อข้อมูลเปลี่ยน", text: "สินค้า ราคา และรีวิวผู้ใช้เปลี่ยนได้ เราจึงออกแบบเว็บให้ปรับปรุงต่อเนื่อง" }
 ];
 
 const flagship = topAirFryerPicks[0];
@@ -202,8 +166,7 @@ const flagship = topAirFryerPicks[0];
       <h1 id="home-hero-title" class="home-brand-title">Friendsay</h1>
       <p class="home-hero-kicker">เว็บรีวิวสินค้าแบบเพื่อนช่วยเลือก ที่จริงใจกับคนอ่านก่อนจริงใจกับยอดขาย</p>
       <p class="home-hero-subhead">
-        เราทำให้การซื้อของออนไลน์ตัดสินใจง่ายขึ้นด้วยรีวิวรวม รีวิวเจาะลึก ตารางเทียบ กราฟ ภาพสินค้า
-        และข้อควรระวังจากรีวิวจริง เพื่อให้คุณรู้ว่าอะไรเหมาะกับคุณ และอะไรควรข้าม
+        รีวิวรวม รีวิวเจาะลึก ตารางเทียบ ภาพสินค้า และข้อควรระวังจากผู้ใช้จริง เพื่อให้รู้เร็วว่าอะไรเหมาะกับคุณ และอะไรควรข้าม
       </p>
       <form class="hero-search" action="/th/best/air-fryers/" method="get">
         <input name="q" type="search" placeholder="ค้นหา: หม้อทอด เครื่องทำน้ำอุ่น ของใช้ในไทย" aria-label="ค้นหาสินค้า" />
@@ -252,8 +215,7 @@ const flagship = topAirFryerPicks[0];
       <p class="eyebrow">Start with real life</p>
       <h2 id="home-persona-title" class="headline">หน้าแรกควรเริ่มจากชีวิตของคนซื้อ ไม่ใช่เริ่มจากสินค้า</h2>
       <p>
-        คนไม่ได้เข้ามาเพื่ออ่านสเปกอย่างเดียว เขาเข้ามาเพราะกำลังจะย้ายคอนโด ซื้อของให้ครอบครัว ดูแลสุขภาพ
-        หรือมาเที่ยวไทยแล้วไม่อยากซื้อผิด Friendsay จึงจัดทางเข้าแบบเข้าใจสถานการณ์จริงก่อน
+        เลือกจากสถานการณ์จริงก่อน แล้วค่อยลงไปดูสินค้า รุ่น ราคา และข้อควรระวัง
       </p>
     </div>
     <div class="home-persona-grid">
@@ -300,7 +262,7 @@ const flagship = topAirFryerPicks[0];
       <div>
         <span class="eyebrow">Flagship Review</span>
         <h2>หม้อทอดไร้น้ำมันรุ่นไหนดี 2026</h2>
-        <p>บทความตัวอย่างที่แสดงแนวทางเว็บใหม่: อ่านเร็วได้ เทียบลึกได้ มีภาพ มีตาราง มีกราฟ และมีรีวิวแยกรายรุ่นต่อยอด</p>
+        <p>หน้าแม่แบบของ Friendsay: อ่านเร็ว เทียบง่าย มีภาพ ตาราง กราฟ และรีวิวแยกรายรุ่น</p>
       </div>
       <div class="home-feature-meta">
         <span>{topAirFryerPicks.length} รุ่นเด่น</span>
@@ -326,33 +288,6 @@ const flagship = topAirFryerPicks[0];
   </div>
 </section>
 
-<section class="section home-spotlight-section" aria-labelledby="home-spotlight-title">
-  <div class="container">
-    <div class="section-heading home-section-split">
-      <div>
-        <p class="eyebrow">Featured review paths</p>
-        <h2 id="home-spotlight-title" class="headline">เริ่มอ่านได้ทั้งแบบเร็ว แบบเทียบ และแบบเจาะลึก</h2>
-      </div>
-      <p>
-        หน้าแรกควรพาคนอ่านไปถึงคำตอบเร็ว แต่ยังเปิดทางให้คนที่อยากตรวจละเอียดอ่านต่อได้ครบ
-        เหมือนมีเพื่อนที่สรุปให้ก่อน แล้ววางหลักฐานไว้ให้ดูเอง
-      </p>
-    </div>
-    <div class="home-spotlight-grid">
-      {reviewSpotlights.map((story) => (
-        <a class="home-spotlight-card" href={story.href}>
-          <img src={story.image} alt={story.alt} loading="lazy" />
-          <div>
-            <span>{story.type}</span>
-            <strong>{story.title}</strong>
-            <p>{story.text}</p>
-          </div>
-        </a>
-      ))}
-    </div>
-  </div>
-</section>
-
 <section class="section home-world-section" id="product-worlds">
   <div class="container">
     <div class="section-heading home-section-split">
@@ -361,8 +296,7 @@ const flagship = topAirFryerPicks[0];
         <h2 class="headline">รีวิวสินค้ายอดนิยมที่คนไทยค้นหาก่อนซื้อ</h2>
       </div>
       <p>
-        เป้าหมายของ Friendsay คือรีวิวทุกหมวดสินค้าที่คนไทยใช้จริง ตั้งแต่เครื่องใช้ไฟฟ้า ของใช้ในบ้าน สุขภาพ ความงาม
-        Gadget แม่และเด็ก ไปจนถึงของที่นักท่องเที่ยวควรซื้อในไทย โดยทุกหมวดต้องตอบให้ชัดว่าเหมาะกับใคร ไม่เหมาะกับใคร จุดเด่น จุดเสี่ยง และควรเช็กราคาที่ไหน
+        ครอบคลุมของที่คนไทยซื้อจริง ตั้งแต่เครื่องใช้ไฟฟ้า สุขภาพ ความงาม Gadget แม่และเด็ก ไปจนถึงของที่นักท่องเที่ยวควรซื้อในไทย
       </p>
     </div>
     <div class="home-world-grid">
@@ -386,7 +320,7 @@ const flagship = topAirFryerPicks[0];
       <p class="eyebrow">Review radar</p>
       <h2 id="home-radar-title" class="headline">หมวดที่ Friendsay จะค่อย ๆ ครอบคลุมให้ครบ</h2>
       <p>
-        เป้าหมายคือเป็นคลังรีวิวสินค้ายอดนิยมของไทยที่อ่านง่าย เชื่อถือได้ และใช้งานได้จริงก่อนกดซื้อ
+        หมวดที่จะทยอยทำเป็นรีวิวรวมและรีวิวเจาะลึกต่อไป
       </p>
     </div>
     <div class="home-radar-board">
@@ -412,51 +346,18 @@ const flagship = topAirFryerPicks[0];
       <article>
         <span>01</span>
         <h3>รีวิวรวมเพื่อ shortlist</h3>
-        <p>ช่วยตัดจากหลายสิบรุ่นให้เหลือรุ่นที่ควรดูจริง พร้อมเหตุผลตามสถานการณ์ใช้งาน</p>
+        <p>ตัดจากหลายสิบรุ่นให้เหลือรุ่นที่ควรดูจริง</p>
       </article>
       <article>
         <span>02</span>
         <h3>รีวิวเดี่ยวเพื่อความมั่นใจ</h3>
-        <p>ลงลึกข้อดี จุดสังเกต รีวิวผู้ใช้จริง ราคา และเงื่อนไขที่ทำให้รุ่นนั้นเหมาะหรือไม่เหมาะ</p>
+        <p>ลงลึกข้อดี จุดสังเกต ราคา และเสียงผู้ใช้</p>
       </article>
       <article>
         <span>03</span>
         <h3>โปร่งใสเรื่อง affiliate</h3>
-        <p>ปุ่มซื้อช่วยให้เว็บอยู่ได้ แต่บทสรุปต้องเริ่มจากประโยชน์ของคนอ่านเสมอ</p>
+        <p>ปุ่มซื้อช่วยให้เว็บอยู่ได้ แต่คำตอบต้องเริ่มจากคนอ่าน</p>
       </article>
-    </div>
-  </div>
-</section>
-
-<section class="section home-standard-section" aria-labelledby="home-standard-title">
-  <div class="container">
-    <div class="section-heading home-section-split">
-      <div>
-        <p class="eyebrow">Friendsay review system</p>
-        <h2 id="home-standard-title" class="headline">ทุกรีวิวต้องช่วยคนซื้อ ไม่ใช่แค่ช่วยให้คลิก</h2>
-      </div>
-      <p>
-        เราจะเติบโตด้วยมาตรฐานเดียวกันในทุกหมวดสินค้า: จริงใจ อ่านง่าย เห็นข้อเสีย และมีเหตุผลพอให้คนตัดสินใจด้วยตัวเอง
-      </p>
-    </div>
-    <div class="home-standard-grid">
-      {reviewStandards.map((standard, index) => (
-        <article class="home-standard-card">
-          <span>{String(index + 1).padStart(2, "0")}</span>
-          <h3>{standard.title}</h3>
-          <p>{standard.text}</p>
-        </article>
-      ))}
-    </div>
-    <div class="home-bottom-cta">
-      <div>
-        <p class="eyebrow">Next best step</p>
-        <h2>เริ่มจากบทความตัวอย่าง แล้วขยายไปทุกหมวดที่คนไทยซื้อจริง</h2>
-      </div>
-      <div class="home-bottom-actions">
-        <a class="button button-primary" href="/th/best/air-fryers/">อ่านรีวิวรวมตัวอย่าง</a>
-        <a class="button button-dark" href="/affiliate-disclosure/">ดูความโปร่งใส Affiliate</a>
-      </div>
     </div>
   </div>
 </section>
