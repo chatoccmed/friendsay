@@ -1,4 +1,8 @@
 ---
+import { legacyProducts } from "../data/legacyProducts";
+
+const legacyFeatured = legacyProducts.slice(0, 4);
+
 const categories = [
   { title: "บ้านและครัว", label: "หม้อทอด เครื่องดูดฝุ่น เครื่องกรองน้ำ", index: "01", href: "/th/best/air-fryers/" },
   { title: "Gadget", label: "หูฟัง Power bank ที่ชาร์จ", index: "02", href: "/th/best/air-fryers/" },
@@ -131,6 +135,30 @@ const categories = [
           <p class="lede">คอนเทนต์ภาษาอังกฤษสำหรับนักท่องเที่ยวที่ต้องซื้อของใช้ในไทยอย่างมั่นใจ</p>
         </div>
       </a>
+    </div>
+  </div>
+</section>
+
+<section class="section legacy-home-section">
+  <div class="container">
+    <div class="section-heading legacy-home-head">
+      <div>
+        <p class="eyebrow">Back from the archive</p>
+        <h2 class="headline">รีวิวเก่าที่เราจะนำกลับมาเขียนใหม่ให้ดีกว่าเดิม</h2>
+      </div>
+      <a class="button button-primary" href="/th/legacy-reviews/">ดูทั้งหมด 11 รีวิว</a>
+    </div>
+    <div class="legacy-home-grid">
+      {
+        legacyFeatured.map((product) => (
+          <a class="legacy-home-card" href={product.preservedPath}>
+            <img src={product.oldImageUrl} alt={`ภาพสินค้า ${product.productName}`} loading="lazy" />
+            <span>{product.category}</span>
+            <strong>{product.productName}</strong>
+            <small>{product.rewritePriority === "สูง" ? "ควรรีไรต์ก่อน" : "รอจัดคิวรีไรต์"}</small>
+          </a>
+        ))
+      }
     </div>
   </div>
 </section>

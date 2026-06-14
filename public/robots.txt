@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://friendsay.com/sitemap-index.xml
+Sitemap: https://friendsay.com/sitemap.xml
