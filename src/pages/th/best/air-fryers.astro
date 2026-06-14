@@ -1,0 +1,478 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ComparisonTable from "../../../components/ComparisonTable.astro";
+import ProductCard from "../../../components/ProductCard.astro";
+import PriceButtons from "../../../components/PriceButtons.astro";
+import { airFryers, topAirFryerPicks } from "../../../data/airFryers";
+
+const minPrice = Math.min(...airFryers.map((product) => product.price));
+const maxPrice = Math.max(...airFryers.map((product) => product.price));
+const minCapacity = Math.min(...airFryers.map((product) => product.capacity));
+const maxCapacity = Math.max(...airFryers.map((product) => product.capacity));
+
+const normalize = (value: number, min: number, max: number) => {
+  if (max === min) return 50;
+  return 12 + ((value - min) / (max - min)) * 76;
+};
+
+const palette = ["#ff6b5a", "#2ec4b6", "#3a86ff", "#ffc857"];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "หม้อทอดไร้น้ำมันรุ่นไหนดี 2026",
+  description: "ตัวอย่างหน้ารีวิวรวมแบบ Friendsay พร้อมตาราง กราฟ และรีวิวสั้นรายรุ่น",
+  inLanguage: "th",
+  dateModified: "2026-06-14",
+  author: { "@type": "Organization", name: "Friendsay" }
+};
+
+const scenarioPicks = [
+  {
+    label: "คอนโด / อยู่คนเดียว",
+    product: airFryers.find((item) => item.slug === "airchef-compact-35") ?? airFryers[0],
+    reason: "เล็กพอวางง่าย แต่ยังทำอาหารได้ยืดหยุ่นกว่ารุ่นจิ๋ว"
+  },
+  {
+    label: "ครอบครัว 3-4 คน",
+    product: airFryers.find((item) => item.slug === "airchef-family-62") ?? airFryers[1],
+    reason: "ความจุช่วยลดการแบ่งรอบ เหมาะกับมื้อเย็นจริงจัง"
+  },
+  {
+    label: "อยากได้ตัวจบ",
+    product: airFryers.find((item) => item.slug === "pana-crisp-pro-55") ?? airFryers[9],
+    reason: "จ่ายแพงขึ้นเพื่อประสบการณ์ใช้งานที่นิ่งและล้างง่ายกว่า"
+  },
+  {
+    label: "เน้นเงียบ",
+    product: airFryers.find((item) => item.slug === "mala-silent-fry-40") ?? airFryers[8],
+    reason: "เหมาะกับครัวเปิดหรือคอนโดที่เสียงพัดลมเป็นเรื่องใหญ่"
+  }
+];
+
+const evidencePatterns = [
+  {
+    title: "สิ่งที่คนซื้อพูดซ้ำ",
+    body: "ขนาดเครื่อง ความง่ายในการล้าง ความจุจริง และเสียงพัดลม มักเป็นเรื่องที่มีผลกับความพอใจหลังซื้อ มากกว่าตัวเลขสเปกเพียงอย่างเดียว"
+  },
+  {
+    title: "สิ่งที่ต้องตรวจก่อนแนะนำ",
+    body: "ราคา ณ วันที่อัปเดต ร้านที่ขายจริง ประกันสินค้า รีวิวรูปภาพจากผู้ซื้อ และปัญหาที่พบซ้ำในหลายแพลตฟอร์ม"
+  },
+  {
+    title: "สิ่งที่ Friendsay จะไม่ทำ",
+    body: "ไม่สรุปว่าสินค้าดีที่สุดเพียงเพราะคะแนนสูงหรือค่าคอมมิชชันดี ถ้าข้อเสียไม่เหมาะกับชีวิตจริงของคนอ่าน เราต้องบอกให้ชัด"
+  }
+];
+
+const compareData = airFryers.map((product) => ({
+  slug: product.slug,
+  name: product.name,
+  award: product.award,
+  score: product.score,
+  price: product.price,
+  capacity: product.capacity,
+  value: product.value,
+  easyClean: product.easyClean,
+  quiet: product.quiet,
+  peopleFit: product.capacity < 3.5 ? "1 คน" : product.capacity < 5.5 ? "1-2 คน" : "3-4 คน",
+  topPro: product.pros[0],
+  topWatch: product.watch[0],
+  bestFor: product.bestFor,
+  notFor: product.notFor
+}));
+
+const visualNotes = [
+  {
+    label: "ขนาดเครื่อง",
+    product: airFryers[0],
+    note: "ดูพื้นที่วางและความสูงใต้ตู้ครัวก่อนซื้อ"
+  },
+  {
+    label: "ตะกร้าและการล้าง",
+    product: airFryers[3],
+    note: "ซอกมุมและผิวเคลือบมีผลกับการหยิบใช้จริง"
+  },
+  {
+    label: "อาหารที่ทำบ่อย",
+    product: airFryers[6],
+    note: "เมนูจริงบอกความจุที่ต้องใช้ได้ดีกว่าสเปก"
+  },
+  {
+    label: "ภายในเครื่อง",
+    product: airFryers[5],
+    note: "พื้นที่ภายในและการไหลเวียนลมคือจุดที่ควรดู"
+  }
+];
+---
+
+<BaseLayout
+  title="หม้อทอดไร้น้ำมันรุ่นไหนดี 2026 | Friendsay"
+  description="ตัวอย่างรีวิวรวมหม้อทอดไร้น้ำมัน 10 รุ่นแบบ Friendsay มีตาราง กราฟ คะแนน ข้อดี จุดสังเกต และรีวิวสั้นรายรุ่น"
+  canonical="https://friendsay.com/th/best/air-fryers/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="roundup-hero">
+    <img class="roundup-hero-image" src="/images/friendsay-hero.png" alt="หม้อทอดไร้น้ำมันและโต๊ะเปรียบเทียบสินค้า" loading="eager" />
+    <div class="roundup-hero-shade" aria-hidden="true"></div>
+    <div class="wide-container roundup-hero-inner">
+      <div class="roundup-hero-copy">
+        <div class="badge-row">
+          <span class="badge badge-coral">Flagship buying guide</span>
+          <span class="badge badge-teal">Comparison cockpit</span>
+        </div>
+        <h1>หม้อทอดไร้น้ำมันรุ่นไหนดี 2026</h1>
+        <p>
+          เทียบ 10 รุ่นแบบอ่านแล้วเลือกได้จริง: ใครควรซื้อรุ่นไหน จุดไหนต้องระวัง ราคาเทียบความจุเป็นอย่างไร และถ้ายังไม่แน่ใจควรไปอ่านรีวิวละเอียดตัวไหนต่อ
+        </p>
+        <div class="roundup-actions">
+          <a class="button button-primary" href="#choice">ให้ Friendsay ช่วยเลือก</a>
+          <a class="button button-dark" href="#comparison">ดูตารางเทียบ 10 รุ่น</a>
+        </div>
+      </div>
+      <aside class="roundup-panel" aria-label="สรุปตัวเลือกเด่น">
+        <span>Quick shortlist</span>
+        <strong>เริ่มจาก 3 รุ่นนี้ก่อน แล้วค่อยดูข้อเสียให้ตรงกับชีวิตจริง</strong>
+        <div class="roundup-picks">
+          {topAirFryerPicks.map((product) => (
+            <a href={`#${product.slug}`}>
+              <span>{product.score.toFixed(1)}</span>
+              <strong>{product.shortName}</strong>
+              <small>{product.award}</small>
+            </a>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="roundup-signal-band">
+    <div class="wide-container roundup-signals">
+      <div>
+        <span>Reviewed format</span>
+        <strong>รีวิวรวม + รีวิวลึก</strong>
+      </div>
+      <div>
+        <span>Models compared</span>
+        <strong>{airFryers.length} รุ่นตัวอย่าง</strong>
+      </div>
+      <div>
+        <span>Best use case</span>
+        <strong>เลือกตามชีวิตจริง</strong>
+      </div>
+      <div>
+        <span>Last checked</span>
+        <strong>14 มิ.ย. 2026</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="section visual-brief-section">
+    <div class="wide-container">
+      <div class="section-heading">
+        <p class="eyebrow">Visual buying cues</p>
+        <h2 class="headline">ดูรูปก่อนอ่านสเปก จะเข้าใจเร็วขึ้นว่าควรเช็กอะไร</h2>
+      </div>
+      <div class="visual-brief-grid">
+        {visualNotes.map((item) => (
+          <a class="visual-brief-card" href={item.product.image.source} target="_blank" rel="noopener">
+            <img src={item.product.image.url} alt={item.product.image.alt} loading="eager" />
+            <div>
+              <span>{item.label}</span>
+              <strong>{item.note}</strong>
+            </div>
+          </a>
+        ))}
+      </div>
+      <p class="photo-disclaimer">
+        ภาพในหน้านี้เป็นภาพตัวอย่างสำหรับออกแบบประสบการณ์รีวิว ยังไม่ใช่ภาพของรุ่นเดโมหรือสินค้าที่ Friendsay แนะนำจริง เวอร์ชันเผยแพร่จริงควรใช้ภาพถ่ายจริงจากการทดสอบหรือภาพจากแบรนด์ที่ได้รับสิทธิ์ใช้งานครบถ้วน
+      </p>
+    </div>
+  </section>
+
+  <section class="section evidence-layer">
+    <div class="wide-container evidence-grid">
+      <div class="evidence-intro">
+        <p class="eyebrow">Evidence layer</p>
+        <h2>รีวิวที่น่าเชื่อถือไม่ได้เริ่มจากคำชม แต่เริ่มจากหลักฐาน</h2>
+        <p>
+          หน้านี้ยังใช้ข้อมูลตัวอย่างเพื่อออกแบบระบบ แต่โครงจริงของ Friendsay จะผูกทุกคำแนะนำกับรีวิวผู้ใช้ สเปก ราคา และวันที่ตรวจสอบ เพื่อให้คนอ่านรู้ว่าควรเชื่อส่วนไหนมากน้อยแค่ไหน
+        </p>
+      </div>
+      <div class="evidence-cards">
+        {evidencePatterns.map((item, index) => (
+          <article>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <strong>{item.title}</strong>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="choice">
+    <div class="container">
+      <p class="eyebrow">Choice engine</p>
+      <h2 class="headline">ตอบ 3 ข้อ แล้วให้ Friendsay ช่วยชี้รุ่นที่ควรเริ่มดู</h2>
+      <div class="choice-engine" data-choice-engine>
+        <div class="control-grid">
+          <div class="field">
+            <label for="budget">งบประมาณ</label>
+            <select id="budget" data-choice-budget>
+              <option value="low">ไม่เกิน 2,000 บาท</option>
+              <option value="mid" selected>2,000-4,000 บาท</option>
+              <option value="high">มากกว่า 4,000 บาท</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="household">จำนวนคนใช้</label>
+            <select id="household" data-choice-household>
+              <option value="solo">1 คน หรือห้องเล็ก</option>
+              <option value="couple" selected>1-2 คน</option>
+              <option value="family">3-4 คนขึ้นไป</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="priority">สิ่งที่แคร์ที่สุด</label>
+            <select id="priority" data-choice-priority>
+              <option value="value" selected>ความคุ้มค่า</option>
+              <option value="clean">ล้างง่าย</option>
+              <option value="quiet">เสียงไม่ดัง</option>
+              <option value="capacity">ความจุเยอะ</option>
+            </select>
+          </div>
+        </div>
+        <div class="choice-result" aria-live="polite">
+          <span class="badge badge-teal">คำแนะนำเบื้องต้น</span>
+          <h3 data-choice-title>Ovo Crisp 5.0L</h3>
+          <p data-choice-copy>
+            สำหรับงบกลางและการใช้ 1-2 คน รุ่นความจุประมาณ 4.5-5 ลิตรคือจุดที่สมดุลที่สุด เพราะยังไม่ใหญ่เกินไป แต่ทำอาหารได้ยืดหยุ่นกว่ารุ่นเล็ก
+          </p>
+          <a class="button button-dark" href="#comparison">ดูตารางเปรียบเทียบ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section roundup-scenarios">
+    <div class="wide-container">
+      <div class="section-heading">
+        <p class="eyebrow">Best by need</p>
+        <h2 class="headline">เลือกตามโจทย์ของคุณ</h2>
+      </div>
+      <div class="scenario-grid">
+        {scenarioPicks.map((item) => (
+          <a class="scenario-card" href={`#${item.product.slug}`}>
+            <img src={item.product.image.url} alt={item.product.image.alt} loading="lazy" />
+            <div>
+              <span>{item.label}</span>
+              <strong>{item.product.shortName}</strong>
+              <p>{item.reason}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section compare-lab-section" id="compare-lab">
+    <div class="wide-container">
+      <div class="compare-lab">
+        <div class="compare-lab-head">
+          <div>
+            <p class="eyebrow">Compare lab</p>
+            <h2>เทียบเร็ว 2-3 รุ่น</h2>
+            <p class="muted">กดรุ่นที่ลังเล แล้วดูความต่างทันที</p>
+          </div>
+          <div class="compare-counter" data-compare-counter>เลือกไว้ 0 รุ่น</div>
+        </div>
+        <div class="compare-chip-grid" aria-label="เลือกรุ่นเพื่อเปรียบเทียบ">
+          {airFryers.map((product) => (
+            <button class="compare-chip" type="button" data-compare-slug={product.slug}>
+              <img src={product.image.url} alt="" loading="lazy" />
+              <span>{product.award}</span>
+              <strong>{product.shortName}</strong>
+              <small>{product.capacity}L · {product.score.toFixed(1)}</small>
+            </button>
+          ))}
+        </div>
+        <div class="compare-output" data-compare-output>
+          <p class="muted">เลือกรุ่นจากด้านบน หรือกด “เทียบรุ่นนี้” ในการ์ดสินค้า แล้ว Friendsay จะจัดเทียบให้ตรงนี้</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wide-container">
+      <p class="eyebrow">Visual comparison</p>
+      <h2 class="headline">กราฟราคาเทียบความจุ ช่วยให้เห็นภาพเร็วกว่าการอ่านสเปกทีละบรรทัด</h2>
+      <div class="chart-card">
+        <p class="muted">
+          แกนนอนคือราคา แกนตั้งคือความจุ ขนาดจุดสะท้อนคะแนนรวม ยิ่งอยู่สูงและซ้ายยิ่งน่าสนใจสำหรับคนมองหาความจุต่อราคา
+        </p>
+        <div class="bubble-chart" role="img" aria-label="กราฟเปรียบเทียบราคาและความจุของหม้อทอดไร้น้ำมันตัวอย่าง">
+          <span class="chart-axis axis-y">ความจุสูง</span>
+          <span class="chart-axis axis-x">ราคาสูง</span>
+          {
+            airFryers.map((product, index) => (
+              <a
+                class="bubble"
+                href={`#${product.slug}`}
+                style={`--x:${normalize(product.price, minPrice, maxPrice)}%; --y:${normalize(product.capacity, minCapacity, maxCapacity)}%; --size:${34 + product.score * 3}px; --color:${palette[index % palette.length]}`}
+                aria-label={`${product.name} ราคา ${product.price} บาท ความจุ ${product.capacity} ลิตร คะแนน ${product.score}`}
+              >
+                <span>{product.shortName}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="comparison">
+    <div class="wide-container">
+      <p class="eyebrow">Comparison table</p>
+      <h2 class="headline">ตารางเปรียบเทียบ 10 รุ่น</h2>
+      <p class="lede">ตารางนี้ออกแบบให้ swipe ได้บนมือถือ และอ่านเต็มตาบน iPad/คอม</p>
+      <ComparisonTable products={airFryers} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wide-container">
+      <p class="eyebrow">Short reviews</p>
+      <h2 class="headline">รีวิวสั้นรายรุ่น แบบอ่านแล้วรู้ทันทีว่าควรไปต่อไหม</h2>
+      <div class="product-grid">
+        {airFryers.map((product) => <ProductCard product={product} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid-2">
+      <div class="soft-card">
+        <h2>วิธีที่ Friendsay จะใช้กับข้อมูลจริง</h2>
+        <p>
+          เวอร์ชันเผยแพร่จริงต้องตรวจรีวิวจากหลายแหล่ง เช่น รีวิวผู้ซื้อบน marketplace, ข้อมูลจากแบรนด์, สเปกสินค้า, ราคา ณ วันที่ตรวจสอบ และรีวิวจากผู้ใช้ระยะยาวเมื่อมีข้อมูลพอ
+        </p>
+      </div>
+      <div class="soft-card">
+        <h2>ทำไมต้องมีรีวิวละเอียดแยกรุ่น</h2>
+        <p>
+          รีวิวรวมช่วยคัดตัวเลือก แต่รีวิวรายรุ่นช่วยตอบคำถามลึก เช่น ใช้จริงยุ่งยากไหม ล้างยากตรงไหน เสียงดังแค่ไหน และเมื่อเทียบกับรุ่นใกล้เคียงควรจ่ายเพิ่มหรือไม่
+        </p>
+        <a class="button button-primary" href="/th/reviews/sample-air-fryer-pro/">ดูตัวอย่างรีวิวละเอียด</a>
+      </div>
+    </div>
+  </section>
+
+  <script id="compare-products" type="application/json" set:html={JSON.stringify(compareData)}></script>
+  <script>
+    const compareDataEl = document.getElementById("compare-products");
+    const compareProducts = compareDataEl ? JSON.parse(compareDataEl.textContent || "[]") : [];
+    const selectedCompare = new Set();
+    const compareOutput = document.querySelector("[data-compare-output]");
+    const compareCounter = document.querySelector("[data-compare-counter]");
+    const compareButtons = [...document.querySelectorAll("[data-compare-slug]")];
+
+    const formatBaht = (value) => new Intl.NumberFormat("th-TH").format(value) + " บาท";
+
+    const renderCompare = () => {
+      const selected = compareProducts.filter((product) => selectedCompare.has(product.slug));
+      if (compareCounter) {
+        compareCounter.textContent = `เลือกไว้ ${selected.length} รุ่น`;
+      }
+
+      compareButtons.forEach((button) => {
+        const slug = button.dataset.compareSlug;
+        const isSelected = selectedCompare.has(slug);
+        button.classList.toggle("is-selected", isSelected);
+        button.setAttribute("aria-pressed", String(isSelected));
+      });
+
+      if (!compareOutput) return;
+      if (selected.length === 0) {
+        compareOutput.innerHTML = '<p class="muted">เลือกรุ่นจากด้านบน หรือกด “เทียบรุ่นนี้” ในการ์ดสินค้า แล้ว Friendsay จะจัดเทียบให้ตรงนี้</p>';
+        return;
+      }
+
+      compareOutput.innerHTML = selected.map((product) => `
+        <article class="compare-result-card">
+          <div>
+            <span class="badge badge-coral">${product.award}</span>
+            <h3>${product.name}</h3>
+            <p>${product.bestFor}</p>
+          </div>
+          <div class="compare-snapshot">
+            <div><span>ราคา</span><strong>${formatBaht(product.price)}</strong></div>
+            <div><span>ความจุ</span><strong>${product.capacity}L</strong></div>
+            <div><span>เหมาะกับ</span><strong>${product.peopleFit}</strong></div>
+            <div><span>คะแนน</span><strong>${product.score.toFixed(1)}</strong></div>
+          </div>
+          <div class="compare-good-watch">
+            <p><strong>เด่น:</strong> ${product.topPro}</p>
+            <p><strong>ระวัง:</strong> ${product.topWatch}</p>
+          </div>
+          <p class="compare-warning"><strong>ไม่เหมาะถ้า:</strong> ${product.notFor}</p>
+        </article>
+      `).join("");
+    };
+
+    compareButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const slug = button.dataset.compareSlug;
+        if (!slug) return;
+        if (selectedCompare.has(slug)) {
+          selectedCompare.delete(slug);
+        } else {
+          if (selectedCompare.size >= 3) {
+            selectedCompare.delete([...selectedCompare][0]);
+          }
+          selectedCompare.add(slug);
+        }
+        renderCompare();
+      });
+    });
+
+    renderCompare();
+
+    const engine = document.querySelector("[data-choice-engine]");
+    if (engine) {
+      const budget = engine.querySelector("[data-choice-budget]");
+      const household = engine.querySelector("[data-choice-household]");
+      const priority = engine.querySelector("[data-choice-priority]");
+      const title = engine.querySelector("[data-choice-title]");
+      const copy = engine.querySelector("[data-choice-copy]");
+
+      const choices = {
+        "low-solo-value": ["Nori Lite 2.8L", "ถ้างบไม่เกิน 2,000 บาทและใช้คนเดียว รุ่นเล็กคือคำตอบที่ตรงที่สุด เพราะประหยัดพื้นที่ ล้างง่าย และไม่ทำให้จ่ายเกินความจำเป็น"],
+        "low-couple-value": ["AirChef Compact 3.5L", "สำหรับงบเริ่มต้นและใช้ 1-2 คน รุ่น 3.5 ลิตรจะสมดุลกว่ารุ่นจิ๋ว เพราะยังวางง่ายแต่ทำอาหารได้ยืดหยุ่นกว่า"],
+        "mid-couple-value": ["Ovo Crisp 5.0L", "สำหรับงบกลางและการใช้ 1-2 คน รุ่นความจุประมาณ 4.5-5 ลิตรคือจุดที่สมดุลที่สุด เพราะยังไม่ใหญ่เกินไป แต่ทำอาหารได้หลายเมนู"],
+        "mid-family-capacity": ["AirChef Family 6.2L", "ถ้าบ้านมี 3-4 คน ความจุ 6 ลิตรขึ้นไปช่วยลดการแบ่งรอบและทำให้มื้อเย็นง่ายขึ้นอย่างเห็นได้ชัด"],
+        "high-family-capacity": ["Terra Dual Zone 8.0L", "ถ้ามีงบและทำอาหารหลายเมนูบ่อย รุ่นสองช่องเหมาะมาก เพราะทำอาหารพร้อมกันได้และลดเวลารอ"],
+        "high-couple-clean": ["Pana Crisp Pro 5.5L", "ถ้าเน้นล้างง่ายและประสบการณ์พรีเมี่ยม รุ่นกลุ่มบนคุ้มกับคนที่ใช้บ่อยและอยากลดความหงุดหงิดเล็กๆ น้อยๆ"],
+        "mid-couple-quiet": ["Mala Silent Fry 4.0L", "ถ้าอยู่คอนโดหรือครัวเชื่อมกับพื้นที่นั่งเล่น เสียงเป็นเรื่องสำคัญกว่าที่คิด รุ่นที่เน้นเงียบจะใช้งานสบายกว่าในชีวิตจริง"]
+      };
+
+      const update = () => {
+        const key = `${budget.value}-${household.value}-${priority.value}`;
+        const fallbackKey = priority.value === "capacity" && household.value === "family"
+          ? `${budget.value}-family-capacity`
+          : priority.value === "quiet"
+            ? "mid-couple-quiet"
+            : priority.value === "clean" && budget.value === "high"
+              ? "high-couple-clean"
+              : `${budget.value}-${household.value}-value`;
+        const [nextTitle, nextCopy] = choices[key] || choices[fallbackKey] || choices["mid-couple-value"];
+        title.textContent = nextTitle;
+        copy.textContent = nextCopy;
+      };
+
+      [budget, household, priority].forEach((control) => control.addEventListener("change", update));
+    }
+  </script>
+</BaseLayout>

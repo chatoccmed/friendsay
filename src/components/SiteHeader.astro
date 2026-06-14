@@ -1,0 +1,24 @@
+---
+const navItems = [
+  { href: "/th/best/air-fryers/", label: "รีวิวรวม" },
+  { href: "/th/reviews/sample-air-fryer-pro/", label: "รีวิวละเอียด" },
+  { href: "/en/tourist/", label: "For Tourists" },
+  { href: "/editorial-policy/", label: "มาตรฐานรีวิว" }
+];
+---
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="/th/" aria-label="Friendsay home">
+      <span class="brand-mark">F</span>
+      <span>Friendsay</span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <div class="nav-actions">
+      <a class="pill-link" href="/affiliate-disclosure/">Disclosure</a>
+      <a class="button button-primary" href="/th/best/air-fryers/">เริ่มเลือกของ</a>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,9 @@
+{
+  "name": "Friendsay",
+  "short_name": "Friendsay",
+  "description": "รีวิวสินค้าแบบเพื่อนช่วยเลือก ด้วยข้อมูลที่ทำการบ้านมาแล้ว",
+  "start_url": "/th/",
+  "display": "standalone",
+  "background_color": "#fffdf8",
+  "theme_color": "#ff6b5a"
+}

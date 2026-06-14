@@ -1,0 +1,26 @@
+---
+type Score = {
+  label: string;
+  value: number;
+};
+
+type Props = {
+  scores: Score[];
+};
+
+const { scores } = Astro.props;
+---
+
+<div class="score-bars">
+  {
+    scores.map((score) => (
+      <div class="score-bar">
+        <strong>{score.label}</strong>
+        <span class="bar-track" aria-hidden="true">
+          <span class="bar-fill" style={`width: ${Math.round(score.value * 10)}%`} />
+        </span>
+        <span>{score.value.toFixed(1)}</span>
+      </div>
+    ))
+  }
+</div>

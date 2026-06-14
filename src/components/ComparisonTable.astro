@@ -1,0 +1,44 @@
+---
+import type { AirFryerProduct } from "../data/airFryers";
+
+type Props = {
+  products: AirFryerProduct[];
+};
+
+const { products } = Astro.props;
+---
+
+<div class="compare-shell">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>รุ่น</th>
+        <th>เหมาะกับ</th>
+        <th>ราคาโดยประมาณ</th>
+        <th>ความจุ</th>
+        <th>คะแนน</th>
+        <th>จุดเด่น</th>
+        <th>จุดสังเกต</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        products.map((product) => (
+          <tr>
+            <td>
+              <strong>{product.name}</strong>
+              <br />
+              <span class="badge badge-teal">{product.award}</span>
+            </td>
+            <td>{product.bestFor}</td>
+            <td>{product.price.toLocaleString("th-TH")} บาท</td>
+            <td>{product.capacity} ลิตร</td>
+            <td><span class="score-pill">{product.score.toFixed(1)}</span></td>
+            <td>{product.pros.join(", ")}</td>
+            <td>{product.watch.join(", ")}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

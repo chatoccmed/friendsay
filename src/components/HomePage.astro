@@ -1,0 +1,162 @@
+---
+const categories = [
+  { title: "บ้านและครัว", label: "หม้อทอด เครื่องดูดฝุ่น เครื่องกรองน้ำ", index: "01", href: "/th/best/air-fryers/" },
+  { title: "Gadget", label: "หูฟัง Power bank ที่ชาร์จ", index: "02", href: "/th/best/air-fryers/" },
+  { title: "Work setup", label: "เก้าอี้ โต๊ะ โคมไฟ จอเสริม", index: "03", href: "/th/best/air-fryers/" },
+  { title: "Beauty", label: "กันแดด ไดร์เป่าผม ของใช้ส่วนตัว", index: "04", href: "/th/best/air-fryers/" },
+  { title: "Travel Thailand", label: "ของที่ควรมีเมื่อมาเที่ยวไทย", index: "05", href: "/en/tourist/" }
+];
+---
+
+<section class="home-hero" aria-labelledby="home-hero-title">
+  <img class="home-hero-image" src="/images/friendsay-hero.png" alt="โต๊ะรีวิวสินค้าพรีเมี่ยมพร้อมของใช้หลายหมวดสำหรับเปรียบเทียบ" loading="eager" />
+  <div class="home-hero-shade" aria-hidden="true"></div>
+  <div class="wide-container home-hero-inner">
+    <div class="home-hero-copy">
+      <div class="promise-row" aria-label="Friendsay review promises">
+        <span>รีวิวมีข้อเสีย</span>
+        <span>เทียบให้เห็นภาพ</span>
+        <span>อัปเดตราคา</span>
+      </div>
+      <h1 id="home-hero-title" class="home-brand-title">Friendsay</h1>
+      <p class="home-hero-kicker">รีวิวสินค้าแบบเพื่อนช่วยเลือก ที่ทำการบ้านหนักกว่าคนขาย</p>
+      <p class="home-hero-subhead">
+        อ่านสั้นก็เลือกได้ อ่านยาวก็มั่นใจขึ้น เราเทียบให้เห็นทั้งราคา ความคุ้มค่า ข้อเสียจากรีวิวจริง และช่องทางซื้อที่ควรเช็กก่อนจ่ายเงิน
+      </p>
+      <form class="hero-search" action="/th/best/air-fryers/" method="get">
+        <input name="q" type="search" placeholder="ค้นหา: หม้อทอด, power bank, eSIM" aria-label="ค้นหาสินค้า" />
+        <button class="button button-primary" type="submit">ค้นหารีวิว</button>
+      </form>
+      <div class="home-hero-actions">
+        <a class="button button-dark" href="/th/best/air-fryers/">ดูรีวิวรวมตัวอย่าง</a>
+        <a class="hero-text-link" href="/editorial-policy/">อ่านมาตรฐานรีวิว</a>
+      </div>
+    </div>
+    <aside class="hero-brief" aria-label="ตัวอย่างสรุปรีวิว">
+      <span class="badge badge-coral">Buyer’s brief</span>
+      <strong>ถ้าเลือกไม่ถูก ให้เริ่มจาก “เหมาะกับใคร” ไม่ใช่เริ่มจาก “คะแนนสูงสุด”</strong>
+      <div class="hero-brief-grid">
+        <div>
+          <span>Review depth</span>
+          <strong>2 ชั้น</strong>
+        </div>
+        <div>
+          <span>Roundup</span>
+          <strong>10 รุ่น</strong>
+        </div>
+        <div>
+          <span>Verdict</span>
+          <strong>มีข้อเสีย</strong>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="section home-decision-band">
+  <div class="wide-container home-decision-grid">
+    <div class="decision-intro">
+      <p class="eyebrow">Decision-first reviews</p>
+      <h2>หน้าเว็บต้องตอบคำถามก่อนขายของ</h2>
+    </div>
+    <div class="decision-points" aria-label="Friendsay trust principles">
+      <div>
+        <span>01</span>
+        <strong>ข้อเสียต้องเห็นก่อนกดซื้อ</strong>
+      </div>
+      <div>
+        <span>02</span>
+        <strong>รีวิวรวมต้องพาไปรีวิวลึกได้</strong>
+      </div>
+      <div>
+        <span>03</span>
+        <strong>Affiliate ต้องไม่เปลี่ยนคำแนะนำ</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Shop by real-life context</p>
+      <h2 class="headline">เริ่มจากสถานการณ์จริง ไม่ใช่เริ่มจากสเปกที่อ่านแล้วงง</h2>
+    </div>
+    <div class="category-grid">
+      {
+        categories.map((category) => (
+          <a class="category-tile" href={category.href}>
+            <span class="tile-index">{category.index}</span>
+            <span>
+              <strong>{category.title}</strong>
+              <br />
+              <span class="muted">{category.label}</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container feature-grid">
+    <a class="article-card featured" href="/th/best/air-fryers/">
+      <div>
+        <div class="badge-row">
+          <span class="badge badge-coral">Flagship guide</span>
+          <span class="badge badge-teal">มีกราฟ + ตาราง</span>
+        </div>
+        <h2>หม้อทอดไร้น้ำมันรุ่นไหนดี 2026: เทียบ 10 รุ่นให้เลือกง่ายขึ้น</h2>
+        <p class="lede">ตัวอย่างหน้ารีวิวรวมแบบ Friendsay: สรุปเร็ว ตารางเปรียบเทียบ กราฟราคาเทียบความจุ และรีวิวสั้นรายรุ่น</p>
+      </div>
+      <div class="article-preview">
+        <span>10 รุ่น</span>
+        <span>กราฟราคา</span>
+        <span>รีวิวสั้น</span>
+      </div>
+    </a>
+    <div class="summary-stack">
+      <a class="article-card" href="/th/reviews/sample-air-fryer-pro/">
+        <div>
+          <span class="badge badge-blue">Deep review</span>
+          <h2>รีวิวละเอียดรายรุ่น</h2>
+          <p class="lede">โครงบทความ 1,500-2,500 คำ พร้อมข้อดี จุดสังเกต และรีวิวจริงที่พบซ้ำ</p>
+        </div>
+      </a>
+      <a class="article-card" href="/en/tourist/">
+        <div>
+          <span class="badge badge-teal">Tourist hub</span>
+          <h2>Shopping guides for tourists in Thailand</h2>
+          <p class="lede">คอนเทนต์ภาษาอังกฤษสำหรับนักท่องเที่ยวที่ต้องซื้อของใช้ในไทยอย่างมั่นใจ</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section band">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Review architecture</p>
+      <h2 class="headline">คอนเทนต์ทุกชิ้นต้องช่วยให้คนซื้อของฉลาดขึ้น</h2>
+    </div>
+    <div class="principle-grid">
+      <div class="principle-item">
+        <span>01</span>
+        <h3>รีวิวรวมช่วยเลือกเร็ว</h3>
+        <p>บทความแบบ “รุ่นไหนดี” จะมีรีวิวสั้นรายรุ่นประมาณ 200 คำ พร้อมตารางและกราฟเพื่อให้เห็นความต่างทันที</p>
+      </div>
+      <div class="principle-item">
+        <span>02</span>
+        <h3>รีวิวรายรุ่นช่วยตัดสินใจลึก</h3>
+        <p>รีวิวละเอียดจะแยกไปอีกหน้า อธิบายประสบการณ์ใช้งาน จุดเด่น จุดสังเกต และคำถามที่คนมักสงสัย</p>
+      </div>
+      <div class="principle-item">
+        <span>03</span>
+        <h3>Affiliate ที่ไม่ทำลายความเชื่อใจ</h3>
+        <p>ปุ่มซื้อช่วยเช็กราคา แต่บทสรุปต้องขึ้นกับประโยชน์ของคนอ่าน ไม่ใช่ค่าคอมมิชชันของแพลตฟอร์ม</p>
+      </div>
+    </div>
+  </div>
+</section>

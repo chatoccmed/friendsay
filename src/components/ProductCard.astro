@@ -1,0 +1,72 @@
+---
+import type { AirFryerProduct } from "../data/airFryers";
+import PriceButtons from "./PriceButtons.astro";
+
+type Props = {
+  product: AirFryerProduct;
+};
+
+const { product } = Astro.props;
+const peopleFit = product.capacity < 3.5 ? "1 คน" : product.capacity < 5.5 ? "1-2 คน" : "3-4 คน";
+---
+
+<article class="product-card" id={product.slug}>
+  <a class="product-photo" href={product.image.source} target="_blank" rel="noopener">
+    <img src={product.image.url} alt={product.image.alt} loading="lazy" />
+    <span>ภาพตัวอย่าง</span>
+  </a>
+  <div class="product-card-head">
+    <div>
+      <div class="badge-row">
+        <span class="badge badge-coral">{product.award}</span>
+        <span class="badge badge-blue">{product.reviewType}</span>
+      </div>
+      <h3>{product.name}</h3>
+      <p class="muted">{product.bestFor}</p>
+    </div>
+    <div class="product-score">
+      <span>{product.score.toFixed(1)}</span>
+      <small>/10</small>
+    </div>
+  </div>
+  <div class="buyer-snapshot" aria-label="สรุปก่อนซื้อ">
+    <div>
+      <span>ราคา</span>
+      <strong>{product.price.toLocaleString("th-TH")} บาท</strong>
+    </div>
+    <div>
+      <span>ความจุ</span>
+      <strong>{product.capacity}L</strong>
+    </div>
+    <div>
+      <span>เหมาะกับ</span>
+      <strong>{peopleFit}</strong>
+    </div>
+    <div class="watch">
+      <span>ระวัง</span>
+      <strong>{product.watch[0]}</strong>
+    </div>
+  </div>
+  <div class="product-mini-scores" aria-label="คะแนนย่อย">
+    <span>คุ้มค่า {product.value.toFixed(1)}</span>
+    <span>ล้างง่าย {product.easyClean.toFixed(1)}</span>
+    <span>เสียง {product.quiet.toFixed(1)}</span>
+  </div>
+  <p class="product-review-preview">{product.reviewShort}</p>
+  <div class="not-for-strip">
+    <strong>ไม่เหมาะถ้า</strong>
+    <span>{product.notFor}</span>
+  </div>
+  <PriceButtons links={product.links} />
+  <div class="product-actions">
+    <button
+      class="button compare-toggle"
+      type="button"
+      data-compare-slug={product.slug}
+      data-compare-name={product.name}
+    >
+      เทียบรุ่นนี้
+    </button>
+    <a class="button" href="/th/reviews/sample-air-fryer-pro/">อ่านรีวิวละเอียด</a>
+  </div>
+</article>
