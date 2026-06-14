@@ -1,0 +1,192 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PriceButtons from "../../../components/PriceButtons.astro";
+import { airConditioners, topAirConditionerPicks } from "../../../data/airConditioners";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "แอร์ติดผนังรุ่นไหนดีใน Shopee 2026",
+  description: "หน้ารวบรวมข้อมูลแอร์ติดผนังจาก Shopee ปี 2026 โดยเริ่มจากรุ่นที่มีสัญญาณรีวิวผู้ซื้อจริงและข้อมูลเพียงพอสำหรับรีวิวละเอียด",
+  inLanguage: "th",
+  dateModified: "2026-06-15",
+  author: { "@type": "Organization", name: "Friendsay" },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: airConditioners.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: product.name,
+      url: `https://friendsay.com/th/best/air-conditioners/#${product.slug}`
+    }))
+  }
+};
+---
+
+<BaseLayout
+  title="แอร์ติดผนังรุ่นไหนดีใน Shopee 2026 | Friendsay"
+  description="เริ่มรวบรวมแอร์ติดผนังยอดนิยมใน Shopee ปี 2026 แบบโปร่งใส ดูคะแนน รีวิวจริง BTU ราคา เงื่อนไขติดตั้ง และลิงก์เช็กราคา Shopee Lazada TikTok"
+  canonical="https://friendsay.com/th/best/air-conditioners/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="roundup-hero air-roundup-hero">
+    <img class="roundup-hero-image" src="/images/air-conditioners/wall-ac-condo-hero.png" alt="แอร์ติดผนังในคอนโดสว่างสบาย" loading="eager" />
+    <div class="roundup-hero-shade" aria-hidden="true"></div>
+    <div class="wide-container roundup-hero-inner">
+      <div class="roundup-hero-copy">
+        <div class="badge-row">
+          <span class="badge badge-coral">Shopee 2026</span>
+          <span class="badge badge-teal">Research in progress</span>
+        </div>
+        <h1>แอร์ติดผนังรุ่นไหนดีใน Shopee 2026</h1>
+        <p>
+          เริ่มจากรุ่นที่มีรีวิวจริงมากพอให้ตรวจ pattern ได้ แล้วค่อยขยายเป็นคลังรีวิวแอร์ทุกรุ่น:
+          ดู BTU ให้ตรงห้อง เช็กติดตั้งให้ชัด และไม่เติมตัวเลขยอดขายถ้ายังไม่เห็นจริง
+        </p>
+        <div class="roundup-actions">
+          <a class="button button-primary" href="#shortlist">ดูรุ่นที่ผ่านสัญญาณรีวิว</a>
+          <a class="button button-dark" href="/th/reviews/candy-vpct-vpgt-air-conditioner/">อ่านรีวิวตัวอย่าง</a>
+        </div>
+      </div>
+
+      <aside class="roundup-panel" aria-label="รุ่นแนะนำรอบแรก">
+        <span>Round 1 shortlist</span>
+        <strong>ตอนนี้ยังเป็นรอบเก็บข้อมูล ไม่ใช่อันดับสุดท้าย</strong>
+        <div class="roundup-picks">
+          {topAirConditionerPicks.map((product) => (
+            <a href={`#${product.slug}`}>
+              <span>{product.score.toFixed(1)}</span>
+              <strong>{product.shortName}</strong>
+              <small>{product.statusLabel}</small>
+            </a>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="roundup-signal-band">
+    <div class="wide-container roundup-signals">
+      <div>
+        <span>รอบนี้เก็บแล้ว</span>
+        <strong>{airConditioners.length} รุ่น</strong>
+      </div>
+      <div>
+        <span>สถานะหลัก</span>
+        <strong>review_signal_pass</strong>
+      </div>
+      <div>
+        <span>ตัวเลขยอดขาย</span>
+        <strong>ยังไม่ใช้ถ้าไม่เห็นจริง</strong>
+      </div>
+      <div>
+        <span>อัปเดต</span>
+        <strong>15 มิ.ย. 2026</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="section air-system-section">
+    <div class="wide-container">
+      <div class="section-heading home-section-split">
+        <div>
+          <p class="eyebrow">How we choose</p>
+          <h2 class="headline">ระบบนี้ออกแบบมาเพื่อทำรีวิวแอร์จำนวนมากโดยยังน่าเชื่อถือ</h2>
+        </div>
+        <p>
+          หมวดแอร์จะไม่ใช้วิธีดูดาวรวมแล้วจัดอันดับทันที เพราะแอร์มีความเสี่ยงเรื่อง BTU, ติดตั้ง, ค่าอุปกรณ์เพิ่ม,
+          ประกัน และศูนย์บริการ เราจึงแยกสถานะข้อมูลให้ชัดก่อนเขียนรีวิวจริง
+        </p>
+      </div>
+      <div class="source-grid air-source-grid">
+        <article>
+          <span>01</span>
+          <h3>หา candidate จาก Shopee</h3>
+          <p>เลือกเฉพาะรุ่นที่มีรีวิวมากกว่า 5 รีวิว และถ้าเห็นยอดขายต้องมากกว่า 10 เครื่องขึ้นไป</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>ถ้ายอดขายไม่โชว์</h3>
+          <p>ใช้สถานะ review_signal_pass เมื่อคะแนน คอมเมนต์ และรูปรีวิวมากพอ แต่จะไม่อ้างยอดขาย</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>ดูงานติดตั้ง</h3>
+          <p>แยกคะแนนเรื่องคิวช่าง ค่าอุปกรณ์เพิ่ม คอนโด บ้านเดี่ยว และความเรียบร้อยหลังติดตั้ง</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>ค่อยทำรีวิว 2,000 คำ</h3>
+          <p>รีวิวเดี่ยวต้องตอบว่าเหมาะกับใคร ไม่เหมาะกับใคร และมีเช็กลิสต์ก่อนกดซื้อ</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="shortlist">
+    <div class="wide-container">
+      <p class="eyebrow">Verified review signals</p>
+      <h2 class="headline">รุ่นที่ผ่านสัญญาณรีวิวรอบแรก</h2>
+      <div class="air-product-grid">
+        {airConditioners.map((product) => (
+          <article class="product-card air-product-card" id={product.slug}>
+            <a class="product-photo" href={product.sourceUrl} target="_blank" rel="noopener">
+              <img src={product.image.url} alt={product.image.alt} loading="lazy" />
+              <span>{product.image.note}</span>
+            </a>
+            <div class="product-card-head">
+              <div>
+                <div class="badge-row">
+                  <span class="badge badge-coral">{product.statusLabel}</span>
+                  <span class="badge badge-blue">{product.rating.toFixed(1)}/5 Shopee</span>
+                </div>
+                <h3>{product.name}</h3>
+                <p class="muted">{product.bestFor}</p>
+              </div>
+              <div class="product-score">
+                <span>{product.score.toFixed(1)}</span>
+                <small>/10</small>
+              </div>
+            </div>
+            <div class="buyer-snapshot" aria-label="สรุปข้อมูลก่อนซื้อ">
+              <div>
+                <span>ราคา</span>
+                <strong>{product.priceLabel}</strong>
+              </div>
+              <div>
+                <span>BTU</span>
+                <strong>{product.btuOptions.join(" / ")}</strong>
+              </div>
+              <div>
+                <span>รีวิว</span>
+                <strong>{product.ratingsCount.toLocaleString("th-TH")}+ คะแนน</strong>
+              </div>
+              <div class="watch">
+                <span>ต้องระวัง</span>
+                <strong>{product.watch[0]}</strong>
+              </div>
+            </div>
+            <div class="product-mini-scores">
+              <span>ความนิยม {product.popularity.toFixed(1)}</span>
+              <span>คุ้มค่า {product.value.toFixed(1)}</span>
+              <span>ติดตั้ง {product.installRisk.toFixed(1)}</span>
+            </div>
+            <p class="product-review-preview">
+              {product.pros.join(" / ")} แต่ควรตรวจซ้ำเรื่อง {product.watch.slice(0, 2).join(" และ ")}
+            </p>
+            <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
+            <div class="product-actions">
+              {product.slug === "candy-vpct-vpgt-series" ? (
+                <a class="button button-primary" href="/th/reviews/candy-vpct-vpgt-air-conditioner/">อ่านรีวิวละเอียด</a>
+              ) : (
+                <a class="button" href={product.sourceUrl} target="_blank" rel="noopener">ดูแหล่งข้อมูล Shopee</a>
+              )}
+              <a class="button" href={product.sourceUrl} target="_blank" rel="noopener">เปิด Shopee</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

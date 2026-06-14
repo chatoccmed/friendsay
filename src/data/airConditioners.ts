@@ -1,0 +1,252 @@
+import type { StoreLinks } from "./airFryers";
+
+const searchLinks = (query: string, shopeeProductUrl?: string): StoreLinks => {
+  const encoded = encodeURIComponent(query);
+  const tiktokQuery = encodeURIComponent(`${query} TikTok Shop`);
+
+  return {
+    shopee: shopeeProductUrl ?? `https://shopee.co.th/search?keyword=${encoded}`,
+    lazada: `https://www.lazada.co.th/catalog/?q=${encoded}`,
+    tiktok: `https://www.tiktok.com/search?q=${tiktokQuery}`
+  };
+};
+
+export type AirConditionerProduct = {
+  slug: string;
+  name: string;
+  shortName: string;
+  brand: string;
+  store: string;
+  status: "review_signal_pass" | "candidate" | "needs_manual_check";
+  statusLabel: string;
+  sourceUrl: string;
+  image: {
+    url: string;
+    alt: string;
+    source: string;
+    note: string;
+  };
+  priceLabel: string;
+  btuOptions: string[];
+  rating: number;
+  ratingsCount: number;
+  commentsCount: number;
+  mediaCount: number;
+  favoritesLabel: string;
+  score: number;
+  popularity: number;
+  buyerConfidence: number;
+  value: number;
+  roomFit: number;
+  energyComfort: number;
+  installRisk: number;
+  warrantySafety: number;
+  complaintRisk: number;
+  bestFor: string;
+  notFor: string;
+  pros: string[];
+  watch: string[];
+  reviewSignals: string[];
+  installNotes: string[];
+  warrantyNotes: string[];
+  sourceNotes: string[];
+  links: StoreLinks;
+  updated: string;
+};
+
+export const airConditioners: AirConditionerProduct[] = [
+  {
+    slug: "candy-vpct-vpgt-series",
+    name: "CANDY VPCT/VPGT Series",
+    shortName: "CANDY VPCT/VPGT",
+    brand: "CANDY / Haier official shop",
+    store: "haier.officialshop",
+    status: "review_signal_pass",
+    statusLabel: "ผ่านสัญญาณรีวิวสูงมาก",
+    sourceUrl: "https://shopee.co.th/product/184920733/26853787935",
+    image: {
+      url: "/images/air-conditioners/wall-ac-condo-hero.png",
+      alt: "ภาพประกอบแอร์ติดผนังในคอนโดสว่างสบาย",
+      source: "/images/air-conditioners/wall-ac-condo-hero.png",
+      note: "ภาพประกอบการเลือกแอร์ติดผนัง ไม่ใช่ภาพสินค้าจริงจากร้าน"
+    },
+    priceLabel: "พบราคาประมาณ 7,995 บาทหลังคูปอง ณ วันที่เก็บข้อมูล",
+    btuOptions: ["9,000 BTU", "12,000 BTU", "18,000 BTU", "23,200 BTU"],
+    rating: 4.9,
+    ratingsCount: 10400,
+    commentsCount: 2200,
+    mediaCount: 2100,
+    favoritesLabel: "10.3k",
+    score: 8.8,
+    popularity: 9.6,
+    buyerConfidence: 9.0,
+    value: 9.0,
+    roomFit: 8.7,
+    energyComfort: 8.5,
+    installRisk: 7.6,
+    warrantySafety: 8.0,
+    complaintRisk: 7.8,
+    bestFor:
+      "คนที่อยากได้แอร์อินเวอร์เตอร์ราคายังจับต้องได้ มีตัวเลือก BTU หลายขนาด และต้องการเริ่มจากรุ่นที่มีรีวิวผู้ซื้อจริงจำนวนมากบน Shopee",
+    notFor:
+      "คนที่ต้องการซื้อแบบรวมติดตั้งทันทีโดยไม่เช็กวันนัดและค่าอุปกรณ์เพิ่ม เพราะรีวิวจริงมีสัญญาณเรื่องงานติดตั้งที่ควรตรวจให้ชัดก่อนจ่ายเงิน",
+    pros: ["รีวิวและรูปจากผู้ซื้อเยอะมาก", "มี BTU ให้เลือกหลายขนาด", "ราคาเริ่มต้นน่าสนใจ", "มีตัวเลือกบริการติดตั้งผ่าน Q-CHANG"],
+    watch: ["ยอดขายจริงไม่ปรากฏบนหน้าที่เก็บข้อมูล", "ต้องเช็กว่ารุ่นย่อย VPCT หรือ VPGT", "ค่าอุปกรณ์ติดตั้งเพิ่มอาจเกิดขึ้น", "สเปกบางช่องบน Shopee ต้องยืนยันซ้ำกับแบรนด์"],
+    reviewSignals: [
+      "รีวิวจำนวนมากพูดถึงความเย็นเร็วและความคุ้มค่า",
+      "มีรีวิวรูป/วิดีโอจำนวนมากพอให้ตรวจงานติดตั้งจริง",
+      "มีเสียงชมเรื่องความเงียบและดีไซน์",
+      "มีรีวิวที่เตือนเรื่องคิวนัดติดตั้ง จึงไม่ควรมองแค่ราคาเครื่อง"
+    ],
+    installNotes: [
+      "หน้าสินค้ามีตัวเลือก Add-on Installation Service/Q-CHANG",
+      "มีโอกาสมีค่าอุปกรณ์เพิ่ม เช่น รางครอบท่อ ขาแขวน สายไฟ หรือชิ้นส่วนเกินมาตรฐาน",
+      "ควรนัดวันติดตั้งและยืนยันพื้นที่ก่อนกดซื้อ โดยเฉพาะคอนโดที่ต้องแจ้งนิติบุคคล"
+    ],
+    warrantyNotes: [
+      "สเปก Shopee ระบุระยะประกัน 12 เดือน",
+      "รายละเอียดหน้าสินค้าระบุประกันตัวเครื่อง 1 ปี และคอมเพรสเซอร์ 5 ปี",
+      "ควรเก็บใบเสร็จ เลข serial และเงื่อนไขร้านก่อนติดตั้ง"
+    ],
+    sourceNotes: [
+      "เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026",
+      "ยอดขายไม่ปรากฏชัดบนหน้าที่เข้าถึง จึงจัดเป็น review_signal_pass ไม่ใช่ verified_sold",
+      "ข้อมูลราคาและคูปองเปลี่ยนได้ ควรกดเช็กหน้าร้านก่อนซื้อทุกครั้ง"
+    ],
+    links: searchLinks("CANDY VPCT VPGT แอร์อินเวอร์เตอร์", "https://shopee.co.th/product/184920733/26853787935"),
+    updated: "2026-06-15"
+  },
+  {
+    slug: "tcl-savein-ai-series",
+    name: "TCL SaveIN AI Series",
+    shortName: "TCL SaveIN AI",
+    brand: "TCL",
+    store: "TCL Authorized Store",
+    status: "review_signal_pass",
+    statusLabel: "ผ่านสัญญาณรีวิวสูงมาก",
+    sourceUrl: "https://shopee.co.th/product/1025131800/23777230236",
+    image: {
+      url: "/images/air-conditioners/wall-ac-condo-hero.png",
+      alt: "ภาพประกอบแอร์ติดผนังสำหรับห้องคอนโด",
+      source: "/images/air-conditioners/wall-ac-condo-hero.png",
+      note: "ภาพประกอบการเลือกแอร์ติดผนัง ไม่ใช่ภาพสินค้าจริงจากร้าน"
+    },
+    priceLabel: "พบราคาประมาณ 8,590 บาทหลังคูปอง ณ วันที่เก็บข้อมูล",
+    btuOptions: ["9,200 BTU", "12,000 BTU", "18,100 BTU", "24,200 BTU"],
+    rating: 4.9,
+    ratingsCount: 9200,
+    commentsCount: 1600,
+    mediaCount: 1500,
+    favoritesLabel: "12.8k",
+    score: 8.7,
+    popularity: 9.4,
+    buyerConfidence: 8.8,
+    value: 8.6,
+    roomFit: 8.9,
+    energyComfort: 8.8,
+    installRisk: 7.7,
+    warrantySafety: 8.2,
+    complaintRisk: 7.6,
+    bestFor: "คนที่อยากได้แอร์ Full DC Inverter จากแบรนด์ที่มีตัวเลือก BTU กว้าง และสนใจฟีเจอร์ประหยัดพลังงาน/ทำความสะอาดตัวเอง",
+    notFor: "คนที่อยากได้ข้อมูลสเปกแบบไม่ต้องเทียบ เพราะหน้าสินค้ามีตัวเลือก BTU หลายขนาดและต้องเช็กให้ตรงห้อง",
+    pros: ["รีวิวเยอะ", "BTU กว้างถึง 24,200", "ฟีเจอร์ AI/ประหยัดไฟน่าสนใจ", "ร้านตอบเร็วมาก"],
+    watch: ["ต้องยืนยันค่า SEER ของแต่ละ BTU", "ต้องเช็กเงื่อนไขลงทะเบียนประกัน", "ติดตั้งผ่าน Q-CHANG ต้องดูคิว"],
+    reviewSignals: ["ผู้ซื้อพูดถึงความเย็นเร็ว", "หลายรีวิวชมแพ็กกิ้งและงานติดตั้ง", "มีสัญญาณความพอใจเรื่องเสียงและความทน"],
+    installNotes: ["มี Add-on Installation Service/Q-CHANG", "ควรเช็กวันนัดและค่าอุปกรณ์เพิ่ม", "คอนโดควรยืนยันจุดเจาะและท่อน้ำทิ้งก่อน"],
+    warrantyNotes: ["หน้าสินค้าระบุคอมเพรสเซอร์ 5 ปี/อะไหล่ 1 ปี", "ควรลงทะเบียนกับ TCL ตามเงื่อนไข"],
+    sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จัดเป็น review_signal_pass"],
+    links: searchLinks("TCL SaveIN AI Series แอร์ Full DC Inverter", "https://shopee.co.th/product/1025131800/23777230236"),
+    updated: "2026-06-15"
+  },
+  {
+    slug: "xiaomi-mijia-air-inverter-eco",
+    name: "Xiaomi Mijia Air Inverter Eco",
+    shortName: "Xiaomi Mijia Eco",
+    brand: "Mijia / Xiaomi",
+    store: "XIAOMI OFFICIAL STORE",
+    status: "review_signal_pass",
+    statusLabel: "ผ่านสัญญาณรีวิว",
+    sourceUrl: "https://shopee.co.th/product/389528981/49105546219",
+    image: {
+      url: "/images/air-conditioners/wall-ac-condo-hero.png",
+      alt: "ภาพประกอบแอร์ติดผนังในห้องสมัยใหม่",
+      source: "/images/air-conditioners/wall-ac-condo-hero.png",
+      note: "ภาพประกอบการเลือกแอร์ติดผนัง ไม่ใช่ภาพสินค้าจริงจากร้าน"
+    },
+    priceLabel: "พบราคาประมาณ 7,924 บาท ณ วันที่เก็บข้อมูล",
+    btuOptions: ["9,000 BTU", "12,000 BTU", "18,000 BTU"],
+    rating: 4.9,
+    ratingsCount: 4300,
+    commentsCount: 942,
+    mediaCount: 927,
+    favoritesLabel: "9.1k",
+    score: 8.5,
+    popularity: 8.6,
+    buyerConfidence: 8.6,
+    value: 8.8,
+    roomFit: 8.5,
+    energyComfort: 8.8,
+    installRisk: 7.2,
+    warrantySafety: 8.0,
+    complaintRisk: 7.5,
+    bestFor: "คนที่ใช้ ecosystem Xiaomi และอยากได้แอร์ที่ควบคุมผ่านแอปได้",
+    notFor: "คนที่ไม่อยากยุ่งกับแอปหรืออยากได้แบรนด์แอร์ดั้งเดิมที่ศูนย์บริการคุ้นพื้นที่มากกว่า",
+    pros: ["มีแอป Xiaomi Home", "รีวิวพูดถึงความเย็นเร็ว", "มีข้อมูลการใช้ไฟในแอป", "ราคาเริ่มต้นน่าสนใจ"],
+    watch: ["ต้องเช็กค่าใช้จ่ายติดตั้ง", "ต้องดูบริการหลังการขายในพื้นที่", "เหมาะกับคนที่รับระบบ smart home ได้"],
+    reviewSignals: ["ผู้ซื้อชมว่าเย็นเร็ว", "มีรีวิวเรื่องเสียงเงียบ", "มีรีวิวพูดถึงการดูค่าไฟผ่านแอป"],
+    installNotes: ["เช็กว่าราคารวมติดตั้งหรือไม่", "ยืนยันอุปกรณ์มาตรฐานและค่าเดินท่อเพิ่ม"],
+    warrantyNotes: ["หน้าสินค้าระบุรับประกัน 5 ปี", "ควรยืนยันเงื่อนไขประกันกับร้านก่อนซื้อ"],
+    sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 14 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จัดเป็น review_signal_pass"],
+    links: searchLinks("Xiaomi Mijia Air Inverter Eco แอร์", "https://shopee.co.th/product/389528981/49105546219"),
+    updated: "2026-06-14"
+  },
+  {
+    slug: "midea-celest-msce",
+    name: "Midea Celest MSCE",
+    shortName: "Midea Celest",
+    brand: "Midea",
+    store: "Lucky Plaza Online",
+    status: "review_signal_pass",
+    statusLabel: "ผ่านสัญญาณรีวิว",
+    sourceUrl: "https://shopee.co.th/product/338734338/57308205291",
+    image: {
+      url: "/images/air-conditioners/wall-ac-condo-hero.png",
+      alt: "ภาพประกอบแอร์ติดผนังในห้องนั่งเล่น",
+      source: "/images/air-conditioners/wall-ac-condo-hero.png",
+      note: "ภาพประกอบการเลือกแอร์ติดผนัง ไม่ใช่ภาพสินค้าจริงจากร้าน"
+    },
+    priceLabel: "พบช่วงราคาประมาณ 7,490-8,490 บาท ณ วันที่เก็บข้อมูล",
+    btuOptions: ["9,360 BTU", "12,000 BTU", "18,000 BTU", "24,000 BTU"],
+    rating: 5.0,
+    ratingsCount: 193,
+    commentsCount: 35,
+    mediaCount: 41,
+    favoritesLabel: "222",
+    score: 8.1,
+    popularity: 6.6,
+    buyerConfidence: 7.4,
+    value: 8.7,
+    roomFit: 8.8,
+    energyComfort: 8.7,
+    installRisk: 7.4,
+    warrantySafety: 8.5,
+    complaintRisk: 7.8,
+    bestFor: "คนที่อยากได้ Midea ราคาไม่แรงและสนใจประกันคอมเพรสเซอร์ยาว",
+    notFor: "คนที่ต้องการร้าน official หรืออยากได้รีวิวหลักพันก่อนตัดสินใจ",
+    pros: ["ราคาเริ่มต้นดี", "ระบุ SEER หลาย BTU", "ประกันคอมเพรสเซอร์ยาว", "รีวิวให้คะแนนสูง"],
+    watch: ["จำนวนรีวิวยังน้อยกว่ารุ่น CANDY/TCL", "ไม่รวมติดตั้ง", "Wi-Fi อาจต้องซื้อเพิ่มหรือต้องเลือกรุ่นอื่น"],
+    reviewSignals: ["รีวิวชมว่าเย็นและเงียบ", "มีผู้ซื้อซ้ำ", "มีข้อมูล SEER ชัดในคำอธิบายสินค้า"],
+    installNotes: ["หน้าสินค้าระบุไม่รวมติดตั้ง", "ควรหาช่างและยืนยันค่าอุปกรณ์ก่อนซื้อ"],
+    warrantyNotes: ["คำอธิบายระบุคอมเพรสเซอร์ 10 ปี/อะไหล่ 5 ปี/ค่าแรง 5 ปี", "Shopee specs ระบุ Warranty Duration 5 Years จึงควรยืนยันซ้ำ"],
+    sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จัดเป็น review_signal_pass"],
+    links: searchLinks("Midea Celest MSCE แอร์ Inverter", "https://shopee.co.th/product/338734338/57308205291"),
+    updated: "2026-06-15"
+  }
+];
+
+export const topAirConditionerPicks = airConditioners
+  .slice()
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3);
+
+export const candyAirConditioner = airConditioners.find((product) => product.slug === "candy-vpct-vpgt-series") ?? airConditioners[0];

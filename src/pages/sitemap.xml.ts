@@ -5,9 +5,11 @@ const site = "https://friendsay.com";
 const staticPaths = [
   "/",
   "/th/",
+  "/th/best/air-conditioners/",
   "/th/best/air-fryers/",
   "/th/best/water-heaters/",
   "/th/legacy-reviews/",
+  "/th/reviews/candy-vpct-vpgt-air-conditioner/",
   "/th/reviews/sample-air-fryer-pro/",
   "/en/tourist/",
   "/about/",
