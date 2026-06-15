@@ -6058,6 +6058,36 @@ button {
   line-height: 1.45;
 }
 
+.air-model-ask-box {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(255, 107, 90, 0.2);
+  border-radius: calc(var(--radius) - 2px);
+  background:
+    linear-gradient(135deg, rgba(255, 240, 234, 0.9), rgba(255, 255, 255, 0.92)),
+    #fff;
+  padding: 13px 14px;
+}
+
+.air-model-ask-box span {
+  width: fit-content;
+  border-radius: 999px;
+  background: rgba(255, 107, 90, 0.13);
+  padding: 6px 10px;
+  color: #8a3027;
+  font-size: 0.76rem;
+  font-weight: 780;
+}
+
+.air-model-ask-box p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.98rem;
+  font-weight: 690;
+  line-height: 1.58;
+}
+
 .air-checklist li {
   border: 1px solid rgba(255, 107, 90, 0.26);
   border-radius: 999px;
