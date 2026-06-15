@@ -348,14 +348,15 @@ button {
 
 .nav {
   display: flex;
-  min-height: 74px;
+  min-height: 70px;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
 }
 
 .brand {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 10px;
   font-weight: 900;
@@ -377,16 +378,20 @@ button {
 
 .nav-links {
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 2px;
   color: #31404f;
-  font-size: 0.96rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 850;
 }
 
 .nav-links a {
   border-radius: 999px;
-  padding: 8px 12px;
+  padding: 7px 9px;
+  line-height: 1.1;
+  white-space: nowrap;
   transition: background 180ms ease, color 180ms ease;
 }
 
@@ -397,6 +402,7 @@ button {
 
 .nav-actions {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 10px;
 }
@@ -451,6 +457,24 @@ button {
   border-color: transparent;
   background: var(--ink);
   color: #fff;
+}
+
+@media (max-width: 1180px) {
+  .nav-links {
+    font-size: 0.84rem;
+  }
+
+  .nav-links a {
+    padding-inline: 7px;
+  }
+
+  .nav-links a:nth-child(n + 6) {
+    display: none;
+  }
+
+  .nav-actions .pill-link {
+    display: none;
+  }
 }
 
 .home-hero {
@@ -4592,7 +4616,7 @@ button {
 /* Air-conditioner review system */
 .air-review-hero {
   position: relative;
-  min-height: min(680px, calc(100svh - 76px));
+  min-height: min(640px, calc(100svh - 70px));
   overflow: hidden;
   background: #f3eee7;
 }
@@ -4603,15 +4627,15 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 58% 50%;
+  object-position: 64% 50%;
 }
 
 .air-review-shade {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(12, 17, 24, 0.86) 0%, rgba(12, 17, 24, 0.7) 36%, rgba(12, 17, 24, 0.22) 70%, rgba(12, 17, 24, 0.06)),
-    linear-gradient(0deg, rgba(12, 17, 24, 0.48), rgba(12, 17, 24, 0.05) 48%);
+    linear-gradient(90deg, rgba(12, 17, 24, 0.82) 0%, rgba(12, 17, 24, 0.66) 38%, rgba(12, 17, 24, 0.2) 72%, rgba(12, 17, 24, 0.04)),
+    linear-gradient(0deg, rgba(12, 17, 24, 0.42), rgba(12, 17, 24, 0.04) 52%);
 }
 
 .air-review-hero-inner {
@@ -4619,31 +4643,32 @@ button {
   z-index: 1;
   display: grid;
   min-height: inherit;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
-  gap: clamp(24px, 5vw, 72px);
-  align-items: end;
-  padding: clamp(44px, 7vw, 82px) 0;
+  grid-template-columns: minmax(0, 0.96fr) minmax(330px, 400px);
+  gap: clamp(28px, 5vw, 78px);
+  align-items: center;
+  padding: clamp(42px, 6vw, 72px) 0;
 }
 
 .air-review-title {
-  max-width: 900px;
+  max-width: 760px;
   color: #fff;
 }
 
 .air-review-title h1 {
   margin: 16px 0 0;
-  max-width: 840px;
-  font-size: clamp(2.55rem, 5.7vw, 5.2rem);
-  line-height: 1.02;
+  max-width: 760px;
+  font-size: clamp(2.45rem, 4.85vw, 4.45rem);
+  line-height: 1.06;
   letter-spacing: 0;
 }
 
 .air-review-title p:not(.eyebrow) {
   display: -webkit-box;
   overflow: hidden;
-  max-width: 720px;
+  max-width: 660px;
   color: rgba(255, 255, 255, 0.78);
-  font-size: clamp(1rem, 1.45vw, 1.18rem);
+  font-size: clamp(0.98rem, 1.18vw, 1.08rem);
+  line-height: 1.62;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
@@ -4657,39 +4682,43 @@ button {
 
 .air-verdict-card {
   display: grid;
-  gap: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  align-self: center;
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.76);
   border-radius: var(--radius);
-  background: rgba(255, 253, 248, 0.13);
+  background: rgba(255, 253, 248, 0.9);
   padding: 22px;
-  color: #fff;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.34);
+  color: var(--ink);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.24);
   backdrop-filter: blur(20px);
 }
 
 .air-product-card-image {
   overflow: hidden;
   margin: -22px -22px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(223, 208, 186, 0.72);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 251, 249, 0.82));
 }
 
 .air-product-card-image img {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 10.5;
-  object-fit: cover;
-  object-position: 50% 46%;
+  aspect-ratio: 16 / 9.6;
+  object-fit: contain;
+  object-position: 50% 50%;
+  padding: 12px;
 }
 
 .air-verdict-card > strong {
-  font-size: clamp(3.2rem, 7vw, 5rem);
+  color: #08756e;
+  font-size: clamp(3rem, 5.4vw, 4.4rem);
   line-height: 0.9;
 }
 
 .air-verdict-card p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.76);
+  color: #4f5e6c;
   line-height: 1.52;
 }
 
@@ -4706,6 +4735,10 @@ button {
   background: #fffdf8;
 }
 
+.air-proof-stage .wide-container {
+  width: min(1280px, calc(100% - 48px));
+}
+
 .air-btu-stage {
   padding: 18px 0 44px;
   background:
@@ -4714,21 +4747,22 @@ button {
 
 .air-cockpit-inner {
   display: grid;
+  width: min(1280px, calc(100% - 48px));
   gap: 18px;
-  padding: clamp(28px, 5vw, 58px) 0;
+  padding: clamp(34px, 5vw, 62px) 0;
 }
 
 .air-cockpit-head {
   display: grid;
-  max-width: 780px;
+  max-width: 880px;
   gap: 8px;
 }
 
 .air-cockpit-head h2 {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(2rem, 4.6vw, 4.4rem);
-  line-height: 0.98;
+  font-size: clamp(2rem, 3.7vw, 3.65rem);
+  line-height: 1.04;
 }
 
 .air-cockpit-head p:not(.eyebrow) {
@@ -4741,8 +4775,8 @@ button {
 
 .air-cockpit-grid {
   display: grid;
-  grid-template-columns: minmax(300px, 1fr) minmax(260px, 0.78fr) minmax(280px, 0.82fr);
-  gap: 12px;
+  grid-template-columns: minmax(360px, 1.1fr) minmax(280px, 0.82fr) minmax(300px, 0.88fr);
+  gap: 14px;
   align-items: stretch;
 }
 
@@ -4758,21 +4792,25 @@ button {
 
 .air-cockpit-verdict {
   display: grid;
-  grid-template-columns: 0.92fr 1fr;
+  grid-template-columns: minmax(170px, 0.82fr) minmax(0, 1fr);
 }
 
 .air-cockpit-verdict img {
   width: 100%;
   height: 100%;
-  min-height: 286px;
-  object-fit: cover;
+  min-height: 300px;
+  object-fit: contain;
+  object-position: center;
+  padding: 14px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(245, 251, 249, 0.82));
 }
 
 .air-cockpit-verdict > div {
   display: grid;
   align-content: center;
   gap: 10px;
-  padding: 20px;
+  padding: 22px;
 }
 
 .air-cockpit-verdict span,
@@ -4789,7 +4827,7 @@ button {
 
 .air-cockpit-verdict strong {
   color: #08756e;
-  font-size: clamp(3rem, 7vw, 5.8rem);
+  font-size: clamp(3rem, 5vw, 4.7rem);
   line-height: 0.9;
 }
 
@@ -4805,7 +4843,7 @@ button {
   display: grid;
   align-content: start;
   gap: 12px;
-  padding: 18px;
+  padding: 20px;
 }
 
 .air-cockpit-steps div {
@@ -5124,7 +5162,7 @@ button {
   background:
     radial-gradient(circle at 12% 8%, rgba(46, 196, 182, 0.2), transparent 32%),
     radial-gradient(circle at 94% 0%, rgba(255, 107, 90, 0.16), transparent 34%),
-    linear-gradient(135deg, #15202b, #24313c 56%, #fff8ed 56.5%, #fffdf8);
+    linear-gradient(135deg, #15202b, #24313c);
   padding: clamp(18px, 4vw, 28px);
   box-shadow: 0 28px 90px rgba(23, 32, 42, 0.13);
 }
@@ -5172,9 +5210,9 @@ button {
 
 .air-photo-wall {
   display: grid;
-  grid-template-columns: 1.18fr 0.9fr 0.9fr;
-  grid-auto-rows: 178px;
-  gap: 12px;
+  grid-template-columns: 1.08fr 0.96fr 0.96fr;
+  grid-auto-rows: 188px;
+  gap: 14px;
 }
 
 .air-photo-wall figure {
@@ -5189,6 +5227,8 @@ button {
 
 .air-photo-wall figure:first-child {
   grid-row: span 2;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(245, 251, 249, 0.9));
 }
 
 .air-photo-wall img {
@@ -5196,6 +5236,12 @@ button {
   height: 100%;
   object-fit: cover;
   transform: scale(1.01);
+}
+
+.air-photo-wall figure:first-child img {
+  object-fit: contain;
+  padding: 18px;
+  transform: none;
 }
 
 .air-photo-wall figcaption {
@@ -5671,6 +5717,11 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .air-cockpit-inner,
+  .air-proof-stage .wide-container {
+    width: min(100% - 32px, 1160px);
+  }
+
   .air-review-hero {
     min-height: auto;
   }
@@ -5750,6 +5801,11 @@ button {
 }
 
 @media (max-width: 680px) {
+  .air-cockpit-inner,
+  .air-proof-stage .wide-container {
+    width: min(100% - 22px, 1160px);
+  }
+
   .air-review-hero {
     min-height: auto;
   }
@@ -6039,6 +6095,10 @@ button {
 
   .air-photo-wall figure:first-child {
     grid-column: 1 / -1;
+  }
+
+  .air-photo-wall figure:first-child img {
+    padding: 10px;
   }
 
   .air-photo-wall figcaption {
