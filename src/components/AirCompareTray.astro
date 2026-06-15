@@ -1,0 +1,100 @@
+---
+import type { AirConditionerProduct } from "../data/airConditioners";
+
+type Props = {
+  products: Pick<AirConditionerProduct, "slug" | "shortName" | "name">[];
+};
+
+const { products } = Astro.props;
+---
+
+<div class="compare-floating-tray" data-air-compare-tray hidden aria-live="polite">
+  <div>
+    <span data-air-compare-count>เลือกไว้ 0 รุ่น</span>
+    <strong data-air-compare-names>ยังไม่ได้เลือกรุ่น</strong>
+  </div>
+  <div class="compare-floating-actions">
+    <a class="button button-primary" data-air-compare-link href="/th/compare/air-conditioners/">ดูผลเปรียบเทียบ</a>
+    <button class="button" type="button" data-air-compare-clear>ล้าง</button>
+  </div>
+</div>
+
+<script id="air-compare-options" type="application/json" set:html={JSON.stringify(products)}></script>
+<script is:inline>
+  (() => {
+    const key = "friendsay:compare:air-conditioners";
+    const dataEl = document.getElementById("air-compare-options");
+    const products = dataEl ? JSON.parse(dataEl.textContent || "[]") : [];
+    const productMap = new Map(products.map((product) => [product.slug, product]));
+    const tray = document.querySelector("[data-air-compare-tray]");
+    const countEl = document.querySelector("[data-air-compare-count]");
+    const namesEl = document.querySelector("[data-air-compare-names]");
+    const linkEl = document.querySelector("[data-air-compare-link]");
+    const clearEl = document.querySelector("[data-air-compare-clear]");
+    const buttons = [...document.querySelectorAll("[data-air-compare-slug]")];
+
+    const readSelected = () => {
+      try {
+        const value = JSON.parse(localStorage.getItem(key) || "[]");
+        return Array.isArray(value) ? value.filter((slug) => productMap.has(slug)).slice(0, 4) : [];
+      } catch {
+        return [];
+      }
+    };
+
+    let selected = readSelected();
+
+    const writeSelected = () => {
+      try {
+        localStorage.setItem(key, JSON.stringify(selected));
+      } catch {
+        // The tray should still work for the current page view when storage is blocked.
+      }
+    };
+
+    const compareHref = () => {
+      const query = selected.length ? `?items=${encodeURIComponent(selected.join(","))}` : "";
+      return `/th/compare/air-conditioners/${query}`;
+    };
+
+    const render = () => {
+      buttons.forEach((button) => {
+        const slug = button.dataset.airCompareSlug || button.getAttribute("data-air-compare-slug");
+        const isSelected = selected.includes(slug);
+        button.classList.toggle("is-selected", isSelected);
+        button.setAttribute("aria-pressed", String(isSelected));
+        button.textContent = isSelected ? "เลือกไว้แล้ว" : "+ เปรียบเทียบ";
+      });
+
+      if (!tray || !countEl || !namesEl || !linkEl) return;
+      tray.hidden = selected.length === 0;
+      countEl.textContent = `กำลังเปรียบเทียบ ${selected.length} รุ่น`;
+      namesEl.textContent = selected.map((slug) => productMap.get(slug)?.shortName || productMap.get(slug)?.name || slug).join(" / ");
+      linkEl.href = compareHref();
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const slug = button.dataset.airCompareSlug || button.getAttribute("data-air-compare-slug");
+        if (!slug) return;
+        if (selected.includes(slug)) {
+          selected = selected.filter((item) => item !== slug);
+        } else if (selected.length < 4) {
+          selected = [...selected, slug];
+        } else {
+          selected = [...selected.slice(1), slug];
+        }
+        writeSelected();
+        render();
+      });
+    });
+
+    clearEl?.addEventListener("click", () => {
+      selected = [];
+      writeSelected();
+      render();
+    });
+
+    render();
+  })();
+</script>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PriceButtons from "../../../components/PriceButtons.astro";
+import AirCompareTray from "../../../components/AirCompareTray.astro";
 import { airConditioners, topAirConditionerPicks } from "../../../data/airConditioners";
 
 const jsonLd = {
@@ -177,6 +178,9 @@ const jsonLd = {
             </p>
             <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
             <div class="product-actions">
+              <button class="button compare-toggle" type="button" data-air-compare-slug={product.slug}>
+                + เปรียบเทียบ
+              </button>
               {product.slug === "candy-vpct-vpgt-series" ? (
                 <a class="button button-primary" href="/th/reviews/candy-vpct-vpgt-air-conditioner/">อ่านรีวิวละเอียด</a>
               ) : (
@@ -189,4 +193,6 @@ const jsonLd = {
       </div>
     </div>
   </section>
+
+  <AirCompareTray products={airConditioners} />
 </BaseLayout>

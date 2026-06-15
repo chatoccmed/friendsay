@@ -2,7 +2,8 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PriceButtons from "../../../components/PriceButtons.astro";
 import ScoreBars from "../../../components/ScoreBars.astro";
-import { candyAirConditioner as product } from "../../../data/airConditioners";
+import AirCompareTray from "../../../components/AirCompareTray.astro";
+import { airConditioners, candyAirConditioner as product } from "../../../data/airConditioners";
 
 const premiumHeroImage = "/images/air-conditioners/candy-vpct-reference-lifestyle-gen.png";
 const productShowcaseImage = "/images/air-conditioners/candy-vpct-reference-installation-gen.png";
@@ -268,6 +269,9 @@ const faqJsonLd = {
         <div class="air-review-actions">
           <a class="button button-primary" href="#buying-cockpit">ดูคำตอบ 90 วินาที</a>
           <a class="button button-dark" href="#review-proof">ดูรีวิวผู้ซื้อจริง</a>
+          <button class="button compare-hero-button" type="button" data-air-compare-slug={product.slug}>
+            + เปรียบเทียบ
+          </button>
         </div>
       </div>
 
@@ -652,4 +656,6 @@ const faqJsonLd = {
     <a class="lazada" href={product.links.lazada} rel="sponsored noopener" target="_blank">Lazada</a>
     <a class="tiktok" href={product.links.tiktok} rel="sponsored noopener" target="_blank">TikTok</a>
   </nav>
+
+  <AirCompareTray products={airConditioners} />
 </BaseLayout>
