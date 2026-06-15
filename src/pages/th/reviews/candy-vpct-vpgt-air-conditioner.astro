@@ -15,6 +15,13 @@ const reviewQuietImage = "/images/air-conditioners/candy-vpct-gen-review-quiet-n
 const reviewPriceServiceImage = "/images/air-conditioners/candy-vpct-gen-review-price-service.jpg";
 const costChecklistImage = "/images/air-conditioners/candy-vpct-gen-cost-checklist.jpg";
 const installChecklistImage = "/images/air-conditioners/candy-vpct-gen-install-checklist.jpg";
+const shopeeTarget = product.links.shopee;
+const imageLinkAttrs = {
+  href: shopeeTarget,
+  target: "_blank",
+  rel: "sponsored noopener",
+  "aria-label": `ดู ${product.name} บน Shopee`
+};
 
 const realShopImages = [
   {
@@ -243,7 +250,9 @@ const faqJsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
 
   <section class="air-review-hero">
-    <img src={premiumHeroImage} alt={`ภาพ ${product.name} ในห้องคอนโดสว่างสบาย`} loading="eager" />
+    <a class="air-image-link air-hero-image-link" {...imageLinkAttrs}>
+      <img src={premiumHeroImage} alt={`ภาพ ${product.name} ในห้องคอนโดสว่างสบาย`} loading="eager" />
+    </a>
     <div class="air-review-shade" aria-hidden="true"></div>
     <div class="container air-review-hero-inner">
       <div class="air-review-title">
@@ -261,7 +270,9 @@ const faqJsonLd = {
 
       <aside class="air-verdict-card">
         <div class="air-product-card-image">
-          <img src={productShowcaseImage} alt={`ภาพสินค้า ${product.name} พร้อมชุดติดตั้ง`} loading="eager" />
+          <a class="air-image-link" {...imageLinkAttrs}>
+            <img src={productShowcaseImage} alt={`ภาพสินค้า ${product.name} พร้อมชุดติดตั้ง`} loading="eager" />
+          </a>
         </div>
         <span class="badge badge-coral">{product.statusLabel}</span>
         <strong>{product.score.toFixed(1)}/10</strong>
@@ -285,7 +296,9 @@ const faqJsonLd = {
 
       <div class="air-cockpit-grid">
         <article class="air-cockpit-verdict">
-          <img src={decisionImage} alt="ภาพโต๊ะตัดสินใจก่อนซื้อแอร์ มีมือถือ แปลนห้อง สายวัด และเครื่องคิดเลข" loading="lazy" />
+          <a class="air-image-link" {...imageLinkAttrs}>
+            <img src={decisionImage} alt="ภาพโต๊ะตัดสินใจก่อนซื้อแอร์ มีมือถือ แปลนห้อง สายวัด และเครื่องคิดเลข" loading="lazy" />
+          </a>
           <div>
             <span>{product.statusLabel}</span>
             <strong>{product.score.toFixed(1)}/10</strong>
@@ -341,7 +354,9 @@ const faqJsonLd = {
         <div class="air-source-photo-grid" aria-label="ภาพสินค้าจริงแบบพื้นขาวจากหน้าสินค้า Thisshop">
           {realShopImages.map((item) => (
             <figure>
-              <img src={item.image} alt={item.cleanAlt ?? item.alt} loading="lazy" />
+              <a class="air-image-link" {...imageLinkAttrs}>
+                <img src={item.image} alt={item.cleanAlt ?? item.alt} loading="lazy" />
+              </a>
               <figcaption>
                 <span>{item.cleanLabel ?? item.label}</span>
                 <strong>{item.cleanTitle ?? item.title}</strong>
@@ -354,7 +369,9 @@ const faqJsonLd = {
         <div class="air-photo-wall" aria-label="ภาพประกอบการตัดสินใจก่อนซื้อ">
           {reviewPhotoWall.map((item) => (
             <figure>
-              <img src={item.image} alt={item.alt} loading="lazy" />
+              <a class="air-image-link" {...imageLinkAttrs}>
+                <img src={item.image} alt={item.alt} loading="lazy" />
+              </a>
               <figcaption>
                 <span>{item.label}</span>
                 <strong>{item.title}</strong>
@@ -366,7 +383,9 @@ const faqJsonLd = {
         <div class="air-real-review-grid" aria-label="ตัวอย่างประเด็นจากรีวิวผู้ซื้อจริงที่พบจาก Shopee">
           {realReviewSnapshots.map((item) => (
             <article>
-              <img src={item.image} alt={`ภาพประกอบรีวิวจากผู้ซื้อ ${item.buyer}`} loading="lazy" />
+              <a class="air-image-link" {...imageLinkAttrs}>
+                <img src={item.image} alt={`ภาพประกอบรีวิวจากผู้ซื้อ ${item.buyer}`} loading="lazy" />
+              </a>
               <div>
                 <span>{item.buyer} • {item.date} • {item.variation}</span>
                 <strong>“{item.quote}”</strong>
@@ -495,7 +514,9 @@ const faqJsonLd = {
             ใช้ตารางนี้เป็น checklist สั้น ๆ ก่อนกดซื้อ ถ้าร้านตอบ 4 ช่องนี้ชัด โอกาสเจองบบานจะลดลงเยอะ
           </p>
           <figure class="air-wide-figure">
-            <img src={costChecklistImage} alt={`ภาพ Gen สำหรับเช็กต้นทุนรวมของ ${product.name} มีท่อทองแดง ท่อน้ำทิ้ง เครื่องคิดเลข และอุปกรณ์ติดตั้ง`} loading="lazy" />
+            <a class="air-image-link" {...imageLinkAttrs}>
+              <img src={costChecklistImage} alt={`ภาพ Gen สำหรับเช็กต้นทุนรวมของ ${product.name} มีท่อทองแดง ท่อน้ำทิ้ง เครื่องคิดเลข และอุปกรณ์ติดตั้ง`} loading="lazy" />
+            </a>
             <figcaption>
               ภาพ Gen จากภาพสินค้าจริง: ราคาเครื่องเป็นแค่จุดเริ่มต้น ต้องรวมค่าอุปกรณ์เพิ่ม เงื่อนไขติดตั้ง และหลักฐานประกันด้วย
             </figcaption>
@@ -516,7 +537,9 @@ const faqJsonLd = {
           ส่วนติดตั้งขอให้ดูเป็น “งานหน้างาน” ไม่ใช่แค่บริการเสริมในหน้าสินค้า สิ่งที่ควรถามให้จบมีแค่นี้ครับ
         </p>
         <figure class="air-wide-figure">
-          <img src={installChecklistImage} alt={`ภาพ Gen สำหรับเช็กงานติดตั้งของ ${product.name} มีฉากรับผนัง ท่อทองแดง ท่อน้ำทิ้ง และช่างวัดระดับ`} loading="lazy" />
+          <a class="air-image-link" {...imageLinkAttrs}>
+            <img src={installChecklistImage} alt={`ภาพ Gen สำหรับเช็กงานติดตั้งของ ${product.name} มีฉากรับผนัง ท่อทองแดง ท่อน้ำทิ้ง และช่างวัดระดับ`} loading="lazy" />
+          </a>
           <figcaption>
             ภาพ Gen จากภาพสินค้าจริง: งานติดตั้งที่ดีต้องคิดก่อนเจาะ ท่อน้ำทิ้ง ท่อทองแดง รางครอบท่อ และจุดวางคอยล์ร้อนมีผลกับการใช้งานระยะยาว
           </figcaption>
@@ -616,8 +639,10 @@ const faqJsonLd = {
 
   <div class="air-review-page-spacer" aria-hidden="true"></div>
 
-  <nav class="air-sticky-buy" aria-label="แถบช่วยตัดสินใจซื้อ">
-    <a href="#review-proof">รีวิวจริง</a>
-    <a href={product.links.shopee}>เช็กราคา Shopee</a>
+  <nav class="air-sticky-buy" aria-label="ปุ่มซื้อแบบลอยตามหน้าจอ">
+    <span>เช็กราคาด่วน</span>
+    <a class="shopee" href={product.links.shopee} rel="sponsored noopener" target="_blank">Shopee</a>
+    <a class="lazada" href={product.links.lazada} rel="sponsored noopener" target="_blank">Lazada</a>
+    <a class="tiktok" href={product.links.tiktok} rel="sponsored noopener" target="_blank">TikTok</a>
   </nav>
 </BaseLayout>
