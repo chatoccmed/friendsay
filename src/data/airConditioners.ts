@@ -62,7 +62,7 @@ export const airConditioners: AirConditionerProduct[] = [
     brand: "CANDY / Haier official shop",
     store: "haier.officialshop",
     status: "review_signal_pass",
-    statusLabel: "รีวิวแน่น น่าดูมาก",
+    statusLabel: "รีวิวแน่น ควรเทียบ",
     sourceUrl: "https://shopee.co.th/product/184920733/26853787935",
     image: {
       url: "/images/air-conditioners/wall-ac-condo-hero.png",
@@ -123,7 +123,7 @@ export const airConditioners: AirConditionerProduct[] = [
     brand: "TCL",
     store: "TCL Authorized Store",
     status: "review_signal_pass",
-    statusLabel: "รีวิวแน่น น่าดูมาก",
+    statusLabel: "รีวิวแน่น ควรเทียบ",
     sourceUrl: "https://shopee.co.th/product/1025131800/23777230236",
     image: {
       url: "/images/air-conditioners/wall-ac-condo-hero.png",
@@ -165,7 +165,7 @@ export const airConditioners: AirConditionerProduct[] = [
     brand: "Mijia / Xiaomi",
     store: "XIAOMI OFFICIAL STORE",
     status: "review_signal_pass",
-    statusLabel: "รีวิวดี น่าดูต่อ",
+    statusLabel: "รีวิวดี ควรเทียบต่อ",
     sourceUrl: "https://shopee.co.th/product/389528981/49105546219",
     image: {
       url: "/images/air-conditioners/wall-ac-condo-hero.png",
@@ -207,7 +207,7 @@ export const airConditioners: AirConditionerProduct[] = [
     brand: "Midea",
     store: "Lucky Plaza Online",
     status: "review_signal_pass",
-    statusLabel: "รีวิวดี น่าดูต่อ",
+    statusLabel: "รีวิวดี ควรเทียบต่อ",
     sourceUrl: "https://shopee.co.th/product/338734338/57308205291",
     image: {
       url: "/images/air-conditioners/wall-ac-condo-hero.png",
