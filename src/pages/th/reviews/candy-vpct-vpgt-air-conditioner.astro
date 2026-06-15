@@ -204,7 +204,7 @@ const faqs = [
   {
     question: "ทำไม Friendsay ไม่เขียนว่ายอดขายกี่เครื่อง",
     answer:
-      "เพราะหน้าที่เก็บข้อมูลยังไม่แสดงยอดขายจริงชัดเจน เราจึงใช้สถานะ review_signal_pass จากคะแนนและรีวิวแทน เพื่อไม่เติมตัวเลขเอง"
+      "เพราะ Friendsay ให้ความสำคัญกับหลักฐานที่ตรวจดูได้จริง เช่น คะแนน จำนวนรีวิว ภาพ/วิดีโอผู้ซื้อ ราคา เงื่อนไขร้าน และรูปแบบคำชม/คำเตือนที่พบซ้ำ มากกว่าการเติมตัวเลขขายที่ยังไม่เห็นชัดบนหน้าสินค้า"
   }
 ];
 
@@ -428,16 +428,6 @@ const faqJsonLd = {
   <section class="section">
     <div class="container article-layout">
       <article class="article-body">
-        <div class="air-note">
-          <strong>ความโปร่งใสก่อนอ่าน</strong>
-          <p>
-            บทความนี้เป็น Research Review จากข้อมูลหน้าสินค้า Shopee และรีวิวผู้ซื้อที่มองเห็นในวันที่ 15 มิถุนายน 2026
-            เรายังไม่ได้ทดสอบระยะยาวด้วยตัวเอง และยอดขายจริงไม่ได้แสดงชัดบนหน้าที่เก็บข้อมูล จึงจัดสถานะเป็น
-            <strong>review_signal_pass</strong> ไม่ใช่ <strong>verified_sold</strong>. ถ้าหน้า Shopee แสดงยอดขายภายหลัง
-            บทความนี้ควรอัปเดตตัวเลขใหม่ก่อนใช้เป็นรีวิวฉบับสมบูรณ์
-          </p>
-        </div>
-
         <section class="air-visual-strip" aria-label="ภาพช่วยตัดสินใจก่อนซื้อ">
           {visualGuides.map((item) => (
             <a class="air-media-card" href={item.href}>
