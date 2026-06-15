@@ -3,6 +3,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PriceButtons from "../../../components/PriceButtons.astro";
 import ScoreBars from "../../../components/ScoreBars.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners, candyAirConditioner as product } from "../../../data/airConditioners";
 
 const premiumHeroImage = "/images/air-conditioners/candy-vpct-reference-lifestyle-gen.png";
@@ -21,7 +22,10 @@ const imageLinkAttrs = {
   href: shopeeTarget,
   target: "_blank",
   rel: "sponsored noopener",
-  "aria-label": `ดู ${product.name} บน Shopee`
+  "aria-label": `ดู ${product.name} บน Shopee`,
+  "data-affiliate-link": true,
+  "data-affiliate-store": "shopee",
+  "data-affiliate-context": "review-image"
 };
 
 const realShopImages = [
@@ -108,6 +112,30 @@ const costChecks = [
   { label: "ติดตั้ง", value: "ต้องเช็กว่ารวมไหม", note: "อย่าคิดเองว่ารวมแล้ว ให้กดดูตัวเลือกบริการและถามวันช่างให้ชัด" },
   { label: "อุปกรณ์เพิ่ม", value: "ถามก่อนจ่าย", note: "รางครอบท่อ ขาแขวน สายไฟ ท่อยาวเกิน และงานเจาะพิเศษอาจมีค่าเพิ่ม" },
   { label: "ประกัน", value: "1 ปี / 5 ปี", note: "หน้าร้านพูดถึงตัวเครื่อง 1 ปีและคอมเพรสเซอร์ 5 ปี ถามย้ำก่อนจ่ายดีที่สุด" }
+];
+
+const buyerSnapshotCards = [
+  {
+    label: "ซื้อได้ไหม",
+    title: "ซื้อได้ ถ้าร้านตอบเรื่องติดตั้งชัด",
+    body: "รุ่นนี้น่าเอาเข้ารอบเพราะรีวิวแน่น ราคาเปิดดี และมี BTU ให้เลือกหลายขนาด แต่ก่อนจ่ายต้องรู้ให้ชัดว่าราคานี้รวมอะไรบ้าง"
+  },
+  {
+    label: "เหมาะกับใคร",
+    title: "คอนโดหรือห้องนอนที่อยากคุมงบ",
+    body: "เหมาะกับคนที่อยากได้แอร์อินเวอร์เตอร์ราคาไม่แรง และอยากเริ่มจากรุ่นที่มีรีวิวผู้ซื้อจริงให้ตามอ่านเยอะพอ"
+  },
+  {
+    label: "ต้องถามร้าน",
+    title: "รุ่นย่อย BTU ค่าอุปกรณ์ และวันช่าง",
+    body: "ถามให้จบว่าเป็น VPCT หรือ VPGT, กี่ BTU, รวมติดตั้งไหม, ท่อ/ราง/ขาแขวนคิดเพิ่มเท่าไหร่ และช่างเข้าได้วันไหน"
+  }
+];
+
+const visualEvidenceCards = [
+  { label: "ภาพจริง", title: "ตัวเครื่องอย่างน้อย 2 รูป", body: "ใช้ดูทรงเครื่อง ช่องลม สี และรายละเอียดที่รูปแต่งสวยอาจทำให้มองไม่ชัด" },
+  { label: "ภาพ Gen", title: "ช่วยนึกภาพตอนใช้จริง", body: "ใช้เล่าเรื่องห้อง ตำแหน่งติดตั้ง ค่าใช้จ่าย และสถานการณ์ที่คนซื้อควรคิดก่อนจ่าย" },
+  { label: "รีวิวจริง", title: "ดูทั้งคำชมและคำเตือน", body: "ไม่ดูเฉพาะดาวรวม แต่ดู pattern เช่น เย็นเร็ว เงียบ ช่างเลื่อน หรือค่าอุปกรณ์เพิ่ม" }
 ];
 
 const btuBuyerGuide = [
@@ -286,7 +314,7 @@ const faqJsonLd = {
         <p>
           คำตอบเร็ว: น่าเก็บไว้เทียบ แต่ควรไล่ดูรีวิวจริงกับ checklist ก่อนจ่าย
         </p>
-        <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
+        <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="review-hero-card" />
       </aside>
     </div>
   </section>
@@ -332,8 +360,18 @@ const faqJsonLd = {
               <span>{item.label}: {item.value}</span>
             ))}
           </div>
-          <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
+          <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="decision-price-card" />
         </article>
+      </div>
+
+      <div class="air-buying-snapshot" aria-label="สรุปก่อนซื้อแบบเร็ว">
+        {buyerSnapshotCards.map((item) => (
+          <article>
+            <span>{item.label}</span>
+            <strong>{item.title}</strong>
+            <p>{item.body}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -356,6 +394,16 @@ const faqJsonLd = {
             <span>{product.commentsCount.toLocaleString("th-TH")}+ คอมเมนต์</span>
             <span>{product.mediaCount.toLocaleString("th-TH")}+ รีวิวมีภาพ/วิดีโอ</span>
           </div>
+        </div>
+
+        <div class="air-evidence-strip" aria-label="วิธีใช้ภาพและรีวิวในบทความนี้">
+          {visualEvidenceCards.map((item) => (
+            <article>
+              <span>{item.label}</span>
+              <strong>{item.title}</strong>
+              <p>{item.body}</p>
+            </article>
+          ))}
         </div>
 
         <div class="air-source-photo-grid" aria-label="ภาพสินค้าจริงแบบพื้นขาวจากหน้าสินค้า Thisshop">
@@ -581,6 +629,18 @@ const faqJsonLd = {
           ))}
         </div>
 
+        <div class="air-mid-compare-cta">
+          <div>
+            <span>ถ้ายังลังเล</span>
+            <strong>เทียบ CANDY กับ TCL, Xiaomi, Midea ในตารางเดียว</strong>
+            <p>เหมาะกับคนที่อยากเห็นราคา BTU รีวิว จุดระวัง ประกัน และความเสี่ยงติดตั้งแบบวางข้างกัน ไม่ต้องจำเองจากหลายย่อหน้า</p>
+          </div>
+          <div>
+            <a class="button button-primary" href="/th/compare/air-conditioners/?items=candy-vpct-vpgt-series,tcl-savein-ai-series,xiaomi-mijia-air-inverter-eco,midea-celest-msce">เปิดหน้าเทียบแอร์</a>
+            <button class="button" type="button" data-air-compare-slug={product.slug}>เลือก CANDY ไว้เทียบ</button>
+          </div>
+        </div>
+
         <section class="air-questions-section" id="questions">
           <p class="eyebrow">ก่อนกดซื้อ</p>
           <h2>ก่อนกดซื้อ ให้ถามร้าน 6 ข้อนี้</h2>
@@ -596,7 +656,7 @@ const faqJsonLd = {
         <p>
           เลือกร้านที่ระบุรุ่นย่อย/BTU ชัด ตอบเรื่องติดตั้งตรง และมีหลักฐานประกันอ่านง่าย ถ้าราคาใกล้กัน ผมให้ร้านที่คุยรู้เรื่องชนะ
         </p>
-        <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
+        <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="article-buy-section" />
 
         <section class="air-faq-section" id="faq">
           <p class="eyebrow">FAQ</p>
@@ -652,10 +712,11 @@ const faqJsonLd = {
 
   <nav class="air-sticky-buy" aria-label="ปุ่มซื้อแบบลอยตามหน้าจอ">
     <span>เช็กราคาด่วน</span>
-    <a class="shopee" href={product.links.shopee} rel="sponsored noopener" target="_blank">Shopee</a>
-    <a class="lazada" href={product.links.lazada} rel="sponsored noopener" target="_blank">Lazada</a>
-    <a class="tiktok" href={product.links.tiktok} rel="sponsored noopener" target="_blank">TikTok</a>
+    <a class="shopee" href={product.links.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="sticky-buy">Shopee</a>
+    <a class="lazada" href={product.links.lazada} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context="sticky-buy">Lazada</a>
+    <a class="tiktok" href={product.links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context="sticky-buy">TikTok</a>
   </nav>
 
+  <AffiliateClickTracker />
   <AirCompareTray products={airConditioners} />
 </BaseLayout>

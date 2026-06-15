@@ -1,0 +1,34 @@
+<script is:inline>
+  (() => {
+    const storageKey = "friendsay:affiliate-clicks";
+
+    const saveLocalClick = (eventData) => {
+      try {
+        const current = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        const next = Array.isArray(current) ? [eventData, ...current].slice(0, 30) : [eventData];
+        localStorage.setItem(storageKey, JSON.stringify(next));
+      } catch {
+        // Analytics should never block the buying flow.
+      }
+    };
+
+    document.addEventListener("click", (event) => {
+      const link = event.target instanceof Element ? event.target.closest("[data-affiliate-link]") : null;
+      if (!(link instanceof HTMLAnchorElement)) return;
+
+      const eventData = {
+        event: "friendsay_affiliate_click",
+        store: link.dataset.affiliateStore || "unknown",
+        context: link.dataset.affiliateContext || "unknown",
+        path: location.pathname,
+        href: link.href,
+        ts: new Date().toISOString()
+      };
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(eventData);
+      window.dispatchEvent(new CustomEvent("friendsay:affiliate-click", { detail: eventData }));
+      saveLocalClick(eventData);
+    }, { passive: true });
+  })();
+</script>

@@ -4,13 +4,14 @@ import type { StoreLinks } from "../data/airFryers";
 type Props = {
   links: StoreLinks;
   label?: string;
+  context?: string;
 };
 
-const { links, label = "ดูราคา" } = Astro.props;
+const { links, label = "ดูราคา", context = "price-buttons" } = Astro.props;
 ---
 
 <div class="price-buttons" aria-label={label}>
-  <a class="price-button shopee" href={links.shopee} rel="sponsored noopener" target="_blank">Shopee</a>
-  <a class="price-button lazada" href={links.lazada} rel="sponsored noopener" target="_blank">Lazada</a>
-  <a class="price-button tiktok" href={links.tiktok} rel="sponsored noopener" target="_blank">TikTok</a>
+  <a class="price-button shopee" href={links.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={context}>Shopee</a>
+  <a class="price-button lazada" href={links.lazada} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context={context}>Lazada</a>
+  <a class="price-button tiktok" href={links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context={context}>TikTok</a>
 </div>
