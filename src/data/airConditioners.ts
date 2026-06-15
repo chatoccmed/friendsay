@@ -62,7 +62,7 @@ export const airConditioners: AirConditionerProduct[] = [
     brand: "CANDY / Haier official shop",
     store: "haier.officialshop",
     status: "review_signal_pass",
-    statusLabel: "ผ่านสัญญาณรีวิวสูงมาก",
+    statusLabel: "รีวิวแน่น น่าดูมาก",
     sourceUrl: "https://shopee.co.th/product/184920733/26853787935",
     image: {
       url: "/images/air-conditioners/wall-ac-condo-hero.png",
@@ -89,7 +89,7 @@ export const airConditioners: AirConditionerProduct[] = [
     bestFor:
       "คนที่อยากได้แอร์อินเวอร์เตอร์ราคายังจับต้องได้ มีตัวเลือก BTU หลายขนาด และต้องการเริ่มจากรุ่นที่มีรีวิวผู้ซื้อจริงจำนวนมากบน Shopee",
     notFor:
-      "คนที่ต้องการซื้อแบบรวมติดตั้งทันทีโดยไม่เช็กวันนัดและค่าอุปกรณ์เพิ่ม เพราะรีวิวจริงมีสัญญาณเรื่องงานติดตั้งที่ควรตรวจให้ชัดก่อนจ่ายเงิน",
+      "คนที่อยากกดซื้อแบบจบไวโดยไม่ถามวันติดตั้งและค่าอุปกรณ์เพิ่ม เพราะรีวิวผู้ซื้อเตือนชัดว่าต้องเคลียร์เรื่องหน้างานก่อนจ่ายเงิน",
     pros: ["รีวิวและรูปจากผู้ซื้อเยอะมาก", "มี BTU ให้เลือกหลายขนาด", "ราคาเริ่มต้นน่าสนใจ", "มีตัวเลือกบริการติดตั้งผ่าน Q-CHANG"],
     watch: ["ยอดขายจริงไม่ปรากฏบนหน้าที่เก็บข้อมูล", "ต้องเช็กว่ารุ่นย่อย VPCT หรือ VPGT", "ค่าอุปกรณ์ติดตั้งเพิ่มอาจเกิดขึ้น", "สเปกบางช่องบน Shopee ต้องยืนยันซ้ำกับแบรนด์"],
     reviewSignals: [
@@ -110,7 +110,7 @@ export const airConditioners: AirConditionerProduct[] = [
     ],
     sourceNotes: [
       "เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026",
-      "ยอดขายไม่ปรากฏชัดบนหน้าที่เข้าถึง จึงจัดเป็น review_signal_pass ไม่ใช่ verified_sold",
+      "ยอดขายไม่ปรากฏชัดบนหน้าที่เข้าถึง จึงใช้รีวิวผู้ซื้อเป็นหลักในการประเมิน",
       "ข้อมูลราคาและคูปองเปลี่ยนได้ ควรกดเช็กหน้าร้านก่อนซื้อทุกครั้ง"
     ],
     links: searchLinks("CANDY VPCT VPGT แอร์อินเวอร์เตอร์", "https://shopee.co.th/product/184920733/26853787935"),
@@ -123,7 +123,7 @@ export const airConditioners: AirConditionerProduct[] = [
     brand: "TCL",
     store: "TCL Authorized Store",
     status: "review_signal_pass",
-    statusLabel: "ผ่านสัญญาณรีวิวสูงมาก",
+    statusLabel: "รีวิวแน่น น่าดูมาก",
     sourceUrl: "https://shopee.co.th/product/1025131800/23777230236",
     image: {
       url: "/images/air-conditioners/wall-ac-condo-hero.png",
@@ -151,10 +151,10 @@ export const airConditioners: AirConditionerProduct[] = [
     notFor: "คนที่อยากได้ข้อมูลสเปกแบบไม่ต้องเทียบ เพราะหน้าสินค้ามีตัวเลือก BTU หลายขนาดและต้องเช็กให้ตรงห้อง",
     pros: ["รีวิวเยอะ", "BTU กว้างถึง 24,200", "ฟีเจอร์ AI/ประหยัดไฟน่าสนใจ", "ร้านตอบเร็วมาก"],
     watch: ["ต้องยืนยันค่า SEER ของแต่ละ BTU", "ต้องเช็กเงื่อนไขลงทะเบียนประกัน", "ติดตั้งผ่าน Q-CHANG ต้องดูคิว"],
-    reviewSignals: ["ผู้ซื้อพูดถึงความเย็นเร็ว", "หลายรีวิวชมแพ็กกิ้งและงานติดตั้ง", "มีสัญญาณความพอใจเรื่องเสียงและความทน"],
+    reviewSignals: ["ผู้ซื้อพูดถึงความเย็นเร็ว", "หลายรีวิวชมแพ็กกิ้งและงานติดตั้ง", "มีคนพูดถึงเสียงและความทนในทางบวก"],
     installNotes: ["มี Add-on Installation Service/Q-CHANG", "ควรเช็กวันนัดและค่าอุปกรณ์เพิ่ม", "คอนโดควรยืนยันจุดเจาะและท่อน้ำทิ้งก่อน"],
     warrantyNotes: ["หน้าสินค้าระบุคอมเพรสเซอร์ 5 ปี/อะไหล่ 1 ปี", "ควรลงทะเบียนกับ TCL ตามเงื่อนไข"],
-    sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จัดเป็น review_signal_pass"],
+    sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จึงใช้รีวิวผู้ซื้อเป็นหลักในการประเมิน"],
     links: searchLinks("TCL SaveIN AI Series แอร์ Full DC Inverter", "https://shopee.co.th/product/1025131800/23777230236"),
     updated: "2026-06-15"
   },
@@ -165,7 +165,7 @@ export const airConditioners: AirConditionerProduct[] = [
     brand: "Mijia / Xiaomi",
     store: "XIAOMI OFFICIAL STORE",
     status: "review_signal_pass",
-    statusLabel: "ผ่านสัญญาณรีวิว",
+    statusLabel: "รีวิวดี น่าดูต่อ",
     sourceUrl: "https://shopee.co.th/product/389528981/49105546219",
     image: {
       url: "/images/air-conditioners/wall-ac-condo-hero.png",
@@ -196,7 +196,7 @@ export const airConditioners: AirConditionerProduct[] = [
     reviewSignals: ["ผู้ซื้อชมว่าเย็นเร็ว", "มีรีวิวเรื่องเสียงเงียบ", "มีรีวิวพูดถึงการดูค่าไฟผ่านแอป"],
     installNotes: ["เช็กว่าราคารวมติดตั้งหรือไม่", "ยืนยันอุปกรณ์มาตรฐานและค่าเดินท่อเพิ่ม"],
     warrantyNotes: ["หน้าสินค้าระบุรับประกัน 5 ปี", "ควรยืนยันเงื่อนไขประกันกับร้านก่อนซื้อ"],
-    sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 14 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จัดเป็น review_signal_pass"],
+    sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 14 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จึงใช้รีวิวผู้ซื้อเป็นหลักในการประเมิน"],
     links: searchLinks("Xiaomi Mijia Air Inverter Eco แอร์", "https://shopee.co.th/product/389528981/49105546219"),
     updated: "2026-06-14"
   },
@@ -207,7 +207,7 @@ export const airConditioners: AirConditionerProduct[] = [
     brand: "Midea",
     store: "Lucky Plaza Online",
     status: "review_signal_pass",
-    statusLabel: "ผ่านสัญญาณรีวิว",
+    statusLabel: "รีวิวดี น่าดูต่อ",
     sourceUrl: "https://shopee.co.th/product/338734338/57308205291",
     image: {
       url: "/images/air-conditioners/wall-ac-condo-hero.png",
@@ -238,7 +238,7 @@ export const airConditioners: AirConditionerProduct[] = [
     reviewSignals: ["รีวิวชมว่าเย็นและเงียบ", "มีผู้ซื้อซ้ำ", "มีข้อมูล SEER ชัดในคำอธิบายสินค้า"],
     installNotes: ["หน้าสินค้าระบุไม่รวมติดตั้ง", "ควรหาช่างและยืนยันค่าอุปกรณ์ก่อนซื้อ"],
     warrantyNotes: ["คำอธิบายระบุคอมเพรสเซอร์ 10 ปี/อะไหล่ 5 ปี/ค่าแรง 5 ปี", "Shopee specs ระบุ Warranty Duration 5 Years จึงควรยืนยันซ้ำ"],
-    sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จัดเป็น review_signal_pass"],
+    sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จึงใช้รีวิวผู้ซื้อเป็นหลักในการประเมิน"],
     links: searchLinks("Midea Celest MSCE แอร์ Inverter", "https://shopee.co.th/product/338734338/57308205291"),
     updated: "2026-06-15"
   }
