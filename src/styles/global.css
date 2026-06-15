@@ -3512,7 +3512,7 @@ button {
 @media (max-width: 680px) {
   .compare-floating-tray {
     right: 10px;
-    bottom: 102px;
+    bottom: calc(124px + env(safe-area-inset-bottom));
     left: 10px;
     grid-template-columns: 1fr;
     gap: 9px;
@@ -5787,40 +5787,51 @@ button {
 
 .air-sticky-buy {
   position: fixed;
-  right: max(18px, env(safe-area-inset-right));
-  bottom: max(18px, env(safe-area-inset-bottom));
-  z-index: 70;
+  right: auto;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 72;
   display: grid;
-  width: min(286px, calc(100vw - 32px));
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  width: min(760px, calc(100vw - 40px));
+  grid-template-columns: minmax(92px, 0.72fr) repeat(3, minmax(126px, 1fr));
+  gap: 10px;
+  align-items: center;
   border: 1px solid rgba(223, 208, 186, 0.78);
   border-radius: calc(var(--radius) + 2px);
-  background: rgba(255, 253, 248, 0.94);
-  padding: 10px;
+  background: linear-gradient(135deg, rgba(255, 253, 248, 0.98), rgba(247, 252, 249, 0.96));
+  padding: 10px 12px;
   box-shadow: 0 22px 78px rgba(23, 32, 42, 0.22);
+  transform: translateX(-50%);
   backdrop-filter: blur(18px);
 }
 
 .air-sticky-buy span {
-  grid-column: 1 / -1;
-  color: #526171;
-  font-size: 0.72rem;
-  font-weight: 760;
-  line-height: 1;
-  text-align: center;
-}
-
-.air-sticky-buy a {
   display: inline-flex;
   min-height: 42px;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(255, 107, 90, 0.18);
   border-radius: calc(var(--radius) - 2px);
-  padding: 9px 8px;
-  color: #fff;
-  font-size: 0.82rem;
+  background: rgba(255, 107, 90, 0.08);
+  padding: 8px 10px;
+  color: #d64c41;
+  font-size: 0.74rem;
   font-weight: 840;
+  line-height: 1.15;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.air-sticky-buy a {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--radius) - 2px);
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 880;
   line-height: 1;
   text-align: center;
   box-shadow: 0 10px 24px rgba(23, 32, 42, 0.12);
@@ -6729,6 +6740,15 @@ button {
     display: none;
   }
 
+  .air-sticky-buy {
+    width: min(720px, calc(100vw - 32px));
+    grid-template-columns: minmax(84px, 0.62fr) repeat(3, minmax(104px, 1fr));
+  }
+
+  .air-sticky-buy a {
+    font-size: 0.88rem;
+  }
+
   .air-cockpit-grid {
     grid-template-columns: 1fr;
   }
@@ -7003,17 +7023,21 @@ button {
   }
 
   .air-sticky-buy {
-    right: 12px;
-    bottom: max(12px, env(safe-area-inset-bottom));
-    left: 12px;
-    width: auto;
+    right: auto;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    left: 50%;
+    width: calc(100vw - 20px);
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
     border-radius: calc(var(--radius) + 2px);
     padding: 8px;
+    transform: translateX(-50%);
   }
 
   .air-sticky-buy span {
+    grid-column: 1 / -1;
+    min-height: 32px;
+    padding: 7px 10px;
     font-size: 0.68rem;
   }
 
