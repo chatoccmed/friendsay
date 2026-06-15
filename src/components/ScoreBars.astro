@@ -9,18 +9,37 @@ type Props = {
 };
 
 const { scores } = Astro.props;
+
+const getTone = (value: number) => {
+  if (value >= 9.2) return { start: "#2ec4b6", end: "#3a86ff" };
+  if (value >= 8.6) return { start: "#23b99f", end: "#2ec4b6" };
+  if (value >= 8) return { start: "#ffc857", end: "#2ec4b6" };
+  return { start: "#ff8a6b", end: "#ffc857" };
+};
 ---
 
 <div class="score-bars">
   {
-    scores.map((score) => (
-      <div class="score-bar">
+    scores.map((score) => {
+      const width = Math.max(0, Math.min(100, Math.round(score.value * 10)));
+      const tone = getTone(score.value);
+
+      return (
+      <div class="score-bar" style={`--score-width:${width}%; --score-start:${tone.start}; --score-end:${tone.end};`}>
         <strong>{score.label}</strong>
-        <span class="bar-track" aria-hidden="true">
-          <span class="bar-fill" style={`width: ${Math.round(score.value * 10)}%`} />
+        <span
+          class="bar-track"
+          role="meter"
+          aria-label={`${score.label} ${score.value.toFixed(1)} จาก 10`}
+          aria-valuemin="0"
+          aria-valuemax="10"
+          aria-valuenow={score.value}
+        >
+          <span class="bar-fill" />
         </span>
-        <span>{score.value.toFixed(1)}</span>
+        <span class="score-value">{score.value.toFixed(1)}</span>
       </div>
-    ))
+    );
+    })
   }
 </div>
