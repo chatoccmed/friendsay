@@ -420,16 +420,24 @@ const faqJsonLd = {
           ส่วนที่ทำให้รุ่นนี้น่าเก็บไว้เทียบมี 4 เรื่องหลัก ไม่ต้องอ่านซ้ำหลายรอบก็จับใจความได้ตามนี้ครับ
         </p>
 
-        <div class="verdict-grid">
-          {product.pros.map((item) => (
-            <div>
-              <span>เด่น</span>
+        <div class="verdict-grid" aria-label="ข้อดีที่ควรรู้แบบอ่านเร็ว">
+          {product.pros.map((item, index) => (
+            <article>
+              <span>{`ข้อ ${index + 1}`}</span>
               <strong>{item}</strong>
-            </div>
+            </article>
           ))}
         </div>
 
         <h2 id="watch">จุดต้องระวังก่อนกดซื้อ</h2>
+        <div class="air-watch-list" aria-label="จุดต้องระวังก่อนกดซื้อแบบ checklist">
+          {product.watch.map((item, index) => (
+            <article>
+              <span>{`เช็ก ${index + 1}`}</span>
+              <strong>{item}</strong>
+            </article>
+          ))}
+        </div>
         <p>
           จุดระวังของรุ่นนี้ไม่ใช่ตัวเครื่องอย่างเดียว แต่คือ “เลือกผิดช่อง” แล้วงบบาน:
           เลือก VPCT/VPGT ให้ถูก เลือก BTU ให้ตรงห้อง และอย่าดูราคาเครื่องโดยไม่ถามค่าหน้างาน
@@ -438,10 +446,6 @@ const faqJsonLd = {
           ถ้าอยู่คอนโด ให้ถามนิติก่อนเรื่องเจาะผนัง วางคอยล์ร้อน และท่อน้ำทิ้ง ส่วนถ้าต้องใช้ด่วน ให้ถามวันติดตั้งก่อนจ่าย
           เพราะแอร์ที่ดีแต่รอช่างนานเกินไป ก็อาจไม่ตอบโจทย์ชีวิตจริง
         </p>
-
-        <div class="air-watch-list">
-          {product.watch.map((item) => <span>{item}</span>)}
-        </div>
 
         <section class="air-cost-section" id="cost">
           <p class="eyebrow">เช็กเงินที่ต้องจ่ายจริง</p>

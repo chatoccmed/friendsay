@@ -2591,9 +2591,44 @@ button {
 
 .verdict-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 20px;
+  margin: 18px 0 34px;
+}
+
+.verdict-grid article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(46, 196, 182, 0.24);
+  border-radius: calc(var(--radius) - 2px);
+  background:
+    linear-gradient(135deg, rgba(46, 196, 182, 0.1), rgba(255, 255, 255, 0.94) 45%),
+    #fff;
+  padding: 13px 14px;
+  box-shadow: 0 14px 36px rgba(23, 32, 42, 0.06);
+}
+
+.verdict-grid span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  border-radius: 999px;
+  background: rgba(8, 117, 110, 0.1);
+  padding: 7px 10px;
+  color: #08756e;
+  font-size: 0.78rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.verdict-grid strong {
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 740;
+  line-height: 1.35;
 }
 
 .mini-verdict {
@@ -5813,13 +5848,47 @@ button {
 }
 
 .air-watch-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
   margin: 18px 0 34px;
 }
 
-.air-watch-list span,
+.air-watch-list article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+  border: 1px solid rgba(255, 107, 90, 0.26);
+  border-radius: calc(var(--radius) - 2px);
+  background:
+    linear-gradient(135deg, rgba(255, 107, 90, 0.1), rgba(255, 255, 255, 0.94) 48%),
+    #fff;
+  padding: 12px 13px;
+  box-shadow: 0 14px 36px rgba(138, 48, 39, 0.06);
+}
+
+.air-watch-list span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  border-radius: 999px;
+  background: rgba(255, 240, 234, 0.92);
+  padding: 7px 10px;
+  color: #8a3027;
+  font-size: 0.78rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.air-watch-list strong {
+  color: var(--ink);
+  font-size: 0.98rem;
+  font-weight: 730;
+  line-height: 1.34;
+}
+
 .air-checklist li {
   border: 1px solid rgba(255, 107, 90, 0.26);
   border-radius: 999px;
@@ -6560,6 +6629,20 @@ button {
   .air-checklist {
     display: grid;
     grid-template-columns: 1fr;
+  }
+
+  .verdict-grid article,
+  .air-watch-list article {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .verdict-grid span,
+  .air-watch-list span {
+    width: fit-content;
+    min-width: 0;
   }
 
   .air-watch-list span,
