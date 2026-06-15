@@ -5376,7 +5376,7 @@ button {
 
 .air-source-photo-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.16fr) minmax(220px, 0.54fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -5393,16 +5393,16 @@ button {
 
 .air-source-photo-grid img {
   width: 100%;
-  height: 340px;
-  background: #fff;
+  height: 310px;
+  padding: 18px;
+  background: #fffdf8;
   object-fit: contain;
 }
 
 .air-source-photo-grid figure:nth-child(2) img {
-  justify-self: center;
-  width: min(100%, 220px);
-  max-height: 220px;
-  padding: 12px;
+  justify-self: stretch;
+  width: 100%;
+  max-height: none;
 }
 
 .air-source-photo-grid figcaption {
@@ -6007,7 +6007,7 @@ button {
   }
 
   .air-source-photo-grid figure:nth-child(2) img {
-    width: min(100%, 240px);
+    width: 100%;
   }
 
   .air-photo-wall {
@@ -6352,7 +6352,7 @@ button {
   }
 
   .air-source-photo-grid figure:nth-child(2) img {
-    width: min(100%, 210px);
+    width: 100%;
   }
 
   .air-source-photo-grid figcaption {

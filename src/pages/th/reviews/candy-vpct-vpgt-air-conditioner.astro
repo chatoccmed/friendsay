@@ -9,14 +9,22 @@ const productShowcaseImage = "/images/air-conditioners/candy-vpct-reference-inst
 
 const realShopImages = [
   {
-    image: "/images/air-conditioners/candy-vpct-real-shop-1.png",
+    image: "/images/air-conditioners/candy-vpct-real-product-plain-1.png",
+    cleanAlt: "ภาพครอปตัวเครื่องจริงของ CANDY VPGT Series จากหน้าร้าน Shopee",
+    cleanLabel: "ภาพจริงตัวเครื่อง",
+    cleanTitle: "ครอปเฉพาะตัวแอร์ ไม่ใช้โปสเตอร์โปรโมชัน",
+    cleanNote: "ใช้ดูทรงหน้าเครื่อง โลโก้ และช่องลมจากภาพร้านจริง โดยตัดสีโปรโมชันออกให้คุมโทนเว็บ",
     alt: "ภาพสินค้าจริงจากหน้าร้าน Shopee ของ CANDY VPGT Series 9000 BTU",
     label: "ภาพจริงจากร้าน",
     title: "รูปโปรหลักของ CANDY VPGT 9000 BTU บน Shopee",
     note: "ใช้ยืนยันหน้าตาเครื่องและโปรที่ร้านโชว์ในวันที่เก็บข้อมูล"
   },
   {
-    image: "/images/air-conditioners/candy-vpct-real-shop-2.webp",
+    image: "/images/air-conditioners/candy-vpct-real-product-plain-2.png",
+    cleanAlt: "ภาพครอปรายละเอียดช่องลมและตัวเครื่องจริงของ CANDY VPGT Series จากหน้าร้าน Shopee",
+    cleanLabel: "ภาพจริงระยะใกล้",
+    cleanTitle: "ดูโลโก้ ช่องลม และผิวหน้ากากเครื่อง",
+    cleanNote: "ภาพนี้ใช้ยืนยันหน้าตาเครื่องจากต้นทางจริง ส่วนภาพห้องสวยด้านล่างเป็นภาพ Gen สำหรับช่วยนึกภาพใช้งาน",
     alt: "ภาพ thumbnail จริงจากหน้าร้าน Shopee ของ CANDY VPGT Series 10000 BTU",
     label: "ภาพจริงจากร้าน",
     title: "รูปโปรอีกใบจาก carousel ของร้าน",
@@ -303,11 +311,11 @@ const faqJsonLd = {
         <div class="air-source-photo-grid" aria-label="ภาพสินค้าจริงจากหน้าร้าน Shopee">
           {realShopImages.map((item) => (
             <figure>
-              <img src={item.image} alt={item.alt} loading="lazy" />
+              <img src={item.image} alt={item.cleanAlt ?? item.alt} loading="lazy" />
               <figcaption>
-                <span>{item.label}</span>
-                <strong>{item.title}</strong>
-                <em>{item.note}</em>
+                <span>{item.cleanLabel ?? item.label}</span>
+                <strong>{item.cleanTitle ?? item.title}</strong>
+                <em>{item.cleanNote ?? item.note}</em>
               </figcaption>
             </figure>
           ))}
