@@ -4586,9 +4586,9 @@ button {
 /* Air-conditioner review system */
 .air-review-hero {
   position: relative;
-  min-height: min(720px, calc(100svh - 76px));
+  min-height: min(760px, calc(100svh - 76px));
   overflow: hidden;
-  background: #121a22;
+  background: #f3eee7;
 }
 
 .air-review-hero > img {
@@ -4604,8 +4604,8 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(13, 19, 27, 0.88) 0%, rgba(13, 19, 27, 0.72) 38%, rgba(13, 19, 27, 0.22) 72%, rgba(13, 19, 27, 0.08)),
-    linear-gradient(0deg, rgba(13, 19, 27, 0.64), rgba(13, 19, 27, 0.08) 45%);
+    linear-gradient(90deg, rgba(12, 17, 24, 0.86) 0%, rgba(12, 17, 24, 0.7) 36%, rgba(12, 17, 24, 0.22) 70%, rgba(12, 17, 24, 0.06)),
+    linear-gradient(0deg, rgba(12, 17, 24, 0.48), rgba(12, 17, 24, 0.05) 48%);
 }
 
 .air-review-hero-inner {
@@ -4626,16 +4626,20 @@ button {
 
 .air-review-title h1 {
   margin: 16px 0 0;
-  max-width: 900px;
-  font-size: clamp(2.7rem, 6.4vw, 6rem);
-  line-height: 0.98;
+  max-width: 840px;
+  font-size: clamp(2.55rem, 5.7vw, 5.2rem);
+  line-height: 1.02;
   letter-spacing: 0;
 }
 
 .air-review-title p:not(.eyebrow) {
+  display: -webkit-box;
+  overflow: hidden;
   max-width: 720px;
   color: rgba(255, 255, 255, 0.78);
   font-size: clamp(1rem, 1.45vw, 1.18rem);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .air-review-actions {
@@ -4655,6 +4659,21 @@ button {
   color: #fff;
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.34);
   backdrop-filter: blur(20px);
+}
+
+.air-product-card-image {
+  overflow: hidden;
+  margin: -22px -22px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.air-product-card-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10.5;
+  object-fit: cover;
+  object-position: 50% 46%;
 }
 
 .air-verdict-card > strong {
@@ -4689,6 +4708,73 @@ button {
   overflow-wrap: anywhere;
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+.air-product-snapshot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.24fr) minmax(300px, 0.76fr);
+  gap: 0;
+  overflow: hidden;
+  margin: 24px 0 36px;
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 251, 249, 0.86)),
+    #fff;
+  box-shadow: 0 28px 90px rgba(23, 32, 42, 0.12);
+}
+
+.air-product-snapshot figure {
+  min-height: 100%;
+  margin: 0;
+  background: #f6f0e8;
+}
+
+.air-product-snapshot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.air-product-snapshot > div {
+  display: grid;
+  align-content: center;
+  gap: 14px;
+  padding: clamp(22px, 4vw, 34px);
+}
+
+.air-product-snapshot h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.8rem, 3.4vw, 3rem);
+  line-height: 1.04;
+}
+
+.air-product-snapshot p:not(.eyebrow) {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.62;
+}
+
+.air-snapshot-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.air-snapshot-pills span {
+  border: 1px solid rgba(46, 196, 182, 0.22);
+  border-radius: 999px;
+  background: rgba(46, 196, 182, 0.1);
+  padding: 8px 11px;
+  color: #08756e;
+  font-size: 0.84rem;
+  font-weight: 950;
 }
 
 .air-decision-section,
@@ -5054,12 +5140,17 @@ button {
 
 @media (max-width: 980px) {
   .air-review-hero-inner,
-  .air-product-grid {
+  .air-product-grid,
+  .air-product-snapshot {
     grid-template-columns: 1fr;
   }
 
   .air-verdict-card {
     max-width: 520px;
+  }
+
+  .air-product-snapshot img {
+    min-height: 320px;
   }
 
   .air-btu-grid {
@@ -5086,13 +5177,13 @@ button {
   }
 
   .air-review-hero > img {
-    object-position: 66% 50%;
+    object-position: 72% 50%;
   }
 
   .air-review-shade {
     background:
-      linear-gradient(90deg, rgba(13, 19, 27, 0.92), rgba(13, 19, 27, 0.76) 62%, rgba(13, 19, 27, 0.36)),
-      linear-gradient(0deg, rgba(13, 19, 27, 0.72), rgba(13, 19, 27, 0.08) 48%);
+      linear-gradient(90deg, rgba(13, 19, 27, 0.9), rgba(13, 19, 27, 0.72) 62%, rgba(13, 19, 27, 0.28)),
+      linear-gradient(0deg, rgba(13, 19, 27, 0.68), rgba(13, 19, 27, 0.08) 48%);
   }
 
   .air-review-hero-inner {
@@ -5101,7 +5192,14 @@ button {
   }
 
   .air-review-title h1 {
-    font-size: clamp(2.5rem, 12.5vw, 3.6rem);
+    font-size: clamp(2.08rem, 9vw, 2.78rem);
+    line-height: 1.08;
+  }
+
+  .air-review-title p:not(.eyebrow) {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    -webkit-line-clamp: 2;
   }
 
   .air-verdict-card {
@@ -5119,6 +5217,33 @@ button {
   .air-questions-section,
   .air-faq-section {
     margin: 28px 0 34px;
+  }
+
+  .air-product-snapshot {
+    margin: 18px 0 30px;
+  }
+
+  .air-product-snapshot img {
+    min-height: 230px;
+    aspect-ratio: 16 / 11.5;
+  }
+
+  .air-product-snapshot > div {
+    padding: 18px;
+  }
+
+  .air-product-snapshot h2 {
+    font-size: 1.72rem;
+  }
+
+  .air-product-snapshot p:not(.eyebrow) {
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  .air-snapshot-pills span {
+    padding: 7px 9px;
+    font-size: 0.76rem;
   }
 
   .air-decision-grid,

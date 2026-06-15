@@ -4,6 +4,9 @@ import PriceButtons from "../../../components/PriceButtons.astro";
 import ScoreBars from "../../../components/ScoreBars.astro";
 import { candyAirConditioner as product } from "../../../data/airConditioners";
 
+const premiumHeroImage = "/images/air-conditioners/candy-vpct-premium-hero.png";
+const productShowcaseImage = "/images/air-conditioners/candy-vpct-product-showcase.png";
+
 const decisionCards = [
   {
     label: "ซื้อได้ ถ้า",
@@ -166,7 +169,7 @@ const faqJsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
 
   <section class="air-review-hero">
-    <img src={product.image.url} alt={product.image.alt} loading="eager" />
+    <img src={premiumHeroImage} alt={`ภาพ ${product.name} ในห้องคอนโดสว่างสบาย`} loading="eager" />
     <div class="air-review-shade" aria-hidden="true"></div>
     <div class="container air-review-hero-inner">
       <div class="air-review-title">
@@ -183,6 +186,9 @@ const faqJsonLd = {
       </div>
 
       <aside class="air-verdict-card">
+        <div class="air-product-card-image">
+          <img src={productShowcaseImage} alt={`ภาพสินค้า ${product.name} พร้อมชุดติดตั้ง`} loading="eager" />
+        </div>
         <span class="badge badge-coral">{product.statusLabel}</span>
         <strong>{product.score.toFixed(1)}/10</strong>
         <p>
@@ -226,6 +232,25 @@ const faqJsonLd = {
             บทความนี้ควรอัปเดตตัวเลขใหม่ก่อนใช้เป็นรีวิวฉบับสมบูรณ์
           </p>
         </div>
+
+        <section class="air-product-snapshot" aria-label="ภาพสินค้าและสิ่งที่ควรเช็กก่อนซื้อ">
+          <figure>
+            <img src={productShowcaseImage} alt={`ภาพสินค้า ${product.name} พร้อมคอยล์ร้อน รีโมต และชุดท่อแอร์`} loading="lazy" />
+          </figure>
+          <div>
+            <p class="eyebrow">Product look</p>
+            <h2>เห็นหน้าตาตัวเครื่องก่อน แล้วค่อยตัดสินใจเรื่องราคา</h2>
+            <p>
+              ภาพนี้ทำใหม่จากภาพอ้างอิงสินค้าจริง เพื่อให้เห็นทรงตัวเครื่อง ชุดคอยล์ร้อน รีโมต และอุปกรณ์ที่ควรถามร้านก่อนซื้อในมุมเดียว
+            </p>
+            <div class="air-snapshot-pills" aria-label="จุดที่ควรดูจากภาพสินค้า">
+              <span>ตัวเครื่องในบ้าน</span>
+              <span>คอยล์ร้อน</span>
+              <span>รีโมต</span>
+              <span>ท่อและอุปกรณ์ติดตั้ง</span>
+            </div>
+          </div>
+        </section>
 
         <section class="air-decision-section" id="verdict">
           <p class="eyebrow">30-second verdict</p>
