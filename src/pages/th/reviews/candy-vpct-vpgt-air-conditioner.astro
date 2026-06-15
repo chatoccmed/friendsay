@@ -4,6 +4,93 @@ import PriceButtons from "../../../components/PriceButtons.astro";
 import ScoreBars from "../../../components/ScoreBars.astro";
 import { candyAirConditioner as product } from "../../../data/airConditioners";
 
+const decisionCards = [
+  {
+    label: "ซื้อได้ ถ้า",
+    title: "คุณอยากได้แอร์อินเวอร์เตอร์ราคาเริ่มดีและรีวิวเยอะ",
+    body: "จุดที่ทำให้รุ่นนี้น่าสนใจคือฐานรีวิวใหญ่พอให้ดูภาพจริงได้หลายมุม เหมาะกับคนที่อยากเริ่มจากตัวเลือกที่มี social proof แข็งแรง"
+  },
+  {
+    label: "รอก่อน ถ้า",
+    title: "คุณยังไม่รู้ว่าห้องควรใช้กี่ BTU หรือคิวช่างว่างเมื่อไหร่",
+    body: "แอร์ไม่เหมือนของชิ้นเล็ก ซื้อผิดแล้วแก้ยากกว่า ควรถามเรื่อง BTU จุดวางคอยล์ร้อน และวันติดตั้งก่อนจ่ายเงิน"
+  },
+  {
+    label: "ข้ามได้ ถ้า",
+    title: "คุณอยากได้เงื่อนไขติดตั้ง/ประกันแบบชัดที่สุดตั้งแต่หน้าแรก",
+    body: "รุ่นนี้ยังต้องอ่านรายละเอียดและถามร้านเพิ่ม โดยเฉพาะค่าอุปกรณ์ติดตั้งและความต่างของรุ่นย่อย VPCT/VPGT"
+  }
+];
+
+const buyerScenes = [
+  {
+    label: "คอนโด 1 ห้องนอน",
+    fit: "เริ่มดู 9,000-12,000 BTU",
+    note: "ถ้าแดดไม่แรงและปิดประตูห้องเป็นหลัก รุ่นเล็ก-กลางมักพอ แต่ต้องเช็กจุดวางคอยล์ร้อนกับนิติบุคคลก่อน"
+  },
+  {
+    label: "ห้องรับแดดบ่าย",
+    fit: "ขยับ BTU เผื่อความร้อน",
+    note: "ห้องที่กระจกใหญ่หรือโดนแดดตรงไม่ควรเลือกจากตารางพื้นที่อย่างเดียว เพราะเครื่องอาจทำงานหนักกว่าห้องปกติ"
+  },
+  {
+    label: "บ้านที่รีบใช้",
+    fit: "ถามคิวช่างก่อนกดซื้อ",
+    note: "ถ้าต้องใช้ทันที อย่าดูแค่ราคาหน้าสินค้า ให้ถามวันติดตั้งจริงและค่าอุปกรณ์เพิ่มก่อน"
+  },
+  {
+    label: "คนเน้นสบายใจ",
+    fit: "เทียบประกันกับ TCL/Xiaomi/Midea",
+    note: "ถ้าให้ความสำคัญกับศูนย์บริการมากกว่าราคา ให้ดูร้าน official เงื่อนไขประกัน และขั้นตอนเคลมควบคู่กัน"
+  }
+];
+
+const costChecks = [
+  { label: "ราคาเครื่อง", value: "ประมาณ 7,995 บาท", note: "ตัวเลขที่พบหลังคูปอง ณ วันเก็บข้อมูล ราคาเปลี่ยนได้" },
+  { label: "ติดตั้ง", value: "ต้องเช็กว่ารวมไหม", note: "ถ้าซื้อบริการติดตั้งเสริม ต้องดูวันนัดและขอบเขตงานมาตรฐาน" },
+  { label: "อุปกรณ์เพิ่ม", value: "ถามก่อนจ่าย", note: "รางครอบท่อ ขาแขวน สายไฟ ท่อยาวเกิน และงานเจาะพิเศษอาจมีค่าเพิ่ม" },
+  { label: "ประกัน", value: "1 ปี / 5 ปี", note: "ข้อมูลหน้าสินค้าพูดถึงตัวเครื่อง 1 ปีและคอมเพรสเซอร์ 5 ปี ควรยืนยันกับร้าน" }
+];
+
+const askBeforeBuy = [
+  "รุ่นที่เลือกคือ VPCT หรือ VPGT และ BTU เท่าไหร่",
+  "ราคานี้รวมติดตั้งหรือเป็นราคาเครื่องอย่างเดียว",
+  "ติดตั้งได้เร็วสุดวันไหน และถ้าเลื่อนนัดต้องติดต่อใคร",
+  "ท่อทองแดง สายไฟ รางครอบท่อ และขาแขวนรวมกี่เมตร",
+  "คอนโดต้องมีเอกสารหรือข้อกำหนดอะไรให้ช่างก่อนเข้าหน้างาน",
+  "ประกันต้องลงทะเบียนไหม และเคลมผ่านร้านหรือศูนย์บริการ"
+];
+
+const alternativeCards = [
+  { name: "CANDY VPCT/VPGT", role: "ตัวคุ้มที่รีวิวเยอะ", note: "เหมาะเริ่ม shortlist เพราะฐานรีวิวใหญ่และราคาเปิดดูเป็นมิตร" },
+  { name: "TCL SaveIN AI", role: "ตัวฟีเจอร์เยอะ", note: "น่าดูถ้าสนใจ AI/Full DC Inverter และ BTU กว้างถึง 24,200" },
+  { name: "Xiaomi Mijia Eco", role: "ตัวสายแอป", note: "เหมาะกับคนใช้ Xiaomi Home และอยากดูข้อมูลผ่านระบบ smart home" },
+  { name: "Midea Celest", role: "ตัวประกันน่าสนใจ", note: "รีวิวไม่เยอะเท่า CANDY/TCL แต่มีจุดขายเรื่องประกันและ SEER ในรายละเอียด" }
+];
+
+const faqs = [
+  {
+    question: "CANDY VPCT/VPGT Series น่าซื้อไหม",
+    answer:
+      "น่าซื้อสำหรับคนที่ต้องการแอร์อินเวอร์เตอร์ราคายังจับต้องได้และอยากเริ่มจากรุ่นที่มีรีวิว Shopee จำนวนมาก แต่ควรเช็ก BTU รุ่นย่อย ค่าอุปกรณ์ติดตั้ง และวันนัดช่างก่อนกดซื้อ"
+  },
+  {
+    question: "รุ่นนี้เหมาะกับห้องขนาดไหน",
+    answer:
+      "หน้าสินค้ามีตัวเลือกประมาณ 9,000, 12,000, 18,000 และ 23,200 BTU โดยควรเลือกจากขนาดห้อง ทิศแดด ความสูงฝ้า จำนวนคน และการใช้งานกลางวัน ไม่ควรเลือกจากพื้นที่ห้องอย่างเดียว"
+  },
+  {
+    question: "ราคาที่เห็นรวมติดตั้งไหม",
+    answer:
+      "ต้องเช็กหน้าร้านและตัวเลือกบริการติดตั้งทุกครั้ง เพราะราคาหน้าโปรอาจเป็นราคาเครื่อง ส่วนบริการติดตั้งและค่าอุปกรณ์เพิ่มอาจมีเงื่อนไขแยก"
+  },
+  {
+    question: "ทำไม Friendsay ไม่เขียนว่ายอดขายกี่เครื่อง",
+    answer:
+      "เพราะหน้าที่เก็บข้อมูลยังไม่แสดงยอดขายจริงชัดเจน เราจึงใช้สถานะ review_signal_pass จากคะแนนและรีวิวแทน เพื่อไม่เติมตัวเลขเอง"
+  }
+];
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Review",
@@ -28,6 +115,19 @@ const jsonLd = {
   dateModified: product.updated,
   isBasedOn: product.sourceUrl
 };
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer
+    }
+  }))
+};
 ---
 
 <BaseLayout
@@ -36,6 +136,7 @@ const jsonLd = {
   canonical="https://friendsay.com/th/reviews/candy-vpct-vpgt-air-conditioner/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
 
   <section class="air-review-hero">
     <img src={product.image.url} alt={product.image.alt} loading="eager" />
@@ -43,14 +144,14 @@ const jsonLd = {
     <div class="container air-review-hero-inner">
       <div class="air-review-title">
         <p class="eyebrow">Research review / Shopee Thailand 2026</p>
-        <h1>รีวิว {product.name}: แอร์อินเวอร์เตอร์ราคาน่าสนใจที่ต้องดูเรื่องติดตั้งให้ชัดก่อนซื้อ</h1>
+        <h1>รีวิว {product.name}: ตัวคุ้มที่น่าซื้อ ถ้าคุณเช็กติดตั้งให้จบก่อน</h1>
         <p>
-          รุ่นนี้เป็นตัวอย่างแรกของหมวดแอร์ติดผนัง Friendsay ที่เราเริ่มจากข้อมูล Shopee จริง รีวิวผู้ซื้อจริง และเขียนแบบเพื่อนเตือนเพื่อน:
-          เห็นข้อดีให้บอกตรง เห็นจุดเสี่ยงก็ต้องบอกให้ทันก่อนกดซื้อ
+          ไม่ใช่รีวิวแบบชมอย่างเดียว รุ่นนี้น่าสนใจจริงจากฐานรีวิวและราคา แต่คำถามที่ทำให้ซื้อแล้วไม่พลาดคือ:
+          ห้องคุณควรใช้กี่ BTU, ราคานี้รวมอะไรบ้าง, และช่างจะติดตั้งได้เมื่อไหร่
         </p>
         <div class="air-review-actions">
-          <a class="button button-primary" href="#verdict">อ่านคำตอบสั้นๆ</a>
-          <a class="button button-dark" href="#buy">เช็กราคา</a>
+          <a class="button button-primary" href="#verdict">ดูคำตอบ 30 วินาที</a>
+          <a class="button button-dark" href="#questions">เช็กลิสต์ก่อนซื้อ</a>
         </div>
       </div>
 
@@ -58,8 +159,7 @@ const jsonLd = {
         <span class="badge badge-coral">{product.statusLabel}</span>
         <strong>{product.score.toFixed(1)}/10</strong>
         <p>
-          น่าดูมากสำหรับคนที่อยากได้แอร์อินเวอร์เตอร์ราคาเข้าถึงง่ายและมีรีวิวเยอะ แต่ยังไม่ควรกดซื้อจากราคาอย่างเดียว
-          เพราะงานติดตั้งและรุ่นย่อยคือจุดที่ต้องเช็กให้ครบ
+          คำตอบสั้นๆ: น่าดูมาก แต่ต้องซื้อแบบมีเช็กลิสต์ ไม่ใช่กดเพราะเห็นราคาโปรอย่างเดียว
         </p>
         <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
       </aside>
@@ -100,7 +200,21 @@ const jsonLd = {
           </p>
         </div>
 
-        <div class="air-quick-grid" id="verdict">
+        <section class="air-decision-section" id="verdict">
+          <p class="eyebrow">30-second verdict</p>
+          <h2>คำตอบแบบไม่อ้อม: รุ่นนี้น่าดูมาก แต่ต้องซื้อให้ถูกเงื่อนไข</h2>
+          <div class="air-decision-grid">
+            {decisionCards.map((item) => (
+              <article>
+                <span>{item.label}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <div class="air-quick-grid air-fit-grid">
           <div class="soft-card">
             <h2>เหมาะกับใคร</h2>
             <p>{product.bestFor}</p>
@@ -110,6 +224,20 @@ const jsonLd = {
             <p>{product.notFor}</p>
           </div>
         </div>
+
+        <section class="air-real-life-section" id="scenes">
+          <p class="eyebrow">Real-life fit</p>
+          <h2>ถ้าเป็นห้องของคุณ ควรคิดแบบไหน</h2>
+          <div class="air-scene-grid">
+            {buyerScenes.map((scene) => (
+              <article>
+                <span>{scene.label}</span>
+                <strong>{scene.fit}</strong>
+                <p>{scene.note}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <h2 id="summary">สรุปก่อนอ่านยาว</h2>
         <p>
@@ -216,6 +344,25 @@ const jsonLd = {
           {product.watch.map((item) => <span>{item}</span>)}
         </div>
 
+        <section class="air-cost-section" id="cost">
+          <p class="eyebrow">True cost check</p>
+          <h2>ราคาเครื่องไม่ใช่ราคาสุดท้ายเสมอไป</h2>
+          <p>
+            คนซื้อแอร์พลาดกันตรงนี้บ่อย: เห็นราคาเครื่องแล้วคิดว่าเป็นงบทั้งหมด แต่ความจริงยังมีเรื่องติดตั้ง
+            อุปกรณ์หน้างาน และความพร้อมของห้อง รุ่นนี้จึงควรถูกอ่านเป็น “ดีลที่น่าสนใจหลังคำนวณต้นทุนจริง”
+            ไม่ใช่ดีลที่จบตั้งแต่เห็นราคาแรก
+          </p>
+          <div class="air-cost-grid">
+            {costChecks.map((item) => (
+              <article>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <p>{item.note}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <h2 id="install">เรื่องติดตั้งคือหัวใจของรีวิวแอร์</h2>
         <p>
           ถ้า Friendsay จะทำหมวดแอร์ให้เป็นคลังข้อมูลที่คนไทยไว้ใจได้ เราต้องเขียนเรื่องติดตั้งละเอียดพอๆ กับตัวเครื่อง
@@ -283,6 +430,27 @@ const jsonLd = {
           หนึ่ง ห้องคุณควรใช้กี่ BTU จริงๆ สอง คุณต้องการรวมติดตั้งเลยหรือซื้อเครื่องอย่างเดียวแล้วหาช่างเอง
           สาม คุณให้ค่าน้ำหนักกับแบรนด์ ศูนย์บริการ และประกันมากแค่ไหน ถ้าตอบสามข้อนี้ได้ การเลือกจะง่ายกว่าการไล่ดูดาวทีละรุ่นมาก
         </p>
+        <div class="air-alternative-grid">
+          {alternativeCards.map((item) => (
+            <article class={item.name.startsWith("CANDY") ? "is-current" : ""}>
+              <span>{item.role}</span>
+              <strong>{item.name}</strong>
+              <p>{item.note}</p>
+            </article>
+          ))}
+        </div>
+
+        <section class="air-questions-section" id="questions">
+          <p class="eyebrow">Before you buy</p>
+          <h2>ก่อนกดซื้อ ให้ถามร้าน 6 ข้อนี้</h2>
+          <p>
+            ถ้าร้านตอบได้ชัด คุณจะซื้อสบายใจกว่าเดิมมาก แต่ถ้าตอบคลุมเครือหรือเลี่ยงคำถาม
+            ต่อให้ราคาน่าสนใจก็ควรชะลอก่อน เพราะปัญหาแอร์ส่วนใหญ่ไม่ได้เกิดตอนกดสั่งซื้อ แต่เกิดตอนติดตั้งและตอนเคลม
+          </p>
+          <ol class="air-question-list">
+            {askBeforeBuy.map((item) => <li>{item}</li>)}
+          </ol>
+        </section>
 
         <h2 id="buy">ควรซื้อช่องทางไหนดี</h2>
         <p>
@@ -306,6 +474,19 @@ const jsonLd = {
           ควรเทียบ TCL, Xiaomi, Midea หรือร้าน official อื่นก่อนตัดสินใจ
         </p>
 
+        <section class="air-faq-section" id="faq">
+          <p class="eyebrow">FAQ</p>
+          <h2>คำถามที่คนกำลังจะซื้อแอร์รุ่นนี้น่าจะอยากรู้</h2>
+          <div class="air-faq-list">
+            {faqs.map((faq) => (
+              <details>
+                <summary>{faq.question}</summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         <div class="air-note">
           <strong>แหล่งข้อมูลที่ใช้ในรอบนี้</strong>
           <p>
@@ -319,17 +500,21 @@ const jsonLd = {
 
       <aside class="toc" aria-label="สารบัญ">
         <strong>ในหน้านี้</strong>
-        <a href="#verdict">เหมาะกับใคร</a>
+        <a href="#verdict">คำตอบเร็ว</a>
+        <a href="#scenes">ใช้กับห้องแบบไหน</a>
         <a href="#summary">สรุปเร็ว</a>
         <a href="#score">คะแนน</a>
         <a href="#btu">เลือก BTU</a>
         <a href="#good">ข้อดี</a>
         <a href="#watch">จุดระวัง</a>
+        <a href="#cost">ต้นทุนจริง</a>
         <a href="#install">ติดตั้ง</a>
         <a href="#warranty">ประกัน</a>
         <a href="#review-signals">เสียงผู้ซื้อ</a>
         <a href="#compare">เทียบรุ่นอื่น</a>
+        <a href="#questions">ถามร้านก่อนซื้อ</a>
         <a href="#buy">เช็กราคา</a>
+        <a href="#faq">FAQ</a>
         <a href="#final">สรุป</a>
       </aside>
     </div>
