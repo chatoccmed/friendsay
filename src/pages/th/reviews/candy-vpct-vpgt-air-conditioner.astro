@@ -6,6 +6,15 @@ import { candyAirConditioner as product } from "../../../data/airConditioners";
 
 const premiumHeroImage = "/images/air-conditioners/candy-vpct-reference-lifestyle-gen.png";
 const productShowcaseImage = "/images/air-conditioners/candy-vpct-reference-installation-gen.png";
+const decisionImage = "/images/air-conditioners/candy-vpct-gen-decision-90s.jpg";
+const roomLifestyleImage = "/images/air-conditioners/candy-vpct-gen-room-lifestyle.jpg";
+const installProofImage = "/images/air-conditioners/candy-vpct-gen-install-proof.jpg";
+const reviewCoolingImage = "/images/air-conditioners/candy-vpct-gen-review-cooling.jpg";
+const reviewScheduleImage = "/images/air-conditioners/candy-vpct-gen-review-schedule.jpg";
+const reviewQuietImage = "/images/air-conditioners/candy-vpct-gen-review-quiet-night.jpg";
+const reviewPriceServiceImage = "/images/air-conditioners/candy-vpct-gen-review-price-service.jpg";
+const costChecklistImage = "/images/air-conditioners/candy-vpct-gen-cost-checklist.jpg";
+const installChecklistImage = "/images/air-conditioners/candy-vpct-gen-install-checklist.jpg";
 
 const realShopImages = [
   {
@@ -34,13 +43,13 @@ const realShopImages = [
 
 const reviewPhotoWall = [
   {
-    image: premiumHeroImage,
+    image: roomLifestyleImage,
     alt: `ภาพ Gen จากภาพสินค้าจริงของ ${product.name} ในห้องคอนโดสว่างสะอาด`,
     label: "Gen จากภาพจริง",
     title: "จำลองให้เห็นว่าอยู่ในห้องจริงแล้วหน้าตาประมาณไหน"
   },
   {
-    image: productShowcaseImage,
+    image: installProofImage,
     alt: `ภาพ Gen จากภาพสินค้าจริงของ ${product.name} พร้อมคอยล์ร้อน รีโมต ท่อ และอุปกรณ์ติดตั้ง`,
     label: "Gen จากภาพจริง",
     title: "จำลองชุดติดตั้งและของที่ควรถามร้านก่อนจ่าย"
@@ -49,7 +58,7 @@ const reviewPhotoWall = [
 
 const realReviewSnapshots = [
   {
-    image: realShopImages[0].image,
+    image: reviewCoolingImage,
     buyer: "n*****0",
     date: "18 มิ.ย. 2025",
     variation: "12000 BTU-1",
@@ -58,7 +67,7 @@ const realReviewSnapshots = [
     takeaway: "ถ้ากำลังเล็ง 12,000 BTU รีวิวแบบนี้ช่วยให้เห็นว่ามีคนใช้จริงแล้วโอเคกับมัน"
   },
   {
-    image: productShowcaseImage,
+    image: reviewScheduleImage,
     buyer: "028...nan",
     date: "30 พ.ค. 2026",
     variation: "9000 BTU-1",
@@ -67,7 +76,7 @@ const realReviewSnapshots = [
     takeaway: "อันนี้เป็นรีวิวที่ควรอ่าน เพราะแอร์ดีแค่ไหน ถ้าช่างเลื่อนนานก็หงุดหงิดได้"
   },
   {
-    image: premiumHeroImage,
+    image: reviewQuietImage,
     buyer: "jeepn29",
     date: "21 เม.ย. 2026",
     variation: "12000 BTU-1",
@@ -76,7 +85,7 @@ const realReviewSnapshots = [
     takeaway: "ถ้าจะติดห้องนอนหรือคอนโด คำว่าเย็นเร็วกับเสียงเงียบนี่ควรตามอ่านหลาย ๆ รีวิว"
   },
   {
-    image: productShowcaseImage,
+    image: reviewPriceServiceImage,
     buyer: "j*****a",
     date: "12 ส.ค. 2025",
     variation: "9000 BTU-1",
@@ -255,7 +264,7 @@ const faqJsonLd = {
 
       <div class="air-cockpit-grid">
         <article class="air-cockpit-verdict">
-          <img src={productShowcaseImage} alt={`ภาพสินค้า ${product.name} สำหรับสรุปก่อนซื้อ`} loading="lazy" />
+          <img src={decisionImage} alt="ภาพโต๊ะตัดสินใจก่อนซื้อแอร์ มีมือถือ แปลนห้อง สายวัด และเครื่องคิดเลข" loading="lazy" />
           <div>
             <span>{product.statusLabel}</span>
             <strong>{product.score.toFixed(1)}/10</strong>
@@ -308,7 +317,7 @@ const faqJsonLd = {
           </div>
         </div>
 
-        <div class="air-source-photo-grid" aria-label="ภาพสินค้าจริงจากหน้าร้าน Shopee">
+        <div class="air-source-photo-grid" aria-label="ภาพสินค้าจริงแบบพื้นขาวจากหน้าสินค้า Thisshop">
           {realShopImages.map((item) => (
             <figure>
               <img src={item.image} alt={item.cleanAlt ?? item.alt} loading="lazy" />
@@ -348,7 +357,7 @@ const faqJsonLd = {
         </div>
 
         <p class="air-proof-note">
-          ภาพจริง 2 ใบบนมาจากหน้าร้าน Shopee ส่วนภาพห้องและภาพติดตั้งเป็นภาพ Gen ที่สร้างโดยอิงหน้าตาเครื่องจากภาพจริง
+          ภาพจริง 2 ใบบนมาจากหน้าสินค้า Thisshop ส่วนภาพห้อง ภาพติดตั้ง และภาพประกอบรีวิวเป็นภาพ Gen ที่สร้างให้ตรงกับประเด็นของแต่ละช่วง
           ส่วนข้อความรีวิวเป็นการหยิบประเด็นจากรีวิวผู้ซื้อมาเล่าให้สั้นลง ก่อนจ่ายเงินจริงควรกดดูรีวิวล่าสุดในร้านอีกครั้ง เพราะราคา โปร และคิวช่างเปลี่ยนได้ตลอด
         </p>
       </section>
@@ -441,7 +450,7 @@ const faqJsonLd = {
             ใช้ตารางนี้เป็น checklist สั้น ๆ ก่อนกดซื้อ ถ้าร้านตอบ 4 ช่องนี้ชัด โอกาสเจองบบานจะลดลงเยอะ
           </p>
           <figure class="air-wide-figure">
-            <img src={productShowcaseImage} alt={`ภาพ Gen จากภาพสินค้าจริงของ ${product.name} พร้อมอุปกรณ์ที่เกี่ยวกับต้นทุนติดตั้ง`} loading="lazy" />
+            <img src={costChecklistImage} alt={`ภาพ Gen สำหรับเช็กต้นทุนรวมของ ${product.name} มีท่อทองแดง ท่อน้ำทิ้ง เครื่องคิดเลข และอุปกรณ์ติดตั้ง`} loading="lazy" />
             <figcaption>
               ภาพ Gen จากภาพสินค้าจริง: ราคาเครื่องเป็นแค่จุดเริ่มต้น ต้องรวมค่าอุปกรณ์เพิ่ม เงื่อนไขติดตั้ง และหลักฐานประกันด้วย
             </figcaption>
@@ -462,7 +471,7 @@ const faqJsonLd = {
           ส่วนติดตั้งขอให้ดูเป็น “งานหน้างาน” ไม่ใช่แค่บริการเสริมในหน้าสินค้า สิ่งที่ควรถามให้จบมีแค่นี้ครับ
         </p>
         <figure class="air-wide-figure">
-          <img src={productShowcaseImage} alt={`ภาพ Gen จากภาพสินค้าจริงของ ${product.name} พร้อมท่อทองแดง ท่อน้ำทิ้ง รีโมต และอุปกรณ์ติดตั้ง`} loading="lazy" />
+          <img src={installChecklistImage} alt={`ภาพ Gen สำหรับเช็กงานติดตั้งของ ${product.name} มีฉากรับผนัง ท่อทองแดง ท่อน้ำทิ้ง และช่างวัดระดับ`} loading="lazy" />
           <figcaption>
             ภาพ Gen จากภาพสินค้าจริง: งานติดตั้งที่ดีต้องคิดก่อนเจาะ ท่อน้ำทิ้ง ท่อทองแดง รางครอบท่อ และจุดวางคอยล์ร้อนมีผลกับการใช้งานระยะยาว
           </figcaption>
