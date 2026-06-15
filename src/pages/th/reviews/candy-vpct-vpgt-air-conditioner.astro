@@ -7,24 +7,6 @@ import { candyAirConditioner as product } from "../../../data/airConditioners";
 const premiumHeroImage = "/images/air-conditioners/candy-vpct-premium-hero.png";
 const productShowcaseImage = "/images/air-conditioners/candy-vpct-product-showcase.png";
 
-const decisionCards = [
-  {
-    label: "ซื้อได้ ถ้า",
-    title: "คุณอยากได้แอร์อินเวอร์เตอร์ราคาเริ่มดีและรีวิวเยอะ",
-    body: "จุดที่ทำให้รุ่นนี้น่าสนใจคือฐานรีวิวใหญ่พอให้ดูภาพจริงได้หลายมุม เหมาะกับคนที่อยากเริ่มจากตัวเลือกที่มี social proof แข็งแรง"
-  },
-  {
-    label: "รอก่อน ถ้า",
-    title: "คุณยังไม่รู้ว่าห้องควรใช้กี่ BTU หรือคิวช่างว่างเมื่อไหร่",
-    body: "แอร์ไม่เหมือนของชิ้นเล็ก ซื้อผิดแล้วแก้ยากกว่า ควรถามเรื่อง BTU จุดวางคอยล์ร้อน และวันติดตั้งก่อนจ่ายเงิน"
-  },
-  {
-    label: "ข้ามได้ ถ้า",
-    title: "คุณอยากได้เงื่อนไขติดตั้ง/ประกันแบบชัดที่สุดตั้งแต่หน้าแรก",
-    body: "รุ่นนี้ยังต้องอ่านรายละเอียดและถามร้านเพิ่ม โดยเฉพาะค่าอุปกรณ์ติดตั้งและความต่างของรุ่นย่อย VPCT/VPGT"
-  }
-];
-
 const buyerScenes = [
   {
     label: "คอนโด 1 ห้องนอน",
@@ -75,11 +57,116 @@ const visualGuides = [
   }
 ];
 
+const reviewPhotoWall = [
+  {
+    image: productShowcaseImage,
+    alt: `ภาพสินค้า ${product.name} พร้อมคอยล์ร้อน รีโมต และอุปกรณ์ติดตั้ง`,
+    label: "ตัวสินค้า",
+    title: "ดูทรงเครื่องและชุดที่ควรถามร้าน"
+  },
+  {
+    image: premiumHeroImage,
+    alt: `${product.name} ในห้องคอนโดสว่างสะอาด`,
+    label: "ภาพใช้งาน",
+    title: "จินตนาการง่ายขึ้นว่าอยู่ในห้องจริงเป็นอย่างไร"
+  },
+  {
+    image: "/images/air-conditioners/wall-ac-installation-check.png",
+    alt: "ภาพช่างติดตั้งแอร์และอุปกรณ์หน้างาน",
+    label: "ติดตั้ง",
+    title: "จุดที่รีวิวผู้ซื้อช่วยเตือนมากที่สุด"
+  },
+  {
+    image: "/images/air-conditioners/wall-ac-btu-bedroom.png",
+    alt: "ห้องนอนคอนโดพร้อมแอร์ติดผนังและสายวัด",
+    label: "BTU",
+    title: "ห้องเล็ก ห้องแดดแรง ต้องคิดไม่เหมือนกัน"
+  },
+  {
+    image: "/images/air-conditioners/wall-ac-cost-warranty.png",
+    alt: "รีโมต เครื่องคิดเลข และเอกสารประกันสำหรับคำนวณต้นทุนจริง",
+    label: "ต้นทุนจริง",
+    title: "ราคาจบไม่ใช่แค่ราคาเครื่อง"
+  }
+];
+
+const realReviewSnapshots = [
+  {
+    image: productShowcaseImage,
+    buyer: "n*****0",
+    date: "18 มิ.ย. 2025",
+    variation: "12000 BTU-1",
+    quote: "แอร์เย็นเร็วมาก",
+    signal: "ชมความคุ้มค่า ความเงียบ ดีไซน์ และการแพ็กสินค้า",
+    takeaway: "เป็นรีวิวบวกที่ช่วยยืนยันว่า 12,000 BTU เป็นตัวเลือกที่คนซื้อจริงใช้งานแล้วพอใจ"
+  },
+  {
+    image: "/images/air-conditioners/wall-ac-installation-check.png",
+    buyer: "028...nan",
+    date: "30 พ.ค. 2026",
+    variation: "9000 BTU-1",
+    quote: "ช่างเลื่อนออกไป 9 วัน",
+    signal: "ตัวเครื่องเย็นไวและเสียงไม่ดัง แต่คิวติดตั้งต้องเผื่อเวลา",
+    takeaway: "นี่คือรีวิวที่สำคัญมาก เพราะช่วยเตือนว่าแอร์ดีอย่างเดียวไม่พอ ต้องเช็กวันติดตั้งก่อนจ่าย"
+  },
+  {
+    image: premiumHeroImage,
+    buyer: "jeepn29",
+    date: "21 เม.ย. 2026",
+    variation: "12000 BTU-1",
+    quote: "เย็นเร็ว เสียงเงียบ",
+    signal: "ซื้อช่วงโปร ราคาดี ร้านแพ็กของดี และมีแนวโน้มซื้อซ้ำ",
+    takeaway: "เหมาะใช้เป็นสัญญาณเรื่องความพอใจหลังใช้งานจริง โดยเฉพาะห้องนอนหรือคอนโด"
+  },
+  {
+    image: "/images/air-conditioners/wall-ac-cost-warranty.png",
+    buyer: "j*****a",
+    date: "12 ส.ค. 2025",
+    variation: "9000 BTU-1",
+    quote: "บริการดี",
+    signal: "พูดถึงราคาแบบรวมติดตั้งและช่าง Q-Chang",
+    takeaway: "ใช้เตือนให้คนอ่านเทียบราคาเครื่องกับราคาติดตั้งจริง ไม่ใช่ดูเฉพาะตัวเลขหน้าโปร"
+  }
+];
+
 const costChecks = [
   { label: "ราคาเครื่อง", value: "ประมาณ 7,995 บาท", note: "ตัวเลขที่พบหลังคูปอง ณ วันเก็บข้อมูล ราคาเปลี่ยนได้" },
   { label: "ติดตั้ง", value: "ต้องเช็กว่ารวมไหม", note: "ถ้าซื้อบริการติดตั้งเสริม ต้องดูวันนัดและขอบเขตงานมาตรฐาน" },
   { label: "อุปกรณ์เพิ่ม", value: "ถามก่อนจ่าย", note: "รางครอบท่อ ขาแขวน สายไฟ ท่อยาวเกิน และงานเจาะพิเศษอาจมีค่าเพิ่ม" },
   { label: "ประกัน", value: "1 ปี / 5 ปี", note: "ข้อมูลหน้าสินค้าพูดถึงตัวเครื่อง 1 ปีและคอมเพรสเซอร์ 5 ปี ควรยืนยันกับร้าน" }
+];
+
+const btuBuyerGuide = [
+  {
+    btu: "9,000 BTU",
+    room: "ห้องนอนเล็ก / คอนโด",
+    fit: "เหมาะเมื่อห้องไม่รับแดดจัดและใช้นอนเป็นหลัก",
+    caution: "ถ้ากระจกเยอะหรือแดดบ่ายแรง ให้ถามร้านก่อน"
+  },
+  {
+    btu: "12,000 BTU",
+    room: "ห้องนอนกลาง",
+    fit: "ตัวเลือกเริ่มต้นที่คนซื้อจริงพูดถึงบ่อย เหมาะกับห้องที่ต้องการเย็นไวขึ้น",
+    caution: "ต้องเช็กพื้นที่จริง ไม่ใช่เลือกเพราะราคาใกล้ 9,000 BTU อย่างเดียว"
+  },
+  {
+    btu: "18,000 BTU",
+    room: "ห้องนั่งเล่น / ห้องใหญ่",
+    fit: "เหมาะเมื่อพื้นที่เปิดกว้างหรือมีคนอยู่หลายคน",
+    caution: "ค่าเครื่องและค่าติดตั้งสูงขึ้น ต้องเช็กไฟและจุดวางคอยล์ร้อน"
+  },
+  {
+    btu: "23,200 BTU",
+    room: "ห้องใหญ่ / แดดแรง",
+    fit: "เหมาะกับภาระความร้อนสูงกว่าห้องนอนทั่วไป",
+    caution: "ไม่ควรซื้อเผื่อแบบเดา ต้องให้ร้านช่วยประเมิน"
+  }
+];
+
+const cockpitSteps = [
+  { label: "1", title: "ดูรีวิวจริง", body: "เช็กว่าเสียงชมและเสียงเตือนซ้ำเรื่องอะไร โดยเฉพาะคิวติดตั้ง" },
+  { label: "2", title: "เลือก BTU", body: "ดูขนาดห้อง แดด กระจก ความสูงฝ้า และจำนวนคนในห้อง" },
+  { label: "3", title: "คิดราคาจบ", body: "รวมเครื่อง ติดตั้ง อุปกรณ์เพิ่ม วันนัดช่าง และเงื่อนไขประกัน" }
 ];
 
 const askBeforeBuy = [
@@ -180,8 +267,8 @@ const faqJsonLd = {
           ห้องคุณควรใช้กี่ BTU, ราคานี้รวมอะไรบ้าง, และช่างจะติดตั้งได้เมื่อไหร่
         </p>
         <div class="air-review-actions">
-          <a class="button button-primary" href="#verdict">ดูคำตอบ 30 วินาที</a>
-          <a class="button button-dark" href="#questions">เช็กลิสต์ก่อนซื้อ</a>
+          <a class="button button-primary" href="#buying-cockpit">ดูคำตอบ 90 วินาที</a>
+          <a class="button button-dark" href="#review-proof">ดูรีวิวผู้ซื้อจริง</a>
         </div>
       </div>
 
@@ -196,6 +283,51 @@ const faqJsonLd = {
         </p>
         <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
       </aside>
+    </div>
+  </section>
+
+  <section class="air-decision-cockpit" id="buying-cockpit" aria-label="สรุปตัดสินใจซื้อแบบเร็ว">
+    <div class="wide-container air-cockpit-inner">
+      <div class="air-cockpit-head">
+        <p class="eyebrow">Buyer decision cockpit</p>
+        <h2>ตัดสินใจซื้อใน 90 วินาที</h2>
+        <p>
+          ถ้าไม่อยากอ่านยาว ให้เริ่มจากตรงนี้ก่อน: รุ่นนี้น่าดูมากจากฐานรีวิว แต่ต้องเลือก BTU และเช็กค่าติดตั้งให้จบก่อนจ่ายเงิน
+        </p>
+      </div>
+
+      <div class="air-cockpit-grid">
+        <article class="air-cockpit-verdict">
+          <img src={productShowcaseImage} alt={`ภาพสินค้า ${product.name} สำหรับสรุปก่อนซื้อ`} loading="lazy" />
+          <div>
+            <span>{product.statusLabel}</span>
+            <strong>{product.score.toFixed(1)}/10</strong>
+            <p>น่าซื้อเข้ารอบ shortlist แรก ถ้าคุณถามร้านเรื่องติดตั้ง BTU และประกันให้ชัดก่อน</p>
+          </div>
+        </article>
+
+        <article class="air-cockpit-panel air-cockpit-steps">
+          <span class="air-panel-label">ลำดับคิดก่อนจ่าย</span>
+          {cockpitSteps.map((step) => (
+            <div>
+              <b>{step.label}</b>
+              <strong>{step.title}</strong>
+              <p>{step.body}</p>
+            </div>
+          ))}
+        </article>
+
+        <article class="air-cockpit-panel air-cockpit-price">
+          <span class="air-panel-label">ราคาที่ต้องคิดจริง</span>
+          <strong>{product.priceLabel}</strong>
+          <div>
+            {costChecks.map((item) => (
+              <span>{item.label}: {item.value}</span>
+            ))}
+          </div>
+          <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
+        </article>
+      </div>
     </div>
   </section>
 
@@ -220,6 +352,79 @@ const faqJsonLd = {
     </div>
   </section>
 
+  <section class="section air-proof-stage">
+    <div class="wide-container">
+      <section class="air-review-proof-section" id="review-proof" aria-label="ภาพและรีวิวผู้ซื้อจริง">
+        <div class="air-review-proof-head">
+          <div>
+            <p class="eyebrow">Photo + real review proof</p>
+            <h2>ก่อนอ่านสเปกยาว ๆ ดูภาพกับรีวิวจริงก่อน</h2>
+            <p>
+              คนซื้อแอร์ควรดูสองอย่างคู่กัน: ภาพสินค้า/งานติดตั้ง และรีวิวจากผู้ซื้อจริง เพราะแอร์ไม่ได้จบแค่เย็น แต่จบที่ติดตั้งเรียบร้อย ราคาไม่บาน และบริการหลังซื้อพอไว้ใจได้
+            </p>
+          </div>
+          <div class="air-review-proof-stats" aria-label="ตัวเลขรีวิวจาก Shopee">
+            <strong>{product.rating.toFixed(1)}/5</strong>
+            <span>{product.ratingsCount.toLocaleString("th-TH")}+ คะแนน</span>
+            <span>{product.commentsCount.toLocaleString("th-TH")}+ คอมเมนต์</span>
+            <span>{product.mediaCount.toLocaleString("th-TH")}+ รีวิวมีภาพ/วิดีโอ</span>
+          </div>
+        </div>
+
+        <div class="air-photo-wall" aria-label="ภาพประกอบการตัดสินใจก่อนซื้อ">
+          {reviewPhotoWall.map((item) => (
+            <figure>
+              <img src={item.image} alt={item.alt} loading="lazy" />
+              <figcaption>
+                <span>{item.label}</span>
+                <strong>{item.title}</strong>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <div class="air-real-review-grid" aria-label="ตัวอย่างรีวิวผู้ซื้อจริงที่พบจาก Shopee">
+          {realReviewSnapshots.map((item) => (
+            <article>
+              <img src={item.image} alt={`ภาพประกอบรีวิวจากผู้ซื้อ ${item.buyer}`} loading="lazy" />
+              <div>
+                <span>{item.buyer} • {item.date} • {item.variation}</span>
+                <strong>“{item.quote}”</strong>
+                <p>{item.signal}</p>
+                <em>{item.takeaway}</em>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <p class="air-proof-note">
+          หมายเหตุ: ส่วนนี้ยกเฉพาะคำสั้น ๆ จากรีวิวที่มองเห็นบน Shopee วันที่ 15 มิถุนายน 2026 และสรุปเป็นภาษาของ Friendsay เพื่อไม่ตัดบริบท รีวิวฉบับเต็มควรกดดูหน้าร้านก่อนซื้อทุกครั้ง
+        </p>
+      </section>
+    </div>
+  </section>
+
+  <section class="section air-btu-stage">
+    <div class="wide-container">
+      <div class="air-btu-selector" aria-label="ตัวช่วยเลือก BTU แบบเร็ว">
+        <div>
+          <p class="eyebrow">BTU fast picker</p>
+          <h3>เลือก BTU ให้ตรงห้องก่อนดูราคา</h3>
+        </div>
+        <div class="air-btu-selector-grid">
+          {btuBuyerGuide.map((item) => (
+            <article>
+              <span>{item.btu}</span>
+              <strong>{item.room}</strong>
+              <p>{item.fit}</p>
+              <em>{item.caution}</em>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container article-layout">
       <article class="article-body">
@@ -232,39 +437,6 @@ const faqJsonLd = {
             บทความนี้ควรอัปเดตตัวเลขใหม่ก่อนใช้เป็นรีวิวฉบับสมบูรณ์
           </p>
         </div>
-
-        <section class="air-product-snapshot" aria-label="ภาพสินค้าและสิ่งที่ควรเช็กก่อนซื้อ">
-          <figure>
-            <img src={productShowcaseImage} alt={`ภาพสินค้า ${product.name} พร้อมคอยล์ร้อน รีโมต และชุดท่อแอร์`} loading="lazy" />
-          </figure>
-          <div>
-            <p class="eyebrow">Product look</p>
-            <h2>เห็นหน้าตาตัวเครื่องก่อน แล้วค่อยตัดสินใจเรื่องราคา</h2>
-            <p>
-              ภาพนี้ทำใหม่จากภาพอ้างอิงสินค้าจริง เพื่อให้เห็นทรงตัวเครื่อง ชุดคอยล์ร้อน รีโมต และอุปกรณ์ที่ควรถามร้านก่อนซื้อในมุมเดียว
-            </p>
-            <div class="air-snapshot-pills" aria-label="จุดที่ควรดูจากภาพสินค้า">
-              <span>ตัวเครื่องในบ้าน</span>
-              <span>คอยล์ร้อน</span>
-              <span>รีโมต</span>
-              <span>ท่อและอุปกรณ์ติดตั้ง</span>
-            </div>
-          </div>
-        </section>
-
-        <section class="air-decision-section" id="verdict">
-          <p class="eyebrow">30-second verdict</p>
-          <h2>คำตอบแบบไม่อ้อม: รุ่นนี้น่าดูมาก แต่ต้องซื้อให้ถูกเงื่อนไข</h2>
-          <div class="air-decision-grid">
-            {decisionCards.map((item) => (
-              <article>
-                <span>{item.label}</span>
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
-              </article>
-            ))}
-          </div>
-        </section>
 
         <section class="air-visual-strip" aria-label="ภาพช่วยตัดสินใจก่อนซื้อ">
           {visualGuides.map((item) => (
@@ -583,7 +755,8 @@ const faqJsonLd = {
 
       <aside class="toc" aria-label="สารบัญ">
         <strong>ในหน้านี้</strong>
-        <a href="#verdict">คำตอบเร็ว</a>
+        <a href="#buying-cockpit">คำตอบเร็ว</a>
+        <a href="#review-proof">รีวิวจริง</a>
         <a href="#scenes">ใช้กับห้องแบบไหน</a>
         <a href="#summary">สรุปเร็ว</a>
         <a href="#score">คะแนน</a>
@@ -602,4 +775,11 @@ const faqJsonLd = {
       </aside>
     </div>
   </section>
+
+  <div class="air-review-page-spacer" aria-hidden="true"></div>
+
+  <nav class="air-sticky-buy" aria-label="แถบช่วยตัดสินใจซื้อ">
+    <a href="#review-proof">รีวิวจริง</a>
+    <a href={product.links.shopee}>เช็กราคา Shopee</a>
+  </nav>
 </BaseLayout>
