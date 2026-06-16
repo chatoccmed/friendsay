@@ -8,7 +8,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: "แอร์ติดผนังรุ่นไหนดีใน Shopee 2026",
-  description: "หน้ารวบรวมข้อมูลแอร์ติดผนังจาก Shopee ปี 2026 โดยเริ่มจากรุ่นที่มีสัญญาณรีวิวผู้ซื้อจริงและข้อมูลเพียงพอสำหรับรีวิวละเอียด",
+  description: "หน้ารวบรวมข้อมูลแอร์ติดผนังจาก Shopee ปี 2026 โดยเริ่มจากรุ่นที่มีรีวิวผู้ซื้อจริงมากพอและข้อมูลเพียงพอสำหรับรีวิวละเอียด",
   inLanguage: "th",
   dateModified: "2026-06-15",
   author: { "@type": "Organization", name: "Friendsay" },
@@ -46,7 +46,7 @@ const jsonLd = {
           ดู BTU ให้ตรงห้อง เช็กติดตั้งให้ชัด และไม่เติมตัวเลขยอดขายถ้ายังไม่เห็นจริง
         </p>
         <div class="roundup-actions">
-          <a class="button button-primary" href="#shortlist">ดูรุ่นที่ผ่านสัญญาณรีวิว</a>
+          <a class="button button-primary" href="#shortlist">ดูรุ่นที่รีวิวผ่านเกณฑ์</a>
           <a class="button button-dark" href="/th/reviews/candy-vpct-vpgt-air-conditioner/">อ่านรีวิวตัวอย่าง</a>
         </div>
       </div>
@@ -75,7 +75,7 @@ const jsonLd = {
       </div>
       <div>
         <span>สถานะหลัก</span>
-        <strong>review_signal_pass</strong>
+        <strong>รีวิวผ่านเกณฑ์</strong>
       </div>
       <div>
         <span>ตัวเลขยอดขาย</span>
@@ -109,7 +109,7 @@ const jsonLd = {
         <article>
           <span>02</span>
           <h3>ถ้ายอดขายไม่โชว์</h3>
-          <p>ใช้สถานะ review_signal_pass เมื่อคะแนน คอมเมนต์ และรูปรีวิวมากพอ แต่จะไม่อ้างยอดขาย</p>
+          <p>ถ้าคะแนน คอมเมนต์ และรูปรีวิวมากพอ เราจะใช้ข้อมูลรีวิวแทน แต่จะไม่อ้างยอดขายเอง</p>
         </article>
         <article>
           <span>03</span>
@@ -127,8 +127,8 @@ const jsonLd = {
 
   <section class="section band" id="shortlist">
     <div class="wide-container">
-      <p class="eyebrow">Verified review signals</p>
-      <h2 class="headline">รุ่นที่ผ่านสัญญาณรีวิวรอบแรก</h2>
+      <p class="eyebrow">Review evidence</p>
+      <h2 class="headline">รุ่นที่มีรีวิวพอสำหรับรอบแรก</h2>
       <div class="air-product-grid">
         {airConditioners.map((product) => (
           <article class="product-card air-product-card" id={product.slug}>

@@ -10,11 +10,11 @@ For batch categories such as air conditioners, always start from inventory files
 - `docs/air-conditioner-shopee-discovery-keywords.csv`
 - `docs/air-conditioner-shopee-inventory-queue.md`
 
-The queue is the source of truth for what to review next. Add products as `candidate`, upgrade to `queued` after the review-signal rule passes, set to `in_progress` while writing, and set to `done` only after the page is built and verified.
+The queue is the source of truth for what to review next. Add products as `candidate`, upgrade to `queued` after the review-evidence rule passes, set to `in_progress` while writing, and set to `done` only after the page is built and verified.
 
 ## Review-Signal Rule
 
-A product is eligible when it has more than 5 visible buyer signals from ratings, comments, reviews, or media. If Shopee hides sold count, do not block the review. Mark the product as `review_signal_pass` and rely on visible buyer-review evidence.
+A product is eligible when it has more than 5 visible buyer-review evidence items from ratings, comments, reviews, or media. If Shopee hides sold count, do not block the review. Mark the product as `review_signal_pass` and rely on visible buyer-review evidence.
 
 Never invent:
 

@@ -25,7 +25,7 @@ If a reference is missing, continue with the closest available source and note t
 2. Record source data: brand, series, model, BTU or spec options, price, rating, review counts, media counts, shop, warranty, product URL, and collection date.
 3. Qualify products using the Friendsay rule: reviews, ratings, or comments must be greater than 5 for a full review.
 4. If sold count is hidden, use `review_signal_pass`. Never invent sales numbers.
-5. Select the next product by priority: high review signal, clear model or specs, trusted shop, useful comparison value.
+5. Select the next product by priority: strong review evidence, clear model or specs, trusted shop, useful comparison value.
 6. Write one review at a time using the product review operating template.
 7. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
 8. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
