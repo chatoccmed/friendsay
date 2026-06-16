@@ -15,6 +15,7 @@ When working inside the Friendsay project, read these first:
 - `docs/shopee-b-plus-d-review-system.md` when collecting Shopee data
 - `docs/air-conditioner-shopee-inventory-queue.md` for air-conditioner batch work
 - `docs/air-conditioner-shopee-data-system.md` for durable Shopee evidence and coverage rules
+- `docs/air-conditioner-shopee-collection-dashboard.md` and `docs/air-conditioner-shopee-collection-rounds.csv` to answer how many collection rounds remain
 - `docs/air-conditioner-shopee-evidence-ledger.csv` to confirm that the product has a reusable evidence id
 - `docs/air-conditioner-shopee-coverage-map.csv` to understand which search/brand/BTU rounds are complete
 - `docs/air-conditioner-shopee-review-queue.csv` for the active air-conditioner queue
@@ -58,6 +59,7 @@ If a reference is missing, continue with the closest available source and note t
 ## Shopee Collection Rules
 
 - Collect in short rounds.
+- Use the collection rounds CSV as the source of truth for what round is next and how many rounds remain.
 - Use one keyword at a time.
 - Open product pages one by one.
 - Stop when Shopee starts verification, rate limiting, or repeated blocking.

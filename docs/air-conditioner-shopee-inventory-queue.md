@@ -9,6 +9,8 @@
 - `docs/air-conditioner-shopee-review-queue.csv` คือคิวสินค้าแอร์ที่ผ่านการตรวจแล้วหรือรอทำรีวิว
 - `docs/air-conditioner-shopee-discovery-keywords.csv` คือคิวคำค้นสำหรับเก็บสินค้าเพิ่มทีละรอบ
 - `docs/air-conditioner-shopee-coverage-map.csv` คือแผนที่ว่าเก็บคำค้นไหนแล้ว และยังเหลือคำค้นไหน
+- `docs/air-conditioner-shopee-collection-dashboard.md` คือสรุปว่าต้องทำอีกกี่รอบและทำถึงไหนแล้ว
+- `docs/air-conditioner-shopee-collection-rounds.csv` คือรายการรอบงานแบบนับได้ทีละรอบ
 - `docs/air-conditioner-shopee-evidence-ledger.csv` คือบัญชีหลักฐานของแต่ละสินค้า ใช้ตรวจย้อนหลังว่าเห็นข้อมูลจากหน้าไหน วันที่เท่าไร
 - `docs/air-conditioner-shopee-2026-candidates.csv` คือสินค้าที่พบจากหน้า search แต่ยังไม่ผ่านการยืนยันหน้ารายละเอียดครบ
 - `docs/air-conditioner-shopee-2026-verified.csv` คือสินค้าที่เปิดหน้ารายละเอียดแล้วและมีข้อมูลพอสำหรับรีวิว
@@ -47,14 +49,15 @@
 
 ใช้รอบสั้นเพื่อเลี่ยงการโดน Shopee เด้ง:
 
-1. เปิดคำค้น 1 คำจาก `air-conditioner-shopee-coverage-map.csv`
-2. เก็บรายการจากหน้า search ไม่เกิน 10-20 รายการ
-3. บันทึก candidate พร้อม keyword/rank/product_url ลง `air-conditioner-shopee-2026-candidates.csv`
-4. เปิดหน้ารายละเอียดทีละ 1 สินค้า
-5. บันทึกเฉพาะข้อมูลที่หน้าแสดงจริงลง `air-conditioner-shopee-2026-verified.csv` ถ้าผ่านเกณฑ์
-6. เพิ่มแถวใน `air-conditioner-shopee-evidence-ledger.csv` ทุกครั้งที่ยืนยันสินค้า
-7. ถ้าเริ่มเจอ verification ให้หยุดทันทีและอัปเดต coverage status เป็น `blocked_by_verification`
-8. กลับมาเก็บต่อรอบถัดไป
+1. เปิดรอบถัดไปจาก `air-conditioner-shopee-collection-rounds.csv`
+2. ถ้าเป็น search round ให้เปิดคำค้น 1 คำจาก `air-conditioner-shopee-coverage-map.csv`
+3. เก็บรายการจากหน้า search ไม่เกิน 10-20 รายการ
+4. บันทึก candidate พร้อม keyword/rank/product_url ลง `air-conditioner-shopee-2026-candidates.csv`
+5. ถ้าเป็น detail round ให้เปิดหน้ารายละเอียดทีละ 1 สินค้า
+6. บันทึกเฉพาะข้อมูลที่หน้าแสดงจริงลง `air-conditioner-shopee-2026-verified.csv` ถ้าผ่านเกณฑ์
+7. เพิ่มแถวใน `air-conditioner-shopee-evidence-ledger.csv` ทุกครั้งที่ยืนยันสินค้า
+8. ถ้าเริ่มเจอ verification ให้หยุดทันทีและอัปเดต round status เป็น `blocked_by_verification`
+9. กลับมาเก็บต่อรอบถัดไป
 
 ## คิวเริ่มต้น
 

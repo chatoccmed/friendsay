@@ -177,9 +177,12 @@ research/evidence/shopee-air-conditioners/{product_key}/{capture_date}/
 
 ## ลำดับงานจากนี้
 
+ใช้ `docs/air-conditioner-shopee-collection-dashboard.md` และ `docs/air-conditioner-shopee-collection-rounds.csv` เป็นตัวนับรอบหลัก
+
 1. ขยาย detail verification จาก candidate รอบแรกให้ครบก่อน โดยเริ่มจากสินค้าที่น่าจะเป็น SKU จริง
 2. ขยาย TCL จาก pilot เป็นรีวิวเต็ม
 3. เปิดตรวจ candidate ที่น่าสนใจ: Midea Tornado EASY, Midea Numen, Hisense CE, Hisense CE/DB, CANDY PCT, TCL 24,200 BTU, Zinney ZAC-BP12A
 4. ตัด candidate ที่เป็นหน้าผ่อน/บริการ/อุปกรณ์ออก
 5. เก็บคำค้น BTU และแบรนด์ทีละรอบ
-6. เมื่อ verified inventory มี 10+ รุ่น ค่อยทำบทความรวม “แอร์ Shopee รุ่นน่าสนใจปี 2026”
+6. หลังแต่ละ search round ให้เพิ่ม detail verification wave จาก candidate ใหม่
+7. เมื่อ verified inventory มี 10+ รุ่น ค่อยทำบทความรวม “แอร์ Shopee รุ่นน่าสนใจปี 2026”
