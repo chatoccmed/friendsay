@@ -22,6 +22,12 @@ const jsonLd = {
     }))
   }
 };
+
+const reviewLinks: Record<string, string> = {
+  "candy-vpct-vpgt-series": "/th/reviews/candy-vpct-vpgt-air-conditioner/",
+  "tcl-savein-ai-series": "/th/reviews/tcl-savein-ai-air-conditioner/",
+  "xiaomi-mijia-air-inverter-eco": "/th/reviews/xiaomi-mijia-air-inverter-eco/"
+};
 ---
 
 <BaseLayout
@@ -181,8 +187,8 @@ const jsonLd = {
               <button class="button compare-toggle" type="button" data-air-compare-slug={product.slug}>
                 + เปรียบเทียบ
               </button>
-              {product.slug === "candy-vpct-vpgt-series" ? (
-                <a class="button button-primary" href="/th/reviews/candy-vpct-vpgt-air-conditioner/">อ่านรีวิวละเอียด</a>
+              {reviewLinks[product.slug] ? (
+                <a class="button button-primary" href={reviewLinks[product.slug]}>อ่านรีวิวละเอียด</a>
               ) : (
                 <a class="button" href={product.sourceUrl} target="_blank" rel="noopener">ดูแหล่งข้อมูล Shopee</a>
               )}
