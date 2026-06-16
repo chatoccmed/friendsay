@@ -1,0 +1,1285 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PriceButtons from "../../../components/PriceButtons.astro";
+import ScoreBars from "../../../components/ScoreBars.astro";
+import AirCompareTray from "../../../components/AirCompareTray.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import { airConditioners } from "../../../data/airConditioners";
+
+const product =
+  airConditioners.find((item) => item.slug === "midea-celest-msce") ?? airConditioners[3];
+
+const shopeeTarget = product.links.shopee;
+const imageLinkAttrs = {
+  href: shopeeTarget,
+  target: "_blank",
+  rel: "sponsored noopener",
+  "aria-label": "ดู Midea Celest MSCE บน Shopee",
+  "data-affiliate-link": true,
+  "data-affiliate-store": "shopee",
+  "data-affiliate-context": "review-image"
+};
+
+const heroImage = "/images/air-conditioners/midea-celest-hero-bedroom.png";
+const cleanUnitImage = "/images/air-conditioners/midea-celest-clean-unit.png";
+const productSetImage = "/images/air-conditioners/midea-celest-product-set.png";
+const btuRoomImage = "/images/air-conditioners/midea-celest-btu-room.png";
+const installPlanImage = "/images/air-conditioners/midea-celest-install-plan.png";
+const costPlanImage = "/images/air-conditioners/midea-celest-warranty-cost.png";
+const reviewGridImage = "/images/air-conditioners/midea-celest-review-desk.png";
+const shopServiceImage = "/images/air-conditioners/midea-celest-shop-service.png";
+const energyAppImage = "/images/air-conditioners/midea-celest-energy-day.png";
+const quietNightImage = "/images/air-conditioners/midea-celest-quiet-night.png";
+const reviewRoomFitImage = "/images/air-conditioners/midea-celest-review-room-fit.png";
+const reviewInstallCostImage = "/images/air-conditioners/midea-celest-review-install-cost.png";
+const reviewWarrantyDocsImage = "/images/air-conditioners/midea-celest-review-warranty-docs.png";
+const reviewWifiCheckImage = "/images/air-conditioners/midea-celest-review-wifi-check.png";
+const reviewShopServiceImage = "/images/air-conditioners/midea-celest-review-shop-service.png";
+const reviewNightComfortImage = "/images/air-conditioners/midea-celest-review-night-comfort.png";
+
+const reviewSignals = [
+  {
+    label: "ข้อ 1",
+    title: "ถ้าอยากได้ Midea ราคาดี ให้เริ่มจากรุ่นนี้เป็นตัวเทียบ",
+    body: "จุดที่ทำให้ Midea Celest MSCE น่าเข้ารอบคือราคาเริ่มต้นค่อนข้างดีเมื่อเทียบกับ BTU ที่ให้มา แต่ควรเทียบราคาพร้อมค่าติดตั้ง ไม่ใช่ดูราคาเครื่องเปล่าอย่างเดียว",
+    image: btuRoomImage
+  },
+  {
+    label: "ข้อ 2",
+    title: "เลือก BTU จากห้องจริง เพราะรุ่นนี้มีให้เลือกถึง 24,000 BTU",
+    body: "รุ่นนี้มี 9,360 / 12,000 / 18,000 / 24,000 BTU เหมาะกับคนที่อยากเทียบหลายขนาดในซีรีส์เดียว แต่ห้องแดดแรงหรือเปิดโล่งควรถามร้านพร้อมขนาดห้องก่อนเลือก",
+    image: cleanUnitImage
+  },
+  {
+    label: "ข้อ 3",
+    title: "หน้าสินค้าระบุไม่รวมติดตั้ง ต้องคิดค่าช่างแยกตั้งแต่แรก",
+    body: "จุดที่ต้องระวังของรุ่นนี้คือราคาเริ่มดูดี แต่หน้าสินค้าระบุว่าไม่รวมติดตั้ง ให้ถามค่าช่าง ท่อ ราง ขาแขวน สายไฟ งานเจาะ และค่าเดินทางให้จบก่อนเทียบกับรุ่นอื่น",
+    image: installPlanImage
+  },
+  {
+    label: "ข้อ 4",
+    title: "ประกันยาวเป็นจุดขาย แต่ต้องถามเงื่อนไขให้ชัด",
+    body: "ข้อมูลสินค้าเด่นเรื่องประกันคอมเพรสเซอร์ยาว แต่ในหน้าร้านมีรายละเอียดหลายชุด ก่อนจ่ายควรถามว่า 10 ปี / 5 ปี ครอบคลุมส่วนไหน เคลมผ่านใคร และต้องลงทะเบียนอย่างไร",
+    image: costPlanImage
+  },
+  {
+    label: "ข้อ 5",
+    title: "ถ้าอยากใช้ Wi-Fi ต้องถามก่อน เพราะอาจไม่ใช่ฟีเจอร์มาตรฐาน",
+    body: "บางคนซื้อแอร์ยุคนี้เพราะอยากคุมผ่านมือถือ แต่ข้อมูลคิวระบุว่า Wi-Fi อาจต้องซื้อเพิ่มหรือเลือกรุ่นอื่น ถ้าฟีเจอร์นี้สำคัญ ให้ถามร้านตรง ๆ ก่อนกดซื้อ",
+    image: energyAppImage
+  },
+  {
+    label: "ข้อ 6",
+    title: "ร้านไม่ใช่ official โดยตรง ให้เช็กบริการหลังซื้อให้ละเอียด",
+    body: "รุ่นนี้ขายผ่าน Lucky Plaza Online ซึ่งน่าเทียบได้ แต่ก่อนซื้อควรถามเรื่องใบเสร็จ การรับประกัน ช่องทางเคลม และความรับผิดชอบหลังติดตั้งให้เป็นลายลักษณ์อักษร",
+    image: shopServiceImage
+  }
+];
+
+const btuGuide = [
+  {
+    btu: "9,360 BTU",
+    room: "ห้องนอนเล็ก / คอนโด",
+    note: "เหมาะกับห้องนอนเล็กหรือคอนโดที่แดดไม่จัด ถ้าห้องรับแดดบ่ายหรือมีหน้าต่างใหญ่ ให้ถามร้านก่อนขยับไป 12,000 BTU"
+  },
+  {
+    btu: "12,000 BTU",
+    room: "ห้องนอนกลาง",
+    note: "เป็นขนาดที่คนเลือกบ่อย ใช้ได้กับหลายห้อง แต่ต้องดูขนาดห้องจริง ฝ้า แดด และจำนวนคน ไม่ควรเลือกเพราะราคาใกล้กันอย่างเดียว"
+  },
+  {
+    btu: "18,000 BTU",
+    room: "ห้องนั่งเล่น / ห้องใหญ่",
+    note: "เหมาะกับห้องนั่งเล่นหรือห้องที่ใช้งานกลางวันมากขึ้น ต้องถามค่าไฟ จุดวางคอยล์ร้อน และค่าติดตั้งเพิ่มให้ครบ"
+  },
+  {
+    btu: "24,000 BTU",
+    room: "ห้องใหญ่ / พื้นที่เปิดโล่ง",
+    note: "เหมาะกับห้องใหญ่กว่าแอร์ห้องนอนทั่วไป แต่ต้องประเมินหน้างานจริงก่อน เพราะค่าเครื่องและค่าติดตั้งจะสูงขึ้นตามขนาด"
+  }
+];
+
+const realCosts = [
+  "ราคาเครื่องเริ่มประมาณ 7,490-8,490 บาทตามข้อมูลที่เก็บไว้ในคิว",
+  "หน้าสินค้าระบุไม่รวมติดตั้ง จึงต้องบวกค่าช่างแยกตั้งแต่แรก",
+  "ท่อทองแดง รางครอบท่อ ขาแขวน สายไฟ และงานเจาะอาจมีค่าเพิ่ม",
+  "คอนโดควรถามเรื่องช่างเอกสารนิติ จุดวางคอยล์ร้อน และท่อน้ำทิ้งก่อน",
+  "ประกันควรถามว่าเคลมกับ Midea ร้าน หรือศูนย์บริการช่องทางไหน"
+];
+
+const cockpitSteps = [
+  {
+    label: "1",
+    title: "ดูราคาแบบรวมช่าง",
+    body: "อย่าเทียบราคาเครื่องเปล่า ให้บวกค่าติดตั้งและอุปกรณ์เพิ่มก่อนค่อยตัดสิน"
+  },
+  {
+    label: "2",
+    title: "เลือก BTU ให้ตรงห้อง",
+    body: "รุ่นนี้มีถึง 24,000 BTU แต่ขนาดใหญ่ไม่ได้แปลว่าดีกว่าเสมอ ต้องดูพื้นที่จริง"
+  },
+  {
+    label: "3",
+    title: "ยืนยันประกันและร้าน",
+    body: "ถามว่าประกันครอบคลุมอะไร เคลมผ่านใคร และร้านช่วยดูแลหลังซื้อแค่ไหน"
+  }
+];
+
+const costChecks = [
+  {
+    label: "ราคาเครื่อง",
+    value: "ประมาณ 7,490-8,490 บาท ณ วันที่เก็บข้อมูล",
+    note: "ราคาโปรและคูปองเปลี่ยนได้ ให้กดเช็กราคาหน้าร้านก่อนจ่ายจริง"
+  },
+  {
+    label: "ติดตั้ง",
+    value: "หน้าสินค้าระบุไม่รวมติดตั้ง",
+    note: "ต้องหาช่างหรือถามร้านว่ามีบริการแนะนำหรือไม่ พร้อมค่าอุปกรณ์หน้างาน"
+  },
+  {
+    label: "อุปกรณ์เพิ่ม",
+    value: "เช็กท่อ ราง ขาแขวน สายไฟ และงานเจาะ",
+    note: "ถ้าซื้อเครื่องเปล่า ต้องถามช่างล่วงหน้าว่าค่าของและค่าแรงแยกเท่าไหร่"
+  },
+  {
+    label: "ประกัน",
+    value: "ถามให้ชัดว่า 10 ปี / 5 ปี ครอบคลุมส่วนไหน",
+    note: "เก็บใบเสร็จ เลขเครื่อง รูปติดตั้ง และข้อความยืนยันจากร้านไว้หลังซื้อ"
+  }
+];
+
+const buyerSnapshotCards = [
+  {
+    label: "ควรเข้ารอบ",
+    title: "ราคาเริ่มดี ประกันเด่น",
+    body: "เหมาะกับคนที่อยากได้ Midea ในงบไม่แรง และให้ความสำคัญกับประกันมากกว่าฟีเจอร์แอป"
+  },
+  {
+    label: "ต้องถามร้าน",
+    title: "ราคาไม่รวมติดตั้ง",
+    body: "จุดตัดสินใจจริงคือค่าช่างและอุปกรณ์เพิ่ม ถ้ารวมแล้วแพงกว่ารุ่นที่มีติดตั้ง อาจไม่คุ้ม"
+  },
+  {
+    label: "อ่านรีวิว",
+    title: "เช็กรีวิวและร้าน",
+    body: "จำนวนรีวิวน้อยกว่ารุ่นยอดนิยม ต้องดูรีวิวมีภาพ ร้านตอบคำถาม และเงื่อนไขเคลมให้ละเอียด"
+  }
+];
+
+const visualEvidenceCards = [
+  {
+    label: "ภาพสินค้า",
+    title: "ดูเครื่องและชุดอุปกรณ์",
+    body: "ใช้ดูทรงเครื่อง รีโมต และสิ่งที่ต้องถามเพิ่มก่อนหาช่างติดตั้ง"
+  },
+  {
+    label: "ภาพห้อง",
+    title: "คิด BTU จากห้องจริง",
+    body: "ภาพช่วยเตือนว่ารุ่น 24,000 BTU ไม่ควรซื้อเผื่อแบบเดา ๆ"
+  },
+  {
+    label: "รีวิวผู้ซื้อ",
+    title: "สรุปรีวิวเป็นข้อแนะนำ",
+    body: "รีวิวมีประโยชน์เมื่อสรุปออกมาเป็นสิ่งที่ต้องถามร้านก่อนจ่าย"
+  }
+];
+
+const realShopImages = [
+  {
+    image: cleanUnitImage,
+    label: "ภาพสินค้า",
+    title: "ตัวเครื่องแบบคลีน",
+    note: "ใช้ดูทรงเครื่องแบบเรียบก่อนเทียบกับตำแหน่งติดตั้งจริง"
+  },
+  {
+    image: productSetImage,
+    label: "ชุดสินค้า",
+    title: "ตัวเครื่อง รีโมต และชุดอุปกรณ์",
+    note: "ใช้เป็นจุดเริ่มต้นในการถามว่าซื้อเครื่องเปล่าได้อะไรบ้าง"
+  },
+  {
+    image: shopServiceImage,
+    label: "ร้านและประกัน",
+    title: "เช็กร้านกับบริการหลังซื้อ",
+    note: "ใช้เตือนให้ถามช่องทางเคลมและเอกสารประกันก่อนจ่าย"
+  }
+];
+
+const reviewPhotoWall = [
+  {
+    image: btuRoomImage,
+    label: "เลือก BTU",
+    title: "ห้องเล็ก ห้องแดดแรง และห้องเปิดโล่งต้องคิดไม่เหมือนกัน",
+    alt: "ภาพห้องนั่งเล่นสำหรับใช้ประกอบการเลือก BTU แอร์ Midea Celest MSCE"
+  },
+  {
+    image: installPlanImage,
+    label: "ติดตั้ง",
+    title: "ราคาเครื่องเปล่ายังไม่ใช่ราคาจบ",
+    alt: "ภาพประกอบการวางแผนติดตั้งแอร์และค่าอุปกรณ์เพิ่ม"
+  },
+  {
+    image: energyAppImage,
+    label: "ประหยัดไฟ",
+    title: "SEER และ Inverter ต้องดูคู่กับห้องจริง",
+    alt: "ภาพประกอบการดูค่าไฟและการตั้งค่าแอร์ประหยัดพลังงาน Midea Celest"
+  },
+  {
+    image: costPlanImage,
+    label: "ต้นทุนจริง",
+    title: "ประกันยาวต้องถามเงื่อนไขให้ชัด",
+    alt: "ภาพโต๊ะคำนวณต้นทุนและประกันก่อนซื้อแอร์ Midea Celest MSCE"
+  },
+  {
+    image: quietNightImage,
+    label: "เปิดกลางคืน",
+    title: "เสียงตอนกลางคืนยังเป็นสิ่งที่ควรดูจากรีวิว",
+    alt: "ภาพห้องนอนกลางคืนพร้อมแอร์สำหรับดูประเด็นเสียงและความสบาย"
+  },
+  {
+    image: reviewGridImage,
+    label: "อ่านรีวิว",
+    title: "อ่านรีวิวให้เป็นคำถามก่อนจ่าย ไม่ใช่อ่านผ่าน ๆ",
+    alt: "ภาพโต๊ะทำงานสำหรับสรุปรีวิวผู้ซื้อก่อนตัดสินใจซื้อแอร์"
+  }
+];
+
+const reviewSignalImages = [
+  reviewRoomFitImage,
+  reviewInstallCostImage,
+  reviewWarrantyDocsImage,
+  reviewWifiCheckImage,
+  reviewShopServiceImage,
+  reviewNightComfortImage
+];
+
+const realReviewSnapshots = reviewSignals.map((item, index) => ({
+  buyer: `คำแนะนำ ${index + 1}`,
+  date: "สรุปจากรีวิวผู้ซื้อ",
+  variation: item.label,
+  quote: item.title,
+  signal: item.body,
+  takeaway: ["บวกราคาช่างก่อนเทียบ", "ส่งขนาดห้องให้ร้านช่วยเช็ก", "ขอราคาจบเป็นข้อความ", "ถามเงื่อนไขประกันก่อนจ่าย", "ถาม Wi-Fi ให้ชัด", "เก็บแชทและใบเสร็จไว้เผื่อเคลม"][index],
+  image: reviewSignalImages[index] ?? item.image
+}));
+
+const alternativeCards = [
+  {
+    role: "รุ่นนี้",
+    name: "Midea Celest",
+    note: "เด่นตรงราคาเริ่มดี BTU กว้าง และประกันยาว แต่ต้องบวกค่าติดตั้งเอง"
+  },
+  {
+    role: "รีวิวแน่น",
+    name: "CANDY VPCT/VPGT",
+    note: "เหมาะไว้เทียบเรื่องราคาเริ่มต้น รีวิวจำนวนมาก และเงื่อนไขติดตั้งผ่าน Q-CHANG"
+  },
+  {
+    role: "ฟีเจอร์ครบ",
+    name: "TCL SaveIN AI",
+    note: "น่าเทียบถ้าต้องการขนาดใหญ่กว่า 18,000 BTU หรืออยากดูฟีเจอร์ AI/Full DC Inverter อีกแบบ"
+  },
+  {
+    role: "สายแอป",
+    name: "Xiaomi Mijia Eco",
+    note: "น่าเทียบถ้าอยากได้การควบคุมผ่าน Xiaomi Home และชอบ ecosystem smart home"
+  }
+];
+
+const askBeforeBuy = [
+  "รุ่นที่กดเลือกเป็น BTU เท่าไหร่ และเป็นซีรีส์ MSCE ตามที่ต้องการหรือไม่",
+  "ราคานี้ไม่รวมติดตั้งใช่ไหม และร้านมีบริการช่างแนะนำหรือไม่",
+  "ท่อทองแดง รางครอบท่อ ขาแขวน สายไฟ และท่อน้ำทิ้งให้มากี่เมตร",
+  "ถ้าอยู่คอนโด ต้องใช้เอกสารนิติ จุดวางคอยล์ร้อน และท่อน้ำทิ้งอย่างไร",
+  "Wi-Fi เป็นฟีเจอร์ในรุ่นนี้เลยไหม หรือต้องซื้ออุปกรณ์เพิ่ม/เลือกรุ่นอื่น",
+  "ประกันคอมเพรสเซอร์ อะไหล่ และค่าแรงครอบคลุมกี่ปี เคลมผ่านใคร"
+];
+
+const faqs = [
+  {
+    question: "Midea Celest MSCE เหมาะกับใคร?",
+    answer: "เหมาะกับคนที่อยากได้แอร์ Midea ราคาเริ่มดี มี BTU ให้เลือกกว้าง และให้ความสำคัญกับประกัน แต่ต้องรับได้ว่าต้องคิดค่าติดตั้งแยก"
+  },
+  {
+    question: "ราคา 7,490-8,490 บาทคือราคาจบไหม?",
+    answer: "ไม่ควรถือว่าเป็นราคาจบ เพราะหน้าสินค้าระบุไม่รวมติดตั้ง ต้องถามค่าช่าง ท่อ ราง ขาแขวน สายไฟ และงานเจาะเพิ่มก่อนตัดสินใจ"
+  },
+  {
+    question: "ควรเลือก BTU ไหน?",
+    answer: "เริ่มจากขนาดห้องจริง แดด หน้าต่าง ฝ้า และจำนวนคนในห้อง รุ่นนี้มี 9,360 / 12,000 / 18,000 / 24,000 BTU จึงไม่ควรเลือกจากราคาอย่างเดียว"
+  },
+  {
+    question: "จุดที่ควรถามร้านก่อนซื้อคืออะไร?",
+    answer: "ถามเรื่องไม่รวมติดตั้ง, Wi-Fi, ประกัน 10/5/5 ปี, ช่องทางเคลม, ใบเสร็จ, และร้านช่วยประสานงานกับศูนย์บริการหรือไม่"
+  }
+];
+
+const scoreItems = [
+  { label: "ความนิยม", value: 6.6 },
+  { label: "ความมั่นใจผู้ซื้อ", value: 7.4 },
+  { label: "ความคุ้มค่า", value: 8.7 },
+  { label: "เลือก BTU ง่าย", value: 8.8 },
+  { label: "ประหยัดไฟ/สบาย", value: 8.7 },
+  { label: "ความเสี่ยงติดตั้ง", value: 7.4 },
+  { label: "ประกัน/ความปลอดภัย", value: 8.5 },
+  { label: "ความเสี่ยงคำบ่น", value: 7.8 }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Review",
+  itemReviewed: {
+    "@type": "Product",
+    name: "Midea Celest MSCE",
+    brand: { "@type": "Brand", name: "Midea" },
+    category: "Wall mounted air conditioner"
+  },
+  reviewRating: {
+    "@type": "Rating",
+    ratingValue: "8.1",
+    bestRating: "10",
+    worstRating: "1"
+  },
+  author: { "@type": "Organization", name: "Friendsay" },
+  inLanguage: "th",
+  dateModified: "2026-06-16",
+  headline: "Midea Celest MSCE แอร์ราคาเริ่มดี BTU กว้าง ประกันยาว เหมาะกับคนคุมงบ"
+};
+---
+
+<BaseLayout
+  title="Midea Celest MSCE แอร์ราคาเริ่มดี BTU กว้าง ประกันยาว | Friendsay"
+  description="Midea Celest MSCE แอร์ติดผนังราคาเริ่มดี มี BTU กว้างและประกันเด่น สรุปคำแนะนำจากรีวิวผู้ซื้อ ค่าติดตั้งที่ต้องคิดเพิ่ม และปุ่มเช็กราคา Shopee Lazada TikTok"
+  canonical="https://friendsay.com/th/reviews/midea-celest-msce-air-conditioner/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article class="pilot-review">
+    <section class="air-review-hero">
+      <a class="air-image-link air-hero-image-link" {...imageLinkAttrs}>
+        <img src={heroImage} alt="ภาพห้องนอนสว่างกับแอร์ Midea Celest MSCE สำหรับเปิดรีวิว" loading="eager" />
+      </a>
+      <div class="air-review-shade" aria-hidden="true"></div>
+      <div class="container air-review-hero-inner">
+        <div class="air-review-title">
+          <p class="eyebrow">คู่มือเลือกซื้อแบบเพื่อนช่วยดู / Shopee 2026</p>
+          <h1>Midea Celest MSCE แอร์ราคาเริ่มดี BTU กว้าง ประกันยาว เหมาะกับคนคุมงบ</h1>
+          <p>
+            รุ่นนี้น่าเอาเข้ารอบถ้าคุณอยากได้แอร์ Midea ราคาเริ่มดี มี BTU ให้เลือกกว้าง และสนใจประกันยาว
+            แต่ต้องจำไว้ก่อนว่าเป็นเครื่องที่ต้องคิดค่าติดตั้งแยก และควรถามร้านเรื่องประกันกับบริการหลังซื้อให้ชัดก่อนจ่าย
+          </p>
+          <div class="air-review-actions">
+            <a class="button button-primary" href="#buying-cockpit">ดูคำตอบ 90 วินาที</a>
+            <a class="button button-dark" href="#review-proof">ดูรีวิวผู้ซื้อจริง</a>
+            <button class="button compare-hero-button" type="button" data-air-compare-slug={product.slug}>
+              + เปรียบเทียบ
+            </button>
+          </div>
+        </div>
+
+        <aside class="air-verdict-card">
+          <div class="air-product-card-image">
+            <a class="air-image-link" {...imageLinkAttrs}>
+              <img src={productSetImage} alt="ภาพ Midea Celest MSCE พร้อมคอยล์ร้อน รีโมต และอุปกรณ์ติดตั้ง" loading="eager" />
+            </a>
+          </div>
+          <span class="badge badge-coral">{product.statusLabel}</span>
+          <strong>{product.score.toFixed(1)}/10</strong>
+          <p>น่าเก็บไว้เทียบถ้าคุณอยากได้ Midea ราคาไม่แรง และยอมเช็กค่าติดตั้งกับประกันให้ครบก่อนจ่าย</p>
+          <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="midea-hero-card" />
+        </aside>
+      </div>
+    </section>
+
+    <section class="air-decision-cockpit" id="buying-cockpit" aria-label="สรุปตัดสินใจซื้อแบบเร็ว">
+      <div class="wide-container air-cockpit-inner">
+        <div class="air-cockpit-head">
+          <p class="eyebrow">สรุปให้ก่อนเลือก</p>
+          <h2>ตัดสินใจซื้อใน 90 วินาที</h2>
+          <p>ถ้าไม่อยากอ่านยาว ให้เริ่มจาก 3 ช่องนี้ก่อนครับ ถ้าตอบได้ครบ ค่อยลงรายละเอียดเรื่องรีวิวจริง ขนาดห้อง และค่าใช้จ่ายต่อ</p>
+        </div>
+
+        <div class="air-cockpit-grid">
+          <article class="air-cockpit-verdict">
+            <a class="air-image-link" {...imageLinkAttrs}>
+              <img src={cleanUnitImage} alt="ภาพตัวเครื่อง Midea Celest MSCE แบบคลีนสำหรับดูทรงเครื่อง" loading="lazy" />
+            </a>
+            <div>
+              <span>{product.statusLabel}</span>
+              <strong>{product.score.toFixed(1)}/10</strong>
+              <p>เอาเข้ารอบ shortlist ได้ ถ้าคุณอยากได้แอร์ Midea ราคาดี ประกันยาว และคิดค่าติดตั้งแยกไว้แล้ว</p>
+            </div>
+          </article>
+
+          <article class="air-cockpit-panel air-cockpit-steps">
+            <span class="air-panel-label">คิดตามนี้ก่อนจ่าย</span>
+            {cockpitSteps.map((step) => (
+              <div>
+                <b>{step.label}</b>
+                <strong>{step.title}</strong>
+                <p>{step.body}</p>
+              </div>
+            ))}
+          </article>
+
+          <article class="air-cockpit-panel air-cockpit-price">
+            <span class="air-panel-label">ราคาที่ต้องคิดจริง</span>
+            <strong>{product.priceLabel}</strong>
+            <div>
+              {costChecks.map((item) => (
+                <span>{item.label}: {item.value}</span>
+              ))}
+            </div>
+            <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="midea-decision-price" />
+          </article>
+        </div>
+
+        <div class="air-buying-snapshot" aria-label="สรุปก่อนซื้อแบบเร็ว">
+          {buyerSnapshotCards.map((item) => (
+            <article>
+              <span>{item.label}</span>
+              <strong>{item.title}</strong>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section air-proof-stage" id="images">
+      <div class="wide-container">
+        <section class="air-review-proof-section" id="review-proof" aria-label="ภาพและรีวิวผู้ซื้อจริง">
+          <div class="air-review-proof-head">
+            <div>
+              <p class="eyebrow">ภาพและรีวิวที่ควรดู</p>
+              <h2>ดูภาพสินค้า แล้วอ่านคำแนะนำจากรีวิวผู้ซื้อ 6 ข้อ</h2>
+              <p>
+                เวลาเลือกแอร์ ผมจะเริ่มจากภาพสินค้าแบบคลีนก่อน แล้วสรุปรีวิวผู้ซื้อให้กลายเป็นข้อแนะนำที่ใช้ได้จริง
+                เพราะคนอ่านควรรู้ทันทีว่าต้องเช็กอะไร ไม่ใช่แค่รู้ว่ารุ่นนี้มีรีวิวเยอะ
+              </p>
+            </div>
+            <div class="air-review-proof-stats" aria-label="ตัวเลขรีวิวจาก Shopee">
+              <strong>{product.rating.toFixed(1)}/5</strong>
+              <span>{product.ratingsCount.toLocaleString("th-TH")}+ คะแนน</span>
+              <span>{product.commentsCount.toLocaleString("th-TH")}+ คอมเมนต์</span>
+              <span>{product.mediaCount.toLocaleString("th-TH")}+ รีวิวมีภาพ/วิดีโอ</span>
+            </div>
+          </div>
+
+          <div class="air-evidence-strip" aria-label="วิธีใช้ภาพและรีวิวในบทความนี้">
+            {visualEvidenceCards.map((item) => (
+              <article>
+                <span>{item.label}</span>
+                <strong>{item.title}</strong>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="air-source-photo-grid" aria-label="ภาพสินค้า Midea Celest MSCE">
+            {realShopImages.map((item) => (
+              <figure>
+                <a class="air-image-link" {...imageLinkAttrs}>
+                  <img src={item.image} alt={item.title} loading="lazy" />
+                </a>
+                <figcaption>
+                  <span>{item.label}</span>
+                  <strong>{item.title}</strong>
+                  <em>{item.note}</em>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div class="air-photo-wall" aria-label="ภาพประกอบการตัดสินใจก่อนซื้อ">
+            {reviewPhotoWall.map((item) => (
+              <figure>
+                <a class="air-image-link" {...imageLinkAttrs}>
+                  <img src={item.image} alt={item.alt} loading="lazy" />
+                </a>
+                <figcaption>
+                  <span>{item.label}</span>
+                  <strong>{item.title}</strong>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div class="air-real-review-grid" aria-label="คำแนะนำจากรีวิวผู้ซื้อ 6 ข้อ">
+            {realReviewSnapshots.map((item) => (
+              <article>
+                <a class="air-image-link" {...imageLinkAttrs}>
+                  <img src={item.image} alt={`ภาพประกอบรีวิวจาก ${item.buyer}`} loading="lazy" />
+                </a>
+                <div>
+                  <span>{item.buyer} • {item.date} • {item.variation}</span>
+                  <strong>{item.quote}</strong>
+                  <p>{item.signal}</p>
+                  <em>{item.takeaway}</em>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section air-btu-stage" id="btu">
+      <div class="wide-container">
+        <div class="air-btu-selector" aria-label="ตัวช่วยเลือก BTU แบบเร็ว">
+          <div>
+            <p class="eyebrow">เลือก BTU แบบเร็ว</p>
+            <h3>เลือก BTU ให้ตรงห้องก่อนดูราคา</h3>
+            <p>รุ่นนี้มี 9,360 / 12,000 / 18,000 / 24,000 BTU จุดดีคือครอบคลุมตั้งแต่ห้องนอนเล็กไปจนถึงห้องใหญ่ แต่ต้องถามร้านจากขนาดห้องจริงก่อน ไม่ใช่เลือกจากราคา</p>
+          </div>
+          <div class="air-btu-selector-grid">
+            {btuGuide.map((item) => (
+              <article>
+                <span>{item.btu}</span>
+                <strong>{item.room}</strong>
+                <p>{item.note}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container article-layout">
+        <article class="article-body">
+          <div class="air-quick-grid air-fit-grid">
+            <div class="soft-card">
+              <h2>เหมาะกับใคร</h2>
+              <p>{product.bestFor}</p>
+            </div>
+            <div class="soft-card">
+              <h2>ไม่เหมาะกับใคร</h2>
+              <p>{product.notFor}</p>
+            </div>
+          </div>
+
+          <h2 id="score">คะแนนแบบ Friendsay</h2>
+          <ScoreBars scores={scoreItems} />
+          <p>
+            คะแนน {product.score.toFixed(1)}/10 ของ Midea Celest MSCE มาจากราคาเริ่มต้นที่ดี ตัวเลือก BTU กว้าง และประกันที่ดูน่าสนใจ
+            แต่คะแนนถูกกดลงเพราะจำนวนรีวิวยังไม่มากเท่ารุ่นยอดนิยม ร้านไม่ใช่ official โดยตรง และราคาหน้าร้านยังไม่รวมติดตั้งครับ
+          </p>
+
+          <h2 id="good">ข้อดีที่ควรรู้</h2>
+          <p>
+            ถ้าดูแบบคนกำลังจะซื้อจริง รุ่นนี้มีข้อดีที่จับต้องได้ ไม่ใช่แค่คำโปรโมตบนหน้าร้าน จุดที่ควรเก็บไว้เทียบมีตามนี้ครับ
+          </p>
+          <div class="verdict-grid" aria-label="ข้อดีของ Midea Celest MSCE">
+            {product.pros.map((item, index) => (
+              <article>
+                <span>{`ข้อ ${index + 1}`}</span>
+                <strong>{item}</strong>
+              </article>
+            ))}
+          </div>
+
+          <h2 id="watch">จุดต้องระวังก่อนกดซื้อ</h2>
+          <p>
+            จุดระวังของรุ่นนี้ไม่ได้แปลว่าไม่ดี แต่เป็นจุดที่ต้องถามให้ชัดก่อนจ่าย เพราะแอร์เป็นสินค้าที่มีงานหน้างานตามมา
+            ซื้อผิด BTU หรือเข้าใจผิดเรื่องติดตั้ง จะเสียเวลาแก้มากกว่าของใช้ชิ้นเล็กครับ
+          </p>
+          <div class="air-watch-list" aria-label="จุดต้องระวังก่อนซื้อ Midea Celest MSCE">
+            {product.watch.map((item, index) => (
+              <article>
+                <span>{`เช็ก ${index + 1}`}</span>
+                <strong>{item}</strong>
+              </article>
+            ))}
+          </div>
+          <p>
+            ถ้าอยู่คอนโด ให้ถามนิติก่อนเรื่องเจาะผนัง จุดวางคอยล์ร้อน และท่อน้ำทิ้ง ส่วนถ้าไม่มีช่างประจำ
+            ให้คุยค่าติดตั้งกับช่างก่อนกดซื้อ เพราะรุ่นนี้ราคาเครื่องดูดี แต่ราคาจบขึ้นกับหน้างานจริงครับ
+          </p>
+
+          <section class="air-cost-section" id="cost">
+            <p class="eyebrow">เช็กเงินที่ต้องจ่ายจริง</p>
+            <h2>ราคาเครื่องไม่ใช่ราคาสุดท้ายเสมอไป</h2>
+            <p>
+              จุดนี้สำคัญมากสำหรับแอร์ทุกยี่ห้อครับ ราคาเครื่องเป็นแค่จุดเริ่มต้น ก่อนจ่ายเงินจริงให้ถามให้ครบว่าราคารวมอะไรบ้าง
+              โดยเฉพาะคนซื้อออนไลน์ที่ไม่ได้มีช่างประจำ
+            </p>
+            <figure class="air-wide-figure">
+              <a class="air-image-link" {...imageLinkAttrs}>
+                <img src={costPlanImage} alt="ภาพประกอบการเช็กต้นทุนรวมและประกัน Midea Celest MSCE" loading="lazy" />
+              </a>
+              <figcaption>
+                ราคาเครื่องเปล่าเป็นแค่จุดเริ่มต้น ต้องรวมค่าช่าง อุปกรณ์หน้างาน และเงื่อนไขประกันก่อนเทียบกับรุ่นอื่น
+              </figcaption>
+            </figure>
+            <div class="air-cost-grid">
+              {costChecks.map((item) => (
+                <article>
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                  <p>{item.note}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <h2 id="install">เรื่องติดตั้งคือหัวใจของรีวิวแอร์</h2>
+          <p>
+            แอร์ที่ดีไม่ได้จบตอนกล่องมาถึงบ้าน แต่จบตอนติดตั้งแล้วเย็นจริง น้ำไม่หยด เสียงไม่กวน และใช้งานได้ยาว ๆ
+            เพราะฉะนั้นส่วนติดตั้งควรถามละเอียดกว่าปกติ โดยเฉพาะรุ่นนี้ที่หน้าสินค้าระบุไม่รวมติดตั้ง
+          </p>
+          <figure class="air-wide-figure">
+            <a class="air-image-link" {...imageLinkAttrs}>
+              <img src={installPlanImage} alt="ภาพวางแผนตำแหน่งติดตั้งและอุปกรณ์สำหรับ Midea Celest MSCE" loading="lazy" />
+            </a>
+            <figcaption>
+              ก่อนให้ช่างเจาะผนัง ควรดูทิศทางลม จุดวางเตียง ระยะท่อ และตำแหน่งคอยล์ร้อนให้จบตั้งแต่แรก
+            </figcaption>
+          </figure>
+          <ul class="air-checklist">
+            {product.installNotes.map((item) => <li>{item}</li>)}
+          </ul>
+
+          <h2 id="warranty">ประกันและความสบายใจหลังซื้อ</h2>
+          <p>
+            Midea เป็นแบรนด์เครื่องใช้ไฟฟ้าที่คนไทยรู้จัก และจุดขายของรุ่นนี้คือประกันที่ดูยาวกว่าหลายรุ่นในงบใกล้กัน
+            แต่ก่อนซื้อควรถามให้ชัดว่าคอมเพรสเซอร์ อะไหล่ และค่าแรงครอบคลุมกี่ปีจริง เคลมผ่านร้านหรือศูนย์ และต้องใช้เอกสารอะไร
+          </p>
+          <ul class="air-checklist">
+            {product.warrantyNotes.map((item) => <li>{item}</li>)}
+          </ul>
+
+          <h2 id="compare">ควรเทียบกับรุ่นไหน</h2>
+          <p>
+            ถ้าสนใจ Midea รุ่นนี้ อย่าดูเดี่ยว ๆ ครับ ให้เปิดเทียบกับรุ่นที่มีจุดขายคนละแบบ จะเห็นทันทีว่าคุณให้ความสำคัญกับอะไร:
+            ราคาเครื่องเปล่า, รีวิวจำนวนมาก, ประกันยาว, ฟีเจอร์แอป หรือความง่ายของงานติดตั้ง
+          </p>
+          <div class="air-alternative-grid">
+            {alternativeCards.map((item) => (
+              <article class={item.name.startsWith("Midea") ? "is-current" : ""}>
+                <span>{item.role}</span>
+                <strong>{item.name}</strong>
+                <p>{item.note}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="air-mid-compare-cta">
+            <div>
+              <span>ถ้ายังลังเล</span>
+              <strong>เทียบ Midea กับ CANDY, TCL, Xiaomi ในตารางเดียว</strong>
+              <p>เหมาะกับคนที่อยากเห็นราคา BTU รีวิว จุดระวัง ประกัน และความเสี่ยงติดตั้งแบบวางข้างกัน ไม่ต้องจำเองจากหลายย่อหน้า</p>
+            </div>
+            <div>
+              <a class="button button-primary" href="/th/compare/air-conditioners/?items=midea-celest-msce,candy-vpct-vpgt-series,tcl-savein-ai-series,xiaomi-mijia-air-inverter-eco">เปิดหน้าเทียบแอร์</a>
+              <button class="button" type="button" data-air-compare-slug={product.slug}>เลือก Midea ไว้เทียบ</button>
+            </div>
+          </div>
+
+          <section class="air-questions-section" id="questions">
+            <p class="eyebrow">ก่อนกดซื้อ</p>
+            <h2>ก่อนกดซื้อ ให้ถามร้าน 6 ข้อนี้</h2>
+            <p>
+              นี่คือ checklist สุดท้าย ถ้าร้านตอบไม่ชัด โดยเฉพาะเรื่องติดตั้งและค่าเพิ่ม ต่อให้ราคาเครื่องดูดีมากก็ควรชะลอก่อน
+            </p>
+            <ol class="air-question-list">
+              {askBeforeBuy.map((item) => <li>{item}</li>)}
+            </ol>
+          </section>
+
+          <h2 id="buy">ควรซื้อช่องทางไหนดี</h2>
+          <p>
+            เลือกร้านที่ระบุ BTU ชัด ตอบเรื่องติดตั้งตรง และมีหลักฐานประกันอ่านง่าย ถ้าราคาใกล้กัน ผมให้ร้านที่คุยรู้เรื่องชนะ
+            เพราะหลังจ่ายเงินแล้ว สิ่งที่สำคัญที่สุดคือได้รุ่นถูกต้อง ติดตั้งได้จริง และติดต่อร้านได้ถ้ามีปัญหา
+          </p>
+          <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="midea-article-buy-section" />
+
+          <section class="air-faq-section" id="faq">
+            <p class="eyebrow">FAQ</p>
+            <h2>คำถามที่คนกำลังจะซื้อ Midea Celest MSCE น่าจะอยากรู้</h2>
+            <div class="air-faq-list">
+              {faqs.map((faq) => (
+                <details>
+                  <summary>{faq.question}</summary>
+                  <p>{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <h2 id="final">สรุปแบบ Friendsay</h2>
+          <p>
+            ถ้าเพื่อนส่งลิงก์ Midea Celest MSCE มาให้ดู ผมจะตอบว่า “น่าเอาเข้ารอบ ถ้าคุณอยากได้ Midea ราคาไม่แรงและให้ความสำคัญกับประกัน”
+            รุ่นนี้เด่นตรง BTU กว้าง ราคาเริ่มดี และข้อมูลประกันที่ดูน่าสนใจ
+            แต่ต้องทำการบ้านเรื่องค่าติดตั้ง ร้านผู้ขาย Wi-Fi และขั้นตอนเคลมให้ครบก่อนกดจ่ายครับ
+          </p>
+
+          <div class="air-note">
+            <strong>เช็กหน้าร้านล่าสุดก่อนจ่าย</strong>
+            <p>
+              ก่อนกดจ่าย ให้เปิดหน้าร้านดูราคา คูปอง BTU ที่เลือก คิวติดตั้ง และเงื่อนไขประกันล่าสุดอีกครั้ง:
+              <a href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="midea-final-check">ดูหน้าสินค้าบน Shopee</a>
+              เพราะรายละเอียดพวกนี้เปลี่ยนได้ตลอด และมีผลกับราคาจบมากกว่าที่คิดครับ
+            </p>
+          </div>
+        </article>
+
+        <aside class="toc" aria-label="สารบัญ">
+          <strong>ในหน้านี้</strong>
+          <a href="#buying-cockpit">คำตอบเร็ว</a>
+          <a href="#review-proof">รีวิวจริง</a>
+          <a href="#btu">เลือก BTU</a>
+          <a href="#score">คะแนน</a>
+          <a href="#good">ข้อดี</a>
+          <a href="#watch">จุดระวัง</a>
+          <a href="#cost">ต้นทุนจริง</a>
+          <a href="#install">ติดตั้ง</a>
+          <a href="#warranty">ประกัน</a>
+          <a href="#compare">เทียบรุ่นอื่น</a>
+          <a href="#questions">ถามร้านก่อนซื้อ</a>
+          <a href="#buy">เช็กราคา</a>
+          <a href="#faq">FAQ</a>
+          <a href="#final">สรุป</a>
+        </aside>
+      </div>
+    </section>
+  </article>
+
+  <div class="air-review-page-spacer" aria-hidden="true"></div>
+
+  <nav class="air-sticky-buy" aria-label="ปุ่มซื้อ Midea Celest MSCE แบบลอยตามหน้าจอ">
+    <span>เช็กราคาด่วน</span>
+    <a class="shopee" href={product.links.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="midea-sticky-buy">Shopee</a>
+    <a class="lazada" href={product.links.lazada} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context="midea-sticky-buy">Lazada</a>
+    <a class="tiktok" href={product.links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context="midea-sticky-buy">TikTok</a>
+  </nav>
+
+  <AirCompareTray products={airConditioners.map((item) => ({ slug: item.slug, name: item.name, shortName: item.shortName }))} />
+  <AffiliateClickTracker />
+
+  <script is:inline>
+    (() => {
+      const offsetHashTarget = () => {
+        if (!window.location.hash) return;
+        const id = decodeURIComponent(window.location.hash.slice(1));
+        const target = document.getElementById(id);
+        if (!target) return;
+
+        window.requestAnimationFrame(() => {
+          target.scrollIntoView({ block: "start" });
+          window.scrollBy(0, -92);
+        });
+      };
+
+      window.addEventListener("hashchange", () => window.setTimeout(offsetHashTarget, 80));
+      window.addEventListener("load", () => {
+        window.setTimeout(offsetHashTarget, 120);
+        window.setTimeout(offsetHashTarget, 700);
+      });
+      window.setTimeout(offsetHashTarget, 0);
+      window.setTimeout(offsetHashTarget, 300);
+      window.setTimeout(offsetHashTarget, 1100);
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  :global(body) {
+    padding-bottom: 94px;
+  }
+
+  .article-body [id] {
+    scroll-margin-top: 108px;
+  }
+
+  .pilot-review {
+    background:
+      radial-gradient(circle at 18% 8%, rgba(46, 196, 182, 0.16), transparent 28rem),
+      radial-gradient(circle at 86% 12%, rgba(255, 107, 90, 0.13), transparent 30rem),
+      #fffdf8;
+    color: #13202d;
+  }
+
+  .pilot-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.04fr) minmax(320px, 0.78fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+    min-height: calc(100vh - 96px);
+    padding: clamp(40px, 7vw, 92px) clamp(18px, 5vw, 72px) clamp(24px, 4vw, 60px);
+    max-width: 1540px;
+    margin: 0 auto;
+  }
+
+  .pilot-hero h1 {
+    max-width: 940px;
+    margin: 0;
+    font-size: clamp(44px, 7.2vw, 112px);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .hero-lead {
+    max-width: 820px;
+    margin: 24px 0 0;
+    color: #5f6f7f;
+    font-size: clamp(18px, 2.1vw, 30px);
+    line-height: 1.62;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 30px;
+    align-items: center;
+  }
+
+  .hero-card {
+    overflow: hidden;
+    border: 1px solid rgba(19, 32, 45, 0.12);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 28px 90px rgba(19, 32, 45, 0.14);
+  }
+
+  .hero-card img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-score {
+    padding: clamp(20px, 3vw, 34px);
+    background: linear-gradient(135deg, #10202c, #223f46);
+    color: #fff;
+  }
+
+  .hero-score span {
+    color: #9be3d9;
+    font-weight: 800;
+  }
+
+  .hero-score strong {
+    display: block;
+    margin-top: 8px;
+    font-size: clamp(54px, 7vw, 96px);
+    line-height: 1;
+  }
+
+  .hero-score p {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  .review-nav {
+    position: sticky;
+    top: 88px;
+    z-index: 8;
+    display: flex;
+    gap: 10px;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 12px 18px;
+    overflow-x: auto;
+    border: 1px solid rgba(19, 32, 45, 0.1);
+    border-radius: 999px;
+    background: rgba(255, 253, 248, 0.86);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 16px 48px rgba(19, 32, 45, 0.08);
+  }
+
+  .review-nav a {
+    flex: 0 0 auto;
+    padding: 10px 15px;
+    border-radius: 999px;
+    color: #314050;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  .review-nav a:hover {
+    background: #fff1ec;
+    color: #e34f42;
+  }
+
+  .section-block {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(48px, 7vw, 96px) clamp(18px, 4vw, 36px);
+  }
+
+  .section-title {
+    max-width: 920px;
+    margin-bottom: 24px;
+  }
+
+  .section-title h2,
+  .compare-section h2,
+  .final-verdict h2 {
+    margin: 0;
+    font-size: clamp(34px, 5vw, 72px);
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .section-title p,
+  .compare-section p,
+  .final-verdict p {
+    color: #657486;
+    font-size: clamp(17px, 1.7vw, 23px);
+    line-height: 1.7;
+  }
+
+  .quick-grid,
+  .btu-grid,
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .quick-card,
+  .btu-card,
+  .decision-panel,
+  .cost-row,
+  .final-verdict {
+    border: 1px solid rgba(19, 32, 45, 0.12);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 18px 48px rgba(19, 32, 45, 0.07);
+  }
+
+  .quick-card,
+  .btu-card {
+    padding: clamp(22px, 2.7vw, 34px);
+  }
+
+  .quick-card span,
+  .btu-card span,
+  .proof-card span {
+    display: inline-flex;
+    margin-bottom: 18px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #ffe8e3;
+    color: #df5146;
+    font-weight: 900;
+  }
+
+  .quick-card h3,
+  .btu-card h3,
+  .proof-card h3 {
+    margin: 0 0 10px;
+    font-size: clamp(24px, 2.2vw, 34px);
+    line-height: 1.2;
+  }
+
+  .quick-card p,
+  .btu-card p,
+  .proof-card p {
+    color: #657486;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+
+  .visual-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 18px;
+  }
+
+  .visual-main,
+  .visual-card,
+  .proof-card {
+    overflow: hidden;
+    border: 1px solid rgba(19, 32, 45, 0.12);
+    border-radius: 24px;
+    background: #fff;
+    text-decoration: none;
+    color: #13202d;
+    box-shadow: 0 18px 52px rgba(19, 32, 45, 0.08);
+  }
+
+  .visual-main {
+    grid-row: span 2;
+  }
+
+  .visual-main img,
+  .visual-card img {
+    width: 100%;
+    height: 100%;
+    min-height: 260px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .visual-main strong,
+  .visual-card strong,
+  .visual-main span {
+    display: block;
+    padding: 0 22px;
+  }
+
+  .visual-main strong,
+  .visual-card strong {
+    margin-top: -82px;
+    position: relative;
+    font-size: clamp(22px, 2.2vw, 34px);
+    color: #fff;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.42);
+  }
+
+  .visual-main span {
+    position: relative;
+    padding-bottom: 22px;
+    color: rgba(255, 255, 255, 0.86);
+    font-weight: 800;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.42);
+  }
+
+  .proof-card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  .proof-card img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+  }
+
+  .proof-card div {
+    padding: 22px;
+  }
+
+  .btu-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .decision-panel {
+    padding: clamp(26px, 3.2vw, 42px);
+  }
+
+  .decision-panel h2 {
+    margin: 0 0 20px;
+    font-size: clamp(32px, 4vw, 54px);
+  }
+
+  .decision-panel ul {
+    display: grid;
+    gap: 14px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .decision-panel li {
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: #fff8f0;
+    color: #243443;
+    font-size: 19px;
+    line-height: 1.58;
+    font-weight: 750;
+  }
+
+  .watch li {
+    background: #fff0eb;
+  }
+
+  .cost-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .cost-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 20px;
+  }
+
+  .cost-row span {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #13202d;
+    color: #fff;
+    font-weight: 900;
+  }
+
+  .cost-row p {
+    margin: 0;
+    color: #314050;
+    font-size: 20px;
+    line-height: 1.55;
+    font-weight: 780;
+  }
+
+  .score-section :global(.score-bars) {
+    padding: clamp(22px, 4vw, 44px);
+    border: 1px solid rgba(19, 32, 45, 0.12);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 18px 48px rgba(19, 32, 45, 0.07);
+  }
+
+  .compare-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.58fr);
+    gap: 22px;
+    align-items: center;
+  }
+
+  .compare-actions {
+    display: grid;
+    gap: 12px;
+  }
+
+  .final-verdict {
+    padding: clamp(28px, 4vw, 48px);
+    margin-bottom: 48px;
+  }
+
+  .sticky-buy {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(92px, 1fr));
+    width: min(calc(100vw - 28px), 760px);
+    gap: 10px;
+    transform: translateX(-50%);
+    padding: 10px;
+    border: 1px solid rgba(19, 32, 45, 0.12);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 18px 54px rgba(19, 32, 45, 0.18);
+    backdrop-filter: blur(18px);
+  }
+
+  .sticky-pill {
+    display: grid;
+    min-height: 54px;
+    place-items: center;
+    border-radius: 16px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 950;
+    text-decoration: none;
+  }
+
+  .sticky-pill.shopee {
+    background: #ff4f35;
+  }
+
+  .sticky-pill.lazada {
+    background: #29469b;
+  }
+
+  .sticky-pill.tiktok {
+    background: #080808;
+  }
+
+  .button.primary,
+  .button.secondary {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 52px;
+    padding: 12px 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(19, 32, 45, 0.12);
+    font-weight: 900;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .button.primary {
+    background: #ff6758;
+    color: #fff;
+  }
+
+  .button.secondary {
+    background: #fff;
+    color: #13202d;
+  }
+
+  @media (max-width: 1080px) {
+    .pilot-hero,
+    .compare-section {
+      grid-template-columns: 1fr;
+    }
+
+    .pilot-hero {
+      min-height: auto;
+    }
+
+    .quick-grid,
+    .proof-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .btu-grid,
+    .visual-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 720px) {
+    .pilot-hero {
+      padding-top: 32px;
+    }
+
+    .review-nav {
+      top: 72px;
+      margin-inline: 12px;
+      border-radius: 18px;
+    }
+
+    .quick-grid,
+    .proof-grid,
+    .btu-grid,
+    .visual-grid,
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+
+    .visual-main {
+      grid-row: auto;
+    }
+
+    .visual-main img,
+    .visual-card img {
+      min-height: 220px;
+    }
+
+    .sticky-buy {
+      bottom: 10px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: min(calc(100vw - 16px), 520px);
+      padding: 8px;
+      border-radius: 18px;
+    }
+
+    .sticky-pill {
+      min-height: 48px;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+  }
+</style>
