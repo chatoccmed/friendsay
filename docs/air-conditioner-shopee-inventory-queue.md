@@ -8,8 +8,13 @@
 
 - `docs/air-conditioner-shopee-review-queue.csv` คือคิวสินค้าแอร์ที่ผ่านการตรวจแล้วหรือรอทำรีวิว
 - `docs/air-conditioner-shopee-discovery-keywords.csv` คือคิวคำค้นสำหรับเก็บสินค้าเพิ่มทีละรอบ
+- `docs/air-conditioner-shopee-coverage-map.csv` คือแผนที่ว่าเก็บคำค้นไหนแล้ว และยังเหลือคำค้นไหน
+- `docs/air-conditioner-shopee-evidence-ledger.csv` คือบัญชีหลักฐานของแต่ละสินค้า ใช้ตรวจย้อนหลังว่าเห็นข้อมูลจากหน้าไหน วันที่เท่าไร
+- `docs/air-conditioner-shopee-2026-candidates.csv` คือสินค้าที่พบจากหน้า search แต่ยังไม่ผ่านการยืนยันหน้ารายละเอียดครบ
+- `docs/air-conditioner-shopee-2026-verified.csv` คือสินค้าที่เปิดหน้ารายละเอียดแล้วและมีข้อมูลพอสำหรับรีวิว
 - `docs/product-review-operating-template.md` คือแม่แบบการทำรีวิวเดี่ยว
 - `docs/shopee-b-plus-d-review-system.md` คือกติกาเก็บข้อมูล Shopee แบบไม่ให้โดนเด้งง่าย
+- `docs/air-conditioner-shopee-data-system.md` คือมาตรฐานระบบข้อมูลและ evidence สำหรับหมวดแอร์
 
 ## เกณฑ์เข้าคิวรีวิว
 
@@ -21,6 +26,7 @@
 4. มีจำนวนรีวิว/ratings/comments มากกว่า 5
 5. มี URL สินค้า Shopee ที่เปิดตรวจได้
 6. ถ้าเห็นยอดขายจริงให้บันทึก ถ้าไม่เห็นห้ามเดา
+7. ต้องมี `evidence_id` ใน `air-conditioner-shopee-evidence-ledger.csv` ก่อนเริ่มรีวิวเต็ม
 
 ## สถานะสินค้า
 
@@ -41,21 +47,25 @@
 
 ใช้รอบสั้นเพื่อเลี่ยงการโดน Shopee เด้ง:
 
-1. เปิดคำค้น 1 คำจาก `air-conditioner-shopee-discovery-keywords.csv`
+1. เปิดคำค้น 1 คำจาก `air-conditioner-shopee-coverage-map.csv`
 2. เก็บรายการจากหน้า search ไม่เกิน 10-20 รายการ
-3. เปิดหน้ารายละเอียดทีละ 1 สินค้า
-4. บันทึกเฉพาะข้อมูลที่หน้าแสดงจริง
-5. ถ้าเริ่มเจอ verification ให้หยุดทันที
-6. กลับมาเก็บต่อรอบถัดไป
+3. บันทึก candidate พร้อม keyword/rank/product_url ลง `air-conditioner-shopee-2026-candidates.csv`
+4. เปิดหน้ารายละเอียดทีละ 1 สินค้า
+5. บันทึกเฉพาะข้อมูลที่หน้าแสดงจริงลง `air-conditioner-shopee-2026-verified.csv` ถ้าผ่านเกณฑ์
+6. เพิ่มแถวใน `air-conditioner-shopee-evidence-ledger.csv` ทุกครั้งที่ยืนยันสินค้า
+7. ถ้าเริ่มเจอ verification ให้หยุดทันทีและอัปเดต coverage status เป็น `blocked_by_verification`
+8. กลับมาเก็บต่อรอบถัดไป
 
 ## คิวเริ่มต้น
 
-คิวเริ่มต้นมี 4 รุ่นที่มีข้อมูลแล้ว:
+คิวเริ่มต้นมี 4 รุ่นที่ยืนยันหน้ารายละเอียดแล้ว แต่ยังไม่ถือว่าครอบคลุมทั้ง Shopee:
 
 1. CANDY VPCT/VPGT Series - ทำรีวิวแล้ว ใช้เป็นต้นแบบ
 2. TCL SaveIN AI Series - ควรทำต่อ เพราะรีวิวเยอะและข้อมูลติดตั้งชัด
 3. Xiaomi Mijia Air Inverter Eco - รีวิวเยอะและเป็นแบรนด์ที่คนสนใจ
 4. Midea Celest MSCE - สเปกละเอียด แต่ต้องตรวจร้านและประกันเพิ่ม
+
+จากรอบ search หลักยังมี candidate อีก 11 รายการที่ต้องเปิดหน้ารายละเอียดและคัดออก/ยืนยัน เช่น Midea Tornado EASY, Midea Numen, Hisense CE, Hisense CE/DB, CANDY PCT, TCL 24,200 BTU และ Zinney บางรุ่น
 
 ## ลำดับทำรีวิว
 

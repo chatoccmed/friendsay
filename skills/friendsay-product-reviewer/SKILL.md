@@ -14,6 +14,9 @@ When working inside the Friendsay project, read these first:
 - `docs/product-review-operating-template.md`
 - `docs/shopee-b-plus-d-review-system.md` when collecting Shopee data
 - `docs/air-conditioner-shopee-inventory-queue.md` for air-conditioner batch work
+- `docs/air-conditioner-shopee-data-system.md` for durable Shopee evidence and coverage rules
+- `docs/air-conditioner-shopee-evidence-ledger.csv` to confirm that the product has a reusable evidence id
+- `docs/air-conditioner-shopee-coverage-map.csv` to understand which search/brand/BTU rounds are complete
 - `docs/air-conditioner-shopee-review-queue.csv` for the active air-conditioner queue
 - `src/pages/th/reviews/candy-vpct-vpgt-air-conditioner.astro` as the current review-page reference
 
@@ -24,8 +27,9 @@ If a reference is missing, continue with the closest available source and note t
 1. Start with inventory, not writing. Confirm the product is a real SKU or identifiable series.
 2. Record source data: brand, series, model, BTU or spec options, price, rating, review counts, media counts, shop, warranty, product URL, and collection date.
 3. Qualify products using the Friendsay rule: reviews, ratings, or comments must be greater than 5 for a full review.
-4. If sold count is hidden, use `review_signal_pass`. Never invent sales numbers.
-5. Select the next product by priority: strong review evidence, clear model or specs, trusted shop, useful comparison value.
+4. Create or confirm an `evidence_id` in the evidence ledger before writing a full review.
+5. If sold count is hidden, use `review_signal_pass`. Never invent sales numbers.
+6. Select the next product by priority: strong review evidence, clear model or specs, trusted shop, useful comparison value.
 6. Write one review at a time using the product review operating template.
 7. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
 8. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.

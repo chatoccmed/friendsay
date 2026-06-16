@@ -112,6 +112,34 @@
 source_date,keyword,rank,brand,series,model,btu_options,system_type,installation_option,price_from,rating,ratings_count,comments_count,media_count,sold_count,sold_count_visible,shop_name,shop_type,warranty,tis_no,product_url,affiliate_url,status,confidence,notes
 ```
 
+## ระบบหลักฐานที่ต้องใช้เพิ่ม
+
+ตั้งแต่ 16 มิถุนายน 2026 เป็นต้นไป สินค้าที่จะทำรีวิวเต็มต้องมี `evidence_id` ใน `docs/air-conditioner-shopee-evidence-ledger.csv` ก่อนเสมอ
+
+เหตุผล:
+
+1. Shopee เปลี่ยนหน้า ราคา และจำนวนรีวิวได้ตลอด
+2. Shopee อาจเด้ง verification ทำให้กลับไปเปิดซ้ำไม่ได้ทุกครั้ง
+3. เราต้องแยก “ข้อมูลที่เห็นจริงในวันเก็บ” ออกจาก “บทวิเคราะห์ของ Friendsay”
+4. ถ้าลิงก์ Shopee เปลี่ยน เราต้องยังตรวจย้อนหลังจาก notes ของเราได้
+
+ข้อมูลที่ ledger ต้องมี:
+
+- `evidence_id`
+- `product_key`
+- `source_layer` เช่น search_result หรือ product_detail
+- `capture_date`
+- `capture_method`
+- `product_url`
+- `evidence_file`
+- `verified_fields`
+- `sold_count_visible`
+- `source_status`
+- `last_checked`
+- `next_check_due`
+
+ถ้าข้อมูลเกิน 14-30 วัน ให้เช็กซ้ำก่อนเขียนรีวิวใหม่หรือก่อนใส่ในบทความรวม
+
 ## วิธีเขียนรีวิวจากข้อมูล B+D
 
 ทุกรีวิวเดี่ยวต้องมีส่วนนี้:
