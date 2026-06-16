@@ -8,20 +8,23 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 
 ## คำตอบสั้น
 
-ตอนนี้เราเพิ่งเริ่มระบบ catalog-first และมีสินค้าที่นำเข้าเป็น seed จาก Shopee แล้ว **4 รุ่น/ซีรีส์**
+ตอนนี้เราเริ่มระบบ catalog-first แล้ว และมีสินค้าใน market catalog **28 รุ่น/ซีรีส์**
 
 สถานะปัจจุบัน:
 
 | รายการ | จำนวน |
 |---|---:|
-| Market catalog seed | 4 |
+| Market catalog ทั้งหมด | 28 |
+| HomePro first-page seed | 24 |
+| Online-native seed | 3 |
+| Marketplace seed ที่ยังต้องหา catalog source | 1 |
 | Catalog verified จากแหล่งร้าน/แบรนด์ | 0 |
 | Marketplace matched | 4 |
 | Review qualified | 4 |
 | รีวิวเต็มเสร็จแล้ว | 3 |
 | Pilot ที่ควรขยายเป็นรีวิวเต็ม | 1 |
 
-ตัวเลขนี้ยังไม่ใช่จำนวนแอร์ทั้งหมดในตลาดไทย เป็นแค่ฐานเริ่มต้นก่อนเก็บจากร้านใหญ่และเว็บแบรนด์
+ตัวเลขนี้ยังไม่ใช่จำนวนแอร์ทั้งหมดในตลาดไทย เป็นฐานเริ่มต้นจาก HomePro first-page seed + online-native seed เดิม ต้องเก็บหน้าถัดไป ร้านอื่น เว็บแบรนด์ และ marketplace official เพิ่ม
 
 ## ตัวชี้วัดใหม่
 
@@ -68,7 +71,7 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 
 เหตุผล:
 
-- เป็นร้านใหญ่และมีหมวดแอร์ติดผนังกว้าง
+- เป็นร้านใหญ่และมีหมวดแอร์ติดผนังกว้าง รอบแรกเก็บ first-page seed ได้แล้ว 24 รุ่น
 - เห็นแบรนด์และรุ่นจำนวนมากกว่าเริ่มจาก marketplace
 - ใช้เป็นฐานสร้าง product key ได้ดี
 - พอได้รายชื่อรุ่นแล้วค่อยกลับไปจับคู่ Shopee แบบเจาะจง
@@ -79,16 +82,16 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 
 เหตุผล:
 
-- ป้องกันไม่ให้พลาดแบรนด์ที่อาจไม่มีหรือมีน้อยในร้านใหญ่ เช่น CANDY, Xiaomi, TCL บางรุ่น, CHiQ, Hisense บางรุ่น
+- ป้องกันไม่ให้พลาดแบรนด์ที่อาจไม่มีหรือมีน้อยในร้านใหญ่ เช่น CANDY, Xiaomi, TCL บางรุ่น, CHiQ, Hisense บางรุ่น ตอนนี้ตั้ง seed แล้ว 3 รุ่นจาก CANDY/TCL/Xiaomi
 - เป็นกลุ่มที่มีโอกาส affiliate สูง เพราะคนซื้อจริงบน Shopee/Lazada/TikTok
 - ใช้รีวิวผู้ซื้อจำนวนมากเป็น proof ได้เร็วกว่าแบรนด์ห้างบางรุ่น
 - ต้องเก็บจาก official/authorized store ก่อน เพื่อลดความเสี่ยงสินค้าปลอม/ชื่อรุ่นเพี้ยน
 
-หลังจบ 2 เลนแรก ให้ทำ 3 อย่าง:
+หลังจากนี้ให้ทำ 3 อย่าง:
 
-1. เพิ่ม/อัปเดตรุ่นใน `air-conditioner-market-catalog.csv`
-2. อัปเดตสถานะ `catalog-round-001` และ `catalog-round-022` ใน `air-conditioner-catalog-rounds.csv`
-3. เลือก 10-20 รุ่นที่น่าทำ marketplace match ก่อน
+1. เก็บ HomePro หน้าถัดไปและ cross-check รุ่นที่มี review signal สูง
+2. เก็บ online-native official/authorized source ของ CANDY, Xiaomi, TCL, CHiQ, Hisense เพิ่ม
+3. เลือก seed ที่มี review signal มากกว่า 5 ไปจับคู่ marketplace ก่อน
 
 ## วิธีตอบผู้ใช้เมื่อถามว่า “เหลืออีกกี่รุ่น”
 
