@@ -21,6 +21,7 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 | Catalog verified จากแหล่งร้าน/แบรนด์ | 0 |
 | Marketplace matched | 4 |
 | Review qualified | 4 |
+| Popularity review queue | 7 |
 | รีวิวเต็มเสร็จแล้ว | 3 |
 | Pilot ที่ควรขยายเป็นรีวิวเต็ม | 1 |
 
@@ -28,7 +29,7 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 
 ## ตัวชี้วัดใหม่
 
-ใช้ 4 ไฟล์นี้เป็นตัวนับหลัก:
+ใช้ 6 ไฟล์นี้เป็นตัวนับหลัก:
 
 1. `docs/air-conditioner-market-sources.csv`
    - ดูว่าแหล่งข้อมูลไหนพร้อมเก็บ แหล่งไหนต้องหา category URL เพิ่ม
@@ -42,6 +43,12 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 4. `docs/air-conditioner-marketplace-match.csv`
    - ดูว่าแต่ละรุ่นมี Shopee/Lazada/TikTok link หรือยัง และรีวิวเกิน 5 หรือไม่
 
+5. `docs/air-conditioner-popularity-scoring.md`
+   - ดูกติกาเรียงลำดับทำรีวิวตามยอดรีวิวหรือยอดขายจริง
+
+6. `docs/air-conditioner-review-priority.csv`
+   - ดูคิวรีวิวจริงที่เรียงตามความนิยมแล้ว
+
 ## จะรู้ได้ยังไงว่าใกล้ครบ
 
 ให้ดูตามสถานะนี้:
@@ -51,6 +58,24 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 - `marketplace_matched`: มีลิงก์ซื้ออย่างน้อย 1 marketplace
 - `review_qualified`: พร้อมทำรีวิวเต็ม เพราะมีรีวิว/ratings/comments มากกว่า 5
 - `review_done`: ปิดงานรีวิวเดี่ยวแล้ว
+
+## คิวรีวิวตามความนิยม
+
+กติกาหลัก: รุ่นที่ยังไม่มียอดขายหรือยอดรีวิวจริงมากกว่าเกณฑ์ จะยังไม่เข้าคิวรีวิวเต็ม
+
+คิวปัจจุบันจาก `docs/air-conditioner-review-priority.csv`:
+
+| ลำดับ | รุ่น | หลักฐานความนิยม | สถานะ | งานถัดไป |
+|---:|---|---:|---|---|
+| 1 | CANDY VPCT/VPGT Series | Shopee reviews 10,400 | รีวิวเต็มแล้ว | รีเฟรชราคา/ลิงก์ |
+| 2 | TCL SaveIN AI Series | Shopee reviews 9,200 | pilot | ขยายเป็นรีวิวเต็ม |
+| 3 | Xiaomi Mijia Air Inverter Eco | Shopee reviews 4,300 | รีวิวเต็มแล้ว | รีเฟรชราคา/ลิงก์ |
+| 4 | Midea Celest MSCE | Shopee reviews 193 | รีวิวเต็มแล้ว | รีเฟรชราคา/ลิงก์ |
+| 5 | Mitsubishi MSY-GT09VF | HomePro reviews 86 | ต้องจับคู่ marketplace | หา Shopee/Lazada/TikTok |
+| 6 | Mitsubishi Heavy Duty DXK10CXV-W1 | HomePro reviews 13 | ต้องจับคู่ marketplace | หา Shopee/Lazada/TikTok |
+| 7 | Sharp AH/AU-XP10YMB | HomePro reviews 8 | ต้องจับคู่ marketplace | หา Shopee/Lazada/TikTok |
+
+ถ้าถามว่า “ทำรีวิวรุ่นไหนต่อ” คำตอบตอนนี้คือ **TCL SaveIN AI Series** เพราะมีหลักฐานความนิยมอันดับ 2 และยังไม่ได้ขยายเป็นรีวิวเต็ม
 
 งาน “รวบรวมครบเฟสแรก” จะถือว่าใช้ได้เมื่อ:
 

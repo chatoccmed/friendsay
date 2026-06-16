@@ -39,6 +39,12 @@ HomePro และร้านใหญ่เป็นแค่ **Modern-trade la
 - `docs/air-conditioner-marketplace-match.csv`  
   ตารางจับคู่สินค้าจาก catalog กับ Shopee, Lazada, TikTok และลิงก์ affiliate
 
+- `docs/air-conditioner-popularity-scoring.md`  
+  กติกาเรียงลำดับทำรีวิวตามยอดขายหรือยอดรีวิวจริง
+
+- `docs/air-conditioner-review-priority.csv`  
+  คิวรีวิวจริงที่เรียงตามความนิยม ไม่ใช่ความรู้สึกว่าแบรนด์ดัง
+
 - `docs/air-conditioner-shopee-evidence-ledger.csv`  
   ใช้ต่อเมื่อสินค้านั้นมี Shopee match และต้องเก็บหลักฐาน marketplace
 
@@ -125,14 +131,15 @@ HomePro และร้านใหญ่เป็นแค่ **Modern-trade la
 
 ## Priority สำหรับทำรีวิวก่อน
 
-เรียงตามนี้:
+เรียงตาม `docs/air-conditioner-review-priority.csv` เท่านั้น
 
-1. รุ่นที่มีรีวิวเยอะและมี marketplace link พร้อม
-2. รุ่น online-native ที่คนซื้อจริงเยอะ เช่น CANDY, Xiaomi, TCL, Midea, Hisense, CHiQ
-3. รุ่นจากแบรนด์ที่คนไทยค้นหาสูง เช่น Daikin, Mitsubishi, Panasonic, Carrier, Haier, Midea, LG, Samsung, Sharp
-4. รุ่นที่มี BTU ยอดนิยม 9,000 / 12,000 / 18,000 / 24,000 BTU
-5. รุ่นที่มีจุดขายชัด เช่น inverter, ประหยัดไฟเบอร์ 5, ฟอกอากาศ, Wi-Fi, พร้อมติดตั้ง
-6. รุ่นที่ช่วยเปรียบเทียบกับรีวิวเดิมได้ เช่น CANDY, TCL, Xiaomi, Midea
+กติกาคือ:
+
+1. รุ่นต้องมียอดขายหรือยอดรีวิวจริงก่อน
+2. รุ่นที่มี review / rating / comment count สูงกว่าทำก่อน
+3. ถ้ามี sold count จริง ให้ใช้ sold count ช่วยดันลำดับ
+4. ถ้าคะแนนใกล้กัน ให้ดันรุ่นที่มี affiliate link พร้อมก่อน
+5. รุ่นที่ไม่มี review/sales signal จริงให้ค้างเป็น `catalog_candidate` จนกว่าจะเจอหลักฐาน
 
 ## วิธีทำงานกับ Shopee หลังจากมี catalog
 

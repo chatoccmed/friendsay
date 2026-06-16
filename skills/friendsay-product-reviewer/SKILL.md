@@ -13,7 +13,7 @@ When working inside the Friendsay project, read these first:
 
 - `docs/product-review-operating-template.md`
 - `docs/air-conditioner-market-catalog-system.md` for the catalog-first air-conditioner workflow
-- `docs/air-conditioner-market-dashboard.md`, `docs/air-conditioner-market-sources.csv`, `docs/air-conditioner-catalog-rounds.csv`, `docs/air-conditioner-market-catalog.csv`, and `docs/air-conditioner-marketplace-match.csv` for air-conditioner market inventory
+- `docs/air-conditioner-market-dashboard.md`, `docs/air-conditioner-market-sources.csv`, `docs/air-conditioner-catalog-rounds.csv`, `docs/air-conditioner-market-catalog.csv`, `docs/air-conditioner-marketplace-match.csv`, `docs/air-conditioner-popularity-scoring.md`, and `docs/air-conditioner-review-priority.csv` for air-conditioner market inventory and popularity-based review order
 - `docs/shopee-b-plus-d-review-system.md` when collecting Shopee data
 - `docs/air-conditioner-shopee-inventory-queue.md` for air-conditioner batch work
 - `docs/air-conditioner-shopee-data-system.md` for durable Shopee evidence and coverage rules
@@ -71,6 +71,8 @@ If a reference is missing, continue with the closest available source and note t
 - Use `docs/air-conditioner-catalog-rounds.csv` to know the next source or brand to collect.
 - Use `docs/air-conditioner-market-catalog.csv` to answer how many air-conditioner models are known, verified, matched, qualified, and reviewed.
 - Use `docs/air-conditioner-marketplace-match.csv` to track Shopee, Lazada, and TikTok product links.
+- Use `docs/air-conditioner-review-priority.csv` to decide the next review. The next review must be the highest-ranked item that is not `full_review_done` and has real sales or review evidence.
+- Do not create a full air-conditioner review for a model without real review count, rating/comment count, or visible sold count evidence above the threshold.
 - Treat Shopee as a marketplace match layer, not the catalog layer.
 - Search marketplace by exact product key, brand, series, model, and BTU after the model exists in the market catalog.
 - If Shopee blocks collection, continue with retailer, brand, Lazada, or TikTok sources instead of stopping the whole inventory project.
