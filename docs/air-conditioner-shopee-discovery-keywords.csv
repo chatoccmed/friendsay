@@ -1,0 +1,20 @@
+batch,keyword,search_intent,collection_status,target_items,notes
+1,แอร์ติดผนัง,main_category,pending,20,คีย์เวิร์ดหลักเพื่อเก็บภาพรวมและรุ่นซ้ำ
+1,แอร์ 9000 BTU,small_room,pending,20,เน้นห้องเล็ก คอนโด ห้องนอน
+1,แอร์ 12000 BTU,bedroom_medium,pending,20,ขนาดยอดนิยมสำหรับห้องนอนกลาง
+1,แอร์ 18000 BTU,living_room,pending,15,ห้องนั่งเล่นหรือห้องใหญ่
+1,แอร์ 24000 BTU,large_room,pending,15,ห้องใหญ่ แดดแรง หรือพื้นที่เปิด
+1,แอร์ inverter,energy_saving,pending,20,จับรุ่นประหยัดไฟและเบอร์ 5
+1,แอร์พร้อมติดตั้ง,installation_included,pending,20,คัดรุ่นที่มีบริการติดตั้งหรือ Q-CHANG
+2,Daikin แอร์ติดผนัง,brand_scan,pending,15,แบรนด์พรีเมียม ต้องตรวจร้าน official และประกัน
+2,Mitsubishi แอร์ติดผนัง,brand_scan,pending,15,แบรนด์ยอดนิยม ต้องแยกรุ่น Heavy Duty/Electric ถ้ามี
+2,Panasonic แอร์ติดผนัง,brand_scan,pending,15,เน้น inverter และเบอร์ 5
+2,Carrier แอร์ติดผนัง,brand_scan,pending,15,ตรวจรุ่น official และ BTU ให้ชัด
+2,Haier แอร์ติดผนัง,brand_scan,pending,15,ตรวจร้าน official และรุ่นย่อย
+2,Midea แอร์ติดผนัง,brand_scan,pending,15,ต่อยอดจาก Midea Celest
+2,Hisense แอร์ติดผนัง,brand_scan,pending,15,ค้นหารุ่นที่มีรีวิวเกิน 5
+2,TCL แอร์ติดผนัง,brand_scan,pending,15,ต่อยอดจาก TCL SaveIN AI
+2,CANDY แอร์ติดผนัง,brand_scan,pending,15,ตรวจว่ามีรุ่นอื่นนอกจาก VPCT/VPGT หรือไม่
+2,Xiaomi แอร์ติดผนัง,brand_scan,pending,15,ต่อยอดจาก Mijia Air Inverter Eco
+2,LG แอร์ติดผนัง,brand_scan,pending,15,ตรวจรุ่น inverter และประกัน
+2,Samsung แอร์ติดผนัง,brand_scan,pending,15,ตรวจจำนวนรีวิวและร้าน

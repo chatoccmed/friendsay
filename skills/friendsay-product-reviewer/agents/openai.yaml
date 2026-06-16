@@ -1,0 +1,4 @@
+interface:
+  display_name: "Friendsay Product Reviewer"
+  short_description: "Build Friendsay product reviews"
+  default_prompt: "Use $friendsay-product-reviewer to create a Friendsay product review from marketplace research."
