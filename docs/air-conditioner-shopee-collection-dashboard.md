@@ -21,6 +21,41 @@
 
 ตัวเลขนี้จะอัปเดตทุกครั้งที่เราเก็บ keyword ใหม่และรู้จำนวน candidate จริง
 
+## แล้วจะรู้ได้ยังไงว่าจะครบ 50 รอบเมื่อไหร่
+
+ให้ใช้ `docs/air-conditioner-shopee-collection-eta.csv` เป็นตัวนับเวลา
+
+กติกาการนับ:
+
+- “50 รอบ” หมายถึง active collection rounds ใหม่ ไม่รวม baseline `air-round-000`
+- ครบ 50 รอบเมื่อจำนวนรอบที่สถานะเป็น `done` ในงาน active ถึง 50
+- ถ้ารอบไหน Shopee เด้ง ให้ตั้งสถานะเป็น `blocked_by_verification` และไม่นับเป็น done จนกว่าจะกลับมาเก็บต่อ
+- ถ้ารอบไหนพบว่าไม่มีสินค้าที่เกี่ยวข้องจริง ให้ตั้งเป็น `done_no_candidate` หรือ `rejected_cleanup_done` ได้ และนับเป็นรอบที่เสร็จ เพราะเราได้ปิด coverage นั้นแล้ว
+
+ETA จากวันที่เริ่มทำรอบใหม่ **17 มิถุนายน 2026**:
+
+| จังหวะทำงาน | รอบต่อวันทำงาน | วันทำงานที่ใช้ | คาดว่าจบ 50 รอบ |
+|---|---:|---:|---|
+| ปลอดภัยมาก | 2 รอบ/วัน | 25 วันทำงาน | 21 กรกฎาคม 2026 |
+| มาตรฐานที่แนะนำ | 3 รอบ/วัน | 17 วันทำงาน | 9 กรกฎาคม 2026 |
+| เร็ว | 5 รอบ/วัน | 10 วันทำงาน | 30 มิถุนายน 2026 |
+| Sprint | 8 รอบ/วัน | 7 วันทำงาน | 25 มิถุนายน 2026 |
+
+จังหวะที่ผมแนะนำคือ **3 รอบ/วันทำงาน** เพราะยังพออ่านข้อมูลละเอียด เก็บ evidence และลดโอกาสโดน Shopee verification
+
+ถ้าทำตามจังหวะนี้:
+
+- 21 รอบที่รู้แน่ตอนนี้จะจบประมาณ **25 มิถุนายน 2026**
+- 36 รอบกรณี candidate ใหม่ไม่เยอะจะจบประมาณ **2 กรกฎาคม 2026**
+- 46 รอบกรณี candidate ใหม่เยอะจะจบประมาณ **8 กรกฎาคม 2026**
+- เป้า 50 รอบจะจบประมาณ **9 กรกฎาคม 2026**
+
+ทุกครั้งที่จบรอบ ให้ทำ 3 อย่าง:
+
+1. อัปเดต `docs/air-conditioner-shopee-collection-rounds.csv`
+2. อัปเดต `docs/air-conditioner-shopee-collection-eta.csv`
+3. สรุปตัวเลขใหม่ใน dashboard นี้
+
 ## ตัวเลขสถานะปัจจุบัน
 
 | รายการ | จำนวน |
@@ -39,15 +74,24 @@
 
 ใช้ 3 ไฟล์นี้เป็นตัวนับหลัก:
 
-1. `docs/air-conditioner-shopee-coverage-map.csv`
+1. `docs/air-conditioner-shopee-collection-rounds.csv`
+   - ดูว่ารอบไหนเสร็จแล้ว รอบไหนค้าง รอบไหนโดนบล็อก
+   - เป้าระยะสั้นคือปิดรอบ pending 21 รอบที่รู้แน่
+   - เป้าระยะกลางคือ active done 50 รอบ
+
+2. `docs/air-conditioner-shopee-collection-eta.csv`
+   - ดูวันที่คาดว่าจะครบตาม pace ต่าง ๆ
+   - อัปเดตทุกครั้งที่จำนวน done/blocked เปลี่ยน
+
+3. `docs/air-conditioner-shopee-coverage-map.csv`
    - ดูว่าคำค้น/แบรนด์ไหนเก็บแล้วหรือยัง
    - เป้าคือไม่มีแถว `pending`
 
-2. `docs/air-conditioner-shopee-2026-candidates.csv`
+4. `docs/air-conditioner-shopee-2026-candidates.csv`
    - ดู candidate ทั้งหมดที่เจอจาก search
    - เป้าคือ candidate ที่ไม่ใช่สินค้าแอร์จริงต้องถูก `rejected` และตัวที่น่าใช้ต้องถูกส่งต่อไป verified
 
-3. `docs/air-conditioner-shopee-evidence-ledger.csv`
+5. `docs/air-conditioner-shopee-evidence-ledger.csv`
    - ดูว่าสินค้าที่จะทำรีวิวมีหลักฐานตรวจย้อนหลังหรือยัง
    - เป้าคือทุกสินค้าที่อยู่ใน review queue ต้องมี `evidence_id`
 

@@ -1,0 +1,8 @@
+scenario,target_rounds,active_done_rounds,remaining_rounds,start_date,rounds_per_workday,working_days_per_week,workdays_needed,estimated_finish,confidence,assumption
+known_minimum_standard,21,0,21,2026-06-17,3,5,7,2026-06-25,high,"รอบที่รู้แน่จาก tracker ตอนนี้: 3 detail จาก candidate เดิม + 18 search รอบ pending"
+expected_low_standard,36,0,36,2026-06-17,3,5,12,2026-07-02,medium,"กรณีหลัง search เจอ candidate ใหม่ไม่มาก เพิ่ม detail verification ประมาณ 15 รอบ"
+expected_high_standard,46,0,46,2026-06-17,3,5,16,2026-07-08,medium,"กรณีหลัง search เจอ candidate ใหม่มาก เพิ่ม detail verification ประมาณ 25 รอบ"
+target_50_safe,50,0,50,2026-06-17,2,5,25,2026-07-21,high,"จังหวะปลอดภัยมาก ลดโอกาส Shopee verification เหมาะเมื่อโดนเด้งบ่อย"
+target_50_standard,50,0,50,2026-06-17,3,5,17,2026-07-09,high,"จังหวะมาตรฐานที่ควรใช้จริง: รอบสั้น วันละ 3 รอบ หยุดทันทีเมื่อ Shopee เริ่ม verification"
+target_50_fast,50,0,50,2026-06-17,5,5,10,2026-06-30,medium,"จังหวะเร็ว ทำได้ถ้า Shopee ไม่เด้งและมีเวลาตรวจต่อเนื่อง"
+target_50_sprint,50,0,50,2026-06-17,8,5,7,2026-06-25,low,"จังหวะเร่งมาก เสี่ยงโดน verification และคุณภาพการจดหลักฐานอาจตก"

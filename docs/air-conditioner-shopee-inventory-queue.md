@@ -11,6 +11,7 @@
 - `docs/air-conditioner-shopee-coverage-map.csv` คือแผนที่ว่าเก็บคำค้นไหนแล้ว และยังเหลือคำค้นไหน
 - `docs/air-conditioner-shopee-collection-dashboard.md` คือสรุปว่าต้องทำอีกกี่รอบและทำถึงไหนแล้ว
 - `docs/air-conditioner-shopee-collection-rounds.csv` คือรายการรอบงานแบบนับได้ทีละรอบ
+- `docs/air-conditioner-shopee-collection-eta.csv` คือ ETA ว่าถ้าทำวันละกี่รอบ จะครบเป้าหมายเมื่อไหร่
 - `docs/air-conditioner-shopee-evidence-ledger.csv` คือบัญชีหลักฐานของแต่ละสินค้า ใช้ตรวจย้อนหลังว่าเห็นข้อมูลจากหน้าไหน วันที่เท่าไร
 - `docs/air-conditioner-shopee-2026-candidates.csv` คือสินค้าที่พบจากหน้า search แต่ยังไม่ผ่านการยืนยันหน้ารายละเอียดครบ
 - `docs/air-conditioner-shopee-2026-verified.csv` คือสินค้าที่เปิดหน้ารายละเอียดแล้วและมีข้อมูลพอสำหรับรีวิว
