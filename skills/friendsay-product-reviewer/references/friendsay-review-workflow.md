@@ -59,6 +59,46 @@ Recommended order:
 15. FAQ
 16. Final verdict
 
+## Lower Article And Table Of Contents
+
+Do not let the page become thin after the first proof sections. From the fit/not-fit area onward, use the full Candy/TCL longform pattern:
+
+- Wrap the lower article in `article-layout`.
+- Put all main content in `article-body`.
+- Add a `toc` sidebar with numbered links on desktop.
+- Keep the TOC useful on mobile, either as a compact section or readable stacked links.
+
+Minimum TOC jobs:
+
+1. Quick answer
+2. Review proof
+3. Category guide
+4. Score
+5. Good points
+6. Watch-outs
+7. Real cost
+8. Setup, installation, usage, or maintenance
+9. Warranty, safety, or standards
+10. Alternatives
+11. Questions before buying
+12. Price check
+13. FAQ
+14. Final verdict
+
+Each linked section must contain buyer-useful content, not just a heading. If a topic repeats something already said, compress it into cards, bullets, or a short checklist instead of writing another long paragraph.
+
+For air conditioners, always include:
+
+- fit and not-fit cards,
+- Friendsay score bars,
+- BTU or model-selection guidance,
+- real installation and total-cost checks,
+- warranty or safety notes,
+- alternatives in nearby price or use cases,
+- six shop questions before buying.
+
+Use `scroll-margin-top` for anchor targets when sticky navigation or sticky buy buttons can cover headings. Test at least two TOC clicks before calling the page done.
+
 ## Friendsay Voice
 
 Write as a practical friend who has done the homework:
@@ -100,6 +140,8 @@ A product review is done when:
 - internal caveats are removed from public copy,
 - the visual set is not repetitive,
 - the review proof section has 6 or more cards,
+- the lower longform article exists with a working 14-link TOC,
+- the score section is followed by substantial good points, watch-outs, cost, setup, warranty, alternatives, questions, FAQ, and final verdict,
 - sticky buy buttons work responsively,
 - build passes,
 - `.github-ready` contains the same changes,

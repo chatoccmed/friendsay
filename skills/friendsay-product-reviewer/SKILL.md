@@ -28,12 +28,13 @@ If a reference is missing, continue with the closest available source and note t
 5. Select the next product by priority: high review signal, clear model or specs, trusted shop, useful comparison value.
 6. Write one review at a time using the product review operating template.
 7. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
-8. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
-9. Include at least 6 review-proof cards or review-theme cards. Do not create fake buyer names.
-10. Add Shopee, Lazada, and TikTok buy buttons when links exist, plus a centered responsive sticky buy bar.
-11. Add comparison UX: alternatives, compare CTA, or compare tray when available.
-12. Verify mobile, tablet, and desktop.
-13. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
+8. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
+9. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
+10. Include at least 6 review-proof cards or review-theme cards. Do not create fake buyer names.
+11. Add Shopee, Lazada, and TikTok buy buttons when links exist, plus a centered responsive sticky buy bar.
+12. Add comparison UX: alternatives, compare CTA, or compare tray when available.
+13. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
+14. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
 
 ## Writing Rules
 
@@ -45,6 +46,7 @@ If a reference is missing, continue with the closest available source and note t
 - Do not claim hands-on testing unless it is true.
 - Avoid overhype, fake urgency, vague praise, and generic phrases.
 - Avoid public process explanations such as saying data was collected from Shopee unless it directly helps the buyer.
+- Every lower-article heading must help the buyer decide. Avoid headings with only one or two weak lines.
 
 ## Shopee Collection Rules
 
@@ -71,10 +73,23 @@ Every full review should include:
 - Real watch-outs
 - Real cost and installation considerations
 - Friendsay score bars
+- Longform lower article with a right-side table of contents on desktop
 - Alternatives or comparison CTA
 - Questions to ask the shop before buying
 - FAQ and final verdict
 - Sticky buy bar
+
+## Lower Article And TOC Requirements
+
+Every full review must keep the Candy-style lower article structure:
+
+- Use `article-layout`, `article-body`, and `toc`.
+- Include fit and not-fit cards before score bars.
+- Include at least 14 TOC links: quick answer, review proof, category guide, score, good points, watch-outs, real cost, setup/installation/usage, warranty/safety, alternatives, shop questions, price check, FAQ, and final verdict.
+- Keep the lower article substantial: score explanation, good points, real watch-outs, total cost, setup or installation reality, warranty or safety, alternatives, questions before buying, FAQ, and final verdict.
+- Adapt category labels, but do not remove the decision jobs. If installation does not apply, use setup, usage, care, or maintenance.
+- Add `scroll-margin-top` when sticky UI can cover anchors.
+- Confirm TOC links click to the correct sections on desktop and mobile.
 
 ## Visual Rules
 
@@ -91,5 +106,7 @@ Every full review should include:
 - Confirm no horizontal overflow on mobile or desktop.
 - Confirm affiliate links use `rel="sponsored noopener"`.
 - Confirm generated images are not duplicated within the same review.
+- Confirm the lower article is not sparse after the score section.
+- Confirm TOC has 14 or more useful links and works when clicked.
 - Run the site build if code or content changed.
 - Commit changes in `.github-ready` if deploy workflow is expected.
