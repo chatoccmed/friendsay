@@ -65,7 +65,9 @@ If a reference is missing, continue with the closest available source and note t
 - Do not use Shopee broad search as the main source of truth for air conditioners.
 - Use `docs/air-conditioner-market-catalog-system.md` as the primary workflow for air-conditioner inventory.
 - Use `docs/air-conditioner-market-dashboard.md` to answer current progress and what remains.
-- Build the market catalog from stable sources first: large Thai retailers, brand websites, and official spec pages.
+- Build the market catalog from multiple lanes: large Thai retailers, brand websites, official spec pages, and online-native official/authorized marketplace sources.
+- Do not treat HomePro or any single retailer as the whole air-conditioner market.
+- Keep an online-native lane for brands and models that may not appear in large retailers, such as CANDY, Xiaomi, TCL, CHiQ, Hisense, and other marketplace-heavy brands.
 - Use `docs/air-conditioner-catalog-rounds.csv` to know the next source or brand to collect.
 - Use `docs/air-conditioner-market-catalog.csv` to answer how many air-conditioner models are known, verified, matched, qualified, and reviewed.
 - Use `docs/air-conditioner-marketplace-match.csv` to track Shopee, Lazada, and TikTok product links.

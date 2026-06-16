@@ -53,13 +53,16 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 
 1. เก็บ retailer rounds หลักครบ 6 แหล่ง
 2. เก็บ brand rounds หลักอย่างน้อย 12 แบรนด์
-3. สินค้าซ้ำถูก merge เป็น product key เดียว
-4. ทุกตัวที่เข้าเกณฑ์มี marketplace match อย่างน้อย 1 ช่องทาง
-5. ทุกตัวที่รีวิวเกิน 5 ถูกส่งเข้า review queue
+3. เก็บ online-native rounds อย่างน้อย 4 รอบ เพื่อไม่ให้พลาด CANDY, Xiaomi, TCL, CHiQ และรุ่นออนไลน์
+4. สินค้าซ้ำถูก merge เป็น product key เดียว
+5. ทุกตัวที่เข้าเกณฑ์มี marketplace match อย่างน้อย 1 ช่องทาง
+6. ทุกตัวที่รีวิวเกิน 5 ถูกส่งเข้า review queue
 
 ## ลำดับงานถัดไป
 
-รอบถัดไปควรเริ่มที่ `catalog-round-001`:
+รอบถัดไปควรทำเป็น 2 เลนคู่กัน ไม่ใช่เก็บ HomePro อย่างเดียว
+
+### เลน A: `catalog-round-001`
 
 **HomePro แอร์ติดผนังทั้งหมด**
 
@@ -70,10 +73,21 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 - ใช้เป็นฐานสร้าง product key ได้ดี
 - พอได้รายชื่อรุ่นแล้วค่อยกลับไปจับคู่ Shopee แบบเจาะจง
 
-หลังจบ HomePro round ให้ทำ 3 อย่าง:
+### เลน B: `catalog-round-022`
+
+**Online-native air conditioner seeds**
+
+เหตุผล:
+
+- ป้องกันไม่ให้พลาดแบรนด์ที่อาจไม่มีหรือมีน้อยในร้านใหญ่ เช่น CANDY, Xiaomi, TCL บางรุ่น, CHiQ, Hisense บางรุ่น
+- เป็นกลุ่มที่มีโอกาส affiliate สูง เพราะคนซื้อจริงบน Shopee/Lazada/TikTok
+- ใช้รีวิวผู้ซื้อจำนวนมากเป็น proof ได้เร็วกว่าแบรนด์ห้างบางรุ่น
+- ต้องเก็บจาก official/authorized store ก่อน เพื่อลดความเสี่ยงสินค้าปลอม/ชื่อรุ่นเพี้ยน
+
+หลังจบ 2 เลนแรก ให้ทำ 3 อย่าง:
 
 1. เพิ่ม/อัปเดตรุ่นใน `air-conditioner-market-catalog.csv`
-2. อัปเดตสถานะ `catalog-round-001` ใน `air-conditioner-catalog-rounds.csv`
+2. อัปเดตสถานะ `catalog-round-001` และ `catalog-round-022` ใน `air-conditioner-catalog-rounds.csv`
 3. เลือก 10-20 รุ่นที่น่าทำ marketplace match ก่อน
 
 ## วิธีตอบผู้ใช้เมื่อถามว่า “เหลืออีกกี่รุ่น”

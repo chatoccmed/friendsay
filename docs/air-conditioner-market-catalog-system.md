@@ -10,6 +10,21 @@
 
 จากนี้ให้เริ่มจากฐานรุ่นแอร์ในตลาดไทยก่อน แล้วค่อยจับคู่กับ Shopee, Lazada, และ TikTok ทีหลัง
 
+## จุดสำคัญ: HomePro ไม่ใช่ทั้งตลาด
+
+HomePro และร้านใหญ่เป็นแค่ **Modern-trade lane** ไม่ใช่ภาพรวมทั้งหมดของตลาดแอร์ไทย
+
+ถ้าเก็บจากร้านใหญ่เท่านั้น เราจะเห็นแบรนด์ห้างชัดขึ้น เช่น Daikin, Mitsubishi, Panasonic, Carrier, LG, Samsung, Sharp, Haier, Midea บางรุ่น แต่มีโอกาสพลาดกลุ่ม online-native / marketplace-native เช่น CANDY, Xiaomi, TCL บางรุ่น, CHiQ, Hisense บางรุ่น, Zinney และรุ่นราคาคุ้มที่ขายดีบน Shopee/Lazada/TikTok
+
+ดังนั้นระบบ catalog ต้องมี 4 เลน:
+
+1. **Modern-trade lane**: HomePro, Power Buy, Thai Watsadu, Global House, DoHome, Boonthavorn
+2. **Brand-official lane**: เว็บแบรนด์โดยตรง ใช้ยืนยันซีรีส์ รุ่น BTU ประกัน และสเปก
+3. **Online-native lane**: official/authorized store บน Shopee Mall, LazMall, TikTok Shop และแบรนด์ที่ขายออนไลน์เด่น
+4. **Marketplace-match lane**: ใช้หลังจากมี product key แล้ว เพื่อหา affiliate link, ราคา, รีวิว, รูปจริง และประเด็นผู้ซื้อ
+
+เป้าคือไม่ให้ Friendsay กลายเป็นเว็บรีวิวเฉพาะ “แอร์ห้าง” แต่ต้องครอบคลุมแอร์ที่คนไทยซื้อจริงทั้งร้านใหญ่ แบรนด์ official และ marketplace
+
 ## ไฟล์หลัก
 
 - `docs/air-conditioner-market-sources.csv`  
@@ -35,6 +50,7 @@
 1. เก็บรุ่นจากแหล่งตลาดไทยที่เสถียรกว่า Shopee
    - ร้านค้ารายใหญ่: HomePro, Power Buy, Thai Watsadu, Global House, DoHome, Boonthavorn
    - เว็บแบรนด์: Daikin, Mitsubishi Electric, Mitsubishi Heavy Duty, Panasonic, Carrier, Haier, Midea, Hisense, TCL, CANDY, Xiaomi, LG, Samsung, Sharp, Toshiba
+   - online-native source: Shopee Mall, LazMall, TikTok Shop official/authorized store และ marketplace official store ของแบรนด์ที่ไม่ค่อยอยู่ในร้านใหญ่
    - แหล่งยืนยันสเปก/มาตรฐาน ถ้าเข้าถึงได้: ฉลากประหยัดไฟ, มอก., หน้า product spec ของแบรนด์
 
 2. ทำความสะอาดชื่อรุ่น
@@ -45,7 +61,8 @@
 3. ยืนยันว่าเป็นรุ่นจริง
    - ผ่านทันทีถ้าเจอจากเว็บแบรนด์โดยตรง
    - ผ่านแบบมั่นใจถ้าเจอจากร้านค้ารายใหญ่ 2 แหล่งขึ้นไป
-   - ถ้าเจอจาก marketplace อย่างเดียว ให้ตั้งเป็น `marketplace_seed_needs_catalog`
+   - ถ้าเจอจาก official/authorized marketplace store และมีรีวิวมาก ให้ตั้งเป็น `online_native_seed`
+   - ถ้าเจอจาก marketplace ทั่วไปอย่างเดียว ให้ตั้งเป็น `marketplace_seed_needs_catalog`
 
 4. จับคู่ marketplace
    - ค้น Shopee ด้วย brand + series + model + BTU
@@ -68,6 +85,9 @@
 
 - `marketplace_seed_needs_catalog`  
   เจอจาก Shopee/Lazada/TikTok ก่อน แต่ยังต้องย้อนกลับไปหาแหล่ง catalog ที่นิ่งกว่า
+
+- `online_native_seed`  
+  เจอจาก official/authorized store บน marketplace หรือเว็บแบรนด์ออนไลน์ก่อน เหมาะกับแบรนด์ที่อาจไม่มีในร้านใหญ่ เช่น CANDY, Xiaomi, TCL บางรุ่น, CHiQ
 
 - `catalog_verified_not_matched`  
   เป็นรุ่นจริงในตลาดไทย แต่ยังไม่เจอ marketplace link ที่เหมาะทำ affiliate
@@ -96,9 +116,10 @@
 1. source หลักใน `air-conditioner-market-sources.csv` ถูกเก็บครบตาม phase
 2. รุ่นที่พบถูกบันทึกใน `air-conditioner-market-catalog.csv`
 3. รุ่นซ้ำถูก merge แล้ว
-4. รุ่นที่มีขายใน marketplace ถูกจับคู่ใน `air-conditioner-marketplace-match.csv`
-5. รุ่นที่มีรีวิวมากกว่า 5 ถูกส่งเข้า review queue
-6. รีวิวเดี่ยวค่อยทำทีละรุ่นตาม priority
+4. online-native brands ถูกเก็บจาก official/authorized marketplace source แล้ว ไม่ใช่มีแต่แบรนด์ร้านใหญ่
+5. รุ่นที่มีขายใน marketplace ถูกจับคู่ใน `air-conditioner-marketplace-match.csv`
+6. รุ่นที่มีรีวิวมากกว่า 5 ถูกส่งเข้า review queue
+7. รีวิวเดี่ยวค่อยทำทีละรุ่นตาม priority
 
 ถ้าผู้ใช้ถามว่า “เหลืออีกกี่รุ่น” ให้ตอบจาก market catalog ไม่ใช่ตอบจากจำนวนรอบ Shopee
 
@@ -107,10 +128,11 @@
 เรียงตามนี้:
 
 1. รุ่นที่มีรีวิวเยอะและมี marketplace link พร้อม
-2. รุ่นจากแบรนด์ที่คนไทยค้นหาสูง เช่น Daikin, Mitsubishi, Panasonic, Carrier, Haier, Midea, LG, Samsung, Sharp
-3. รุ่นที่มี BTU ยอดนิยม 9,000 / 12,000 / 18,000 / 24,000 BTU
-4. รุ่นที่มีจุดขายชัด เช่น inverter, ประหยัดไฟเบอร์ 5, ฟอกอากาศ, Wi-Fi, พร้อมติดตั้ง
-5. รุ่นที่ช่วยเปรียบเทียบกับรีวิวเดิมได้ เช่น CANDY, TCL, Xiaomi, Midea
+2. รุ่น online-native ที่คนซื้อจริงเยอะ เช่น CANDY, Xiaomi, TCL, Midea, Hisense, CHiQ
+3. รุ่นจากแบรนด์ที่คนไทยค้นหาสูง เช่น Daikin, Mitsubishi, Panasonic, Carrier, Haier, Midea, LG, Samsung, Sharp
+4. รุ่นที่มี BTU ยอดนิยม 9,000 / 12,000 / 18,000 / 24,000 BTU
+5. รุ่นที่มีจุดขายชัด เช่น inverter, ประหยัดไฟเบอร์ 5, ฟอกอากาศ, Wi-Fi, พร้อมติดตั้ง
+6. รุ่นที่ช่วยเปรียบเทียบกับรีวิวเดิมได้ เช่น CANDY, TCL, Xiaomi, Midea
 
 ## วิธีทำงานกับ Shopee หลังจากมี catalog
 
