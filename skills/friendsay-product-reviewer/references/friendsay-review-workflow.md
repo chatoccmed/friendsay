@@ -130,6 +130,12 @@ Good style:
 - "ถ้าห้องคุณเป็นคอนโดขนาดไม่ใหญ่มาก รุ่นนี้เริ่มน่าสนใจตรงราคาและรีวิวเยอะ แต่ต้องถามร้านเรื่องติดตั้งให้ชัดก่อนจ่ายเงิน"
 - "จุดที่ไม่ควรมองข้ามคือเลือก BTU ให้ตรงห้อง ถ้าเลือกเล็กไป แอร์จะทำงานหนักและค่าไฟอาจไม่สวยอย่างที่คิด"
 
+Review-proof card standard:
+
+- Turn buyer-review patterns into 6 practical recommendations.
+- Each card should answer: what did buyers repeatedly show, what does it mean, and what should the reader do before buying.
+- Do not use weak cards such as "there are enough reviews to read" or "read more reviews yourself".
+
 Avoid:
 
 - "น่าดูมาก"
@@ -154,7 +160,7 @@ A product review is done when:
 - the queue row is updated,
 - internal caveats are removed from public copy,
 - the visual set is not repetitive,
-- the review proof section has 6 or more cards,
+- the review proof section has 6 or more actionable buyer-review recommendation cards,
 - the lower longform article exists with a working 14-link TOC,
 - the score section is followed by substantial good points, watch-outs, cost, setup, warranty, alternatives, questions, FAQ, and final verdict,
 - sticky buy buttons work responsively,

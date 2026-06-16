@@ -31,7 +31,7 @@ If a reference is missing, continue with the closest available source and note t
 8. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
 9. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
 10. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
-11. Include at least 6 review-proof cards or review-theme cards. Do not create fake buyer names.
+11. Include exactly or at least 6 buyer-review recommendation cards. Each card must turn review patterns into a concrete recommendation, not merely say that many reviews exist.
 12. Add Shopee, Lazada, and TikTok buy buttons when links exist, plus a centered responsive sticky buy bar.
 13. Add comparison UX: alternatives, compare CTA, or compare tray when available.
 14. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
@@ -43,6 +43,7 @@ If a reference is missing, continue with the closest available source and note t
 - Be specific about buyer decisions.
 - Use article titles that sell the product's strongest useful benefit, such as review volume, price, BTU range, smart-home feature, warranty, or ease of use. Avoid generic titles like "รีวิวรุ่น X น่าซื้อไหม".
 - Keep repeated information out of long paragraphs. Use cards, bullets, tables, snapshots, and short verdicts.
+- In the review-proof section, summarize buyer reviews into 6 useful recommendations. Avoid cards like "there are enough reviews to read"; tell readers what to check or do.
 - Turn missing data into an internal note, not a weak public paragraph.
 - Public watch-outs must be real buyer risks, such as wrong BTU, unclear installation cost, unclear warranty, variant confusion, repeated buyer complaints, noisy outdoor unit, drainage, pipe distance, or service queue.
 - Do not claim hands-on testing unless it is true.
@@ -69,7 +70,7 @@ Every full review should include:
 - Decision cockpit or quick answer section
 - Buyer snapshots
 - Real product proof section
-- Review proof section with 6 or more cards
+- Review proof section with 6 or more recommendation cards from buyer-review patterns
 - Category guide, such as BTU for air conditioners
 - Good points
 - Real watch-outs
@@ -104,6 +105,7 @@ Every full review must keep the Candy-style lower article structure:
 ## Validation Checklist
 
 - Confirm proof cards are complete.
+- Confirm review-proof cards are actionable recommendations, not generic review-count statements.
 - Confirm no public process or internal caveat paragraphs remain.
 - Confirm no horizontal overflow on mobile or desktop.
 - Confirm affiliate links use `rel="sponsored noopener"`.
