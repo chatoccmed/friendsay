@@ -115,10 +115,26 @@ const cockpitSteps = [
 ];
 
 const costChecks = [
-  { label: "ราคาเครื่อง", value: "ประมาณ 8,590 บาทหลังคูปอง ณ วันที่เก็บข้อมูล" },
-  { label: "ติดตั้ง", value: "ถามว่ารวม Q-CHANG หรือบริการช่างแบบไหน" },
-  { label: "อุปกรณ์เพิ่ม", value: "เช็กท่อ ราง ขาแขวน สายไฟ และงานเจาะ" },
-  { label: "ประกัน", value: "ถามขั้นตอนลงทะเบียนกับ TCL ก่อนซื้อ" }
+  {
+    label: "ราคาเครื่อง",
+    value: "ประมาณ 8,590 บาทหลังคูปอง ณ วันที่เก็บข้อมูล",
+    note: "ราคาโปรและคูปองเปลี่ยนได้ ให้กดเช็กราคาหน้าร้านก่อนจ่ายจริง"
+  },
+  {
+    label: "ติดตั้ง",
+    value: "ถามว่ารวม Q-CHANG หรือบริการช่างแบบไหน",
+    note: "อย่าคิดเองว่ารวมติดตั้งแล้ว ให้ถามวันช่าง พื้นที่บริการ และเงื่อนไขหน้างาน"
+  },
+  {
+    label: "อุปกรณ์เพิ่ม",
+    value: "เช็กท่อ ราง ขาแขวน สายไฟ และงานเจาะ",
+    note: "ถ้าท่อยาวเกินมาตรฐาน ย้ายจุดคอยล์ร้อน หรือมีงานเจาะพิเศษ อาจมีค่าเพิ่ม"
+  },
+  {
+    label: "ประกัน",
+    value: "ถามขั้นตอนลงทะเบียนกับ TCL ก่อนซื้อ",
+    note: "เก็บใบเสร็จ เลขเครื่อง และหลักฐานแชทร้านไว้ เผื่อต้องใช้ตอนเคลม"
+  }
 ];
 
 const buyerSnapshotCards = [
@@ -202,6 +218,57 @@ const realReviewSnapshots = reviewSignals.map((item, index) => ({
   takeaway: ["เช็ก BTU ให้ตรงห้องก่อน", "เลือกขนาดจากห้องจริง", "ถามราคาติดตั้งให้จบ", "ตั้งค่าใช้งานและล้างแอร์ตามรอบ", "อ่านรีวิวมีภาพก่อนจ่าย", "เก็บหลักฐานประกันให้ครบ"][index],
   image: item.image
 }));
+
+const alternativeCards = [
+  {
+    role: "รุ่นนี้",
+    name: "TCL SaveIN AI Series",
+    note: "เด่นตรง BTU กว้าง รีวิวแน่น และมีฟีเจอร์ Full DC Inverter/AI ให้เทียบในงบกลาง ๆ"
+  },
+  {
+    role: "เทียบราคา",
+    name: "CANDY VPCT/VPGT",
+    note: "เหมาะไว้เทียบเรื่องราคาเริ่มต้น รีวิวจำนวนมาก และเงื่อนไขติดตั้งผ่าน Q-CHANG"
+  },
+  {
+    role: "สาย Smart home",
+    name: "Xiaomi Mijia Eco",
+    note: "น่าเทียบถ้าคุณสนใจแอป Xiaomi Home หรืออยากดูข้อมูลการใช้ไฟผ่านระบบ smart home"
+  },
+  {
+    role: "สายประกัน",
+    name: "Midea Celest",
+    note: "น่าเทียบถ้าให้ความสำคัญกับประกันยาวและอยากดูความต่างของร้าน/บริการหลังซื้อ"
+  }
+];
+
+const askBeforeBuy = [
+  "รุ่นที่กดเลือกเป็น BTU เท่าไหร่ และชื่อรุ่นเต็มตรงกับหน้าร้านหรือไม่",
+  "ราคานี้รวมติดตั้งไหม ถ้ารวม รวมบริการอะไรบ้างและใช้ช่างจากที่ไหน",
+  "ท่อทองแดง รางครอบท่อ ขาแขวน สายไฟ และท่อน้ำทิ้งให้มากี่เมตร",
+  "ถ้าอยู่คอนโด ร้านช่วยออกเอกสารหรือประสานงานนิติได้ไหม",
+  "ช่างเข้าได้วันไหน ถ้าต้องเลื่อนคิวมีขั้นตอนแจ้งอย่างไร",
+  "ประกันคอมเพรสเซอร์/อะไหล่ต้องลงทะเบียนกับ TCL เองหรือร้านช่วยดำเนินการ"
+];
+
+const faqs = [
+  {
+    question: "TCL SaveIN AI Series เหมาะกับห้องแบบไหน?",
+    answer: "เหมาะกับห้องนอน คอนโด และห้องนั่งเล่นที่เลือก BTU ให้ตรงกับพื้นที่จริง เพราะรุ่นนี้มีตั้งแต่ 9,200 ถึง 24,200 BTU จุดสำคัญคืออย่าเลือกจากราคาอย่างเดียว"
+  },
+  {
+    question: "ควรเลือก 9,200 หรือ 12,000 BTU?",
+    answer: "ถ้าห้องเล็ก แดดไม่แรง และใช้นอนเป็นหลัก 9,200 BTU อาจพอ แต่ถ้าห้องรับแดด หน้าต่างเยอะ หรืออยากให้เย็นไวขึ้น ให้ถามร้านพร้อมขนาดห้องจริงก่อนตัดสินใจ"
+  },
+  {
+    question: "ราคา 8,590 บาทคือราคาจบไหม?",
+    answer: "ยังไม่ควรถือว่าเป็นราคาจบ ต้องถามว่ารวมติดตั้งไหม รวมท่อกี่เมตร มีรางครอบท่อ ขาแขวน สายไฟ หรืองานเจาะพิเศษเพิ่มหรือเปล่า"
+  },
+  {
+    question: "ต้องอ่านรีวิวส่วนไหนก่อนซื้อ?",
+    answer: "ให้ดูรีวิวที่มีภาพและพูดถึงความเย็น เสียง งานติดตั้ง คิวช่าง ร้านตอบแชท และการแก้ปัญหาหลังสั่งซื้อ เพราะจุดเหล่านี้สะท้อนประสบการณ์จริงมากกว่าดาวรวม"
+  }
+];
 
 const scoreItems = [
   { label: "ความนิยม", value: 9.4 },
@@ -434,79 +501,204 @@ const jsonLd = {
       </div>
     </section>
 
-    <section class="section-block two-col">
-      <div id="good" class="decision-panel good">
-        <p class="eyebrow">Good points</p>
-        <h2>ข้อดีที่ควรรู้</h2>
-        <ul>
-          <li>รีวิวเยอะพอให้ตามอ่านก่อนซื้อ ไม่ต้องเดาจากดาวรวมอย่างเดียว</li>
-          <li>มีช่วง BTU กว้าง เหมาะกับการเทียบหลายห้องในบ้านหรือคอนโด</li>
-          <li>Full DC Inverter กับฟีเจอร์ AI ช่วยให้ภาพรวมดูน่าสนใจในกลุ่มประหยัดไฟ</li>
-          <li>มีช่องทางติดตั้งผ่านบริการเสริม ทำให้คนไม่มีช่างประจำเริ่มง่ายขึ้น</li>
-        </ul>
-      </div>
-      <div id="watch" class="decision-panel watch">
-        <p class="eyebrow">Watch-outs</p>
-        <h2>จุดต้องระวังก่อนกดซื้อ</h2>
-        <ul>
-          <li>อย่าเลือก BTU จากราคา ให้ดูแดด ขนาดห้อง กระจก ฝ้า และจำนวนคนในห้อง</li>
-          <li>ถามให้ชัดว่าราคาที่เห็นรวมติดตั้งหรือไม่ และรวมอุปกรณ์กี่เมตร</li>
-          <li>ถ้าอยู่คอนโด ให้ถามวันช่างและเอกสารเข้านิติให้เรียบร้อยก่อน</li>
-          <li>เช็กเงื่อนไขประกันและการลงทะเบียนกับ TCL เพราะถ้าพลาดเอกสารจะตามเรื่องยาก</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="cost" class="section-block cost-section">
-      <div class="section-title">
-        <p class="eyebrow">Real cost</p>
-        <h2>ต้นทุนจริงไม่ได้มีแค่ราคาเครื่อง</h2>
-        <p>แอร์เป็นสินค้าที่ราคาหน้าร้านมักยังไม่ใช่ราคาจบ ควรไล่ถามตามนี้ก่อนจ่ายเงิน</p>
-      </div>
-      <div class="cost-list">
-        {realCosts.map((item, index) => (
-          <div class="cost-row">
-            <span>{index + 1}</span>
-            <p>{item}</p>
+    <section class="section">
+      <div class="container article-layout">
+        <article class="article-body">
+          <div class="air-quick-grid air-fit-grid">
+            <div class="soft-card">
+              <h2>เหมาะกับใคร</h2>
+              <p>{product.bestFor}</p>
+            </div>
+            <div class="soft-card">
+              <h2>ไม่เหมาะกับใคร</h2>
+              <p>{product.notFor}</p>
+            </div>
           </div>
-        ))}
-      </div>
-    </section>
 
-    <section id="score" class="section-block score-section">
-      <div class="section-title">
-        <p class="eyebrow">Friendsay score</p>
-        <h2>คะแนนแบบ Friendsay</h2>
-        <p>คะแนนนี้ให้เพื่อช่วยจับภาพรวม ไม่ใช่แทนการถามร้านเรื่อง BTU และติดตั้ง</p>
-      </div>
-      <ScoreBars scores={scoreItems} />
-    </section>
+          <h2 id="score">คะแนนแบบ Friendsay</h2>
+          <ScoreBars scores={scoreItems} />
+          <p>
+            คะแนน {product.score.toFixed(1)}/10 ของ TCL SaveIN AI Series มาจากภาพรวมของรีวิว จำนวนตัวเลือก BTU ราคาเปิด ฟีเจอร์ประหยัดไฟ
+            และความเสี่ยงหลังซื้อ จุดที่ทำคะแนนได้ดีคือความนิยมกับตัวเลือก BTU ที่กว้าง ส่วนจุดที่ทำให้ต้องระวังคือเรื่องติดตั้งและค่าใช้จ่ายหน้างานครับ
+          </p>
 
-    <section id="compare" class="section-block compare-section">
-      <div>
-        <p class="eyebrow">Compare next</p>
-        <h2>ควรเทียบกับรุ่นไหน</h2>
-        <p>
-          ถ้าสนใจ TCL รุ่นนี้ ให้เทียบกับ CANDY VPCT/VPGT เรื่องราคาและรีวิว, Xiaomi Mijia เรื่อง smart home,
-          และ Midea Celest เรื่องประกันกับจำนวนรีวิวที่ต่างกัน จะเห็นภาพชัดกว่าดูรุ่นเดียวครับ
-        </p>
-      </div>
-      <div class="compare-actions">
-        <button class="button secondary" type="button" data-air-compare-slug="tcl-savein-ai-series">+ เปรียบเทียบ TCL</button>
-        <button class="button secondary" type="button" data-air-compare-slug="candy-vpct-vpgt-series">+ เปรียบเทียบ CANDY</button>
-        <a class="button primary" href="/th/compare/air-conditioners/?items=tcl-savein-ai-series,candy-vpct-vpgt-series,xiaomi-mijia-air-inverter-eco">เปิดตารางเทียบ</a>
-      </div>
-    </section>
+          <h2 id="good">ข้อดีที่ควรรู้</h2>
+          <p>
+            ถ้าดูแบบคนกำลังจะซื้อจริง รุ่นนี้มีข้อดีที่จับต้องได้ ไม่ใช่แค่คำโปรโมตบนหน้าร้าน จุดที่ควรเก็บไว้เทียบมีตามนี้ครับ
+          </p>
+          <div class="verdict-grid" aria-label="ข้อดีของ TCL SaveIN AI Series">
+            {product.pros.map((item, index) => (
+              <article>
+                <span>{`ข้อ ${index + 1}`}</span>
+                <strong>{item}</strong>
+              </article>
+            ))}
+          </div>
 
-    <section class="section-block final-verdict">
-      <p class="eyebrow">Final verdict</p>
-      <h2>สรุป TCL SaveIN AI Series น่าซื้อไหม</h2>
-      <p>
-        ถ้าคุณกำลังหาแอร์ติดผนังใน Shopee รุ่นนี้ควรอยู่ใน shortlist เพราะสัญญาณรีวิวแน่น มี BTU ให้เลือกเยอะ
-        และแบรนด์ TCL ทำให้หลายคนมั่นใจกว่าแบรนด์โนเนม แต่ผมจะยังไม่แนะนำให้กดทันทีจนกว่าจะได้คำตอบ 3 เรื่อง:
-        BTU ที่เหมาะกับห้อง, ค่าติดตั้งรวมอะไรบ้าง, และประกันต้องลงทะเบียนอย่างไร
-      </p>
-      <PriceButtons links={product.links} context="tcl-final-verdict" />
+          <h2 id="watch">จุดต้องระวังก่อนกดซื้อ</h2>
+          <p>
+            จุดระวังของรุ่นนี้ไม่ได้แปลว่าไม่ดี แต่เป็นจุดที่ต้องถามให้ชัดก่อนจ่าย เพราะแอร์เป็นสินค้าที่มีงานหน้างานตามมา
+            ซื้อผิด BTU หรือเข้าใจผิดเรื่องติดตั้ง จะเสียเวลาแก้มากกว่าของใช้ชิ้นเล็กครับ
+          </p>
+          <div class="air-watch-list" aria-label="จุดต้องระวังก่อนซื้อ TCL SaveIN AI Series">
+            {product.watch.map((item, index) => (
+              <article>
+                <span>{`เช็ก ${index + 1}`}</span>
+                <strong>{item}</strong>
+              </article>
+            ))}
+          </div>
+          <p>
+            ถ้าอยู่คอนโด ให้ถามนิติก่อนเรื่องเจาะผนัง จุดวางคอยล์ร้อน และท่อน้ำทิ้ง ส่วนถ้าต้องใช้ด่วน ให้ถามวันติดตั้งก่อนจ่าย
+            เพราะแอร์ที่ดูคุ้มมากในหน้าร้าน อาจไม่ตอบโจทย์ถ้าคิวช่างไม่ทันเวลาที่ต้องใช้จริง
+          </p>
+
+          <section class="air-cost-section" id="cost">
+            <p class="eyebrow">เช็กเงินที่ต้องจ่ายจริง</p>
+            <h2>ราคาเครื่องไม่ใช่ราคาสุดท้ายเสมอไป</h2>
+            <p>
+              จุดนี้สำคัญมากสำหรับแอร์ทุกยี่ห้อครับ ราคาเครื่องเป็นแค่จุดเริ่มต้น ก่อนจ่ายเงินจริงให้ถามให้ครบว่าราคารวมอะไรบ้าง
+              โดยเฉพาะคนซื้อออนไลน์ที่ไม่ได้มีช่างประจำ
+            </p>
+            <figure class="air-wide-figure">
+              <a class="air-image-link" {...imageLinkAttrs}>
+                <img src={installPlanImage} alt="ภาพประกอบการเช็กต้นทุนรวมและอุปกรณ์ติดตั้ง TCL SaveIN AI Series" loading="lazy" />
+              </a>
+              <figcaption>
+                ดูราคาเครื่องแล้วอย่าเพิ่งจบ ต้องรวมท่อ ราง ขาแขวน สายไฟ จุดเจาะ วันช่าง และเงื่อนไขประกันด้วย
+              </figcaption>
+            </figure>
+            <div class="air-cost-grid">
+              {costChecks.map((item) => (
+                <article>
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                  <p>{item.note}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <h2 id="install">เรื่องติดตั้งคือหัวใจของรีวิวแอร์</h2>
+          <p>
+            แอร์ที่ดีไม่ได้จบตอนกล่องมาถึงบ้าน แต่จบตอนติดตั้งแล้วเย็นจริง น้ำไม่หยด เสียงไม่กวน และใช้งานได้ยาว ๆ
+            เพราะฉะนั้นส่วนติดตั้งควรถามละเอียดกว่าปกติ โดยเฉพาะถ้าซื้อผ่าน Shopee แล้วใช้บริการช่างเสริม
+          </p>
+          <figure class="air-wide-figure">
+            <a class="air-image-link" {...imageLinkAttrs}>
+              <img src={btuRoomImage} alt="ภาพห้องตัวอย่างสำหรับวางแผนตำแหน่งติดตั้งและเลือก BTU TCL SaveIN AI Series" loading="lazy" />
+            </a>
+            <figcaption>
+              ก่อนให้ช่างเจาะผนัง ควรดูทิศทางลม จุดวางเตียง ระยะท่อ และตำแหน่งคอยล์ร้อนให้จบตั้งแต่แรก
+            </figcaption>
+          </figure>
+          <ul class="air-checklist">
+            {product.installNotes.map((item) => <li>{item}</li>)}
+          </ul>
+
+          <h2 id="warranty">ประกันและความสบายใจหลังซื้อ</h2>
+          <p>
+            TCL เป็นแบรนด์ใหญ่ จุดที่ควรถามไม่ใช่แค่ว่าประกันกี่ปี แต่ต้องถามว่าเคลมผ่านช่องทางไหน ต้องลงทะเบียนเองไหม
+            และต้องใช้เอกสารอะไรบ้างตอนแจ้งเคลม
+          </p>
+          <ul class="air-checklist">
+            {product.warrantyNotes.map((item) => <li>{item}</li>)}
+          </ul>
+
+          <h2 id="compare">ควรเทียบกับรุ่นไหน</h2>
+          <p>
+            ถ้าสนใจ TCL รุ่นนี้ อย่าดูเดี่ยว ๆ ครับ ให้เปิดเทียบกับรุ่นที่มีจุดขายคนละแบบ จะเห็นทันทีว่าคุณให้ความสำคัญกับอะไร:
+            ราคา รีวิว ฟีเจอร์ smart home ประกัน หรือความง่ายของงานติดตั้ง
+          </p>
+          <div class="air-alternative-grid">
+            {alternativeCards.map((item) => (
+              <article class={item.name.startsWith("TCL") ? "is-current" : ""}>
+                <span>{item.role}</span>
+                <strong>{item.name}</strong>
+                <p>{item.note}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="air-mid-compare-cta">
+            <div>
+              <span>ถ้ายังลังเล</span>
+              <strong>เทียบ TCL กับ CANDY, Xiaomi, Midea ในตารางเดียว</strong>
+              <p>เหมาะกับคนที่อยากเห็นราคา BTU รีวิว จุดระวัง ประกัน และความเสี่ยงติดตั้งแบบวางข้างกัน ไม่ต้องจำเองจากหลายย่อหน้า</p>
+            </div>
+            <div>
+              <a class="button button-primary" href="/th/compare/air-conditioners/?items=tcl-savein-ai-series,candy-vpct-vpgt-series,xiaomi-mijia-air-inverter-eco,midea-celest-msce">เปิดหน้าเทียบแอร์</a>
+              <button class="button" type="button" data-air-compare-slug={product.slug}>เลือก TCL ไว้เทียบ</button>
+            </div>
+          </div>
+
+          <section class="air-questions-section" id="questions">
+            <p class="eyebrow">ก่อนกดซื้อ</p>
+            <h2>ก่อนกดซื้อ ให้ถามร้าน 6 ข้อนี้</h2>
+            <p>
+              นี่คือ checklist สุดท้าย ถ้าร้านตอบไม่ชัด โดยเฉพาะเรื่องติดตั้งและค่าเพิ่ม ต่อให้ราคาเครื่องดูดีมากก็ควรชะลอก่อน
+            </p>
+            <ol class="air-question-list">
+              {askBeforeBuy.map((item) => <li>{item}</li>)}
+            </ol>
+          </section>
+
+          <h2 id="buy">ควรซื้อช่องทางไหนดี</h2>
+          <p>
+            เลือกร้านที่ระบุ BTU ชัด ตอบเรื่องติดตั้งตรง และมีหลักฐานประกันอ่านง่าย ถ้าราคาใกล้กัน ผมให้ร้านที่คุยรู้เรื่องชนะ
+            เพราะหลังจ่ายเงินแล้ว สิ่งที่สำคัญที่สุดคือได้รุ่นถูกต้อง ติดตั้งได้จริง และติดต่อร้านได้ถ้ามีปัญหา
+          </p>
+          <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="tcl-article-buy-section" />
+
+          <section class="air-faq-section" id="faq">
+            <p class="eyebrow">FAQ</p>
+            <h2>คำถามที่คนกำลังจะซื้อ TCL SaveIN AI Series น่าจะอยากรู้</h2>
+            <div class="air-faq-list">
+              {faqs.map((faq) => (
+                <details>
+                  <summary>{faq.question}</summary>
+                  <p>{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <h2 id="final">สรุปแบบ Friendsay</h2>
+          <p>
+            ถ้าเพื่อนส่งลิงก์ TCL SaveIN AI Series มาให้ดู ผมจะตอบว่า “เก็บไว้เทียบได้จริง แต่ถามร้านก่อน”
+            รุ่นนี้น่าสนใจเพราะรีวิวแน่น มี BTU ให้เลือกกว้าง และฟีเจอร์ประหยัดไฟดูดีในงบกลาง ๆ
+            แต่ยังต้องทำการบ้านเรื่อง BTU ราคาจบ วันติดตั้ง และประกันก่อนกดจ่ายครับ
+          </p>
+
+          <div class="air-note">
+            <strong>แหล่งข้อมูลที่ใช้ในรอบนี้</strong>
+            <p>
+              ข้อมูลหลักมาจากหน้า Shopee ของรุ่นนี้:
+              <a href={product.sourceUrl} target="_blank" rel="noopener">{product.sourceUrl}</a>
+              และข้อมูลที่บันทึกไว้วันที่ 15 มิถุนายน 2026 ราคา คูปอง คะแนน และเงื่อนไขร้านเปลี่ยนได้ตลอด
+              ก่อนจ่ายเงินจริง เปิดหน้าร้านเช็กอีกรอบดีที่สุดครับ
+            </p>
+          </div>
+        </article>
+
+        <aside class="toc" aria-label="สารบัญ">
+          <strong>ในหน้านี้</strong>
+          <a href="#buying-cockpit">คำตอบเร็ว</a>
+          <a href="#review-proof">รีวิวจริง</a>
+          <a href="#btu">เลือก BTU</a>
+          <a href="#score">คะแนน</a>
+          <a href="#good">ข้อดี</a>
+          <a href="#watch">จุดระวัง</a>
+          <a href="#cost">ต้นทุนจริง</a>
+          <a href="#install">ติดตั้ง</a>
+          <a href="#warranty">ประกัน</a>
+          <a href="#compare">เทียบรุ่นอื่น</a>
+          <a href="#questions">ถามร้านก่อนซื้อ</a>
+          <a href="#buy">เช็กราคา</a>
+          <a href="#faq">FAQ</a>
+          <a href="#final">สรุป</a>
+        </aside>
+      </div>
     </section>
   </article>
 
@@ -521,11 +713,40 @@ const jsonLd = {
 
   <AirCompareTray products={airConditioners.map((item) => ({ slug: item.slug, name: item.name, shortName: item.shortName }))} />
   <AffiliateClickTracker />
+
+  <script is:inline>
+    (() => {
+      const offsetHashTarget = () => {
+        if (!window.location.hash) return;
+        const id = decodeURIComponent(window.location.hash.slice(1));
+        const target = document.getElementById(id);
+        if (!target) return;
+
+        window.requestAnimationFrame(() => {
+          target.scrollIntoView({ block: "start" });
+          window.scrollBy(0, -92);
+        });
+      };
+
+      window.addEventListener("hashchange", () => window.setTimeout(offsetHashTarget, 80));
+      window.addEventListener("load", () => {
+        window.setTimeout(offsetHashTarget, 120);
+        window.setTimeout(offsetHashTarget, 700);
+      });
+      window.setTimeout(offsetHashTarget, 0);
+      window.setTimeout(offsetHashTarget, 300);
+      window.setTimeout(offsetHashTarget, 1100);
+    })();
+  </script>
 </BaseLayout>
 
 <style>
   :global(body) {
     padding-bottom: 94px;
+  }
+
+  .article-body [id] {
+    scroll-margin-top: 108px;
   }
 
   .pilot-review {
