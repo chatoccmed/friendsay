@@ -1,5 +1,13 @@
 # Shopee Air Conditioner Data System
 
+## Workflow update
+
+ตั้งแต่ 16 มิถุนายน 2026 ระบบแอร์ของ Friendsay ไม่ใช้ Shopee เป็นฐานค้นหารุ่นหลักแล้ว
+
+ให้ใช้เอกสาร `docs/air-conditioner-market-catalog-system.md` เป็น workflow หลัก โดยเก็บรุ่นจากร้านค้ารายใหญ่และเว็บแบรนด์ก่อน จากนั้นจึงจับคู่ Shopee, Lazada, และ TikTok ในไฟล์ `docs/air-conditioner-marketplace-match.csv`
+
+เอกสารนี้ยังใช้กับการเก็บหลักฐาน Shopee หลังจากมี product key ใน market catalog แล้วเท่านั้น
+
 อัปเดต: 16 มิถุนายน 2026
 
 เป้าหมายของระบบนี้คือทำให้โปรเจกต์ “รีวิวแอร์ทุกตัวที่เข้าเกณฑ์ใน Shopee” ไม่พึ่งความจำหรือการเปิด Shopee แบบสุ่ม แต่มีฐานข้อมูลที่ตรวจย้อนหลังได้เสมอว่าแต่ละรุ่นมาจากไหน ผ่านเกณฑ์เพราะอะไร และต้องกลับไปเช็กเมื่อไหร่

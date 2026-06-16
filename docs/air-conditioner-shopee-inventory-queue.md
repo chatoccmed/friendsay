@@ -1,5 +1,21 @@
 # Air Conditioner Shopee Inventory and Review Queue
 
+## Workflow update
+
+ตั้งแต่ 16 มิถุนายน 2026 ระบบรวบรวมแอร์เปลี่ยนเป็น **Catalog-first, Marketplace-match-second**
+
+เอกสารนี้ยังใช้ได้สำหรับคิว Shopee และ evidence ของสินค้าที่จับคู่ Shopee แล้ว แต่ไม่ใช่ฐาน inventory หลักอีกต่อไป
+
+ไฟล์หลักสำหรับรวบรวมแอร์ทั้งตลาดคือ:
+
+- `docs/air-conditioner-market-catalog-system.md`
+- `docs/air-conditioner-market-sources.csv`
+- `docs/air-conditioner-catalog-rounds.csv`
+- `docs/air-conditioner-market-catalog.csv`
+- `docs/air-conditioner-marketplace-match.csv`
+
+เมื่อทำงานหมวดแอร์ ให้เริ่มจาก market catalog ก่อน แล้วค่อยใส่ Shopee link เฉพาะรุ่นที่ตรงกับ catalog
+
 อัปเดต: 16 มิถุนายน 2026
 
 เอกสารนี้คือระบบตั้งต้นสำหรับรวบรวมแอร์ติดผนังจาก Shopee และจัดคิวทำรีวิวเดี่ยวตามแม่แบบ Friendsay

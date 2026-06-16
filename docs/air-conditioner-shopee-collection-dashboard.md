@@ -1,5 +1,18 @@
 # Shopee Air Conditioner Collection Dashboard
 
+## Workflow update
+
+ตั้งแต่ 16 มิถุนายน 2026 dashboard นี้ไม่ใช่ตัวชี้วัดหลักของคำว่า “รวบรวมแอร์ให้ครบ” อีกต่อไป
+
+ตัวชี้วัดหลักย้ายไปที่ระบบ **Catalog-first, Marketplace-match-second**:
+
+- `docs/air-conditioner-market-catalog-system.md`
+- `docs/air-conditioner-catalog-rounds.csv`
+- `docs/air-conditioner-market-catalog.csv`
+- `docs/air-conditioner-marketplace-match.csv`
+
+ไฟล์นี้ยังใช้ดูงาน Shopee ที่ค้างอยู่ได้ แต่ถ้าถามว่าเหลือแอร์อีกกี่รุ่น ต้องตอบจาก market catalog ไม่ใช่จากจำนวนรอบ Shopee
+
 อัปเดต: 16 มิถุนายน 2026
 
 เอกสารนี้ตอบคำถามว่า “ต้องทำอีกกี่รอบถึงจะรวบรวมแอร์ Shopee ให้ครบตามเป้าหมาย Friendsay”

@@ -12,6 +12,8 @@ Use this skill to create Friendsay product reviews that are useful, visual, hone
 When working inside the Friendsay project, read these first:
 
 - `docs/product-review-operating-template.md`
+- `docs/air-conditioner-market-catalog-system.md` for the catalog-first air-conditioner workflow
+- `docs/air-conditioner-market-dashboard.md`, `docs/air-conditioner-market-sources.csv`, `docs/air-conditioner-catalog-rounds.csv`, `docs/air-conditioner-market-catalog.csv`, and `docs/air-conditioner-marketplace-match.csv` for air-conditioner market inventory
 - `docs/shopee-b-plus-d-review-system.md` when collecting Shopee data
 - `docs/air-conditioner-shopee-inventory-queue.md` for air-conditioner batch work
 - `docs/air-conditioner-shopee-data-system.md` for durable Shopee evidence and coverage rules
@@ -25,22 +27,24 @@ If a reference is missing, continue with the closest available source and note t
 
 ## Core Workflow
 
-1. Start with inventory, not writing. Confirm the product is a real SKU or identifiable series.
-2. Record source data: brand, series, model, BTU or spec options, price, rating, review counts, media counts, shop, warranty, product URL, and collection date.
-3. Qualify products using the Friendsay rule: reviews, ratings, or comments must be greater than 5 for a full review.
-4. Create or confirm an `evidence_id` in the evidence ledger before writing a full review.
-5. If sold count is hidden, use `review_signal_pass`. Never invent sales numbers.
-6. Select the next product by priority: strong review evidence, clear model or specs, trusted shop, useful comparison value.
-6. Write one review at a time using the product review operating template.
-7. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
-8. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
-9. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
-10. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
-11. Include exactly or at least 6 buyer-review recommendation cards. Each card must turn review patterns into a concrete recommendation, not merely say that many reviews exist.
-12. Add Shopee, Lazada, and TikTok buy buttons when links exist, plus a centered responsive sticky buy bar.
-13. Add comparison UX: alternatives, compare CTA, or compare tray when available.
-14. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
-15. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
+1. Start with inventory, not writing. For air conditioners, use catalog-first: collect real market SKUs from retailer and brand sources before relying on Shopee.
+2. Confirm the product is a real SKU or identifiable series, then create or update its `product_key` in `docs/air-conditioner-market-catalog.csv`.
+3. Record catalog source data: brand, series, model, BTU or spec options, inverter status, warranty, retail source URL, price, and collection date.
+4. Match marketplace links second. Record Shopee, Lazada, and TikTok links in `docs/air-conditioner-marketplace-match.csv`.
+5. Qualify products using the Friendsay rule: marketplace reviews, ratings, or comments must be greater than 5 for a full review.
+6. Create or confirm an `evidence_id` in the evidence ledger before writing a full review.
+7. If sold count is hidden, use `review_signal_pass`. Never invent sales numbers.
+8. Select the next product by priority: catalog verified, strong review evidence, clear model or specs, trusted shop, useful comparison value.
+9. Write one review at a time using the product review operating template.
+10. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
+11. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
+12. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
+13. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
+14. Include exactly or at least 6 buyer-review recommendation cards. Each card must turn review patterns into a concrete recommendation, not merely say that many reviews exist.
+15. Add Shopee, Lazada, and TikTok buy buttons when links exist, plus a centered responsive sticky buy bar.
+16. Add comparison UX: alternatives, compare CTA, or compare tray when available.
+17. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
+18. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
 
 ## Writing Rules
 
@@ -56,8 +60,22 @@ If a reference is missing, continue with the closest available source and note t
 - Avoid public process explanations such as saying data was collected from Shopee unless it directly helps the buyer.
 - Every lower-article heading must help the buyer decide. Avoid headings with only one or two weak lines.
 
-## Shopee Collection Rules
+## Air Conditioner Catalog-First Rules
 
+- Do not use Shopee broad search as the main source of truth for air conditioners.
+- Use `docs/air-conditioner-market-catalog-system.md` as the primary workflow for air-conditioner inventory.
+- Use `docs/air-conditioner-market-dashboard.md` to answer current progress and what remains.
+- Build the market catalog from stable sources first: large Thai retailers, brand websites, and official spec pages.
+- Use `docs/air-conditioner-catalog-rounds.csv` to know the next source or brand to collect.
+- Use `docs/air-conditioner-market-catalog.csv` to answer how many air-conditioner models are known, verified, matched, qualified, and reviewed.
+- Use `docs/air-conditioner-marketplace-match.csv` to track Shopee, Lazada, and TikTok product links.
+- Treat Shopee as a marketplace match layer, not the catalog layer.
+- Search marketplace by exact product key, brand, series, model, and BTU after the model exists in the market catalog.
+- If Shopee blocks collection, continue with retailer, brand, Lazada, or TikTok sources instead of stopping the whole inventory project.
+- If the user asks how many air conditioners remain, answer from the market catalog and catalog rounds, not from arbitrary Shopee round counts.
+
+## Shopee Collection Rules
+ 
 - Collect in short rounds.
 - Use the collection rounds CSV as the source of truth for what round is next and how many rounds remain.
 - Use the collection ETA CSV when the user asks when 50 rounds or another target will be complete. Update ETA after meaningful round status changes.
