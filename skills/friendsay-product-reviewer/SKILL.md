@@ -99,6 +99,7 @@ Every full review must keep the Candy-style lower article structure:
 - Use at least 2 clean real product images when possible.
 - Real product images should show the product clearly, not heavily decorated banners.
 - Do not repeat the same image in multiple sections.
+- Vary generated room tones within a review and across reviews. Avoid making every room warm wood / beige condo; mix cool city condo, soft blue bedroom, green family living room, dark hotel-night room, concrete office, or other relevant settings when they match the section.
 - Generated images must support the exact section topic, such as room sizing, installation, cost planning, or review themes.
 - Product images and major visual cards should link to the Shopee product page when a Shopee link exists.
 
