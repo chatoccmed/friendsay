@@ -23,13 +23,14 @@ const jsonLd = {
     name: "Friendsay"
   },
   inLanguage: "th",
-  dateModified: product.updated
+  dateModified: product.updated,
+  headline: `${product.name} หม้อทอดพรีเมียม จุเยอะ ล้างง่าย ควรจ่ายเพิ่มไหม`
 };
 ---
 
 <BaseLayout
-  title={`รีวิว ${product.name} | Friendsay`}
-  description={`ตัวอย่างหน้ารีวิวละเอียดของ ${product.name} พร้อมสรุป เหมาะกับใคร จุดเด่น จุดสังเกต และวิธีอ่านรีวิวจริงแบบ Friendsay`}
+  title={`${product.name} หม้อทอดพรีเมียม จุเยอะ ล้างง่าย ควรจ่ายเพิ่มไหม | Friendsay`}
+  description={`ตัวอย่างหน้ารีวิวละเอียดของ ${product.name} หม้อทอดพรีเมียมที่เน้นความจุ งานประกอบ ล้างง่าย เหมาะกับใคร จุดเด่น จุดสังเกต และวิธีอ่านรีวิวจริงแบบ Friendsay`}
   canonical="https://friendsay.com/th/reviews/sample-air-fryer-pro/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -38,7 +39,7 @@ const jsonLd = {
     <div class="container page-hero-grid">
       <div>
         <p class="eyebrow">Deep product review template</p>
-        <h1 class="headline">รีวิว {product.name}: รุ่นพรีเมี่ยมแบบนี้ควรจ่ายเพิ่มไหม</h1>
+        <h1 class="headline">{product.name} หม้อทอดพรีเมียม จุเยอะ ล้างง่าย ควรจ่ายเพิ่มไหม</h1>
         <p class="subhead">
           ตัวอย่างหน้ารีวิวละเอียดรายรุ่นของ Friendsay สำหรับบทความ 1,500-2,500 คำ ที่เน้นคำตอบจริงก่อนซื้อ ไม่ใช่แค่สเปกและปุ่มซื้อ
         </p>

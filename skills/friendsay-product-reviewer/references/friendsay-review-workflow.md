@@ -110,6 +110,21 @@ Write as a practical friend who has done the homework:
 - No generic AI phrases
 - No report-like caveats in public copy
 
+## Article Title Standard
+
+Use the title as the first conversion hook. A strong Friendsay title should be:
+
+- Product name first
+- One clear buyer benefit next, such as review volume, price, BTU range, smart-home control, warranty, or ease of use
+- One reason to shortlist or one important buying condition
+
+Prefer:
+
+- `CANDY VPCT/VPGT แอร์รีวิวแน่น ราคาเริ่มดี ตัวคุ้มที่ต้องเช็กค่าติดตั้งก่อนซื้อ`
+- `TCL SaveIN AI แอร์ Full DC Inverter: BTU กว้าง ฟีเจอร์แน่น น่าเลือกถ้าอยากซื้อให้จบ`
+
+Avoid generic title shapes such as `รีวิว [รุ่น] น่าซื้อไหม` unless there is a stronger benefit phrase attached.
+
 Good style:
 
 - "ถ้าห้องคุณเป็นคอนโดขนาดไม่ใหญ่มาก รุ่นนี้เริ่มน่าสนใจตรงราคาและรีวิวเยอะ แต่ต้องถามร้านเรื่องติดตั้งให้ชัดก่อนจ่ายเงิน"

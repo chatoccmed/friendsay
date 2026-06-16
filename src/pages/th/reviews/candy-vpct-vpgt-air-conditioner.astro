@@ -274,7 +274,8 @@ const jsonLd = {
   },
   inLanguage: "th",
   dateModified: product.updated,
-  isBasedOn: product.sourceUrl
+  isBasedOn: product.sourceUrl,
+  headline: "CANDY VPCT/VPGT แอร์รีวิวแน่น ราคาเริ่มดี ตัวคุ้มที่ต้องเช็กค่าติดตั้งก่อนซื้อ"
 };
 
 const faqJsonLd = {
@@ -292,8 +293,8 @@ const faqJsonLd = {
 ---
 
 <BaseLayout
-  title={`รีวิว ${product.shortName}: แอร์รีวิวเยอะ คุ้มจริงไหมเมื่อรวมค่าติดตั้ง? | Friendsay`}
-  description={`รีวิว ${product.name} แอร์อินเวอร์เตอร์ Shopee 2026 สรุปคุ้มจริงไหม เหมาะกับห้องแบบไหน เลือก BTU ยังไง ต้องเช็กค่าติดตั้ง ประกัน และรีวิวผู้ซื้อจุดไหนก่อนกดซื้อ`}
+  title={`${product.shortName} แอร์รีวิวแน่น ราคาเริ่มดี ตัวคุ้มที่ต้องเช็กค่าติดตั้ง | Friendsay`}
+  description={`${product.name} แอร์อินเวอร์เตอร์ Shopee 2026 รุ่นรีวิวเยอะ ราคาเข้าถึงง่าย เหมาะกับคนคุมงบ ดู BTU ค่าติดตั้ง ประกัน และรีวิวผู้ซื้อก่อนกดซื้อ`}
   canonical="https://friendsay.com/th/reviews/candy-vpct-vpgt-air-conditioner/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -307,7 +308,7 @@ const faqJsonLd = {
     <div class="container air-review-hero-inner">
       <div class="air-review-title">
         <p class="eyebrow">คู่มือเลือกซื้อแบบเพื่อนช่วยดู / Shopee 2026</p>
-        <h1>รีวิว {product.shortName}: แอร์รีวิวเยอะ คุ้มจริงไหมเมื่อรวมค่าติดตั้ง?</h1>
+        <h1>{product.shortName} แอร์รีวิวแน่น ราคาเริ่มดี ตัวคุ้มที่ต้องเช็กค่าติดตั้งก่อนซื้อ</h1>
         <p>
           ถ้าเพื่อนส่งลิงก์รุ่นนี้มาให้ดู ผมจะยังไม่บอกว่า “กดเลย” แต่จะบอกว่า “เออ รุ่นนี้ควรเอาไว้เทียบ”
           รุ่นนี้มีข้อดีจากราคาและรีวิว แต่แอร์ไม่เหมือนของชิ้นเล็กครับ กดถูกตัวอย่างเดียวไม่พอ ต้องดูห้องจริง งานติดตั้ง และเงื่อนไขร้านให้ครบก่อน

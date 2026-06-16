@@ -27,19 +27,21 @@ If a reference is missing, continue with the closest available source and note t
 4. If sold count is hidden, use `review_signal_pass`. Never invent sales numbers.
 5. Select the next product by priority: strong review evidence, clear model or specs, trusted shop, useful comparison value.
 6. Write one review at a time using the product review operating template.
-7. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
-8. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
-9. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
-10. Include at least 6 review-proof cards or review-theme cards. Do not create fake buyer names.
-11. Add Shopee, Lazada, and TikTok buy buttons when links exist, plus a centered responsive sticky buy bar.
-12. Add comparison UX: alternatives, compare CTA, or compare tray when available.
-13. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
-14. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
+7. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
+8. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
+9. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
+10. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
+11. Include at least 6 review-proof cards or review-theme cards. Do not create fake buyer names.
+12. Add Shopee, Lazada, and TikTok buy buttons when links exist, plus a centered responsive sticky buy bar.
+13. Add comparison UX: alternatives, compare CTA, or compare tray when available.
+14. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
+15. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
 
 ## Writing Rules
 
 - Write Thai copy like a knowledgeable friend explaining the product, not like an AI report.
 - Be specific about buyer decisions.
+- Use article titles that sell the product's strongest useful benefit, such as review volume, price, BTU range, smart-home feature, warranty, or ease of use. Avoid generic titles like "รีวิวรุ่น X น่าซื้อไหม".
 - Keep repeated information out of long paragraphs. Use cards, bullets, tables, snapshots, and short verdicts.
 - Turn missing data into an internal note, not a weak public paragraph.
 - Public watch-outs must be real buyer risks, such as wrong BTU, unclear installation cost, unclear warranty, variant confusion, repeated buyer complaints, noisy outdoor unit, drainage, pipe distance, or service queue.
