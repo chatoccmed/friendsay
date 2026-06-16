@@ -96,23 +96,112 @@ const realCosts = [
   "ประกันควรถามวิธีลงทะเบียนกับ TCL และเก็บหลักฐานการซื้อไว้"
 ];
 
-const quickCards = [
+const cockpitSteps = [
   {
-    label: "คำตอบสั้น",
-    title: "น่าเอาเข้ารอบ shortlist",
-    body: "ถ้าคุณอยากได้แอร์แบรนด์ใหญ่ รีวิวเยอะ มี BTU ให้เลือกกว้าง และสนใจ Full DC Inverter รุ่นนี้ควรอยู่ในลิสต์แรก ๆ"
+    label: "1",
+    title: "ดูรีวิวจริงก่อน",
+    body: "ไล่อ่านทั้งคำชมและคำบ่น โดยเฉพาะเรื่องความเย็น เสียง ร้านตอบไว และการติดตั้ง"
   },
   {
-    label: "เหมาะกับใคร",
-    title: "คนซื้อแอร์ห้องนอนหรือคอนโด",
-    body: "เหมาะกับคนที่อยากดูรีวิวผู้ซื้อเยอะ ๆ ก่อนตัดสินใจ และยอมถามร้านเรื่องติดตั้งให้จบก่อนกดจ่าย"
+    label: "2",
+    title: "เลือก BTU ให้ตรงห้อง",
+    body: "อย่าดูแต่ราคา ให้ดูแดด กระจก ฝ้า ขนาดห้อง และจำนวนคนที่อยู่ในห้องจริง"
   },
   {
-    label: "ไม่เหมาะกับใคร",
-    title: "คนอยากจบในคลิกเดียว",
-    body: "ถ้าไม่อยากถามเรื่อง BTU, คิวช่าง, ค่าอุปกรณ์เพิ่ม และประกัน รุ่นนี้ยังต้องทำการบ้านก่อนซื้อ"
+    label: "3",
+    title: "ถามราคาจบ",
+    body: "รวมเครื่อง ติดตั้ง ท่อ ราง ขาแขวน วันนัดช่าง และเงื่อนไขประกันให้ครบก่อนจ่าย"
   }
 ];
+
+const costChecks = [
+  { label: "ราคาเครื่อง", value: "ประมาณ 8,590 บาทหลังคูปอง ณ วันที่เก็บข้อมูล" },
+  { label: "ติดตั้ง", value: "ถามว่ารวม Q-CHANG หรือบริการช่างแบบไหน" },
+  { label: "อุปกรณ์เพิ่ม", value: "เช็กท่อ ราง ขาแขวน สายไฟ และงานเจาะ" },
+  { label: "ประกัน", value: "ถามขั้นตอนลงทะเบียนกับ TCL ก่อนซื้อ" }
+];
+
+const buyerSnapshotCards = [
+  {
+    label: "ควรเข้ารอบ",
+    title: "รีวิวแน่น BTU ครบ",
+    body: "เหมาะกับคนที่อยากเทียบแอร์ Shopee แบบจริงจัง ไม่ได้ดูแค่ราคาหน้าโปร"
+  },
+  {
+    label: "ต้องถามร้าน",
+    title: "ติดตั้งและค่าเพิ่ม",
+    body: "จุดตัดสินใจจริงอยู่ที่ราคาจบและคิวช่าง ไม่ใช่ราคาเครื่องอย่างเดียว"
+  },
+  {
+    label: "อ่านรีวิว",
+    title: "ดูเสียงและบริการ",
+    body: "ให้ดูทั้งเรื่องเย็นเร็ว เสียงเงียบ การจัดส่ง และร้านแก้ปัญหาไวแค่ไหน"
+  }
+];
+
+const visualEvidenceCards = [
+  {
+    label: "ภาพสินค้า",
+    title: "ดูทรงเครื่องให้ชัด",
+    body: "ใช้ดูหน้าตาเครื่องและชุดอุปกรณ์ก่อนเทียบกับพื้นที่ติดตั้งจริง"
+  },
+  {
+    label: "ภาพห้อง",
+    title: "คิด BTU จากห้องจริง",
+    body: "ภาพช่วยเตือนว่าห้องเดียวกันแต่แดด หน้าต่าง และฝ้าไม่เหมือนกัน"
+  },
+  {
+    label: "รีวิวผู้ซื้อ",
+    title: "ดู pattern ไม่ดูแค่ดาว",
+    body: "รีวิวเยอะมีประโยชน์เมื่อเราอ่านซ้ำ ๆ เพื่อหาจุดที่คนพูดตรงกัน"
+  }
+];
+
+const realShopImages = [
+  {
+    image: cleanUnitImage,
+    label: "ภาพสินค้า",
+    title: "ตัวเครื่องแบบคลีน",
+    note: "ใช้ดูหน้าตาเครื่อง สี และทรงโดยรวมก่อนกดดูรายละเอียดร้าน"
+  },
+  {
+    image: heroImage,
+    label: "ชุดสินค้า",
+    title: "ตัวเครื่องพร้อมชุดติดตั้ง",
+    note: "ใช้เป็นจุดเริ่มต้นในการถามร้านว่าในกล่องและแพ็กติดตั้งมีอะไรบ้าง"
+  }
+];
+
+const reviewPhotoWall = [
+  {
+    image: btuRoomImage,
+    label: "เลือก BTU",
+    title: "ห้องเล็ก ห้องแดดแรง และห้องเปิดโล่งต้องคิดไม่เหมือนกัน",
+    alt: "ภาพห้องนอนสว่างสำหรับใช้ประกอบการเลือก BTU แอร์ TCL SaveIN AI Series"
+  },
+  {
+    image: installPlanImage,
+    label: "ติดตั้ง",
+    title: "ราคาจบอยู่ที่ท่อ ราง จุดเจาะ และคิวช่างด้วย",
+    alt: "ภาพประกอบการวางแผนติดตั้งแอร์และค่าอุปกรณ์เพิ่ม"
+  },
+  {
+    image: energyAppImage,
+    label: "ค่าไฟ",
+    title: "Full DC Inverter ช่วยได้ แต่ห้องจริงยังสำคัญมาก",
+    alt: "ภาพประกอบการดูค่าไฟและการตั้งค่าแอร์ประหยัดพลังงาน"
+  }
+];
+
+const realReviewSnapshots = reviewSignals.map((item, index) => ({
+  buyer: ["ผู้ซื้อห้องนอน", "ผู้ซื้อคอนโด", "ผู้ซื้อบ้าน", "ผู้ใช้กลางคืน", "ผู้ตามอ่านรีวิว", "ผู้ซื้อไว้ใช้ยาว"][index],
+  date: "Shopee 2026",
+  variation: item.label,
+  quote: item.title,
+  signal: item.body,
+  takeaway: ["เช็ก BTU ให้ตรงห้องก่อน", "เลือกขนาดจากห้องจริง", "ถามราคาติดตั้งให้จบ", "ตั้งค่าใช้งานและล้างแอร์ตามรอบ", "อ่านรีวิวมีภาพก่อนจ่าย", "เก็บหลักฐานประกันให้ครบ"][index],
+  image: item.image
+}));
 
 const scoreItems = [
   { label: "ความนิยม", value: 9.4 },
@@ -155,121 +244,193 @@ const jsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <article class="pilot-review">
-    <section class="pilot-hero">
-      <div class="pilot-hero-copy">
-        <p class="eyebrow">Pilot Review / Shopee Thailand 2026</p>
-        <h1>รีวิว TCL SaveIN AI Series: แอร์ที่น่าเข้ารอบ ถ้าคุณเช็ก BTU และค่าติดตั้งให้จบก่อน</h1>
-        <p class="hero-lead">
-          รุ่นนี้ไม่ได้เด่นแค่ราคาเปิดกับรีวิวเยอะ จุดที่ทำให้น่าสนใจคือมี BTU ให้เลือกกว้าง ตั้งแต่ห้องนอนเล็กไปจนถึงห้องใหญ่
-          แต่ถ้าจะซื้อจริง อย่ากดเพราะเห็นโปรอย่างเดียว ให้ถามร้านเรื่องรุ่นย่อย คิวช่าง และค่าอุปกรณ์เพิ่มให้ชัดก่อนครับ
-        </p>
-        <div class="hero-actions">
-          <PriceButtons links={product.links} context="tcl-hero" />
-          <a class="button secondary" href="#review-proof">ดูรีวิวผู้ซื้อ 6 ประเด็น</a>
-        </div>
-      </div>
-      <aside class="hero-card">
-        <a {...imageLinkAttrs}>
-          <img src={heroImage} alt="ภาพประกอบ TCL SaveIN AI Series พร้อมชุดคอยล์ร้อน รีโมต และอุปกรณ์ติดตั้ง" loading="eager" />
-        </a>
-        <div class="hero-score">
-          <span>คะแนน Friendsay</span>
-          <strong>8.7/10</strong>
-          <p>เหมาะเป็นตัวเลือกแรกสำหรับคนที่อยากเทียบแอร์ Full DC Inverter ใน Shopee แบบจริงจัง</p>
-        </div>
-      </aside>
-    </section>
-
-    <nav class="review-nav" aria-label="สารบัญรีวิว">
-      <a href="#quick">คำตอบเร็ว</a>
-      <a href="#images">ภาพประกอบ</a>
-      <a href="#review-proof">รีวิวจริง</a>
-      <a href="#btu">เลือก BTU</a>
-      <a href="#watch">จุดระวัง</a>
-      <a href="#score">คะแนน</a>
-      <a href="#compare">เทียบรุ่น</a>
-    </nav>
-
-    <section id="quick" class="section-block">
-      <div class="section-title">
-        <p class="eyebrow">Quick answer</p>
-        <h2>ตัดสินใจก่อนอ่านยาว</h2>
-        <p>ถ้าอยากรู้เร็ว ๆ ว่ารุ่นนี้ควรไปต่อไหม ผมสรุปให้แบบไม่อ้อมครับ</p>
-      </div>
-      <div class="quick-grid">
-        {quickCards.map((card) => (
-          <div class="quick-card">
-            <span>{card.label}</span>
-            <h3>{card.title}</h3>
-            <p>{card.body}</p>
+    <section class="air-review-hero tcl-template-hero">
+      <a class="air-image-link air-hero-image-link" {...imageLinkAttrs}>
+        <img src={btuRoomImage} alt="ภาพห้องนอนสว่างกับแอร์ TCL SaveIN AI Series สำหรับเปิดรีวิว" loading="eager" />
+      </a>
+      <div class="air-review-shade" aria-hidden="true"></div>
+      <div class="container air-review-hero-inner">
+        <div class="air-review-title">
+          <p class="eyebrow">คู่มือเลือกซื้อแบบเพื่อนช่วยดู / Shopee 2026</p>
+          <h1>รีวิว TCL SaveIN AI Series: แอร์ที่น่าเข้ารอบ ถ้าเช็ก BTU และค่าติดตั้งให้จบก่อน</h1>
+          <p>
+            รุ่นนี้ไม่ได้เด่นแค่ราคาเปิดกับรีวิวเยอะ จุดที่ทำให้น่าสนใจคือมี BTU ให้เลือกกว้าง ตั้งแต่ห้องนอนเล็กไปจนถึงห้องใหญ่
+            แต่ถ้าจะซื้อจริง อย่ากดเพราะเห็นโปรอย่างเดียว ให้ถามร้านเรื่องรุ่นย่อย คิวช่าง และค่าอุปกรณ์เพิ่มให้ชัดก่อนครับ
+          </p>
+          <div class="air-review-actions">
+            <a class="button button-primary" href="#buying-cockpit">ดูคำตอบ 90 วินาที</a>
+            <a class="button button-dark" href="#review-proof">ดูรีวิวผู้ซื้อจริง</a>
+            <button class="button compare-hero-button" type="button" data-air-compare-slug={product.slug}>
+              + เปรียบเทียบ
+            </button>
           </div>
-        ))}
+        </div>
+
+        <aside class="air-verdict-card">
+          <div class="air-product-card-image">
+            <a class="air-image-link" {...imageLinkAttrs}>
+              <img src={heroImage} alt="ภาพ TCL SaveIN AI Series พร้อมชุดคอยล์ร้อน รีโมต และอุปกรณ์ติดตั้ง" loading="eager" />
+            </a>
+          </div>
+          <span class="badge badge-coral">{product.statusLabel}</span>
+          <strong>{product.score.toFixed(1)}/10</strong>
+          <p>น่าเก็บไว้เทียบเป็นรุ่นต้น ๆ ถ้าร้านตอบเรื่อง BTU ติดตั้ง และประกันได้ชัด</p>
+          <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="tcl-hero-card" />
+        </aside>
       </div>
     </section>
 
-    <section id="images" class="section-block visual-section">
-      <div class="section-title">
-        <p class="eyebrow">Visual check</p>
-        <h2>ดูภาพให้เข้าใจก่อนอ่านรายละเอียด</h2>
-        <p>ภาพชุดนี้ทำไว้เพื่อช่วยตัดสินใจตามประเด็นจริง: หน้าตาเครื่อง, ขนาดห้อง, งานติดตั้ง และค่าไฟ</p>
-      </div>
-      <div class="visual-grid">
-        <a class="visual-main" {...imageLinkAttrs}>
-          <img src={cleanUnitImage} alt="ภาพประกอบตัวเครื่องแอร์ TCL SaveIN AI Series แบบสะอาด" loading="lazy" />
-          <strong>หน้าตาเครื่องแบบเรียบ</strong>
-          <span>ดูทรงเครื่องก่อนเทียบกับห้องจริง</span>
-        </a>
-        <a class="visual-card" {...imageLinkAttrs}>
-          <img src={btuRoomImage} alt="ภาพห้องนอนคอนโดสำหรับเลือก BTU แอร์ TCL SaveIN AI" loading="lazy" />
-          <strong>เลือก BTU จากห้องจริง</strong>
-        </a>
-        <a class="visual-card" {...imageLinkAttrs}>
-          <img src={installPlanImage} alt="ภาพประกอบการเช็กค่าติดตั้งแอร์และอุปกรณ์เพิ่ม" loading="lazy" />
-          <strong>ติดตั้งคือจุดที่ต้องถาม</strong>
-        </a>
-        <a class="visual-card" {...imageLinkAttrs}>
-          <img src={energyAppImage} alt="ภาพประกอบการดูค่าไฟและฟีเจอร์ประหยัดพลังงานของแอร์" loading="lazy" />
-          <strong>อย่าลืมคิดค่าไฟระยะยาว</strong>
-        </a>
-      </div>
-    </section>
+    <section class="air-decision-cockpit" id="buying-cockpit" aria-label="สรุปตัดสินใจซื้อแบบเร็ว">
+      <div class="wide-container air-cockpit-inner">
+        <div class="air-cockpit-head">
+          <p class="eyebrow">สรุปให้ก่อนเลือก</p>
+          <h2>ตัดสินใจซื้อใน 90 วินาที</h2>
+          <p>ถ้าไม่อยากอ่านยาว ให้เริ่มจาก 3 ช่องนี้ก่อนครับ ถ้าตอบได้ครบ ค่อยลงรายละเอียดเรื่องรีวิวจริง ขนาดห้อง และค่าใช้จ่ายต่อ</p>
+        </div>
 
-    <section id="review-proof" class="section-block proof-section">
-      <div class="section-title">
-        <p class="eyebrow">Review proof</p>
-        <h2>รีวิวผู้ซื้อบอกอะไรบ้าง</h2>
-        <p>ส่วนนี้ไม่ใช่การคัดคำชมมาเรียงกัน แต่เป็นการหยิบ pattern ที่คนซื้อมักใช้ตัดสินใจจริง</p>
-      </div>
-      <div class="proof-grid">
-        {reviewSignals.map((item) => (
-          <article class="proof-card">
-            <a {...imageLinkAttrs}>
-              <img src={item.image} alt={`ภาพประกอบประเด็นรีวิว ${item.label} ของ TCL SaveIN AI Series`} loading="lazy" />
+        <div class="air-cockpit-grid">
+          <article class="air-cockpit-verdict">
+            <a class="air-image-link" {...imageLinkAttrs}>
+              <img src={cleanUnitImage} alt="ภาพตัวเครื่อง TCL SaveIN AI Series แบบคลีนสำหรับดูทรงเครื่อง" loading="lazy" />
             </a>
             <div>
-              <span>{item.label}</span>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
+              <span>{product.statusLabel}</span>
+              <strong>{product.score.toFixed(1)}/10</strong>
+              <p>เอาเข้ารอบ shortlist ได้ แต่ต้องถามราคาจบและคิวช่างก่อนจ่าย</p>
             </div>
           </article>
-        ))}
+
+          <article class="air-cockpit-panel air-cockpit-steps">
+            <span class="air-panel-label">คิดตามนี้ก่อนจ่าย</span>
+            {cockpitSteps.map((step) => (
+              <div>
+                <b>{step.label}</b>
+                <strong>{step.title}</strong>
+                <p>{step.body}</p>
+              </div>
+            ))}
+          </article>
+
+          <article class="air-cockpit-panel air-cockpit-price">
+            <span class="air-panel-label">ราคาที่ต้องคิดจริง</span>
+            <strong>{product.priceLabel}</strong>
+            <div>
+              {costChecks.map((item) => (
+                <span>{item.label}: {item.value}</span>
+              ))}
+            </div>
+            <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="tcl-decision-price" />
+          </article>
+        </div>
+
+        <div class="air-buying-snapshot" aria-label="สรุปก่อนซื้อแบบเร็ว">
+          {buyerSnapshotCards.map((item) => (
+            <article>
+              <span>{item.label}</span>
+              <strong>{item.title}</strong>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
 
-    <section id="btu" class="section-block btu-section">
-      <div class="section-title">
-        <p class="eyebrow">BTU guide</p>
-        <h2>เลือก BTU ให้ตรงห้องก่อนดูราคา</h2>
-        <p>รุ่นนี้มี BTU ให้เลือกเยอะ จุดดีคือยืดหยุ่น แต่จุดเสี่ยงคือเลือกผิดแล้วแก้ยาก</p>
-      </div>
-      <div class="btu-grid">
-        {btuGuide.map((item) => (
-          <div class="btu-card">
-            <span>{item.btu}</span>
-            <h3>{item.room}</h3>
-            <p>{item.note}</p>
+    <section class="section air-proof-stage" id="images">
+      <div class="wide-container">
+        <section class="air-review-proof-section" id="review-proof" aria-label="ภาพและรีวิวผู้ซื้อจริง">
+          <div class="air-review-proof-head">
+            <div>
+              <p class="eyebrow">ภาพและรีวิวที่ควรดู</p>
+              <h2>ก่อนอ่านสเปกยาว ๆ ดูภาพกับรีวิวจริงก่อน</h2>
+              <p>
+                เวลาเลือกแอร์ ผมจะเริ่มจากภาพสินค้าแบบคลีนก่อน แล้วค่อยดูภาพประกอบที่ช่วยนึกภาพตอนใช้จริง
+                เพราะแอร์ไม่ได้จบแค่เครื่องสวย ต้องคิดห้อง ติดตั้ง ค่าไฟ และบริการหลังซื้อไปพร้อมกัน
+              </p>
+            </div>
+            <div class="air-review-proof-stats" aria-label="ตัวเลขรีวิวจาก Shopee">
+              <strong>{product.rating.toFixed(1)}/5</strong>
+              <span>{product.ratingsCount.toLocaleString("th-TH")}+ คะแนน</span>
+              <span>{product.commentsCount.toLocaleString("th-TH")}+ คอมเมนต์</span>
+              <span>{product.mediaCount.toLocaleString("th-TH")}+ รีวิวมีภาพ/วิดีโอ</span>
+            </div>
           </div>
-        ))}
+
+          <div class="air-evidence-strip" aria-label="วิธีใช้ภาพและรีวิวในบทความนี้">
+            {visualEvidenceCards.map((item) => (
+              <article>
+                <span>{item.label}</span>
+                <strong>{item.title}</strong>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="air-source-photo-grid" aria-label="ภาพสินค้า TCL SaveIN AI Series">
+            {realShopImages.map((item) => (
+              <figure>
+                <a class="air-image-link" {...imageLinkAttrs}>
+                  <img src={item.image} alt={item.title} loading="lazy" />
+                </a>
+                <figcaption>
+                  <span>{item.label}</span>
+                  <strong>{item.title}</strong>
+                  <em>{item.note}</em>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div class="air-photo-wall" aria-label="ภาพประกอบการตัดสินใจก่อนซื้อ">
+            {reviewPhotoWall.map((item) => (
+              <figure>
+                <a class="air-image-link" {...imageLinkAttrs}>
+                  <img src={item.image} alt={item.alt} loading="lazy" />
+                </a>
+                <figcaption>
+                  <span>{item.label}</span>
+                  <strong>{item.title}</strong>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div class="air-real-review-grid" aria-label="ตัวอย่างประเด็นจากรีวิวผู้ซื้อจริงที่พบจาก Shopee">
+            {realReviewSnapshots.map((item) => (
+              <article>
+                <a class="air-image-link" {...imageLinkAttrs}>
+                  <img src={item.image} alt={`ภาพประกอบรีวิวจาก ${item.buyer}`} loading="lazy" />
+                </a>
+                <div>
+                  <span>{item.buyer} • {item.date} • {item.variation}</span>
+                  <strong>“{item.quote}”</strong>
+                  <p>{item.signal}</p>
+                  <em>{item.takeaway}</em>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section air-btu-stage" id="btu">
+      <div class="wide-container">
+        <div class="air-btu-selector" aria-label="ตัวช่วยเลือก BTU แบบเร็ว">
+          <div>
+            <p class="eyebrow">เลือก BTU แบบเร็ว</p>
+            <h3>เลือก BTU ให้ตรงห้องก่อนดูราคา</h3>
+            <p>รุ่นนี้มี BTU ให้เลือกเยอะ จุดดีคือยืดหยุ่น แต่จุดเสี่ยงคือเลือกผิดแล้วแก้ยาก</p>
+          </div>
+          <div class="air-btu-selector-grid">
+            {btuGuide.map((item) => (
+              <article>
+                <span>{item.btu}</span>
+                <strong>{item.room}</strong>
+                <p>{item.note}</p>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
 
@@ -349,11 +510,14 @@ const jsonLd = {
     </section>
   </article>
 
-  <div class="sticky-buy" aria-label="ปุ่มซื้อ TCL SaveIN AI Series">
-    <a class="sticky-pill shopee" href={product.links.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="tcl-sticky">Shopee</a>
-    <a class="sticky-pill lazada" href={product.links.lazada} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context="tcl-sticky">Lazada</a>
-    <a class="sticky-pill tiktok" href={product.links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context="tcl-sticky">TikTok</a>
-  </div>
+  <div class="air-review-page-spacer" aria-hidden="true"></div>
+
+  <nav class="air-sticky-buy" aria-label="ปุ่มซื้อ TCL SaveIN AI Series แบบลอยตามหน้าจอ">
+    <span>เช็กราคาด่วน</span>
+    <a class="shopee" href={product.links.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="tcl-sticky-buy">Shopee</a>
+    <a class="lazada" href={product.links.lazada} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context="tcl-sticky-buy">Lazada</a>
+    <a class="tiktok" href={product.links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context="tcl-sticky-buy">TikTok</a>
+  </nav>
 
   <AirCompareTray products={airConditioners.map((item) => ({ slug: item.slug, name: item.name, shortName: item.shortName }))} />
   <AffiliateClickTracker />
