@@ -78,7 +78,22 @@ const imagePool = [
 
 const imageOffset = review.queueRank % imagePool.length;
 const rotatedImages = [...imagePool.slice(imageOffset), ...imagePool.slice(0, imageOffset)];
-const pageImages = Array.from(new Set([review.heroImage, review.secondaryImage, ...rotatedImages])).slice(0, 10);
+const productVisualOverrides: Record<string, string[]> = {
+  "mitsubishi-msy-gt09vf": [
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-hero-premium.png",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-product-set.png",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-clean-unit.png",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-btu-room.png",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-install-cost.png",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-cost-check.png",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-quiet-night.png",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-shop-service.png",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-review-proof.png",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-warranty-docs.png"
+  ]
+};
+const overrideImages = productVisualOverrides[review.productKey] ?? [];
+const pageImages = Array.from(new Set([...overrideImages, review.heroImage, review.secondaryImage, ...rotatedImages])).slice(0, 10);
 
 const heroImage = pageImages[0] ?? imagePool[0];
 const productSetImage = pageImages[1] ?? heroImage;
@@ -815,8 +830,9 @@ const jsonLd = {
     --muted: #5e6c80;
     --line: #e6d3bd;
     background:
-      radial-gradient(circle at 10% 7%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 30rem),
-      radial-gradient(circle at 88% 5%, rgba(46, 196, 182, 0.13), transparent 34rem),
+      radial-gradient(circle at 10% 7%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 32rem),
+      radial-gradient(circle at 88% 5%, rgba(57, 183, 172, 0.12), transparent 36rem),
+      linear-gradient(180deg, #fffdf8 0%, #fff9f1 46%, #fffdf8 100%),
       var(--cream);
     color: var(--ink);
   }
@@ -897,8 +913,8 @@ const jsonLd = {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(90deg, rgba(10, 18, 28, 0.84) 0%, rgba(10, 18, 28, 0.68) 42%, rgba(10, 18, 28, 0.22) 100%),
-      linear-gradient(180deg, rgba(10, 18, 28, 0.1), rgba(10, 18, 28, 0.62));
+      linear-gradient(90deg, rgba(10, 18, 28, 0.66) 0%, rgba(10, 18, 28, 0.48) 44%, rgba(10, 18, 28, 0.06) 100%),
+      linear-gradient(180deg, rgba(255, 253, 248, 0.12), rgba(10, 18, 28, 0.3));
   }
 
   .air-review-hero-inner {
