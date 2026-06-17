@@ -25,43 +25,50 @@ const cleanUnitImage = "/images/air-conditioners/tcl-savein-ai-clean-unit.png";
 const btuRoomImage = "/images/air-conditioners/tcl-savein-ai-btu-bedroom.png";
 const installPlanImage = "/images/air-conditioners/tcl-savein-ai-install-plan.png";
 const energyAppImage = "/images/air-conditioners/tcl-savein-ai-energy-app.png";
+const coolingCondoImage = "/images/air-conditioners/tcl-savein-ai-cooling-blue-condo.png";
+const quietNightImage = "/images/air-conditioners/tcl-savein-ai-quiet-night.png";
+const installConcreteImage = "/images/air-conditioners/tcl-savein-ai-install-concrete.png";
+const warrantyRegisterImage = "/images/air-conditioners/tcl-savein-ai-warranty-register.png";
+const energyGreenImage = "/images/air-conditioners/tcl-savein-ai-energy-green-living.png";
+const unboxCondoImage = "/images/air-conditioners/tcl-savein-ai-unbox-condo.png";
+const highBtuLivingImage = "/images/air-conditioners/tcl-savein-ai-high-btu-living.png";
 
 const reviewSignals = [
   {
-    label: "ข้อ 1",
-    title: "เลือก BTU ให้จบก่อนเทียบราคา",
-    body: "รีวิวที่ชมว่าเย็นไวจะมีความหมายที่สุดเมื่อห้องของเราเลือก BTU ถูก รุ่นนี้มีหลายขนาด จึงควรส่งขนาดห้อง แดด หน้าต่าง และจำนวนคนให้ร้านช่วยเช็กก่อนซื้อ",
-    image: btuRoomImage
+    label: "คำแนะนำ 1",
+    title: "ถ้าอยากได้แอร์เย็นไว ให้เริ่มจากขนาดห้อง ไม่ใช่ราคา",
+    body: "รีวิวที่ชมว่าเย็นเร็วจะมีประโยชน์ก็ต่อเมื่อเลือก BTU ถูกก่อนครับ ก่อนจ่ายให้ส่งขนาดห้อง ทิศแดด หน้าต่าง และจำนวนคนให้ร้านช่วยประเมิน ไม่งั้นรุ่นที่คนอื่นว่าเย็นอาจไม่พอดีกับห้องเรา",
+    image: coolingCondoImage
   },
   {
-    label: "ข้อ 2",
-    title: "ถ้าห้องใหญ่หรือแดดแรง รุ่นนี้น่าเทียบเพราะมี BTU สูง",
-    body: "ช่วง 9,200 / 12,000 / 18,100 / 24,200 BTU ช่วยให้เทียบได้ตั้งแต่ห้องนอนถึงห้องนั่งเล่น แต่รุ่นใหญ่ต้องถามไฟ จุดวางคอยล์ร้อน และค่างานติดตั้งให้ชัด",
-    image: cleanUnitImage
+    label: "คำแนะนำ 2",
+    title: "ห้องใหญ่หรือแดดแรง รุ่นนี้น่าเทียบเพราะมี BTU ให้ขยับ",
+    body: "จุดดีของ TCL SaveIN AI คือมีช่วง 9,200 / 12,000 / 18,100 / 24,200 BTU ให้เลือกกว้าง แต่ถ้าขยับไป 18,100 หรือ 24,200 BTU ให้ถามเรื่องไฟ จุดวางคอยล์ร้อน และค่างานหน้างานเพิ่มให้จบ",
+    image: highBtuLivingImage
   },
   {
-    label: "ข้อ 3",
-    title: "ถามคิวช่างและของแถมให้จบก่อนจ่าย",
-    body: "รีวิวแอร์ออนไลน์มักแพ้ชนะกันที่งานติดตั้ง ให้ถามเรื่อง Q-CHANG, ท่อ, ราง, ขาแขวน, สายไฟ วันนัดช่าง และค่าเดินทางก่อนกดซื้อ ไม่ใช่ถามหลังจ่ายแล้ว",
+    label: "คำแนะนำ 3",
+    title: "ดูคิวช่างก่อน เพราะแอร์คุ้มแค่ไหนก็แพ้ถ้าติดตั้งช้า",
+    body: "รีวิวกลุ่มแอร์ออนไลน์มักวนกลับมาที่งานติดตั้ง ให้ถามก่อนจ่ายว่าใช้ช่าง Q-CHANG หรือช่างร้าน, เข้าได้วันไหน, รวมท่อ/ราง/ขาแขวนกี่เมตร และถ้าเกินมาตรฐานคิดเพิ่มอย่างไร",
     image: installPlanImage
   },
   {
-    label: "ข้อ 4",
-    title: "ดู Full DC/AI เป็นข้อดี แต่ยังต้องใช้งานให้ถูก",
-    body: "Full DC Inverter และ AI เป็นจุดขายที่น่าสนใจ แต่ค่าไฟจริงขึ้นกับแดด ขนาดห้อง อุณหภูมิที่ตั้ง และการล้างแอร์ตามรอบ อย่าใช้ฟีเจอร์แทนการเลือก BTU",
-    image: energyAppImage
+    label: "คำแนะนำ 4",
+    title: "ห้องนอนให้ไล่ดูเรื่องเสียง ไม่ใช่ดูแค่ดาวรวม",
+    body: "ถ้าจะติดในห้องนอนหรือคอนโด ให้เปิดรีวิวมีวิดีโอหรือภาพจริงที่พูดถึงเสียงตอนกลางคืน ทั้งเสียงลม เสียงคอยล์เย็น และเสียงคอยล์ร้อน เพราะเรื่องนี้กระทบทุกคืนมากกว่าตัวเลขสเปก",
+    image: quietNightImage
   },
   {
-    label: "ข้อ 5",
-    title: "ห้องนอนให้ดูรีวิวเรื่องเสียงทั้งคอยล์เย็นและคอยล์ร้อน",
-    body: "ถ้าจะติดในห้องนอนหรือคอนโด ให้ไล่อ่านรีวิวมีวิดีโอที่พูดถึงเสียงตอนกลางคืน เพราะความเงียบสำคัญพอ ๆ กับความเย็นเมื่อใช้ทุกวัน",
-    image: heroImage
+    label: "คำแนะนำ 5",
+    title: "รับของแล้วถ่ายวิดีโอแกะกล่องไว้ตั้งแต่แรก",
+    body: "หน้าร้านมีเงื่อนไขแนวให้เก็บหลักฐานตอนแกะของไว้ด้วย รุ่นใหญ่แบบแอร์ควรถ่ายตั้งแต่กล่องมาถึง สภาพกล่อง อุปกรณ์ในกล่อง และเลขเครื่อง เผื่อมีปัญหาจะคุยกับร้านง่ายขึ้น",
+    image: unboxCondoImage
   },
   {
-    label: "ข้อ 6",
-    title: "ประกัน 5/1 ปีต้องถามขั้นตอนลงทะเบียนให้ชัด",
-    body: "ข้อมูลที่เก็บไว้ระบุคอมเพรสเซอร์ 5 ปี และอะไหล่ 1 ปี แต่ก่อนจ่ายควรถามว่าลงทะเบียนกับ TCL อย่างไร เคลมผ่านช่องทางไหน และต้องใช้เอกสารอะไรบ้าง",
-    image: cleanUnitImage
+    label: "คำแนะนำ 6",
+    title: "ประกัน 5/1 ปีดี แต่ต้องรู้ว่าลงทะเบียนยังไง",
+    body: "ก่อนซื้อให้ถามร้านตรง ๆ ว่าประกันคอมเพรสเซอร์ 5 ปีและอะไหล่ 1 ปีต้องลงทะเบียนกับ TCL เองไหม ใช้อะไรบ้างตอนเคลม และต้องเก็บใบเสร็จ/เลขเครื่องช่องทางไหน",
+    image: warrantyRegisterImage
   }
 ];
 
@@ -140,18 +147,18 @@ const costChecks = [
 const buyerSnapshotCards = [
   {
     label: "ควรเข้ารอบ",
-    title: "รีวิวแน่น BTU ครบ",
-    body: "เหมาะกับคนที่อยากเทียบแอร์ Shopee แบบจริงจัง ไม่ได้ดูแค่ราคาหน้าโปร"
+    title: "รีวิวแน่น BTU กว้าง",
+    body: "เหมาะกับคนที่อยากได้ตัวเลือกตั้งแต่ห้องนอนเล็กถึงห้องใหญ่ โดยยังมีรีวิวผู้ซื้อให้ไล่อ่านก่อนจ่าย"
   },
   {
     label: "ต้องถามร้าน",
-    title: "ติดตั้งและค่าเพิ่ม",
-    body: "จุดตัดสินใจจริงอยู่ที่ราคาจบและคิวช่าง ไม่ใช่ราคาเครื่องอย่างเดียว"
+    title: "ราคาจบและคิวช่าง",
+    body: "จุดตัดสินใจจริงคือรวมติดตั้งไหม ช่างเข้าเมื่อไร และอุปกรณ์เกินมาตรฐานคิดเพิ่มเท่าไหร่"
   },
   {
     label: "อ่านรีวิว",
-    title: "ดูเสียงและบริการ",
-    body: "ให้ดูทั้งเรื่องเย็นเร็ว เสียงเงียบ การจัดส่ง และร้านแก้ปัญหาไวแค่ไหน"
+    title: "เสียง บริการ แกะกล่อง",
+    body: "ดูรีวิวมีภาพ/วิดีโอเรื่องเสียงตอนกลางคืน สภาพของตอนรับ และร้านตอบปัญหาไวแค่ไหน"
   }
 ];
 
@@ -196,13 +203,13 @@ const reviewPhotoWall = [
     alt: "ภาพห้องนอนสว่างสำหรับใช้ประกอบการเลือก BTU แอร์ TCL SaveIN AI Series"
   },
   {
-    image: installPlanImage,
+    image: installConcreteImage,
     label: "ติดตั้ง",
     title: "ราคาจบอยู่ที่ท่อ ราง จุดเจาะ และคิวช่างด้วย",
     alt: "ภาพประกอบการวางแผนติดตั้งแอร์และค่าอุปกรณ์เพิ่ม"
   },
   {
-    image: energyAppImage,
+    image: energyGreenImage,
     label: "ค่าไฟ",
     title: "Full DC Inverter ช่วยได้ แต่ห้องจริงยังสำคัญมาก",
     alt: "ภาพประกอบการดูค่าไฟและการตั้งค่าแอร์ประหยัดพลังงาน"
@@ -215,7 +222,14 @@ const realReviewSnapshots = reviewSignals.map((item, index) => ({
   variation: item.label,
   quote: item.title,
   signal: item.body,
-  takeaway: ["ส่งขนาดห้องให้ร้านก่อนเลือก", "รุ่นใหญ่ต้องถามไฟและหน้างาน", "ขอราคาจบเป็นข้อความ", "เลือก BTU ถูกก่อนหวังค่าไฟสวย", "ดูวิดีโอรีวิวเรื่องเสียง", "เก็บใบเสร็จและเลขเครื่อง"][index],
+  takeaway: [
+    "ส่งขนาดห้องให้ร้านก่อนเลือก",
+    "รุ่นใหญ่ต้องถามไฟและหน้างาน",
+    "ขอวันช่างและราคาจบเป็นข้อความ",
+    "ดูวิดีโอรีวิวเรื่องเสียง",
+    "ถ่ายวิดีโอรับของและแกะกล่อง",
+    "เก็บใบเสร็จและเลขเครื่อง"
+  ][index],
   image: item.image
 }));
 
@@ -298,14 +312,14 @@ const jsonLd = {
   },
   author: { "@type": "Organization", name: "Friendsay" },
   inLanguage: "th",
-  dateModified: "2026-06-16",
-  headline: "TCL SaveIN AI แอร์ Full DC Inverter BTU กว้าง ฟีเจอร์แน่น น่าเลือกถ้าอยากซื้อให้จบ"
+  dateModified: "2026-06-17",
+  headline: "TCL SaveIN AI แอร์รีวิวแน่น BTU กว้าง ราคาน่าเทียบ รุ่นที่ควรดูถ้าอยากซื้อให้จบ"
 };
 ---
 
 <BaseLayout
-  title="TCL SaveIN AI แอร์ Full DC Inverter BTU กว้าง ฟีเจอร์แน่น น่าเลือก | Friendsay"
-  description="TCL SaveIN AI Series แอร์ติดผนัง Full DC Inverter ที่เด่นเรื่อง BTU กว้าง ฟีเจอร์ประหยัดไฟ และรีวิวเยอะ พร้อมจุดต้องเช็กเรื่องติดตั้งก่อนซื้อ"
+  title="TCL SaveIN AI แอร์รีวิวแน่น BTU กว้าง ราคาน่าเทียบ | Friendsay"
+  description="รีวิว TCL SaveIN AI Series แอร์ติดผนัง Full DC Inverter ที่เด่นเรื่อง BTU กว้าง รีวิวเยอะ ราคาเริ่มน่าเทียบ พร้อมจุดต้องเช็กเรื่องติดตั้ง เสียง และประกันก่อนซื้อ"
   canonical="https://friendsay.com/th/reviews/tcl-savein-ai-air-conditioner/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -313,16 +327,16 @@ const jsonLd = {
   <article class="pilot-review">
     <section class="air-review-hero tcl-template-hero">
       <a class="air-image-link air-hero-image-link" {...imageLinkAttrs}>
-        <img src={btuRoomImage} alt="ภาพห้องนอนสว่างกับแอร์ TCL SaveIN AI Series สำหรับเปิดรีวิว" loading="eager" />
+        <img src={coolingCondoImage} alt="ภาพห้องคอนโดโทนฟ้าเย็นสำหรับเปิดรีวิว TCL SaveIN AI Series" loading="eager" />
       </a>
       <div class="air-review-shade" aria-hidden="true"></div>
       <div class="container air-review-hero-inner">
         <div class="air-review-title">
           <p class="eyebrow">คู่มือเลือกซื้อแบบเพื่อนช่วยดู / Shopee 2026</p>
-          <h1>TCL SaveIN AI แอร์ Full DC Inverter: BTU กว้าง ฟีเจอร์แน่น น่าเลือกถ้าอยากซื้อให้จบ</h1>
+          <h1>TCL SaveIN AI แอร์รีวิวแน่น BTU กว้าง ราคาน่าเทียบ รุ่นที่ควรดูถ้าอยากซื้อให้จบ</h1>
           <p>
-            รุ่นนี้ไม่ได้เด่นแค่ราคาเปิดกับรีวิวเยอะ จุดที่ทำให้น่าสนใจคือมี BTU ให้เลือกกว้าง ตั้งแต่ห้องนอนเล็กไปจนถึงห้องใหญ่
-            แต่ถ้าจะซื้อจริง อย่ากดเพราะเห็นโปรอย่างเดียว ให้ถามร้านเรื่องรุ่นย่อย คิวช่าง และค่าอุปกรณ์เพิ่มให้ชัดก่อนครับ
+            รุ่นนี้น่าเอาเข้ารอบเพราะมีรีวิวให้ไล่อ่านเยอะ ราคาเปิดดูดี และมี BTU ให้เลือกตั้งแต่ห้องนอนเล็กไปจนถึงห้องใหญ่
+            แต่แอร์ไม่ใช่ของที่กดแล้วจบในกล่อง ก่อนจ่ายให้ถามร้านเรื่องขนาดที่เหมาะกับห้อง คิวช่าง ค่าอุปกรณ์เพิ่ม และประกันให้ครบก่อนครับ
           </p>
           <div class="air-review-actions">
             <a class="button button-primary" href="#buying-cockpit">ดูคำตอบ 90 วินาที</a>
@@ -410,8 +424,8 @@ const jsonLd = {
               <p class="eyebrow">ภาพและรีวิวที่ควรดู</p>
               <h2>ดูภาพสินค้า แล้วอ่านคำแนะนำจากรีวิวผู้ซื้อ 6 ข้อ</h2>
               <p>
-                เวลาเลือกแอร์ ผมจะเริ่มจากภาพสินค้าแบบคลีนก่อน แล้วสรุปรีวิวผู้ซื้อให้กลายเป็นข้อแนะนำที่ใช้ได้จริง
-                เพราะคนอ่านควรรู้ทันทีว่าต้องเช็กอะไร ไม่ใช่แค่รู้ว่ารุ่นนี้มีรีวิวเยอะ
+                เลือกแอร์จากดาวรวมอย่างเดียวเสี่ยงไปหน่อยครับ ผมสรุปประเด็นจากรีวิวผู้ซื้อให้เป็นข้อแนะนำที่เอาไปใช้คุยกับร้านได้ทันที:
+                ต้องเช็ก BTU อะไร, ระวังจุดไหน, และก่อนจ่ายควรถามอะไรให้ชัด
               </p>
             </div>
             <div class="air-review-proof-stats" aria-label="ตัวเลขรีวิวจาก Shopee">
@@ -669,16 +683,6 @@ const jsonLd = {
             รุ่นนี้น่าสนใจเพราะรีวิวแน่น มี BTU ให้เลือกกว้าง และฟีเจอร์ประหยัดไฟดูดีในงบกลาง ๆ
             แต่ยังต้องทำการบ้านเรื่อง BTU ราคาจบ วันติดตั้ง และประกันก่อนกดจ่ายครับ
           </p>
-
-          <div class="air-note">
-            <strong>แหล่งข้อมูลที่ใช้ในรอบนี้</strong>
-            <p>
-              ข้อมูลหลักมาจากหน้า Shopee ของรุ่นนี้:
-              <a href={product.sourceUrl} target="_blank" rel="noopener">{product.sourceUrl}</a>
-              และข้อมูลที่บันทึกไว้วันที่ 15 มิถุนายน 2026 ราคา คูปอง คะแนน และเงื่อนไขร้านเปลี่ยนได้ตลอด
-              ก่อนจ่ายเงินจริง เปิดหน้าร้านเช็กอีกรอบดีที่สุดครับ
-            </p>
-          </div>
         </article>
 
         <aside class="toc" aria-label="สารบัญ">
@@ -716,6 +720,18 @@ const jsonLd = {
 
   <script is:inline>
     (() => {
+      const scrollOffset = 108;
+
+      const withInstantScroll = (callback) => {
+        const root = document.documentElement;
+        const previous = root.style.scrollBehavior;
+        root.style.scrollBehavior = "auto";
+        callback();
+        window.requestAnimationFrame(() => {
+          root.style.scrollBehavior = previous;
+        });
+      };
+
       const offsetHashTarget = () => {
         if (!window.location.hash) return;
         const id = decodeURIComponent(window.location.hash.slice(1));
@@ -723,12 +739,28 @@ const jsonLd = {
         if (!target) return;
 
         window.requestAnimationFrame(() => {
-          target.scrollIntoView({ block: "start" });
-          window.scrollBy(0, -92);
+          const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - scrollOffset);
+          withInstantScroll(() => {
+            window.scrollTo({ top, behavior: "auto" });
+          });
         });
       };
 
-      window.addEventListener("hashchange", () => window.setTimeout(offsetHashTarget, 80));
+      document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener("click", (event) => {
+          const href = link.getAttribute("href");
+          if (!href || href.length <= 1) return;
+          const target = document.getElementById(decodeURIComponent(href.slice(1)));
+          if (!target) return;
+
+          event.preventDefault();
+          window.history.pushState(null, "", href);
+          offsetHashTarget();
+        });
+      });
+
+      window.addEventListener("hashchange", () => window.setTimeout(offsetHashTarget, 0));
+      window.addEventListener("popstate", () => window.setTimeout(offsetHashTarget, 0));
       window.addEventListener("load", () => {
         window.setTimeout(offsetHashTarget, 120);
         window.setTimeout(offsetHashTarget, 700);

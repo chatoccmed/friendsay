@@ -1,6 +1,6 @@
 # Air Conditioner Market Catalog Dashboard
 
-อัปเดต: 16 มิถุนายน 2026
+อัปเดต: 17 มิถุนายน 2026
 
 Dashboard นี้ใช้ตอบคำถามว่า “เรารวบรวมแอร์ในตลาดไทยไปถึงไหนแล้ว” และ “เหลืออีกกี่รุ่นที่ควรทำรีวิว”
 
@@ -22,8 +22,8 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 | Marketplace matched | 4 |
 | Review qualified | 4 |
 | Popularity review queue | 28 |
-| รีวิวเต็มเสร็จแล้ว | 3 |
-| Pilot ที่ควรขยายเป็นรีวิวเต็ม | 1 |
+| รีวิวเต็มเสร็จแล้ว | 4 |
+| Pilot ที่ควรขยายเป็นรีวิวเต็ม | 0 |
 
 ตัวเลขนี้ยังไม่ใช่จำนวนแอร์ทั้งหมดในตลาดไทย เป็นฐานเริ่มต้นจาก HomePro first-page seed + online-native seed เดิม ต้องเก็บหน้าถัดไป ร้านอื่น เว็บแบรนด์ และ marketplace official เพิ่ม
 
@@ -68,7 +68,7 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 | ลำดับ | รุ่น | หลักฐานความนิยม | สถานะ | งานถัดไป |
 |---:|---|---:|---|---|
 | 1 | CANDY VPCT/VPGT Series | Shopee reviews 10,400 | รีวิวเต็มแล้ว | รีเฟรชราคา/ลิงก์ |
-| 2 | TCL SaveIN AI Series | Shopee reviews 9,200 | pilot | ขยายเป็นรีวิวเต็ม |
+| 2 | TCL SaveIN AI Series | Shopee reviews 9,200 | รีวิวเต็มแล้ว | รีเฟรชราคา/ลิงก์ |
 | 3 | Xiaomi Mijia Air Inverter Eco | Shopee reviews 4,300 | รีวิวเต็มแล้ว | รีเฟรชราคา/ลิงก์ |
 | 4 | Midea Celest MSCE | Shopee reviews 193 | รีวิวเต็มแล้ว | รีเฟรชราคา/ลิงก์ |
 | 5 | Mitsubishi MSY-GT09VF | HomePro reviews 86 | ต้องจับคู่ marketplace | หา Shopee/Lazada/TikTok |
@@ -77,7 +77,7 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 | 8-15 | รุ่นที่มีรีวิวจริง 1-4 รีวิว | HomePro reviews 1-4 | ต้องหา evidence เพิ่ม | หา Shopee/Lazada/TikTok หรือ retailer อื่น |
 | 16-28 | รุ่นที่ยังไม่เห็นรีวิว/ยอดขาย | none visible | ต้องหา evidence ก่อน | ยังไม่เขียนรีวิวเต็มจนกว่าจะมีหลักฐาน |
 
-ถ้าถามว่า “ทำรีวิวรุ่นไหนต่อ” คำตอบตอนนี้คือ **TCL SaveIN AI Series** เพราะมีหลักฐานความนิยมอันดับ 2 และยังไม่ได้ขยายเป็นรีวิวเต็ม
+ถ้าถามว่า “ทำรีวิวรุ่นไหนต่อ” คำตอบตอนนี้คือ **Mitsubishi MSY-GT09VF** แต่ต้องจับคู่ Shopee/Lazada/TikTok และยืนยันลิงก์ซื้อก่อนเขียนรีวิวเต็ม เพราะหลักฐานความนิยมหลักตอนนี้มาจาก HomePro ไม่ใช่ marketplace affiliate
 
 งาน “รวบรวมครบเฟสแรก” จะถือว่าใช้ได้เมื่อ:
 

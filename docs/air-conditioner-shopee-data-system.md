@@ -19,7 +19,7 @@
 - มี candidate จากคำค้นหลัก “แอร์ติดผนัง” รอบแรก 15 รายการ
 - เปิดหน้ารายละเอียดและยืนยันข้อมูลได้ครบ 4 รายการ
 - ทำรีวิวเต็มแล้ว 3 รายการ
-- TCL ทำเป็น pilot แล้ว แต่ยังต้องขยายให้เป็นรีวิวเต็ม
+- TCL ขยายจาก pilot เป็นรีวิวเต็มแล้ว
 - คำค้น BTU, แบรนด์, และคำค้น “แอร์พร้อมติดตั้ง” ยังไม่ได้เก็บครบ
 
 ดังนั้นงานที่ถูกต้องคือ “ขยาย inventory ก่อน” แล้วค่อยทำรีวิวทีละรุ่นจากรายการที่ยืนยันแล้ว
@@ -188,7 +188,7 @@ research/evidence/shopee-air-conditioners/{product_key}/{capture_date}/
 ใช้ `docs/air-conditioner-shopee-collection-dashboard.md` และ `docs/air-conditioner-shopee-collection-rounds.csv` เป็นตัวนับรอบหลัก
 
 1. ขยาย detail verification จาก candidate รอบแรกให้ครบก่อน โดยเริ่มจากสินค้าที่น่าจะเป็น SKU จริง
-2. ขยาย TCL จาก pilot เป็นรีวิวเต็ม
+2. จับคู่ marketplace ของ Mitsubishi MSY-GT09VF ก่อนเริ่มรีวิวเต็มรุ่นถัดไป
 3. เปิดตรวจ candidate ที่น่าสนใจ: Midea Tornado EASY, Midea Numen, Hisense CE, Hisense CE/DB, CANDY PCT, TCL 24,200 BTU, Zinney ZAC-BP12A
 4. ตัด candidate ที่เป็นหน้าผ่อน/บริการ/อุปกรณ์ออก
 5. เก็บคำค้น BTU และแบรนด์ทีละรอบ
