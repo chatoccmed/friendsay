@@ -71,6 +71,7 @@ If a reference is missing, continue with the closest available source and note t
 - Use `docs/air-conditioner-catalog-rounds.csv` to know the next source or brand to collect.
 - Use `docs/air-conditioner-market-catalog.csv` to answer how many air-conditioner models are known, verified, matched, qualified, and reviewed.
 - Use `docs/air-conditioner-marketplace-match.csv` to track Shopee, Lazada, and TikTok product links.
+- Keep `docs/air-conditioner-review-priority.csv` complete for every known catalog product, even when a product still needs sales or review evidence.
 - Use `docs/air-conditioner-review-priority.csv` to decide the next review. The next review must be the highest-ranked item that is not `full_review_done` and has real sales or review evidence.
 - Do not create a full air-conditioner review for a model without real review count, rating/comment count, or visible sold count evidence above the threshold.
 - Treat Shopee as a marketplace match layer, not the catalog layer.

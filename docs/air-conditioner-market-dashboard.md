@@ -21,7 +21,7 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 | Catalog verified จากแหล่งร้าน/แบรนด์ | 0 |
 | Marketplace matched | 4 |
 | Review qualified | 4 |
-| Popularity review queue | 7 |
+| Popularity review queue | 28 |
 | รีวิวเต็มเสร็จแล้ว | 3 |
 | Pilot ที่ควรขยายเป็นรีวิวเต็ม | 1 |
 
@@ -63,7 +63,7 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 
 กติกาหลัก: รุ่นที่ยังไม่มียอดขายหรือยอดรีวิวจริงมากกว่าเกณฑ์ จะยังไม่เข้าคิวรีวิวเต็ม
 
-คิวปัจจุบันจาก `docs/air-conditioner-review-priority.csv`:
+คิวปัจจุบันจาก `docs/air-conditioner-review-priority.csv` ครบทั้ง 28 รุ่นแล้ว โดยเรียงจากรุ่นที่มีหลักฐานความนิยมมากที่สุดลงไป
 
 | ลำดับ | รุ่น | หลักฐานความนิยม | สถานะ | งานถัดไป |
 |---:|---|---:|---|---|
@@ -74,6 +74,8 @@ Dashboard นี้ใช้ตอบคำถามว่า “เรารว
 | 5 | Mitsubishi MSY-GT09VF | HomePro reviews 86 | ต้องจับคู่ marketplace | หา Shopee/Lazada/TikTok |
 | 6 | Mitsubishi Heavy Duty DXK10CXV-W1 | HomePro reviews 13 | ต้องจับคู่ marketplace | หา Shopee/Lazada/TikTok |
 | 7 | Sharp AH/AU-XP10YMB | HomePro reviews 8 | ต้องจับคู่ marketplace | หา Shopee/Lazada/TikTok |
+| 8-15 | รุ่นที่มีรีวิวจริง 1-4 รีวิว | HomePro reviews 1-4 | ต้องหา evidence เพิ่ม | หา Shopee/Lazada/TikTok หรือ retailer อื่น |
+| 16-28 | รุ่นที่ยังไม่เห็นรีวิว/ยอดขาย | none visible | ต้องหา evidence ก่อน | ยังไม่เขียนรีวิวเต็มจนกว่าจะมีหลักฐาน |
 
 ถ้าถามว่า “ทำรีวิวรุ่นไหนต่อ” คำตอบตอนนี้คือ **TCL SaveIN AI Series** เพราะมีหลักฐานความนิยมอันดับ 2 และยังไม่ได้ขยายเป็นรีวิวเต็ม
 

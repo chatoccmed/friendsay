@@ -12,13 +12,15 @@
 
 ## นิยาม “เข้าเกณฑ์ทำรีวิว”
 
-สินค้าจะเข้า `review_priority` ได้เมื่อมีอย่างน้อย 1 อย่าง:
+สินค้าทุกตัวใน `air-conditioner-market-catalog.csv` ต้องมีแถวใน `air-conditioner-review-priority.csv` เพื่อให้เห็นทั้งสนามครบ ไม่ใช่เห็นเฉพาะรุ่นที่พร้อมรีวิว
+
+แต่สินค้าจะเข้าเกณฑ์ **เขียนรีวิวเต็ม** ได้เมื่อมีอย่างน้อย 1 อย่าง:
 
 1. มี review / rating / comment count จริงมากกว่า 5 จาก Shopee, Lazada, TikTok, HomePro, Power Buy หรือร้านใหญ่ที่เห็นตัวเลขได้
 2. มี sold count จริงจาก marketplace มากกว่า 10 เครื่อง ถ้าแพลตฟอร์มแสดงตัวเลข
 3. มีหลายแหล่งยืนยันว่าขายจริง และอย่างน้อยหนึ่งแหล่งมีรีวิวจริงมากกว่า 5
 
-ถ้าไม่มีตัวเลขรีวิวหรือยอดขายจริง ให้ลงได้แค่ `catalog_candidate` แต่ยังไม่ใช่คิวรีวิวเต็ม
+ถ้าไม่มีตัวเลขรีวิวหรือยอดขายจริง ให้ลงใน priority queue ได้ แต่ต้องใช้สถานะ `needs_sales_or_review_evidence` และยังไม่ใช่คิวรีวิวเต็ม
 
 ## แหล่งข้อมูลที่นับเป็นหลักฐานได้
 
@@ -46,7 +48,9 @@
 - `ready_to_review`: หลักฐานครบและมี marketplace link พร้อม
 - `needs_marketplace_match`: มี review/sales signal จริงแล้ว แต่ต้องหา Shopee/Lazada/TikTok link ก่อน
 - `needs_evidence_refresh`: เคยมีหลักฐาน แต่เกิน freshness policy หรือยังไม่พอ
-- `not_eligible_yet`: ยังไม่มี review/sales signal จริงมากกว่าเกณฑ์
+- `needs_popularity_evidence`: มีรีวิวจริงแล้ว แต่ยังไม่ถึง threshold ต้องหาแหล่งเพิ่ม
+- `needs_sales_or_review_evidence`: ยังไม่มี review/sales signal จริง ต้องหา evidence ก่อน
+- `not_eligible_yet`: ยังไม่ควรเขียนรีวิวเต็ม
 
 ## กติกาการทำงานจริง
 
@@ -58,3 +62,5 @@
 4. `docs/air-conditioner-market-dashboard.md`
 
 ถ้าผู้ใช้ถามว่า “ทำรุ่นไหนต่อ” ให้ตอบจาก `docs/air-conditioner-review-priority.csv` โดยเลือกตัวแรกที่ยังไม่ใช่ `full_review_done` และผ่านเกณฑ์ popularity จริงแล้ว
+
+ถ้าผู้ใช้ถามว่า “มีทั้งหมดกี่รุ่นในคิว” ให้ตอบจำนวนแถวทั้งหมดใน priority queue
