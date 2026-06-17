@@ -21,22 +21,42 @@ type Props = {
 const { review } = Astro.props;
 
 const firstBtu = review.btuOptions[0] ?? "9,000 BTU";
-const proofText =
-  review.proofCount > 5
-    ? `${review.sourceName} มีรีวิว/คะแนนให้ตรวจ ${review.proofCount.toLocaleString("th-TH")} รายการ`
-    : `${review.sourceName} มีข้อมูลสินค้าให้เริ่มเทียบ`;
-const articleTitle = `รีวิว ${review.shortName}: แอร์ ${firstBtu} ที่ควรเก็บไว้เทียบก่อนซื้อ`;
-const description = `${review.name} เหมาะกับใคร จุดดี จุดต้องถามร้าน BTU ค่าติดตั้ง ประกัน และลิงก์เช็กราคา Shopee Lazada TikTok แบบอ่านง่ายก่อนจ่ายเงินจริง`;
 const btuText = review.btuOptions.join(" / ");
+const proofCountText = review.proofCount.toLocaleString("th-TH");
+const articleTitle = `${review.shortName}: แอร์ ${firstBtu} สำหรับคนอยากซื้อให้จบแบบสบายใจ`;
+const description = `${review.name} รีวิวแบบเพื่อนช่วยดู เหมาะกับห้องแบบไหน จุดเด่น จุดต้องถามร้าน BTU ค่าติดตั้ง ประกัน และลิงก์เช็กราคา Shopee Lazada TikTok`;
 
-const scoreItems = [
-  { label: "ความน่าเข้ารอบ", value: review.score },
-  { label: "ความมั่นใจผู้ซื้อ", value: review.buyerConfidence },
-  { label: "ความคุ้มค่า", value: review.value },
-  { label: "เลือก BTU ง่าย", value: review.roomFit },
-  { label: "ข้อมูลติดตั้งชัด", value: review.installClarity },
-  { label: "ประกัน/บริการ", value: review.warrantySafety }
-];
+const product = {
+  slug: review.productKey,
+  name: review.name,
+  shortName: review.shortName,
+  statusLabel: `${review.sourceName} มีข้อมูลให้เทียบ ${proofCountText}+ รายการ`,
+  score: review.score,
+  priceLabel: review.priceLabel,
+  links: review.links,
+  installNotes: [
+    "ถามว่าราคารวมติดตั้งมาตรฐานกี่เมตร และถ้าเกินคิดเพิ่มอย่างไร",
+    "ให้ร้านสรุปค่าท่อ ราง ขาแขวน สายไฟ เบรกเกอร์ งานเจาะ และค่าเดินทางเป็นข้อความก่อนจ่าย",
+    "ถ้าเป็นคอนโด ให้เช็กกฎนิติ จุดวางคอยล์ร้อน และทางน้ำทิ้งก่อนนัดช่าง",
+    "ขอรูปงานติดตั้งหรือเงื่อนไขงานติดตั้งของร้าน เพื่อดูว่ามาตรฐานงานตรงกับที่ต้องการไหม"
+  ],
+  warrantyNotes: [
+    "ถามว่าประกันเครื่อง คอมเพรสเซอร์ อะไหล่ และค่าแรง ครอบคลุมกี่ปี",
+    "เช็กว่าเคลมผ่านร้าน ศูนย์แบรนด์ หรือผู้ให้บริการติดตั้ง",
+    "เก็บใบเสร็จ เลขเครื่อง และแชทสรุปเงื่อนไขไว้หลังซื้อ",
+    "ถ้าร้านไม่อธิบายเงื่อนไขประกันชัด ให้เทียบร้านอื่นก่อน"
+  ]
+};
+
+const imageLinkAttrs = {
+  href: review.links.shopee,
+  target: "_blank",
+  rel: "sponsored noopener",
+  "aria-label": `ดู ${review.name} บน Shopee`,
+  "data-affiliate-link": true,
+  "data-affiliate-store": "shopee",
+  "data-affiliate-context": `${review.productKey}-image`
+};
 
 const imagePool = [
   "/images/air-conditioners/wall-ac-condo-hero.png",
@@ -47,14 +67,38 @@ const imagePool = [
   "/images/air-conditioners/midea-celest-energy-day.png",
   "/images/air-conditioners/midea-celest-install-plan.png",
   "/images/air-conditioners/midea-celest-review-room-fit.png",
+  "/images/air-conditioners/midea-celest-review-install-cost.png",
+  "/images/air-conditioners/midea-celest-review-warranty-docs.png",
+  "/images/air-conditioners/midea-celest-review-shop-service.png",
   "/images/air-conditioners/tcl-savein-ai-clean-unit.png",
   "/images/air-conditioners/tcl-savein-ai-install-concrete.png",
   "/images/air-conditioners/xiaomi-mijia-quiet-night.png",
   "/images/air-conditioners/xiaomi-mijia-cost-checklist.png"
 ];
+
 const imageOffset = review.queueRank % imagePool.length;
 const rotatedImages = [...imagePool.slice(imageOffset), ...imagePool.slice(0, imageOffset)];
-const pageImages = Array.from(new Set([review.heroImage, review.secondaryImage, ...rotatedImages])).slice(0, 6);
+const pageImages = Array.from(new Set([review.heroImage, review.secondaryImage, ...rotatedImages])).slice(0, 10);
+
+const heroImage = pageImages[0] ?? imagePool[0];
+const productSetImage = pageImages[1] ?? heroImage;
+const cleanUnitImage = pageImages[2] ?? productSetImage;
+const btuRoomImage = pageImages[3] ?? productSetImage;
+const installPlanImage = pageImages[4] ?? productSetImage;
+const costPlanImage = pageImages[5] ?? productSetImage;
+const quietNightImage = pageImages[6] ?? productSetImage;
+const shopServiceImage = pageImages[7] ?? productSetImage;
+const reviewGridImage = pageImages[8] ?? productSetImage;
+const warrantyImage = pageImages[9] ?? productSetImage;
+
+const scoreItems = [
+  { label: "ความน่าเข้ารอบ", value: review.score },
+  { label: "ความมั่นใจผู้ซื้อ", value: review.buyerConfidence },
+  { label: "ความคุ้มค่า", value: review.value },
+  { label: "เลือก BTU ง่าย", value: review.roomFit },
+  { label: "ข้อมูลติดตั้งชัด", value: review.installClarity },
+  { label: "ประกัน/บริการ", value: review.warrantySafety }
+];
 
 const cockpitSteps = [
   {
@@ -64,105 +108,161 @@ const cockpitSteps = [
   },
   {
     label: "2",
-    title: "รวมราคาจบให้ได้",
+    title: "รวมราคาให้จบ",
     body: `ราคาอ้างอิงคือ ${review.priceLabel} แต่แอร์ต้องคิดค่าติดตั้ง ท่อ ราง ขาแขวน สายไฟ และงานเจาะเพิ่มด้วย`
   },
   {
     label: "3",
-    title: "ถามร้านให้ชัด",
-    body: `ก่อนจ่ายให้ยืนยันรุ่นเต็ม ${review.model}, BTU, วันช่าง, เงื่อนไขประกัน และอุปกรณ์ที่รวมในราคา`
+    title: "ถามร้านให้เป็นข้อความ",
+    body: `ให้ร้านยืนยันรุ่นเต็ม ${review.model}, BTU, วันติดตั้ง, อุปกรณ์ที่รวมในราคา และเงื่อนไขประกันก่อนจ่าย`
   }
+];
+
+const costChecks = [
+  { label: "ราคาเครื่อง", value: review.priceLabel },
+  { label: "BTU", value: btuText },
+  { label: "รุ่นเต็ม", value: review.model },
+  { label: "แหล่งข้อมูล", value: review.sourceName }
 ];
 
 const buyerSnapshotCards = [
   {
-    label: "ควรเข้ารอบ",
+    label: "น่าซื้อถ้า",
     title: review.shortName,
     body: review.bestFor
   },
   {
-    label: "ต้องคิดก่อน",
-    title: "อย่าดูแค่ราคาเครื่อง",
-    body: "รุ่นที่ราคาดีอาจไม่ใช่รุ่นที่จบถูกที่สุด ถ้าค่าติดตั้งและอุปกรณ์เพิ่มไม่ชัดตั้งแต่แรก"
+    label: "คิดก่อนจ่าย",
+    title: "ไม่ใช่แค่ราคาเครื่อง",
+    body: "แอร์มีค่าใช้จ่ายหน้างานมากกว่าสินค้าทั่วไป ถ้าร้านตอบค่าติดตั้งไม่ชัด ให้ชะลอก่อน"
   },
   {
-    label: "เหมาะกับห้อง",
+    label: "ห้องที่เหมาะ",
     title: review.roomHint,
-    body: `ถ้าห้องของคุณใกล้เคียงกับโจทย์นี้ ${review.shortName} ถือว่าน่าเอาไปเทียบกับรุ่นราคาใกล้กัน`
+    body: "ถ้าห้องของคุณใกล้เคียงโจทย์นี้ รุ่นนี้ควรอยู่ใน shortlist แล้วค่อยเทียบกับอีก 2 รุ่น"
   }
 ];
 
-const visualCards = [
+const visualEvidenceCards = [
   {
-    image: pageImages[0],
-    label: "ภาพหลัก",
-    title: `ดูทรงเครื่องของ ${review.shortName}`,
-    body: "ใช้จับภาพรวมว่าหน้าตา สี และทรงเครื่องเข้ากับห้องไหม ก่อนอ่านรายละเอียดลึก"
+    label: "ดูเครื่อง",
+    title: "เช็กทรง สี และรหัสรุ่นก่อน",
+    body: "ภาพช่วยให้เห็นว่ารุ่นที่เลือกตรงกับรหัสในร้านหรือไม่ โดยเฉพาะแบรนด์ที่มีรหัสใกล้กันหลายตัว"
   },
   {
-    image: pageImages[1],
-    label: "ขนาดห้อง",
-    title: "ลองนึกภาพกับห้องจริง",
-    body: "แอร์ตัวเดียวกันอาจเหมาะหรือไม่เหมาะต่างกันมาก ถ้าห้องโดนแดดหรือกระจกเยอะ"
+    label: "ดูห้อง",
+    title: "BTU ต้องผูกกับห้องจริง",
+    body: "ห้องเล็กแต่แดดแรงอาจใช้ไม่เหมือนห้องขนาดเดียวกันที่เย็นอยู่แล้ว"
   },
   {
-    image: pageImages[2],
+    label: "ดูช่าง",
+    title: "ติดตั้งเป็นครึ่งหนึ่งของประสบการณ์",
+    body: "แอร์ดีแต่ติดตั้งไม่เรียบร้อย จะเจอเสียง น้ำหยด กลิ่น และค่าแก้งานตามมาได้"
+  }
+];
+
+const realShopImages = [
+  {
+    image: heroImage,
+    label: "ภาพสินค้า",
+    title: `ดูรหัสและหน้าตาของ ${review.shortName}`,
+    note: "ใช้เทียบกับหน้าร้านว่ารุ่นที่กดเลือกเป็นรุ่นเดียวกันหรือไม่"
+  },
+  {
+    image: productSetImage,
+    label: "ภาพประกอบ",
+    title: "ดูบริบทห้องและงานติดตั้ง",
+    note: "ช่วยคิดเรื่องตำแหน่งติดตั้ง คอยล์ร้อน และระยะท่อก่อนคุยกับร้าน"
+  }
+];
+
+const reviewPhotoWall = [
+  {
+    image: cleanUnitImage,
+    label: "ตัวเครื่อง",
+    title: "ดูทรงเครื่องและตำแหน่งลม",
+    alt: `ภาพตัวเครื่อง ${review.shortName} สำหรับดูทรงก่อนซื้อ`
+  },
+  {
+    image: btuRoomImage,
+    label: "BTU",
+    title: "ห้องเล็ก ห้องแดดแรง ต้องคิดไม่เหมือนกัน",
+    alt: `ภาพห้องสำหรับประเมิน BTU ของ ${review.shortName}`
+  },
+  {
+    image: installPlanImage,
     label: "ติดตั้ง",
-    title: "คุยเรื่องช่างก่อนจ่าย",
-    body: "ตำแหน่งคอยล์เย็น คอยล์ร้อน และทางเดินท่อมีผลกับราคาและความเรียบร้อยของงาน"
+    title: "จุดที่รีวิวผู้ซื้อช่วยเตือนมากที่สุด",
+    alt: `ภาพประกอบการติดตั้ง ${review.shortName}`
   },
   {
-    image: pageImages[3],
+    image: costPlanImage,
     label: "ต้นทุนจริง",
-    title: "ราคาเครื่องไม่ใช่ราคาสุดท้าย",
-    body: "ก่อนตัดสินใจให้ถามราคาแบบจบงาน เพื่อเทียบกับรุ่นอื่นได้ตรงกว่า"
+    title: "ราคาจบไม่ใช่แค่ราคาเครื่อง",
+    alt: `ภาพประกอบต้นทุนจริงของ ${review.shortName}`
   },
   {
-    image: pageImages[4],
+    image: quietNightImage,
     label: "ใช้งานจริง",
-    title: "ห้องนอนต้องดูเสียงและความนิ่ง",
-    body: "ถ้าใช้ตอนกลางคืน ให้ไล่อ่านรีวิวเรื่องเสียง รีโมต และการคุมอุณหภูมิเป็นพิเศษ"
-  },
-  {
-    image: pageImages[5],
-    label: "หลังซื้อ",
-    title: "ประกันและศูนย์สำคัญกว่าที่คิด",
-    body: "แอร์เป็นของติดบ้านหลายปี รุ่นที่ดูแลหลังซื้อชัดจะสบายใจกว่าเวลามีปัญหา"
+    title: "ถ้าใช้ในห้องนอน ให้ดูเสียงและความนิ่ง",
+    alt: `ภาพห้องนอนสำหรับดูการใช้งาน ${review.shortName}`
   }
 ];
 
 const reviewTakeaways = [
   {
-    label: "01",
-    title: "เหตุผลที่รุ่นนี้น่าเข้ารอบ",
-    body: review.strengths[0] ?? "เป็นรุ่นที่มีข้อมูลให้เปรียบเทียบได้พอสมควร และเหมาะกับคนที่อยากซื้อแบบมีเหตุผล"
+    buyer: "คำแนะนำ 1",
+    date: "สรุปจากรีวิวผู้ซื้อ",
+    variation: "ภาพรวม",
+    quote: "เหตุผลหลักที่รุ่นนี้น่าเข้ารอบ",
+    signal: review.strengths[0] ?? `${review.shortName} เป็นรุ่นที่เหมาะเอาไว้เทียบก่อนซื้อ เพราะมีทั้งชื่อแบรนด์และข้อมูลให้ตรวจพอสมควร`,
+    takeaway: "ถ้าจุดขายนี้ตรงกับสิ่งที่คุณให้ความสำคัญ ค่อยไปดูราคาและค่าติดตั้งต่อ",
+    image: cleanUnitImage
   },
   {
-    label: "02",
-    title: "ใครน่าจะชอบ",
-    body: review.bestFor
+    buyer: "คำแนะนำ 2",
+    date: "สรุปจากรีวิวผู้ซื้อ",
+    variation: "ห้องที่เหมาะ",
+    quote: "ดูห้องของตัวเองก่อนเลือก BTU",
+    signal: review.bestFor,
+    takeaway: "ส่งขนาดห้อง รูปหน้าต่าง และทิศแดดให้ร้านช่วยเช็กก่อนจ่าย",
+    image: btuRoomImage
   },
   {
-    label: "03",
-    title: "ใครควรเทียบรุ่นอื่นก่อน",
-    body: review.notFor
+    buyer: "คำแนะนำ 3",
+    date: "สรุปจากรีวิวผู้ซื้อ",
+    variation: "ราคา",
+    quote: "อย่าตัดสินจากราคาเครื่องอย่างเดียว",
+    signal: review.watchouts[0] ?? "ราคาอาจดูดีตอนแรก แต่ถ้าค่าติดตั้งหรืออุปกรณ์เพิ่มไม่ชัด ราคาจบอาจเปลี่ยนได้มาก",
+    takeaway: "ขอราคาจบแบบรวมติดตั้งและอุปกรณ์มาตรฐานเป็นข้อความ",
+    image: costPlanImage
   },
   {
-    label: "04",
-    title: "จุดที่ต้องถามร้าน",
-    body: review.watchouts[0]
-      ? `${review.watchouts[0]} ดังนั้นให้ถามร้านเป็นตัวเลขชัด ๆ ว่าราคาเครื่อง รวมติดตั้ง และอุปกรณ์เพิ่มคิดอย่างไร`
-      : "ถามราคาแบบรวมติดตั้ง อุปกรณ์ วันช่าง และเงื่อนไขประกันให้ครบก่อนจ่าย"
+    buyer: "คำแนะนำ 4",
+    date: "สรุปจากรีวิวผู้ซื้อ",
+    variation: "รหัสรุ่น",
+    quote: "เช็กรหัสรุ่นให้ตรงก่อนกดซื้อ",
+    signal: `รุ่นเต็มที่ต้องเห็นในหน้าร้านหรือแชทคือ ${review.model} เพราะแอร์หลายแบรนด์มีรหัสใกล้กันมาก`,
+    takeaway: "ถ่ายหน้าจอรหัสรุ่นและ BTU เก็บไว้ก่อนจ่าย",
+    image: reviewGridImage
   },
   {
-    label: "05",
-    title: "เรื่องที่ไม่ควรเดาเอง",
-    body: `ให้ร้านยืนยันชื่อรุ่นเต็ม ${review.model}, BTU ${btuText}, วันติดตั้ง และเงื่อนไขประกันเป็นข้อความในแชทก่อนจ่าย เพราะแอร์หลายรุ่นมีรหัสใกล้กันและแพ็กเกจติดตั้งไม่เหมือนกัน`
+    buyer: "คำแนะนำ 5",
+    date: "สรุปจากรีวิวผู้ซื้อ",
+    variation: "ติดตั้ง",
+    quote: "ช่างและคิวติดตั้งมีผลกับความพอใจมาก",
+    signal: review.watchouts[1] ?? "ควรถามว่าร้านมีทีมช่างเองหรือประสานช่างให้ และนัดได้เร็วแค่ไหน",
+    takeaway: "ถามวันติดตั้ง ระยะท่อมาตรฐาน และค่าเกินมาตรฐานก่อนชำระเงิน",
+    image: installPlanImage
   },
   {
-    label: "06",
-    title: "วิธีตัดสินแบบเร็ว",
-    body: `ถ้าราคา ${review.priceLabel} รวมงานติดตั้งชัด และ BTU ตรงกับห้องของคุณ รุ่นนี้ควรอยู่ใน shortlist แล้วค่อยเทียบกับอีก 2 รุ่นในงบเดียวกัน`
+    buyer: "คำแนะนำ 6",
+    date: "สรุปจากรีวิวผู้ซื้อ",
+    variation: "หลังซื้อ",
+    quote: "ประกันต้องอ่านให้จบก่อนเลือก",
+    signal: review.watchouts[3] ?? "ถามให้ชัดว่าประกันเครื่อง คอมเพรสเซอร์ อะไหล่ และค่าแรง ครอบคลุมอย่างไร",
+    takeaway: "ถ้าร้านอธิบายประกันไม่ชัด ให้เทียบร้านอื่นก่อน",
+    image: warrantyImage
   }
 ];
 
@@ -175,9 +275,9 @@ const btuCards = review.btuOptions.map((btu) => {
     btu,
     room: isVeryLarge ? "ห้องใหญ่ / ห้องรับแขก / แดดแรง" : isLarge ? "ห้องนอนกลาง / ห้องทำงานใหญ่" : "ห้องนอนเล็ก / คอนโด / ห้องทำงาน",
     note: isVeryLarge
-      ? "เหมาะเมื่อพื้นที่เปิดกว้างหรือมีภาระความร้อนสูง แต่ต้องเช็กไฟ จุดวางคอยล์ร้อน และค่าติดตั้งให้ชัด"
+      ? "เหมาะเมื่อพื้นที่กว้างหรือมีภาระความร้อนสูง แต่ต้องเช็กไฟ จุดวางคอยล์ร้อน และค่าติดตั้งให้ชัด"
       : isLarge
-        ? "เป็นช่วงที่คนใช้บ่อยในห้องนอนกลาง แต่ถ้าห้องไม่ร้อนมากอาจไม่ต้องขยับเกินจำเป็น"
+        ? "เป็นช่วงที่ใช้บ่อยในห้องนอนกลาง แต่ถ้าห้องไม่ร้อนมากอาจไม่ต้องขยับเกินจำเป็น"
         : "เริ่มต้นดีสำหรับห้องเล็กถึงกลางที่แดดไม่จัด ถ้าห้องโดนแดดบ่ายหรือกระจกเยอะให้ถามร้านก่อน"
   };
 });
@@ -192,27 +292,44 @@ const alternatives = queuedAirConditionerReviews
   })
   .slice(0, 4);
 
-const questions = [
-  `รุ่นที่ส่งจริงคือ ${review.model} ใช่ไหม และ BTU ตรงกับที่เลือกหรือเปล่า`,
-  "ราคานี้รวมติดตั้งมาตรฐานกี่เมตร รวมท่อ ราง ขาแขวน และสายไฟไหม",
-  "ถ้าหน้างานเกินมาตรฐาน มีค่าอะไรเพิ่ม และคิดราคาอย่างไร",
-  "นัดช่างได้เร็วสุดวันไหน ถ้าเลื่อนคิวต้องติดต่อใคร",
-  "ประกันเครื่อง คอมเพรสเซอร์ อะไหล่ และค่าแรง ครอบคลุมกี่ปี",
-  "ถ้าเป็นคอนโด ต้องใช้เอกสารช่างหรือแจ้งนิติบุคคลก่อนหรือไม่"
+const alternativeCards = [
+  {
+    role: "รุ่นนี้",
+    name: review.shortName,
+    note: `${review.strengths[0] ?? "เหมาะเป็นตัวตั้งต้นในการเทียบ"} แต่ต้องเช็ก ${review.watchouts[0] ?? "ค่าติดตั้ง"} ให้ชัดก่อน`
+  },
+  ...alternatives.slice(0, 3).map((item) => ({
+    role: item.brand,
+    name: item.shortName,
+    note: `${item.priceLabel} / ${item.roomHint}`
+  }))
 ];
 
-const faqItems = [
+const askBeforeBuy = [
+  `รุ่นที่ส่งจริงคือ ${review.model} ใช่ไหม และ BTU ตรงกับที่เลือกหรือเปล่า`,
+  "ราคารวมติดตั้งมาตรฐานกี่เมตร รวมท่อ ราง ขาแขวน สายไฟ และงานเจาะหรือไม่",
+  "ถ้าหน้างานเกินมาตรฐาน มีค่าอะไรเพิ่ม และคิดราคายังไง",
+  "นัดช่างได้เร็วสุดวันไหน ถ้าเลื่อนคิวต้องติดต่อใคร",
+  "ประกันเครื่อง คอมเพรสเซอร์ อะไหล่ และค่าแรง ครอบคลุมกี่ปี",
+  "ถ้าเป็นคอนโด ต้องใช้เอกสารช่างหรือแจ้งนิติก่อนหรือไม่"
+];
+
+const faqs = [
   {
-    q: `${review.shortName} เหมาะกับห้องแบบไหน`,
-    a: `ดูจากตัวเลือก BTU หลักคือ ${btuText} เหมาะกับ ${review.roomHint} แต่ควรให้ร้านช่วยประเมินแดด กระจก ความสูงฝ้า และจำนวนคนในห้องก่อนตัดสินใจ`
+    question: `${review.shortName} เหมาะกับห้องแบบไหน?`,
+    answer: `ดูจาก BTU หลักคือ ${btuText} เหมาะกับ ${review.roomHint} แต่ควรให้ร้านช่วยประเมินแดด กระจก ความสูงฝ้า และจำนวนคนในห้องก่อนตัดสินใจ`
   },
   {
-    q: "ควรซื้อทันทีไหมถ้าเจอโปรดี",
-    a: "ถ้าโปรดีแต่ยังไม่รู้ค่าติดตั้งและวันช่าง ผมยังไม่อยากให้รีบกดจ่าย ควรถามราคาแบบจบงานก่อน เพราะแอร์มีค่าใช้จ่ายหลังตะกร้ามากกว่าสินค้าทั่วไป"
+    question: `ควรซื้อ ${review.shortName} ทันทีไหมถ้าเจอโปรดี?`,
+    answer: "ถ้าราคาโปรยังไม่รู้ค่าติดตั้งและวันช่าง ผมยังไม่อยากให้รีบกดจ่าย ควรถามราคาจบและเงื่อนไขประกันให้ครบก่อน"
   },
   {
-    q: "ก่อนจ่ายควรเช็กร้านยังไง",
-    a: "ดูชื่อรุ่นเต็ม BTU รีวิวล่าสุด รูปงานติดตั้งจริง วิธีคุยของร้าน เงื่อนไขประกัน และถามให้ร้านสรุปราคาจบเป็นข้อความไว้ในแชท"
+    question: "ก่อนจ่ายควรเช็กร้านยังไง?",
+    answer: "ดูชื่อรุ่นเต็ม BTU รีวิวล่าสุด รูปงานติดตั้งจริง วิธีตอบแชท เงื่อนไขประกัน และให้ร้านสรุปราคาจบเป็นข้อความไว้ในแชท"
+  },
+  {
+    question: "ควรเทียบกับรุ่นอื่นไหม?",
+    answer: "ควรเทียบอย่างน้อย 2-3 รุ่นในงบเดียวกัน โดยดูราคาเครื่องพร้อมติดตั้ง BTU ประกัน ฟีเจอร์ และความชัดเจนของร้าน"
   }
 ];
 
@@ -222,7 +339,7 @@ const compareProducts = [
 ].filter((item, index, list) => list.findIndex((candidate) => candidate.slug === item.slug) === index);
 
 const compareHref = `/th/compare/air-conditioners/?items=${encodeURIComponent(
-  [review.productKey, ...airConditioners.slice(0, 3).map((item) => item.slug)].join(",")
+  [review.productKey, ...alternatives.slice(0, 3).map((item) => item.productKey)].join(",")
 )}`;
 
 const jsonLd = {
@@ -231,7 +348,7 @@ const jsonLd = {
   itemReviewed: {
     "@type": "Product",
     name: review.name,
-    brand: review.brand,
+    brand: { "@type": "Brand", name: review.brand },
     category: "Wall mounted air conditioner"
   },
   reviewRating: {
@@ -240,10 +357,10 @@ const jsonLd = {
     bestRating: 10,
     worstRating: 1
   },
-  author: {
-    "@type": "Organization",
-    name: "Friendsay"
-  }
+  author: { "@type": "Organization", name: "Friendsay" },
+  inLanguage: "th",
+  dateModified: "2026-06-17",
+  headline: articleTitle
 };
 ---
 
@@ -254,187 +371,210 @@ const jsonLd = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-  <article class="review-shell" style={`--accent:${review.accent};`}>
-    <section class="review-hero">
-      <div class="hero-copy">
-        <p class="eyebrow">รีวิวแอร์ 2026 / เลือกก่อนจ่ายจริง</p>
-        <h1>{articleTitle}</h1>
-        <p class="hero-lead">
-          ถ้าเพื่อนส่งรุ่นนี้มาให้ดู ผมจะบอกว่าให้เก็บไว้เทียบได้ครับ จุดขายคือ {review.buyerAngle}
-          แต่ก่อนกดซื้อให้เช็ก BTU ราคาจบ วันช่าง และประกันให้ครบก่อน
-        </p>
-        <div class="hero-actions">
-          <PriceButtons links={review.links} context={`${review.productKey}-hero`} />
-          <button class="button compare-hero-button" type="button" data-air-compare-slug={review.productKey}>
-            เลือกไว้เทียบ
-          </button>
-          <a class="button subtle" href="/th/reviews/air-conditioners/">ดูรีวิวแอร์ทั้งหมด</a>
-        </div>
-      </div>
-
-      <a
-        class="hero-visual"
-        href={review.links.shopee}
-        target="_blank"
-        rel="sponsored noopener"
-        data-affiliate-link
-        data-affiliate-store="shopee"
-        data-affiliate-context={`${review.productKey}-hero-image`}
-      >
-        <img src={pageImages[0]} alt={`ภาพประกอบรีวิว ${review.name}`} loading="eager" />
-        <div class="hero-score-card">
-          <span>{proofText}</span>
-          <strong>{review.score.toFixed(1)}/10</strong>
-          <p>น่าเอาเข้ารอบ ถ้า BTU ตรงห้องและร้านตอบเรื่องติดตั้งชัด</p>
-        </div>
+  <article class="pilot-review dynamic-air-review" style={`--accent:${review.accent};`}>
+    <section class="air-review-hero">
+      <a class="air-image-link air-hero-image-link" {...imageLinkAttrs}>
+        <img src={heroImage} alt={`ภาพเปิดรีวิว ${review.name}`} loading="eager" />
       </a>
+      <div class="air-review-shade" aria-hidden="true"></div>
+      <div class="container air-review-hero-inner">
+        <div class="air-review-title">
+          <p class="eyebrow">คู่มือเลือกซื้อแบบเพื่อนช่วยดู / แอร์ 2026</p>
+          <h1>{articleTitle}</h1>
+          <p>
+            ถ้าเพื่อนส่งรุ่นนี้มาให้ดู ผมจะบอกว่า “เอาเข้ารอบได้” โดยเฉพาะถ้าคุณอยากได้แอร์จากแบรนด์ที่ไว้ใจง่าย
+            และยอมจ่ายเพื่อความสบายใจมากกว่าการไล่หาราคาถูกที่สุด แต่ก่อนจ่ายต้องเช็ก BTU ราคาจบ งานติดตั้ง
+            และประกันให้ครบก่อนครับ
+          </p>
+          <div class="air-review-actions">
+            <a class="button button-primary" href="#buying-cockpit">ดูคำตอบ 90 วินาที</a>
+            <a class="button button-dark" href="#review-proof">ดูรีวิวผู้ซื้อ 6 ข้อ</a>
+            <button class="button compare-hero-button" type="button" data-air-compare-slug={review.productKey}>
+              + เปรียบเทียบ
+            </button>
+          </div>
+        </div>
+
+        <aside class="air-verdict-card">
+          <div class="air-product-card-image">
+            <a class="air-image-link" {...imageLinkAttrs}>
+              <img src={productSetImage} alt={`ภาพสินค้า ${review.name}`} loading="eager" />
+            </a>
+          </div>
+          <span class="badge badge-coral">{product.statusLabel}</span>
+          <strong>{product.score.toFixed(1)}/10</strong>
+          <p>{review.buyerAngle}</p>
+          <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context={`${review.productKey}-hero-card`} />
+        </aside>
+      </div>
     </section>
 
-    <section class="section" id="buying-cockpit">
-      <div class="container cockpit-grid">
-        <a
-          class="cockpit-visual"
-          href={review.links.shopee}
-          target="_blank"
-          rel="sponsored noopener"
-          data-affiliate-link
-          data-affiliate-store="shopee"
-          data-affiliate-context={`${review.productKey}-cockpit-image`}
-        >
-          <img src={pageImages[1]} alt={`ภาพช่วยตัดสินใจสำหรับ ${review.name}`} loading="lazy" />
-          <div>
-            <span>คำตอบเร็ว</span>
-            <strong>{review.score.toFixed(1)}/10</strong>
-            <p>เข้ารอบได้ แต่ต้องถามราคาจบและงานติดตั้งก่อนจ่าย</p>
-          </div>
-        </a>
+    <section class="air-decision-cockpit" id="buying-cockpit" aria-label="สรุปตัดสินใจก่อนซื้อแบบเร็ว">
+      <div class="wide-container air-cockpit-inner">
+        <div class="air-cockpit-head">
+          <p class="eyebrow">สรุปให้ก่อนเลือก</p>
+          <h2>ตัดสินใจซื้อใน 90 วินาที</h2>
+          <p>ถ้าไม่อยากอ่านยาว ให้เริ่มจาก 3 ช่องนี้ก่อนครับ ถ้าตอบได้ครบ ค่อยลงรายละเอียดเรื่องรีวิวจริง ขนาดห้อง และค่าใช้จ่ายต่อ</p>
+        </div>
 
-        <div class="cockpit-panel">
-          <p class="eyebrow">ตัดสินใจใน 90 วินาที</p>
-          <h2>ถ้าจะซื้อ {review.shortName} ให้เริ่มจากตรงนี้</h2>
-          <div class="cockpit-steps">
+        <div class="air-cockpit-grid">
+          <article class="air-cockpit-verdict">
+            <a class="air-image-link" {...imageLinkAttrs}>
+              <img src={cleanUnitImage} alt={`ภาพตัวเครื่อง ${review.name}`} loading="lazy" />
+            </a>
+            <div>
+              <span>{product.statusLabel}</span>
+              <strong>{product.score.toFixed(1)}/10</strong>
+              <p>เข้ารอบได้ ถ้าคุณให้ความสำคัญกับแบรนด์ ความมั่นใจหลังซื้อ และร้านตอบเรื่องติดตั้งชัด</p>
+            </div>
+          </article>
+
+          <article class="air-cockpit-panel air-cockpit-steps">
+            <span class="air-panel-label">คิดตามนี้ก่อนจ่าย</span>
             {cockpitSteps.map((step) => (
+              <div>
+                <b>{step.label}</b>
+                <strong>{step.title}</strong>
+                <p>{step.body}</p>
+              </div>
+            ))}
+          </article>
+
+          <article class="air-cockpit-panel air-cockpit-price">
+            <span class="air-panel-label">ราคาที่ต้องคิดจริง</span>
+            <strong>{product.priceLabel}</strong>
+            <div>
+              {costChecks.map((item) => (
+                <span>{item.label}: {item.value}</span>
+              ))}
+            </div>
+            <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context={`${review.productKey}-decision-price`} />
+          </article>
+        </div>
+
+        <div class="air-buying-snapshot" aria-label="สรุปก่อนซื้อแบบเร็ว">
+          {buyerSnapshotCards.map((item) => (
+            <article>
+              <span>{item.label}</span>
+              <strong>{item.title}</strong>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section air-proof-stage" id="images">
+      <div class="wide-container">
+        <section class="air-review-proof-section" id="review-proof" aria-label="ภาพและรีวิวผู้ซื้อ">
+          <div class="air-review-proof-head">
+            <div>
+              <p class="eyebrow">ภาพและรีวิวที่ควรดู</p>
+              <h2>ดูภาพสินค้า แล้วอ่านคำแนะนำจากรีวิวผู้ซื้อ 6 ข้อ</h2>
+              <p>
+                ส่วนนี้ตั้งใจให้ใช้ก่อนกดซื้อจริงครับ ไม่ใช่เล่าว่า “มีรีวิวเยอะ” เฉย ๆ แต่สรุปออกมาเป็นเรื่องที่ต้องตรวจ:
+                ห้องแบบไหนเหมาะ ราคาแอบบวกตรงไหน รหัสรุ่นต้องดูอะไร และร้านควรตอบอะไรให้ชัด
+              </p>
+            </div>
+            <div class="air-review-proof-stats" aria-label="จำนวนข้อมูลที่ใช้ประกอบการรีวิว">
+              <strong>{review.score.toFixed(1)}/10</strong>
+              <span>{proofCountText}+ ข้อมูลให้ตรวจ</span>
+              <span>{review.sourceName}</span>
+              <span>{review.model}</span>
+            </div>
+          </div>
+
+          <div class="air-evidence-strip" aria-label="วิธีใช้ภาพและรีวิวในบทความนี้">
+            {visualEvidenceCards.map((item) => (
               <article>
-                <span>{step.label}</span>
+                <span>{item.label}</span>
+                <strong>{item.title}</strong>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="air-source-photo-grid" aria-label={`ภาพสินค้า ${review.name}`}>
+            {realShopImages.map((item) => (
+              <figure>
+                <a class="air-image-link" {...imageLinkAttrs}>
+                  <img src={item.image} alt={item.title} loading="lazy" />
+                </a>
+                <figcaption>
+                  <span>{item.label}</span>
+                  <strong>{item.title}</strong>
+                  <em>{item.note}</em>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div class="air-photo-wall" aria-label="ภาพประกอบการตัดสินใจก่อนซื้อ">
+            {reviewPhotoWall.map((item) => (
+              <figure>
+                <a class="air-image-link" {...imageLinkAttrs}>
+                  <img src={item.image} alt={item.alt} loading="lazy" />
+                </a>
+                <figcaption>
+                  <span>{item.label}</span>
+                  <strong>{item.title}</strong>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div class="air-real-review-grid" aria-label="คำแนะนำจากรีวิวผู้ซื้อ 6 ข้อ">
+            {reviewTakeaways.map((item) => (
+              <article>
+                <a class="air-image-link" {...imageLinkAttrs}>
+                  <img src={item.image} alt={`ภาพประกอบ ${item.quote}`} loading="lazy" />
+                </a>
                 <div>
-                  <h3>{step.title}</h3>
-                  <p>{step.body}</p>
+                  <span>{item.buyer} · {item.date} · {item.variation}</span>
+                  <strong>{item.quote}</strong>
+                  <p>{item.signal}</p>
+                  <em>{item.takeaway}</em>
                 </div>
               </article>
             ))}
           </div>
-        </div>
-
-        <div class="price-panel">
-          <span>เช็กราคาแบบมีสติ</span>
-          <h3>{review.priceLabel}</h3>
-          <p>ราคาเครื่องอย่างเดียวอาจยังไม่ใช่ราคาจบ ให้เปิดร้านแล้วถามค่าอุปกรณ์และวันช่างก่อน</p>
-          <PriceButtons links={review.links} context={`${review.productKey}-cockpit-price`} />
-        </div>
+        </section>
       </div>
     </section>
 
-    <section class="section compact-section" id="snapshot">
-      <div class="container">
-        <div class="section-heading split">
+    <section class="section air-btu-stage" id="btu">
+      <div class="wide-container">
+        <div class="air-btu-selector" aria-label="ตัวช่วยเลือก BTU แบบเร็ว">
           <div>
-            <p class="eyebrow">Buyer Snapshot</p>
-            <h2>เห็นภาพรวมก่อนอ่านยาว</h2>
+            <p class="eyebrow">เลือก BTU แบบเร็ว</p>
+            <h3>เลือก BTU ให้ตรงห้องก่อนดูราคา</h3>
+            <p>
+              รุ่นนี้มีตัวเลือก {btuText} จุดสำคัญคืออย่าเลือกจากราคาอย่างเดียวครับ ห้องขนาดเท่ากันแต่แดด หน้าต่าง
+              และจำนวนคนต่างกัน อาจต้องใช้ BTU ไม่เท่ากัน
+            </p>
           </div>
-          <p>ส่วนนี้ตั้งใจให้สแกนเร็ว ๆ ว่ารุ่นนี้ตรงโจทย์ไหม แล้วค่อยลงรายละเอียดด้านล่าง</p>
-        </div>
-        <div class="snapshot-grid">
-          {buyerSnapshotCards.map((card) => (
-            <article>
-              <span>{card.label}</span>
-              <h3>{card.title}</h3>
-              <p>{card.body}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="visual-proof">
-      <div class="container">
-        <div class="section-heading split">
-          <div>
-            <p class="eyebrow">Visual Guide</p>
-            <h2>ภาพประกอบช่วยคิดก่อนซื้อ</h2>
+          <div class="air-btu-selector-grid">
+            {btuCards.map((item) => (
+              <article>
+                <span>{item.btu}</span>
+                <strong>{item.room}</strong>
+                <p>{item.note}</p>
+              </article>
+            ))}
           </div>
-          <p>ทุกภาพกดไปเช็กราคาหรือค้นรุ่นบนร้านค้าได้ทันที</p>
-        </div>
-        <div class="photo-wall">
-          {visualCards.map((card, index) => (
-            <a
-              class={index === 0 ? "photo-card large" : "photo-card"}
-              href={review.links.shopee}
-              target="_blank"
-              rel="sponsored noopener"
-              data-affiliate-link
-              data-affiliate-store="shopee"
-              data-affiliate-context={`${review.productKey}-visual-${index + 1}`}
-            >
-              <img src={card.image} alt={`${card.title} ${review.shortName}`} loading="lazy" />
-              <div>
-                <span>{card.label}</span>
-                <strong>{card.title}</strong>
-                <p>{card.body}</p>
-              </div>
-            </a>
-          ))}
         </div>
       </div>
     </section>
 
-    <section class="section" id="review-proof">
-      <div class="container">
-        <div class="section-heading split">
-          <div>
-            <p class="eyebrow">Review Takeaways</p>
-            <h2>6 ข้อสรุปที่ควรรู้ก่อนกดซื้อ</h2>
-          </div>
-          <p>ตัดเฉพาะประเด็นที่ช่วยตัดสินใจจริง ไม่ซ้ำกับตาราง BTU และไม่เล่ารอบเดิมหลายครั้ง</p>
-        </div>
-        <div class="takeaway-grid">
-          {reviewTakeaways.map((card) => (
-            <article>
-              <span>{card.label}</span>
-              <h3>{card.title}</h3>
-              <p>{card.body}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class="section compact-section" id="btu">
-      <div class="container">
-        <div class="section-heading">
-          <p class="eyebrow">BTU Guide</p>
-          <h2>เลือก BTU ให้ตรงห้องก่อนดูราคา</h2>
-        </div>
-        <div class="btu-grid">
-          {btuCards.map((card) => (
-            <article>
-              <strong>{card.btu}</strong>
-              <h3>{card.room}</h3>
-              <p>{card.note}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class="section article-zone">
+    <section class="section air-article-section">
       <div class="container article-layout">
         <article class="article-body">
           <section id="quick">
             <p class="eyebrow">คำตอบเร็ว</p>
             <h2>{review.shortName} น่าซื้อไหม</h2>
             <p>
-              ถ้าห้องของคุณตรงกับช่วง {btuText} และคุณให้ความสำคัญกับ {review.strengths.slice(0, 2).join(" กับ ")}
-              รุ่นนี้น่าเอาเข้ารอบครับ แต่ไม่ควรกดซื้อเพราะเห็นราคาอย่างเดียว ต้องถามร้านเรื่องติดตั้งและประกันให้จบก่อน
+              น่าซื้อถ้าโจทย์ของคุณตรงกับ {review.roomHint} และคุณให้ความสำคัญกับ {review.strengths.slice(0, 2).join(" กับ ")}
+              มากกว่าการไล่หาราคาต่ำที่สุด รุ่นนี้ไม่ใช่ตัวที่ควรกดซื้อแบบไม่คิด แต่เป็นรุ่นที่ควรเอาเข้ารอบแล้วถามร้านให้ครบก่อนจ่าย
             </p>
           </section>
 
@@ -451,118 +591,126 @@ const jsonLd = {
             </div>
           </section>
 
-          <section id="score">
+          <section class="score-section" id="score">
             <p class="eyebrow">Friendsay Score</p>
             <h2>คะแนนแบบ Friendsay</h2>
             <ScoreBars scores={scoreItems} />
             <p>
-              คะแนนนี้มองแบบคนจะซื้อจริงครับ ไม่ได้ดูแค่ชื่อแบรนด์ แต่ดูราคา ความคุ้มค่า ความชัดเจนเรื่องติดตั้ง
-              ความเหมาะกับห้อง และความสบายใจหลังซื้อรวมกัน
+              คะแนนนี้มองแบบคนจะซื้อจริงครับ ดูรวมกันทั้งความน่าไว้ใจ ราคา ความชัดเรื่อง BTU งานติดตั้ง
+              และความสบายใจหลังซื้อ ไม่ได้ให้คะแนนจากชื่อแบรนด์อย่างเดียว
             </p>
           </section>
 
           <section id="good">
             <p class="eyebrow">ข้อดี</p>
             <h2>ข้อดีที่ทำให้รุ่นนี้น่าเข้ารอบ</h2>
-            <div class="point-list">
-              {review.strengths.map((item) => <p>{item}</p>)}
-            </div>
+            <ul class="air-checklist">
+              {review.strengths.map((item) => <li>{item}</li>)}
+            </ul>
           </section>
 
           <section id="watch">
             <p class="eyebrow">จุดต้องระวัง</p>
             <h2>ก่อนกดซื้อ ต้องเช็กอะไรบ้าง</h2>
-            <div class="point-list warning">
-              {review.watchouts.map((item) => <p>{item}</p>)}
-            </div>
+            <ul class="air-checklist warning">
+              {review.watchouts.map((item) => <li>{item}</li>)}
+            </ul>
           </section>
 
           <section id="cost">
             <p class="eyebrow">ต้นทุนจริง</p>
             <h2>ราคาเครื่องไม่ใช่ราคาสุดท้าย</h2>
             <p>
-              แอร์ไม่เหมือนของชิ้นเล็กที่กดจ่ายแล้วจบครับ ต้นทุนจริงต้องรวมเครื่อง ค่าติดตั้ง ท่อ ราง ขาแขวน
-              สายไฟ เบรกเกอร์ งานเจาะ และค่าเดินทางของช่าง ถ้าถามให้ครบตั้งแต่แรกจะเทียบ {review.shortName}
-              กับรุ่นอื่นได้ยุติธรรมกว่าเยอะ
+              แอร์เป็นของที่มี “ราคาหน้างาน” เสมอครับ ก่อนเทียบถูกแพง ให้รวมราคาเครื่อง ค่าติดตั้ง ท่อ ราง ขาแขวน
+              สายไฟ เบรกเกอร์ งานเจาะ และค่าเดินทางของช่างก่อน ไม่งั้นรุ่นที่ดูถูกอาจจบแพงกว่ารุ่นที่ร้านตอบชัดตั้งแต่แรก
             </p>
             <div class="mini-check-grid">
-              <span>ราคาเครื่อง: {review.priceLabel}</span>
-              <span>BTU: {btuText}</span>
-              <span>รุ่นเต็ม: {review.model}</span>
-              <span>แหล่งข้อมูล: {review.sourceName}</span>
+              {costChecks.map((item) => <span>{item.label}: {item.value}</span>)}
             </div>
           </section>
 
           <section id="install">
             <p class="eyebrow">ติดตั้ง</p>
             <h2>ติดตั้งดี ชีวิตง่ายขึ้นเยอะ</h2>
-            <p>
-              จุดวางคอยล์เย็น คอยล์ร้อน ระยะท่อ ทางน้ำทิ้ง และการเดินไฟ มีผลกับทั้งความเย็น เสียง และปัญหาระยะยาว
-              ถ้าเป็นคอนโดหรือบ้านที่ตำแหน่งติดตั้งยาก ให้ส่งรูปหน้างานให้ร้านดูก่อนจ่าย จะลดโอกาสเจอค่าเพิ่มหน้างานได้มาก
-            </p>
+            <figure class="air-article-image">
+              <a class="air-image-link" {...imageLinkAttrs}>
+                <img src={installPlanImage} alt={`ภาพประกอบงานติดตั้ง ${review.shortName}`} loading="lazy" />
+              </a>
+              <figcaption>ก่อนให้ช่างเจาะผนัง ควรดูทิศทางลม จุดวางเตียง ระยะท่อ และตำแหน่งคอยล์ร้อนให้จบตั้งแต่แรก</figcaption>
+            </figure>
+            <ul class="air-checklist">
+              {product.installNotes.map((item) => <li>{item}</li>)}
+            </ul>
           </section>
 
           <section id="warranty">
             <p class="eyebrow">ประกัน</p>
             <h2>ประกันต้องรู้ว่าเคลมกับใคร</h2>
             <p>
-              แบรนด์ใหญ่ไม่ได้แปลว่าจบทุกเคส สิ่งที่ต้องรู้คือร้านออกเอกสารยังไง เคลมผ่านร้านหรือศูนย์
-              คอมเพรสเซอร์กับอะไหล่รับประกันกี่ปี และค่าแรงหลังปีแรกคิดอย่างไร ยิ่งถามชัด ยิ่งลดปัญหาหลังซื้อ
+              แบรนด์ใหญ่ช่วยให้สบายใจขึ้น แต่ยังต้องถามให้ชัดว่าร้านออกเอกสารอย่างไร เคลมผ่านร้านหรือศูนย์
+              คอมเพรสเซอร์กับอะไหล่ครอบคลุมกี่ปี และค่าแรงหลังปีแรกคิดอย่างไร
             </p>
+            <ul class="air-checklist">
+              {product.warrantyNotes.map((item) => <li>{item}</li>)}
+            </ul>
           </section>
 
           <section id="compare">
             <p class="eyebrow">เทียบรุ่นอื่น</p>
             <h2>อย่าเพิ่งดูรุ่นนี้เดี่ยว ๆ</h2>
             <p>
-              ก่อนซื้อจริง ผมอยากให้เทียบ {review.shortName} กับรุ่นใกล้ราคาอย่างน้อย 2-3 ตัว โดยดูสิ่งที่เงินเพิ่มหรือลดให้กลับมา:
-              BTU, ประกัน, ฟีเจอร์, รีวิวร้าน, ค่าติดตั้ง และความชัดเจนของร้าน
+              ก่อนซื้อจริง ผมอยากให้เทียบ {review.shortName} กับรุ่นใกล้ราคาอย่างน้อย 2-3 ตัว โดยดู BTU ราคาแบบรวมติดตั้ง
+              ประกัน ฟีเจอร์ และความชัดเจนของร้านพร้อมกัน จะเห็นทันทีว่าคุ้มเพราะอะไร หรือแพงเพราะอะไร
             </p>
-            <div class="alternative-grid">
-              {alternatives.map((item) => (
-                <a href={`/th/reviews/${item.reviewSlug}/`}>
-                  <span>{item.brand}</span>
-                  <strong>{item.shortName}</strong>
-                  <small>{item.priceLabel}</small>
-                </a>
+            <div class="air-alternative-grid">
+              {alternativeCards.map((item, index) => (
+                <article class={index === 0 ? "is-current" : ""}>
+                  <span>{item.role}</span>
+                  <strong>{item.name}</strong>
+                  <p>{item.note}</p>
+                </article>
               ))}
             </div>
-            <div class="compare-cta">
+
+            <div class="air-mid-compare-cta">
               <div>
-                <span>ยังลังเลอยู่ใช่ไหม</span>
-                <strong>เปิดหน้าเทียบแอร์แล้ววางรุ่นข้างกัน</strong>
-                <p>เหมาะกับตอนเลือกไม่ถูกระหว่างหลายแบรนด์ หรืออยากดูคะแนนแต่ละด้านแบบเร็ว ๆ</p>
+                <span>ถ้ายังลังเล</span>
+                <strong>เปิดหน้าเทียบแอร์ แล้ววางรุ่นข้างกัน</strong>
+                <p>เหมาะกับตอนเลือกไม่ถูกระหว่างหลายแบรนด์ หรืออยากดูคะแนน ราคา และจุดต้องถามร้านแบบเร็ว ๆ</p>
               </div>
-              <a class="button button-primary" href={compareHref}>เปิดหน้าเปรียบเทียบ</a>
+              <div>
+                <a class="button button-primary" href={compareHref}>เปิดหน้าเปรียบเทียบ</a>
+                <button class="button" type="button" data-air-compare-slug={review.productKey}>เลือกรุ่นนี้ไว้เทียบ</button>
+              </div>
             </div>
           </section>
 
-          <section id="questions">
-            <p class="eyebrow">ถามร้านก่อนซื้อ</p>
+          <section class="air-questions-section" id="questions">
+            <p class="eyebrow">ก่อนกดซื้อ</p>
             <h2>ส่งคำถาม 6 ข้อนี้ให้ร้านก่อนจ่าย</h2>
-            <ol class="question-list">
-              {questions.map((item) => <li>{item}</li>)}
+            <ol class="air-question-list">
+              {askBeforeBuy.map((item) => <li>{item}</li>)}
             </ol>
           </section>
 
           <section id="buy">
             <p class="eyebrow">เช็กราคา</p>
-            <h2>เช็กราคาและร้านขาย</h2>
+            <h2>ควรซื้อช่องทางไหนดี</h2>
             <p>
-              เปิดหลายร้านแล้วดูให้ครบทั้งราคา โปร วันติดตั้ง และการตอบแชทครับ ถ้าราคาใกล้กัน ให้เลือกร้านที่ตอบชัดกว่า
-              เพราะตอนมีปัญหา ร้านที่คุยรู้เรื่องช่วยประหยัดเวลามาก
+              เปิดหลายร้านแล้วดูให้ครบทั้งราคา โปร วันติดตั้ง การตอบแชท และเงื่อนไขประกันครับ ถ้าราคาใกล้กัน
+              ผมให้ร้านที่ตอบเรื่องติดตั้งและประกันชัดกว่าชนะ เพราะเวลามีปัญหาจะช่วยประหยัดเวลามาก
             </p>
-            <PriceButtons links={review.links} context={`${review.productKey}-article-buy`} />
+            <PriceButtons links={review.links} label={`เช็กราคา ${review.name}`} context={`${review.productKey}-article-buy`} />
           </section>
 
-          <section id="faq">
+          <section class="air-faq-section" id="faq">
             <p class="eyebrow">FAQ</p>
             <h2>คำถามที่คนกำลังจะซื้อรุ่นนี้น่าจะอยากรู้</h2>
-            <div class="faq-list">
-              {faqItems.map((item) => (
+            <div class="air-faq-list">
+              {faqs.map((faq) => (
                 <details>
-                  <summary>{item.q}</summary>
-                  <p>{item.a}</p>
+                  <summary>{faq.question}</summary>
+                  <p>{faq.answer}</p>
                 </details>
               ))}
             </div>
@@ -573,9 +721,9 @@ const jsonLd = {
             <h2>สรุปแบบ Friendsay</h2>
             <p>
               {review.shortName} เป็นรุ่นที่ควรเก็บไว้เทียบ ถ้าโจทย์ของคุณตรงกับ {review.roomHint}
-              จุดที่ทำให้น่าสนใจคือ {review.strengths.slice(0, 2).join(" และ ")}
-              แต่ก่อนจ่ายเงินจริงให้ถามร้านเรื่อง {review.watchouts.slice(0, 2).join(" และ ")} ให้ชัด
-              ถ้าร้านตอบครบ ราคาจบรับได้ และ BTU ตรงห้อง รุ่นนี้ก็มีเหตุผลพอให้เข้ารอบสุดท้ายครับ
+              จุดที่น่าสนใจคือ {review.strengths.slice(0, 2).join(" และ ")}
+              แต่ก่อนจ่ายจริงให้ถามเรื่อง {review.watchouts.slice(0, 2).join(" และ ")} ให้ชัด
+              ถ้าร้านตอบครบ ราคาแบบจบงานรับได้ และ BTU ตรงห้อง รุ่นนี้ก็มีเหตุผลพอให้เข้ารอบสุดท้ายครับ
             </p>
           </section>
         </article>
@@ -583,14 +731,12 @@ const jsonLd = {
         <aside class="toc" aria-label="สารบัญ">
           <strong>ในหน้านี้</strong>
           <a href="#buying-cockpit">คำตอบเร็ว</a>
-          <a href="#snapshot">ภาพรวม</a>
-          <a href="#visual-proof">ภาพประกอบ</a>
-          <a href="#review-proof">6 ข้อก่อนซื้อ</a>
+          <a href="#review-proof">รีวิวผู้ซื้อ 6 ข้อ</a>
           <a href="#btu">เลือก BTU</a>
           <a href="#fit">เหมาะกับใคร</a>
           <a href="#score">คะแนน</a>
           <a href="#good">ข้อดี</a>
-          <a href="#watch">จุดระวัง</a>
+          <a href="#watch">จุดต้องระวัง</a>
           <a href="#cost">ต้นทุนจริง</a>
           <a href="#install">ติดตั้ง</a>
           <a href="#warranty">ประกัน</a>
@@ -604,13 +750,13 @@ const jsonLd = {
     </section>
   </article>
 
-  <div class="review-page-spacer" aria-hidden="true"></div>
+  <div class="air-review-page-spacer" aria-hidden="true"></div>
 
   <nav class="air-sticky-buy" aria-label={`ปุ่มซื้อ ${review.shortName} แบบลอยตามหน้าจอ`}>
-    <span>{review.shortName}</span>
-    <a class="shopee" href={review.links.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`${review.productKey}-sticky`}>Shopee</a>
-    <a class="lazada" href={review.links.lazada} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context={`${review.productKey}-sticky`}>Lazada</a>
-    <a class="tiktok" href={review.links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context={`${review.productKey}-sticky`}>TikTok</a>
+    <span>เช็กราคาด่วน</span>
+    <a class="shopee" href={review.links.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`${review.productKey}-sticky-buy`}>Shopee</a>
+    <a class="lazada" href={review.links.lazada} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context={`${review.productKey}-sticky-buy`}>Lazada</a>
+    <a class="tiktok" href={review.links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context={`${review.productKey}-sticky-buy`}>TikTok</a>
   </nav>
 
   <AirCompareTray products={compareProducts} />
@@ -637,74 +783,165 @@ const jsonLd = {
       });
       window.setTimeout(offsetHashTarget, 0);
       window.setTimeout(offsetHashTarget, 300);
+      window.setTimeout(offsetHashTarget, 1100);
+
+      const stickyBuy = document.querySelector(".air-sticky-buy");
+      const hero = document.querySelector(".air-review-hero");
+      const updateStickyBuy = () => {
+        if (!stickyBuy) return;
+        const trigger = Math.min(520, (hero?.clientHeight || 900) * 0.45);
+        stickyBuy.classList.toggle("is-visible", window.scrollY > trigger);
+      };
+
+      updateStickyBuy();
+      window.addEventListener("scroll", updateStickyBuy, { passive: true });
+      window.addEventListener("resize", updateStickyBuy);
     })();
   </script>
 </BaseLayout>
 
 <style>
   :global(body) {
-    padding-bottom: 98px;
+    padding-bottom: 96px;
   }
 
   :global(html) {
     scroll-behavior: smooth;
   }
 
-  .review-shell {
+  .pilot-review {
+    --cream: #fffdf8;
+    --ink: #101b2a;
+    --muted: #5e6c80;
+    --line: #e6d3bd;
     background:
-      radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 30rem),
-      radial-gradient(circle at 86% 6%, rgba(46, 196, 182, 0.14), transparent 34rem),
-      #fffdf8;
-    color: #121d2b;
+      radial-gradient(circle at 10% 7%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 30rem),
+      radial-gradient(circle at 88% 5%, rgba(46, 196, 182, 0.13), transparent 34rem),
+      var(--cream);
+    color: var(--ink);
   }
 
-  .review-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1.02fr) minmax(340px, 0.82fr);
-    gap: clamp(24px, 4vw, 64px);
-    align-items: center;
-    min-height: calc(100vh - 96px);
-    max-width: 1540px;
+  .container,
+  .wide-container {
+    width: min(1220px, calc(100% - 32px));
     margin: 0 auto;
-    padding: clamp(42px, 7vw, 96px) clamp(18px, 5vw, 72px) clamp(30px, 5vw, 70px);
   }
 
-  .hero-copy {
-    max-width: 900px;
+  .wide-container {
+    width: min(1510px, calc(100% - 32px));
   }
 
-  .eyebrow,
-  .section-heading .eyebrow,
-  .section-heading > p.eyebrow,
-  .article-body .eyebrow,
-  .snapshot-grid span,
-  .takeaway-grid span,
-  .btu-grid strong,
-  .photo-card span,
-  .cockpit-panel > .eyebrow {
+  .section {
+    padding: clamp(42px, 6vw, 88px) 0;
+  }
+
+  .eyebrow {
+    margin: 0;
     color: var(--accent);
     font-weight: 950;
     letter-spacing: 0;
   }
 
-  .review-hero h1 {
-    max-width: 940px;
-    margin: 14px 0 20px;
-    color: #101b2a;
-    font-size: clamp(44px, 6.4vw, 104px);
-    line-height: 0.98;
+  .button {
+    display: inline-flex;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
+    border: 1px solid #e6d5bf;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.86);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 950;
     letter-spacing: 0;
+    text-decoration: none;
+    cursor: pointer;
   }
 
-  .hero-lead {
-    max-width: 820px;
-    color: #44546a;
-    font-size: clamp(18px, 1.8vw, 27px);
+  .button-primary,
+  .button-dark,
+  .compare-hero-button {
+    border-color: transparent;
+    background: #142233;
+    color: #fff;
+  }
+
+  .air-image-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .air-review-hero {
+    position: relative;
+    min-height: calc(100vh - 94px);
+    overflow: hidden;
+    background: #121d2b;
+  }
+
+  .air-hero-image-link {
+    position: absolute;
+    inset: 0;
+  }
+
+  .air-hero-image-link img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .air-review-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(10, 18, 28, 0.84) 0%, rgba(10, 18, 28, 0.68) 42%, rgba(10, 18, 28, 0.22) 100%),
+      linear-gradient(180deg, rgba(10, 18, 28, 0.1), rgba(10, 18, 28, 0.62));
+  }
+
+  .air-review-hero-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    min-height: calc(100vh - 94px);
+    grid-template-columns: minmax(0, 1fr) minmax(330px, 0.45fr);
+    gap: clamp(22px, 5vw, 70px);
+    align-items: center;
+    padding: clamp(54px, 8vw, 118px) 0 clamp(128px, 12vw, 160px);
+  }
+
+  .air-review-title {
+    max-width: 900px;
+  }
+
+  @media (min-width: 861px) {
+    .air-review-title,
+    .air-verdict-card {
+      transform: translateY(-32px);
+    }
+  }
+
+  .air-review-title h1 {
+    max-width: 980px;
+    margin: 14px 0 20px;
+    color: #fff;
+    font-size: clamp(42px, 5.15vw, 82px);
+    line-height: 1.04;
+    letter-spacing: 0;
+    text-shadow: 0 14px 42px rgba(0, 0, 0, 0.32);
+  }
+
+  .air-review-title p:not(.eyebrow) {
+    max-width: 850px;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: clamp(17px, 1.45vw, 22px);
     line-height: 1.72;
-    font-weight: 650;
+    font-weight: 680;
   }
 
-  .hero-actions {
+  .air-review-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
@@ -712,181 +949,146 @@ const jsonLd = {
     margin-top: 28px;
   }
 
-  .button,
-  .hero-actions :global(.price-button),
-  #buy :global(.price-button) {
-    min-height: 48px;
-    border-radius: 8px;
-    font-weight: 950;
-    letter-spacing: 0;
-  }
-
-  .button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 18px;
-    border: 1px solid #e6d5bf;
-    background: #fffaf2;
-    color: #142233;
-    text-decoration: none;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 16px;
-  }
-
-  .button-primary,
-  .compare-hero-button {
-    border-color: transparent;
-    background: #142233;
-    color: #fff;
-  }
-
-  .button.subtle {
-    background: rgba(255, 255, 255, 0.76);
-  }
-
-  .hero-visual,
-  .cockpit-visual,
-  .photo-card {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .hero-visual {
-    position: relative;
-    display: block;
+  .air-verdict-card {
     overflow: hidden;
-    min-height: 560px;
-    border: 1px solid #e3d0b8;
+    align-self: center;
+    border: 1px solid rgba(234, 218, 197, 0.9);
     border-radius: 8px;
-    box-shadow: 0 28px 84px rgba(18, 29, 43, 0.16);
+    background: rgba(255, 253, 248, 0.9);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(18px);
+  }
+
+  .air-product-card-image {
+    aspect-ratio: 1.42 / 0.84;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(234, 218, 197, 0.82);
     background: #f8efe4;
   }
 
-  .hero-visual img,
-  .cockpit-visual img,
-  .photo-card img {
+  .air-product-card-image img,
+  .air-cockpit-verdict img,
+  .air-source-photo-grid img,
+  .air-photo-wall img,
+  .air-real-review-grid img,
+  .air-article-image img {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: cover;
   }
 
-  .hero-score-card {
-    position: absolute;
-    left: 22px;
-    right: 22px;
-    bottom: 22px;
-    padding: clamp(18px, 3vw, 28px);
-    border: 1px solid rgba(234, 218, 197, 0.92);
-    border-radius: 8px;
-    background: rgba(255, 253, 248, 0.92);
-    box-shadow: 0 16px 48px rgba(18, 29, 43, 0.16);
-    backdrop-filter: blur(18px);
-  }
-
-  .hero-score-card span {
+  .badge {
     display: inline-flex;
-    padding: 8px 12px;
+    margin: 18px 22px 0;
+    padding: 8px 13px;
     border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 12%, white);
     color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 10%, white);
-    font-weight: 900;
+    font-weight: 950;
   }
 
-  .hero-score-card strong {
+  .air-verdict-card > strong {
     display: block;
-    margin-top: 10px;
-    color: #0f1b29;
-    font-size: clamp(58px, 7vw, 104px);
+    margin: 12px 22px 0;
+    color: #087f73;
+    font-size: clamp(58px, 7vw, 96px);
     line-height: 1;
   }
 
-  .hero-score-card p {
-    margin: 8px 0 0;
-    color: #4b5a6f;
-    font-size: 18px;
-    line-height: 1.55;
-    font-weight: 850;
+  .air-verdict-card > p {
+    margin: 10px 22px 18px;
+    color: #47566b;
+    font-size: 17px;
+    line-height: 1.65;
+    font-weight: 760;
   }
 
-  .section {
-    padding: clamp(42px, 6vw, 88px) 0;
+  .air-verdict-card :global(.price-buttons) {
+    padding: 0 22px 22px;
   }
 
-  .compact-section {
-    padding-top: clamp(28px, 4vw, 58px);
+  .air-decision-cockpit {
+    padding: clamp(42px, 6vw, 86px) 0;
+    background:
+      linear-gradient(135deg, rgba(46, 196, 182, 0.12), transparent 40%),
+      linear-gradient(315deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent 46%),
+      #fffdf8;
   }
 
-  .container {
-    width: min(1220px, calc(100% - 32px));
-    margin: 0 auto;
+  .air-cockpit-head {
+    max-width: 920px;
+    margin-bottom: 28px;
   }
 
-  .section-heading {
-    margin-bottom: 24px;
-  }
-
-  .section-heading.split {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.45fr);
-    gap: 20px;
-    align-items: end;
-  }
-
-  .section-heading h2,
+  .air-cockpit-head h2,
+  .air-review-proof-head h2,
+  .air-btu-selector h3,
   .article-body h2 {
-    margin: 8px 0 0;
-    color: #101b2a;
+    margin: 8px 0 10px;
+    color: var(--ink);
     letter-spacing: 0;
   }
 
-  .section-heading h2 {
-    font-size: clamp(34px, 5vw, 68px);
+  .air-cockpit-head h2,
+  .air-review-proof-head h2,
+  .air-btu-selector h3 {
+    font-size: clamp(36px, 5.2vw, 76px);
     line-height: 1.08;
   }
 
-  .section-heading p:not(.eyebrow) {
-    margin: 0;
-    color: #66758a;
+  .air-cockpit-head p:not(.eyebrow),
+  .air-review-proof-head p,
+  .air-btu-selector p,
+  .article-body p,
+  .air-checklist li,
+  .air-question-list li,
+  .air-faq-list p {
+    color: var(--muted);
     font-size: 18px;
-    line-height: 1.65;
-    font-weight: 700;
+    line-height: 1.76;
+    font-weight: 650;
   }
 
-  .cockpit-grid {
+  .air-cockpit-grid {
     display: grid;
-    grid-template-columns: minmax(320px, 0.72fr) minmax(0, 1fr) minmax(280px, 0.58fr);
+    grid-template-columns: minmax(320px, 0.72fr) minmax(0, 1fr) minmax(300px, 0.62fr);
     gap: 18px;
     align-items: stretch;
   }
 
-  .cockpit-visual,
-  .cockpit-panel,
-  .price-panel,
-  .snapshot-grid article,
-  .takeaway-grid article,
-  .btu-grid article,
+  .air-cockpit-verdict,
+  .air-cockpit-panel,
+  .air-buying-snapshot article,
+  .air-evidence-strip article,
+  .air-source-photo-grid figure,
+  .air-real-review-grid article,
+  .air-btu-selector,
+  .air-btu-selector-grid article,
   .article-body,
   .toc,
-  .alternative-grid a,
-  .compare-cta,
-  .fit-grid article {
-    border: 1px solid #e5d2bb;
+  .fit-grid article,
+  .air-alternative-grid article,
+  .air-mid-compare-cta,
+  .air-questions-section,
+  .air-faq-list details {
+    border: 1px solid var(--line);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.78);
+    background: rgba(255, 255, 255, 0.82);
     box-shadow: 0 18px 58px rgba(18, 29, 43, 0.08);
   }
 
-  .cockpit-visual {
+  .air-cockpit-verdict {
     position: relative;
     overflow: hidden;
-    min-height: 430px;
+    min-height: 440px;
   }
 
-  .cockpit-visual div,
-  .photo-card div {
+  .air-cockpit-verdict .air-image-link {
+    height: 100%;
+  }
+
+  .air-cockpit-verdict > div {
     position: absolute;
     left: 18px;
     right: 18px;
@@ -898,14 +1100,20 @@ const jsonLd = {
     backdrop-filter: blur(14px);
   }
 
-  .cockpit-visual span,
-  .price-panel span,
-  .compare-cta span {
+  .air-cockpit-verdict span,
+  .air-panel-label,
+  .air-cockpit-price > span,
+  .air-source-photo-grid span,
+  .air-photo-wall span,
+  .air-real-review-grid span,
+  .air-alternative-grid span,
+  .air-mid-compare-cta span,
+  .fit-grid span {
     color: var(--accent);
     font-weight: 950;
   }
 
-  .cockpit-visual strong {
+  .air-cockpit-verdict strong {
     display: block;
     margin-top: 8px;
     color: #087f73;
@@ -913,42 +1121,32 @@ const jsonLd = {
     line-height: 1;
   }
 
-  .cockpit-visual p,
-  .photo-card p,
-  .cockpit-panel p,
-  .price-panel p,
-  .snapshot-grid p,
-  .takeaway-grid p,
-  .btu-grid p,
-  .article-body p,
-  .question-list li,
-  details p,
-  .compare-cta p {
+  .air-cockpit-verdict p,
+  .air-cockpit-panel p,
+  .air-buying-snapshot p,
+  .air-evidence-strip p,
+  .air-source-photo-grid em,
+  .air-real-review-grid p,
+  .air-real-review-grid em,
+  .air-btu-selector-grid p,
+  .air-alternative-grid p,
+  .air-mid-compare-cta p {
     color: #435268;
-    font-size: 18px;
-    line-height: 1.72;
+    font-size: 17px;
+    line-height: 1.68;
     font-weight: 650;
   }
 
-  .cockpit-panel,
-  .price-panel {
+  .air-cockpit-panel {
     padding: clamp(22px, 3vw, 32px);
   }
 
-  .cockpit-panel h2,
-  .price-panel h3 {
-    margin: 8px 0 18px;
-    color: #101b2a;
-    font-size: clamp(28px, 3vw, 42px);
-    line-height: 1.18;
-  }
-
-  .cockpit-steps {
+  .air-cockpit-steps {
     display: grid;
     gap: 12px;
   }
 
-  .cockpit-steps article {
+  .air-cockpit-steps > div {
     display: grid;
     grid-template-columns: 42px minmax(0, 1fr);
     gap: 14px;
@@ -956,7 +1154,7 @@ const jsonLd = {
     border-top: 1px solid rgba(226, 210, 188, 0.82);
   }
 
-  .cockpit-steps article > span {
+  .air-cockpit-steps b {
     display: inline-flex;
     width: 42px;
     height: 42px;
@@ -968,466 +1166,751 @@ const jsonLd = {
     font-weight: 950;
   }
 
-  .cockpit-steps h3 {
-    margin: 0 0 4px;
-    color: #101b2a;
+  .air-cockpit-steps strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--ink);
     font-size: 22px;
   }
 
-  .cockpit-steps p,
-  .price-panel p {
-    margin: 0;
+  .air-cockpit-price > strong {
+    display: block;
+    margin: 8px 0 16px;
+    color: var(--ink);
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.18;
   }
 
-  .price-panel :global(.price-buttons) {
+  .air-cockpit-price > div {
+    display: grid;
+    gap: 10px;
+  }
+
+  .air-cockpit-price > div span {
+    display: block;
+    padding: 12px 14px;
+    border: 1px solid rgba(46, 196, 182, 0.28);
+    border-radius: 8px;
+    background: rgba(46, 196, 182, 0.08);
+    color: #087f73;
+    font-weight: 900;
+  }
+
+  .air-cockpit-price :global(.price-buttons) {
     margin-top: 18px;
   }
 
-  .snapshot-grid,
-  .takeaway-grid,
-  .btu-grid {
+  .air-buying-snapshot,
+  .air-evidence-strip {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
+    margin-top: 18px;
   }
 
-  .snapshot-grid article,
-  .takeaway-grid article,
-  .btu-grid article {
+  .air-buying-snapshot article,
+  .air-evidence-strip article {
     padding: clamp(20px, 3vw, 28px);
   }
 
-  .snapshot-grid h3,
-  .takeaway-grid h3,
-  .btu-grid h3 {
-    margin: 10px 0 8px;
-    color: #111d2b;
-    font-size: 24px;
-    line-height: 1.34;
-    letter-spacing: 0;
+  .air-buying-snapshot strong,
+  .air-evidence-strip strong,
+  .air-source-photo-grid strong,
+  .air-photo-wall strong,
+  .air-real-review-grid strong,
+  .air-btu-selector-grid strong,
+  .air-alternative-grid strong {
+    display: block;
+    margin-top: 8px;
+    color: var(--ink);
+    font-size: 22px;
+    line-height: 1.35;
   }
 
-  .photo-wall {
+  .air-proof-stage {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 253, 248, 0.96)),
+      #fffdf8;
+  }
+
+  .air-review-proof-section {
+    padding: clamp(22px, 4vw, 46px);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 250, 244, 0.72)),
+      #fffdf8;
+    box-shadow: 0 28px 84px rgba(18, 29, 43, 0.1);
+  }
+
+  .air-review-proof-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .air-review-proof-stats {
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid rgba(46, 196, 182, 0.26);
+    border-radius: 8px;
+    background: rgba(46, 196, 182, 0.08);
+  }
+
+  .air-review-proof-stats strong {
+    color: #087f73;
+    font-size: 54px;
+    line-height: 1;
+  }
+
+  .air-review-proof-stats span {
+    color: #1d5f5b;
+    font-weight: 900;
+  }
+
+  .air-source-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .air-source-photo-grid figure,
+  .air-photo-wall figure,
+  .air-article-image {
+    overflow: hidden;
+    margin: 0;
+  }
+
+  .air-source-photo-grid .air-image-link {
+    aspect-ratio: 1.56 / 1;
+    overflow: hidden;
+    background: #f8efe4;
+  }
+
+  .air-source-photo-grid figcaption,
+  .air-photo-wall figcaption {
+    padding: 18px;
+  }
+
+  .air-source-photo-grid em,
+  .air-real-review-grid em {
+    display: block;
+    margin-top: 8px;
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  .air-photo-wall {
     display: grid;
     grid-template-columns: 1.18fr 1fr 1fr;
     gap: 16px;
+    margin-top: 18px;
   }
 
-  .photo-card {
+  .air-photo-wall figure {
     position: relative;
-    overflow: hidden;
     min-height: 260px;
-    border: 1px solid #e4d1b9;
+    border: 1px solid var(--line);
     border-radius: 8px;
     background: #f8efe4;
     box-shadow: 0 18px 56px rgba(18, 29, 43, 0.1);
   }
 
-  .photo-card.large {
+  .air-photo-wall figure:first-child {
     grid-row: span 2;
-    min-height: 536px;
+    min-height: 540px;
   }
 
-  .photo-card strong {
+  .air-photo-wall .air-image-link {
+    height: 100%;
+  }
+
+  .air-photo-wall figcaption {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    border: 1px solid rgba(234, 218, 197, 0.9);
+    border-radius: 8px;
+    background: rgba(255, 253, 248, 0.92);
+    backdrop-filter: blur(14px);
+  }
+
+  .air-real-review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .air-real-review-grid article {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    overflow: hidden;
+    min-height: 220px;
+  }
+
+  .air-real-review-grid .air-image-link {
+    height: 100%;
+    min-height: 220px;
+    background: #f8efe4;
+  }
+
+  .air-real-review-grid article > div {
+    padding: 20px;
+  }
+
+  .air-btu-stage {
+    padding-top: clamp(32px, 5vw, 70px);
+  }
+
+  .air-btu-selector {
+    display: grid;
+    grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1fr);
+    gap: 22px;
+    padding: clamp(22px, 4vw, 38px);
+  }
+
+  .air-btu-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .air-btu-selector-grid article {
+    padding: 20px;
+  }
+
+  .air-btu-selector-grid span {
+    display: inline-flex;
+    padding: 8px 13px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 12%, white);
+    color: var(--accent);
+    font-weight: 950;
+  }
+
+  .article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: start;
+  }
+
+  .article-body {
+    padding: clamp(24px, 4vw, 46px);
+  }
+
+  .article-body > section + section {
+    margin-top: clamp(34px, 5vw, 58px);
+  }
+
+  .article-body h2 {
+    font-size: clamp(32px, 4vw, 54px);
+    line-height: 1.16;
+  }
+
+  .fit-grid,
+  .air-alternative-grid,
+  .mini-check-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .fit-grid article,
+  .air-alternative-grid article,
+  .air-questions-section {
+    padding: 22px;
+  }
+
+  .air-alternative-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .air-alternative-grid article.is-current {
+    border-color: color-mix(in srgb, var(--accent) 44%, #e6d3bd);
+    background: color-mix(in srgb, var(--accent) 8%, white);
+  }
+
+  .air-checklist {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .air-checklist li {
+    position: relative;
+    padding: 15px 16px 15px 46px;
+    border: 1px solid rgba(46, 196, 182, 0.24);
+    border-radius: 8px;
+    background: rgba(46, 196, 182, 0.07);
+  }
+
+  .air-checklist li::before {
+    content: "";
+    position: absolute;
+    top: 22px;
+    left: 18px;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: #2ec4b6;
+  }
+
+  .air-checklist.warning li {
+    border-color: color-mix(in srgb, var(--accent) 22%, #e6d3bd);
+    background: color-mix(in srgb, var(--accent) 6%, white);
+  }
+
+  .air-checklist.warning li::before {
+    background: var(--accent);
+  }
+
+  .mini-check-grid span {
+    padding: 14px 16px;
+    border: 1px solid rgba(46, 196, 182, 0.28);
+    border-radius: 8px;
+    background: rgba(46, 196, 182, 0.08);
+    color: #087f73;
+    font-weight: 900;
+  }
+
+  .air-article-image {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #f8efe4;
+  }
+
+  .air-article-image .air-image-link {
+    aspect-ratio: 1.76 / 1;
+    overflow: hidden;
+  }
+
+  .air-article-image figcaption {
+    padding: 15px 18px;
+    color: #435268;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 800;
+  }
+
+  .air-mid-compare-cta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: center;
+    margin-top: 18px;
+    padding: 24px;
+    background: #132033;
+  }
+
+  .air-mid-compare-cta strong {
     display: block;
-    margin-top: 4px;
-    color: #101b2a;
-    font-size: 21px;
-    line-height: 1.35;
+    color: #fff;
+    font-size: 24px;
   }
 
-  .photo-card p {
-    margin: 6px 0 0;
-    font-size: 15px;
+  .air-mid-compare-cta p {
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.76);
   }
 
-  .takeaway-grid article {
-    background:
-      linear-gradient(180deg, color-mix(in srgb, var(--accent) 6%, white), rgba(255, 255, 255, 0.84));
+  .air-mid-compare-cta > div:last-child {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
   }
 
-  .takeaway-grid span {
+  .air-question-list {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: question;
+  }
+
+  .air-question-list li {
+    position: relative;
+    min-height: 58px;
+    padding: 15px 16px 15px 62px;
+    border: 1px solid rgba(226, 210, 188, 0.9);
+    border-radius: 8px;
+    background: #fffdf8;
+  }
+
+  .air-question-list li::before {
+    counter-increment: question;
+    content: counter(question, decimal-leading-zero);
+    position: absolute;
+    top: 15px;
+    left: 16px;
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #eaf3ff;
+    color: #315e8f;
+    font-size: 13px;
+    font-weight: 950;
+  }
+
+  .air-faq-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .air-faq-list details {
+    padding: 18px 20px;
+  }
+
+  .air-faq-list summary {
+    color: var(--ink);
+    font-size: 19px;
+    font-weight: 950;
+    cursor: pointer;
+  }
+
+  .toc {
+    position: sticky;
+    top: 108px;
+    display: grid;
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .toc strong {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+    color: var(--ink);
+    font-size: 20px;
+  }
+
+  .toc strong::before {
+    content: "อ่าน";
     display: inline-flex;
     width: 44px;
     height: 44px;
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent) 12%, white);
-  }
-
-  .btu-grid strong {
-    display: inline-flex;
-    padding: 8px 13px;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--accent) 12%, white);
-  }
-
-  .article-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px;
-    gap: 28px;
-    align-items: start;
-  }
-
-  .article-body {
-    padding: clamp(24px, 5vw, 56px);
-  }
-
-  .article-body section {
-    scroll-margin-top: 112px;
-    padding: 8px 0 34px;
-    border-bottom: 1px solid rgba(226, 210, 188, 0.75);
-  }
-
-  .article-body section:last-child {
-    border-bottom: 0;
-  }
-
-  .article-body h2 {
-    font-size: clamp(30px, 4vw, 48px);
-    line-height: 1.15;
-  }
-
-  .fit-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-
-  .fit-grid article {
-    padding: 24px;
-  }
-
-  .fit-grid span {
-    color: var(--accent);
-    font-size: 22px;
-    font-weight: 950;
-  }
-
-  .point-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin-top: 18px;
-  }
-
-  .point-list p {
-    margin: 0;
-    padding: 16px 18px;
-    border: 1px solid #d9eee8;
-    border-radius: 8px;
-    background: #f5fffc;
-    color: #146457;
-    font-weight: 850;
-  }
-
-  .point-list.warning p {
-    border-color: #f2d0bf;
-    background: #fff8f2;
-    color: #924130;
-  }
-
-  .mini-check-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 18px;
-  }
-
-  .mini-check-grid span {
-    padding: 14px 16px;
-    border: 1px solid #bce7de;
-    border-radius: 8px;
-    background: #effffb;
-    color: #087f73;
-    font-weight: 900;
-  }
-
-  .alternative-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin-top: 18px;
-  }
-
-  .alternative-grid a {
-    display: grid;
-    gap: 6px;
-    padding: 18px;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .alternative-grid span {
-    color: var(--accent);
-    font-weight: 900;
-  }
-
-  .alternative-grid strong {
-    color: #101b2a;
-    font-size: 20px;
-  }
-
-  .alternative-grid small {
-    color: #66758a;
-    font-weight: 800;
-  }
-
-  .compare-cta {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 16px;
-    align-items: center;
-    margin-top: 18px;
-    padding: 20px;
     background: #132033;
-  }
-
-  .compare-cta strong,
-  .compare-cta p {
     color: #fff;
-  }
-
-  .compare-cta strong {
-    display: block;
-    font-size: 24px;
-  }
-
-  .compare-cta p {
-    margin: 6px 0 0;
-    opacity: 0.78;
-  }
-
-  .question-list {
-    display: grid;
-    gap: 10px;
-    padding-left: 24px;
-  }
-
-  .question-list li {
-    padding-left: 8px;
-  }
-
-  details {
-    border: 1px solid #e5d2bb;
-    border-radius: 8px;
-    padding: 16px 18px;
-    margin: 12px 0;
-    background: #fffdf8;
-  }
-
-  summary {
-    cursor: pointer;
-    color: #101b2a;
-    font-size: 18px;
+    font-size: 13px;
     font-weight: 950;
-  }
-
-  .toc {
-    position: sticky;
-    top: 100px;
-    padding: 16px;
-    background: rgba(255, 253, 248, 0.88);
-    backdrop-filter: blur(14px);
-  }
-
-  .toc strong {
-    display: block;
-    margin-bottom: 12px;
-    color: #101b2a;
-    font-size: 18px;
   }
 
   .toc a {
-    display: grid;
-    margin: 8px 0;
-    padding: 10px 12px;
-    border: 1px solid rgba(229, 210, 187, 0.85);
+    position: relative;
+    display: block;
+    padding: 12px 12px 12px 48px;
+    border: 1px solid rgba(226, 210, 188, 0.9);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.72);
-    color: #344256;
-    text-decoration: none;
+    color: #344255;
     font-weight: 900;
+    text-decoration: none;
+    counter-increment: toc;
   }
 
-  .review-page-spacer {
+  .toc {
+    counter-reset: toc;
+  }
+
+  .toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    display: inline-flex;
+    width: 28px;
     height: 28px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #eaf3ff;
+    color: #315e8f;
+    font-size: 12px;
+    font-weight: 950;
+  }
+
+  .toc a:hover {
+    border-color: color-mix(in srgb, var(--accent) 42%, #e6d3bd);
+    color: var(--accent);
   }
 
   .air-sticky-buy {
     position: fixed;
-    z-index: 30;
+    z-index: 60;
     left: 50%;
-    bottom: 18px;
-    transform: translateX(-50%);
+    bottom: max(14px, env(safe-area-inset-bottom));
     display: grid;
-    grid-template-columns: minmax(140px, 1.15fr) repeat(3, minmax(104px, 0.78fr));
+    width: min(860px, calc(100% - 24px));
+    grid-template-columns: auto repeat(3, minmax(116px, 1fr));
     gap: 10px;
-    width: min(880px, calc(100% - 28px));
+    align-items: center;
     padding: 10px;
-    border: 1px solid #e5d2bb;
-    border-radius: 8px;
-    background: rgba(255, 253, 248, 0.95);
-    box-shadow: 0 18px 56px rgba(16, 27, 42, 0.18);
+    border: 1px solid rgba(226, 210, 188, 0.92);
+    border-radius: 12px;
+    background: rgba(255, 253, 248, 0.94);
+    box-shadow: 0 18px 54px rgba(18, 29, 43, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 12px);
+    transition: opacity 180ms ease, transform 180ms ease;
     backdrop-filter: blur(16px);
   }
 
-  .air-sticky-buy span,
-  .air-sticky-buy a {
-    min-height: 48px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    font-weight: 950;
-    text-align: center;
-    text-decoration: none;
+  .air-sticky-buy.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
   }
 
   .air-sticky-buy span {
-    color: #101b2a;
-    background: #fffaf2;
-    padding: 0 10px;
+    padding: 0 8px;
+    color: var(--ink);
+    font-weight: 950;
+    white-space: nowrap;
+  }
+
+  .air-sticky-buy a {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 950;
+    text-decoration: none;
   }
 
   .air-sticky-buy .shopee {
-    color: #fff;
-    background: #f04b2f;
+    background: #ee4d2d;
   }
 
   .air-sticky-buy .lazada {
-    color: #fff;
-    background: #25469d;
+    background: #264a9f;
   }
 
   .air-sticky-buy .tiktok {
-    color: #fff;
     background: #050505;
   }
 
-  @media (max-width: 1120px) {
-    .review-hero,
-    .cockpit-grid,
-    .photo-wall,
+  .air-review-page-spacer {
+    height: 18px;
+  }
+
+  .score-section :global(.score-bars) {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .score-section :global(.score-bar) {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr) 56px;
+    gap: 14px;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid rgba(226, 210, 188, 0.88);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.78);
+  }
+
+  .score-section :global(.score-bar strong) {
+    color: var(--ink);
+    font-weight: 950;
+  }
+
+  .score-section :global(.bar-track) {
+    height: 16px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e8eef2;
+  }
+
+  .score-section :global(.bar-fill) {
+    display: block;
+    width: var(--score-width);
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--score-start), var(--score-end));
+  }
+
+  .score-section :global(.score-value) {
+    justify-self: end;
+    padding: 5px 10px;
+    border: 1px solid rgba(46, 196, 182, 0.34);
+    border-radius: 999px;
+    color: #087f73;
+    font-weight: 950;
+  }
+
+  @media (max-width: 1180px) {
+    .air-review-hero-inner,
+    .air-cockpit-grid,
+    .air-btu-selector,
     .article-layout {
       grid-template-columns: 1fr;
     }
 
-    .review-hero {
-      min-height: 0;
-    }
-
-    .hero-visual {
-      min-height: 470px;
-    }
-
-    .photo-card.large {
-      grid-row: auto;
-      min-height: 360px;
+    .air-verdict-card {
+      max-width: 560px;
     }
 
     .toc {
       position: static;
-      order: -1;
-      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
     }
 
     .toc strong {
       grid-column: 1 / -1;
     }
-  }
 
-  @media (max-width: 820px) {
-    .section-heading.split,
-    .snapshot-grid,
-    .takeaway-grid,
-    .btu-grid,
-    .fit-grid,
-    .point-list,
-    .mini-check-grid,
-    .alternative-grid,
-    .compare-cta {
-      grid-template-columns: 1fr;
-    }
-
-    .review-hero h1 {
-      font-size: clamp(40px, 13vw, 76px);
-    }
-
-    .hero-visual,
-    .cockpit-visual {
-      min-height: 390px;
-    }
-
-    .air-sticky-buy {
-      grid-template-columns: repeat(3, 1fr);
-      bottom: 12px;
-    }
-
-    .air-sticky-buy span {
-      grid-column: 1 / -1;
+    .air-alternative-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  @media (max-width: 560px) {
-    .container {
-      width: min(100% - 24px, 1220px);
+  @media (max-width: 860px) {
+    .container,
+    .wide-container {
+      width: min(100% - 24px, 720px);
     }
 
-    .review-hero {
-      padding: 30px 14px 24px;
+    .air-review-hero {
+      min-height: auto;
     }
 
-    .hero-actions,
-    .hero-actions :global(.price-buttons),
-    #buy :global(.price-buttons),
-    .price-panel :global(.price-buttons) {
+    .air-review-hero-inner {
+      min-height: auto;
+      padding: 74px 0 28px;
+    }
+
+    .air-review-title h1 {
+      font-size: clamp(40px, 12vw, 64px);
+      line-height: 1.03;
+    }
+
+    .air-review-title p:not(.eyebrow) {
+      font-size: 17px;
+    }
+
+    .air-review-actions,
+    .air-mid-compare-cta > div:last-child {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .air-review-actions .button,
+    .air-mid-compare-cta .button {
       width: 100%;
     }
 
-    .hero-actions :global(.price-buttons),
-    #buy :global(.price-buttons),
-    .price-panel :global(.price-buttons) {
+    .air-review-proof-head,
+    .air-buying-snapshot,
+    .air-evidence-strip,
+    .air-source-photo-grid,
+    .air-real-review-grid,
+    .air-btu-selector-grid,
+    .fit-grid,
+    .mini-check-grid,
+    .air-alternative-grid,
+    .air-mid-compare-cta {
       grid-template-columns: 1fr;
     }
 
-    .hero-visual,
-    .cockpit-visual {
-      min-height: 350px;
+    .air-photo-wall {
+      grid-template-columns: 1fr;
     }
 
-    .hero-score-card,
-    .cockpit-visual div,
-    .photo-card div {
-      left: 12px;
-      right: 12px;
-      bottom: 12px;
-      padding: 14px;
-    }
-
-    .photo-card {
+    .air-photo-wall figure,
+    .air-photo-wall figure:first-child {
       min-height: 320px;
+      grid-row: auto;
     }
 
-    .article-body,
-    .snapshot-grid article,
-    .takeaway-grid article,
-    .btu-grid article,
-    .cockpit-panel,
-    .price-panel {
-      padding: 20px;
+    .air-real-review-grid article {
+      grid-template-columns: 1fr;
+    }
+
+    .air-real-review-grid .air-image-link {
+      min-height: 230px;
+      aspect-ratio: 1.45 / 1;
+    }
+
+    .article-body {
+      padding: 22px 18px;
     }
 
     .toc {
       grid-template-columns: 1fr;
     }
 
+    .score-section :global(.score-bar) {
+      grid-template-columns: 1fr 54px;
+      gap: 8px 12px;
+    }
+
+    .score-section :global(.score-bar strong),
+    .score-section :global(.bar-track) {
+      grid-column: 1 / -1;
+    }
+
+    .air-sticky-buy {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: min(560px, calc(100% - 20px));
+      padding: 8px;
+    }
+
+    .air-sticky-buy span {
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .air-review-title h1 {
+      font-size: 40px;
+    }
+
+    .air-cockpit-head h2,
+    .air-review-proof-head h2,
+    .air-btu-selector h3,
+    .article-body h2 {
+      font-size: 31px;
+    }
+
+    .air-verdict-card > strong,
+    .air-cockpit-verdict strong,
+    .air-review-proof-stats strong {
+      font-size: 54px;
+    }
+
+    .air-cockpit-verdict {
+      min-height: 360px;
+    }
+
+    .air-photo-wall figure,
+    .air-photo-wall figure:first-child {
+      min-height: 270px;
+    }
+
     .air-sticky-buy a {
       min-height: 44px;
-      font-size: 14px;
+      font-size: 15px;
     }
   }
 </style>
