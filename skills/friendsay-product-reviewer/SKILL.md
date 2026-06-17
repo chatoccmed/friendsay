@@ -24,6 +24,7 @@ When working inside the Friendsay project, read these first:
 - `docs/air-conditioner-shopee-coverage-map.csv` to understand which search/brand/BTU rounds are complete
 - `docs/air-conditioner-shopee-review-queue.csv` for the active air-conditioner queue
 - `src/pages/th/reviews/candy-vpct-vpgt-air-conditioner.astro` as the current review-page reference
+- `src/pages/th/reviews/[slug].astro` as the batch-review route. When using this dynamic route, keep the same full template standard as the Candy/Midea pages; do not let queued reviews collapse into thin summary pages.
 
 If a reference is missing, continue with the closest available source and note the gap.
 
@@ -119,6 +120,7 @@ Every full review should include:
 - Hero with product, verdict, and buy buttons
 - Decision cockpit or quick answer section
 - Buyer snapshots
+- A visual guide or photo wall with multiple section-specific images
 - Real product proof section
 - Review proof section with 6 or more recommendation cards from buyer-review patterns
 - Category guide, such as BTU for air conditioners
@@ -131,6 +133,7 @@ Every full review should include:
 - Questions to ask the shop before buying
 - FAQ and final verdict
 - Sticky buy bar
+- Compare tray or compare CTA connected to the air-conditioner compare page when the product is part of a batch queue
 
 ## Lower Article And TOC Requirements
 

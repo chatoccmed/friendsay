@@ -1,8 +1,9 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { airConditioners } from "../../../data/airConditioners";
+import { queuedAirConditionerReviews } from "../../../data/airConditionerReviewQueue";
 
-const compareProducts = airConditioners.map((product) => ({
+const mainCompareProducts = airConditioners.map((product) => ({
   slug: product.slug,
   name: product.name,
   shortName: product.shortName,
@@ -37,6 +38,55 @@ const compareProducts = airConditioners.map((product) => ({
   links: product.links,
   updated: product.updated
 }));
+
+const queueCompareProducts = queuedAirConditionerReviews.map((review) => ({
+  slug: review.productKey,
+  name: review.name,
+  shortName: review.shortName,
+  brand: review.brand,
+  store: review.sourceName,
+  statusLabel: "มีข้อมูลให้เทียบ",
+  sourceUrl: review.links.shopee,
+  image: {
+    url: review.heroImage,
+    alt: `ภาพประกอบรีวิว ${review.name}`,
+    source: review.heroImage,
+    note: "ภาพประกอบสำหรับช่วยตัดสินใจก่อนซื้อ"
+  },
+  priceLabel: review.priceLabel,
+  btuOptions: review.btuOptions,
+  rating: Math.min(5, Math.max(0, review.score / 2)),
+  ratingsCount: review.proofCount,
+  commentsCount: review.proofCount,
+  mediaCount: 0,
+  favoritesLabel: "",
+  score: review.score,
+  popularity: review.popularity,
+  buyerConfidence: review.buyerConfidence,
+  value: review.value,
+  roomFit: review.roomFit,
+  energyComfort: review.value,
+  installRisk: review.installClarity,
+  warrantySafety: review.warrantySafety,
+  complaintRisk: Math.max(1, 10 - review.installClarity),
+  bestFor: review.bestFor,
+  notFor: review.notFor,
+  pros: review.strengths,
+  watch: review.watchouts,
+  reviewSignals: review.strengths,
+  installNotes: [
+    "ถามราคาติดตั้งและอุปกรณ์เพิ่มให้ชัดก่อนจ่าย",
+    "ส่งรูปหน้างานให้ร้านช่วยประเมินก่อนนัดช่าง"
+  ],
+  warrantyNotes: [
+    "ถามประกันเครื่อง คอมเพรสเซอร์ อะไหล่ และค่าแรงให้ครบ",
+    "เก็บใบเสร็จและข้อความยืนยันรุ่นจากร้านไว้หลังซื้อ"
+  ],
+  links: review.links,
+  updated: "2026-06-17"
+}));
+
+const compareProducts = [...mainCompareProducts, ...queueCompareProducts];
 
 const jsonLd = {
   "@context": "https://schema.org",
