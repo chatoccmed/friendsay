@@ -15,6 +15,7 @@ When working inside the Friendsay project, read these first:
 - `docs/air-conditioner-market-catalog-system.md` for the catalog-first air-conditioner workflow
 - `docs/air-conditioner-market-dashboard.md`, `docs/air-conditioner-market-sources.csv`, `docs/air-conditioner-catalog-rounds.csv`, `docs/air-conditioner-market-catalog.csv`, `docs/air-conditioner-marketplace-match.csv`, `docs/air-conditioner-popularity-scoring.md`, and `docs/air-conditioner-review-priority.csv` for air-conditioner market inventory and popularity-based review order
 - `docs/shopee-b-plus-d-review-system.md` when collecting Shopee data
+- `docs/marketplace-user-assisted-capture.md` when Shopee, Lazada, TikTok, or retailer pages are blocked for Codex but visible in the user's own browser
 - `docs/air-conditioner-shopee-inventory-queue.md` for air-conditioner batch work
 - `docs/air-conditioner-shopee-data-system.md` for durable Shopee evidence and coverage rules
 - `docs/air-conditioner-shopee-collection-dashboard.md`, `docs/air-conditioner-shopee-collection-rounds.csv`, and `docs/air-conditioner-shopee-collection-eta.csv` to answer how many collection rounds remain and when the target pace should finish
@@ -31,20 +32,21 @@ If a reference is missing, continue with the closest available source and note t
 2. Confirm the product is a real SKU or identifiable series, then create or update its `product_key` in `docs/air-conditioner-market-catalog.csv`.
 3. Record catalog source data: brand, series, model, BTU or spec options, inverter status, warranty, retail source URL, price, and collection date.
 4. Match marketplace links second. Record Shopee, Lazada, and TikTok links in `docs/air-conditioner-marketplace-match.csv`.
-5. Qualify products using the Friendsay rule: marketplace reviews, ratings, or comments must be greater than 5 for a full review.
-6. Create or confirm an `evidence_id` in the evidence ledger before writing a full review.
-7. If sold count is hidden, use `review_signal_pass`. Never invent sales numbers.
-8. Select the next product by priority: catalog verified, strong review evidence, clear model or specs, trusted shop, useful comparison value.
-9. Write one review at a time using the product review operating template.
-10. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
-11. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
-12. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
-13. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
-14. Include exactly or at least 6 buyer-review recommendation cards. Each card must turn review patterns into a concrete recommendation, not merely say that many reviews exist.
-15. Add Shopee, Lazada, and TikTok buy buttons when links exist, plus a centered responsive sticky buy bar.
-16. Add comparison UX: alternatives, compare CTA, or compare tray when available.
-17. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
-18. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
+5. If direct marketplace access is blocked, use the user-assisted capture workflow before deciding. The user opens the page in their browser, runs `tools/friendsay-marketplace-capture-bookmarklet.txt` or `tools/friendsay-marketplace-capture-console.js`, and Codex imports the latest JSON with `tools/import-latest-marketplace-capture.ps1`.
+6. Qualify products using the Friendsay rule: marketplace reviews, ratings, or comments must be greater than 5 for a full review.
+7. Create or confirm an `evidence_id` in the evidence ledger before writing a full review.
+8. If sold count is hidden, use `review_signal_pass`. Never invent sales numbers.
+9. Select the next product by priority: catalog verified, strong review evidence, clear model or specs, trusted shop, useful comparison value.
+10. Write one review at a time using the product review operating template.
+11. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
+12. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
+13. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
+14. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
+15. Include exactly or at least 6 buyer-review recommendation cards. Each card must turn review patterns into a concrete recommendation, not merely say that many reviews exist.
+16. Add Shopee, Lazada, and TikTok buy buttons when links exist, plus a centered responsive sticky buy bar.
+17. Add comparison UX: alternatives, compare CTA, or compare tray when available.
+18. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
+19. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
 
 ## Writing Rules
 
@@ -77,6 +79,7 @@ If a reference is missing, continue with the closest available source and note t
 - Treat Shopee as a marketplace match layer, not the catalog layer.
 - Search marketplace by exact product key, brand, series, model, and BTU after the model exists in the market catalog.
 - If Shopee blocks collection, continue with retailer, brand, Lazada, or TikTok sources instead of stopping the whole inventory project.
+- If Codex cannot access a marketplace page but the user can, switch to `docs/marketplace-user-assisted-capture.md` and import a capture file before writing or skipping the product.
 - If the user asks how many air conditioners remain, answer from the market catalog and catalog rounds, not from arbitrary Shopee round counts.
 
 ## Shopee Collection Rules

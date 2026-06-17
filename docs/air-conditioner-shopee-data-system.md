@@ -8,6 +8,17 @@
 
 เอกสารนี้ยังใช้กับการเก็บหลักฐาน Shopee หลังจากมี product key ใน market catalog แล้วเท่านั้น
 
+### User-assisted capture เมื่อ Codex เข้าเว็บไม่ได้
+
+ถ้า Codex หรือ browser automation เปิด Shopee/Lazada/TikTok ไม่ได้ แต่ผู้ใช้เปิดได้ใน browser ของตัวเอง ให้ใช้ `docs/marketplace-user-assisted-capture.md` เป็นทางหลัก:
+
+1. ผู้ใช้เปิดหน้าค้นหาหรือหน้าสินค้าจริง
+2. ผู้ใช้รัน bookmarklet จาก `tools/friendsay-marketplace-capture-bookmarklet.txt` หรือโค้ด console จาก `tools/friendsay-marketplace-capture-console.js`
+3. นำไฟล์ `friendsay-capture-*.json` ล่าสุดเข้า `research/inbox/` ด้วย `tools/import-latest-marketplace-capture.ps1`
+4. Codex อ่านไฟล์ capture แล้วค่อยอัปเดต marketplace match, evidence ledger, และ review queue
+
+วิธีนี้ใช้กับรุ่นที่หา exact match ยาก เช่นกรณีชื่อรุ่นใน catalog ไม่ขึ้นชัดใน public search หรือ Shopee เด้ง verification ระหว่างเก็บข้อมูล
+
 อัปเดต: 16 มิถุนายน 2026
 
 เป้าหมายของระบบนี้คือทำให้โปรเจกต์ “รีวิวแอร์ทุกตัวที่เข้าเกณฑ์ใน Shopee” ไม่พึ่งความจำหรือการเปิด Shopee แบบสุ่ม แต่มีฐานข้อมูลที่ตรวจย้อนหลังได้เสมอว่าแต่ละรุ่นมาจากไหน ผ่านเกณฑ์เพราะอะไร และต้องกลับไปเช็กเมื่อไหร่
