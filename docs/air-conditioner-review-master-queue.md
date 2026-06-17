@@ -8,11 +8,12 @@ Use this file with `docs/air-conditioner-review-master-queue.csv` when the user 
 ## Simple Rule
 
 - Codex owns the queue. Do not ask the user to choose every product.
-- Review the highest-ranked item that is not done and has real review, rating, comment, or sold evidence above 5.
-- Evidence can come from Shopee, Lazada, TikTok, HomePro, Power Buy, brand stores, or another checkable retailer source.
+- Current user direction: create review pages for every known model first. Do not block the writing round on sold-count or review-count confirmation.
+- Evidence can come later from Shopee, Lazada, TikTok, HomePro, Power Buy, brand stores, or another checkable retailer source.
 - If exact Shopee/Lazada/TikTok product links are not available yet, use exact model search links in the buy buttons and keep direct affiliate matching as a follow-up.
+- After the user checks Shopee and sends affiliate links, replace the search links with direct affiliate links and polish the review proof section.
 - Do not claim marketplace reviews when the proof source is a retailer.
-- If a product has no enough evidence, keep it in the queue, mark the next action, and move to the next ready product.
+- Do not invent sold counts. For pages without confirmed proof, write as an expert buyer guide and keep proof/affiliate notes internal.
 
 ## Current Snapshot
 
@@ -20,27 +21,29 @@ Use this file with `docs/air-conditioner-review-master-queue.csv` when the user 
 |---|---:|
 | Total known models/series | 28 |
 | Full reviews done | 4 |
-| Ready for retailer-proof review | 3 |
-| Needs more review or sales evidence | 21 |
+| Draft review pages generated | 24 |
+| Affiliate links pending user check | 24 |
 
 ## Next Reviews
 
-1. Mitsubishi MSY-GT09VF - HomePro reviews 86
-2. Mitsubishi Heavy Duty DXK10CXV-W1 - HomePro reviews 13
-3. Sharp AH/AU-XP10YMB - HomePro reviews 8
+All 28 known models now have a review path:
+
+- Finished detailed reviews keep their hand-polished pages.
+- The remaining 24 models use the data-driven review draft at `/th/reviews/[review-slug]/`.
+- The index page is `/th/reviews/air-conditioners/`.
 
 ## How To Work
 
 1. Open `docs/air-conditioner-review-master-queue.csv`.
-2. Pick the first row with `work_status` equal to `ready_retailer_review`.
-3. Write the review using `docs/product-review-operating-template.md` and the Candy/TCL page structure.
-4. Use the retailer proof honestly in the article and turn buyer review patterns into 6 useful recommendations.
+2. Pick the first row that still needs hand polish or affiliate replacement.
+3. Write or improve the review using `docs/product-review-operating-template.md` and the Candy/TCL page structure.
+4. Use proof honestly when available. If proof is not confirmed yet, focus the public page on buyer decision guidance, not internal caveats.
 5. Add Shopee, Lazada, and TikTok buttons. Use direct product links when known; otherwise use exact search links by brand + model.
-6. After publishing the review, change `work_status` to `done`, add the `review_slug`, and move to the next ready row.
+6. After the user sends direct affiliate links, replace search links and upgrade the page from draft to polished review.
 
 ## Do Not Do
 
 - Do not stop the whole project because Shopee blocks browsing.
 - Do not invent sold counts.
-- Do not write a full review for rows with `needs_more_evidence` or `needs_sales_or_review_evidence` until another source pushes proof above 5.
+- Do not block draft review creation just because proof is still pending.
 - Do not use weak public copy such as "we could not see sold count"; convert missing data into internal notes.

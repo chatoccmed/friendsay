@@ -1,0 +1,187 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { queuedAirConditionerReviews } from "../../../../data/airConditionerReviewQueue";
+
+const finishedReviews = [
+  {
+    href: "/th/reviews/candy-vpct-vpgt-air-conditioner/",
+    name: "CANDY VPCT/VPGT Series",
+    status: "รีวิวละเอียดเสร็จแล้ว",
+    rank: 1
+  },
+  {
+    href: "/th/reviews/tcl-savein-ai-air-conditioner/",
+    name: "TCL SaveIN AI Series",
+    status: "รีวิวละเอียดเสร็จแล้ว",
+    rank: 2
+  },
+  {
+    href: "/th/reviews/xiaomi-mijia-air-inverter-eco/",
+    name: "Xiaomi Mijia Air Inverter Eco",
+    status: "รีวิวละเอียดเสร็จแล้ว",
+    rank: 3
+  },
+  {
+    href: "/th/reviews/midea-celest-msce-air-conditioner/",
+    name: "Midea Celest MSCE",
+    status: "รีวิวละเอียดเสร็จแล้ว",
+    rank: 4
+  }
+];
+
+const queuedReviews = queuedAirConditionerReviews.map((review) => ({
+  href: `/th/reviews/${review.reviewSlug}/`,
+  name: review.name,
+  status: review.proofCount > 5 ? `มีรีวิวจาก ${review.sourceName} ${review.proofCount} รายการ` : "รอเติมลิงก์ affiliate หลังตรวจร้าน",
+  rank: review.queueRank
+}));
+
+const allReviews = [...finishedReviews, ...queuedReviews].sort((a, b) => a.rank - b.rank);
+---
+
+<BaseLayout
+  title="รีวิวแอร์ติดผนังทั้งหมด 2026 | Friendsay"
+  description="หน้ารวมรีวิวแอร์ติดผนังทุกรุ่นในคิว Friendsay พร้อมลิงก์ตรวจงานและลิงก์รีวิวแต่ละรุ่น"
+  canonical="https://friendsay.com/th/reviews/air-conditioners/"
+>
+  <section class="review-index-hero">
+    <div class="container">
+      <span>Friendsay Air Review Library</span>
+      <h1>รีวิวแอร์ติดผนังทั้งหมดในคิว 2026</h1>
+      <p>หน้านี้คือจุดรวมตรวจงาน รีวิวที่ทำละเอียดแล้วและรีวิว draft รอบแรกจะอยู่ในลิสต์เดียวกัน จากนั้นค่อยเติมลิงก์ affiliate และภาพสินค้าจริงรายรุ่นได้ทีหลัง</p>
+      <div class="stats">
+        <strong>{allReviews.length} รุ่น</strong>
+        <strong>{finishedReviews.length} รีวิวละเอียด</strong>
+        <strong>{queuedReviews.length} หน้า draft</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container review-grid">
+      {allReviews.map((review) => (
+        <a class="review-card" href={review.href}>
+          <span>#{review.rank.toString().padStart(2, "0")}</span>
+          <h2>{review.name}</h2>
+          <p>{review.status}</p>
+          <strong>เปิดรีวิว</strong>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .review-index-hero,
+  .section {
+    background: #fffdf8;
+  }
+
+  .review-index-hero {
+    padding: clamp(52px, 9vw, 120px) 0 clamp(36px, 6vw, 72px);
+    border-bottom: 1px solid #e7d5bf;
+  }
+
+  .container {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .review-index-hero span {
+    color: #e5533d;
+    font-weight: 950;
+  }
+
+  .review-index-hero h1 {
+    margin: 12px 0 16px;
+    max-width: 980px;
+    color: #101b2a;
+    font-size: clamp(46px, 8vw, 96px);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .review-index-hero p {
+    max-width: 820px;
+    color: #425166;
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.7;
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .stats strong {
+    padding: 12px 16px;
+    border: 1px solid #e7d5bf;
+    border-radius: 8px;
+    background: #fffaf2;
+  }
+
+  .section {
+    padding: clamp(34px, 6vw, 82px) 0;
+  }
+
+  .review-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .review-card {
+    display: flex;
+    min-height: 230px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    border: 1px solid #e7d5bf;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 16px 48px rgba(26, 33, 42, 0.08);
+    color: #101b2a;
+    text-decoration: none;
+  }
+
+  .review-card span {
+    color: #e5533d;
+    font-weight: 950;
+  }
+
+  .review-card h2 {
+    margin: 14px 0 10px;
+    font-size: 25px;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+
+  .review-card p {
+    color: #516174;
+    line-height: 1.6;
+    font-weight: 750;
+  }
+
+  .review-card strong {
+    margin-top: 18px;
+    color: #e5533d;
+  }
+
+  @media (max-width: 920px) {
+    .review-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .container {
+      width: min(100% - 24px, 1180px);
+    }
+
+    .review-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

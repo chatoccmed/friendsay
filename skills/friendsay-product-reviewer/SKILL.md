@@ -34,20 +34,21 @@ If a reference is missing, continue with the closest available source and note t
 3. Record catalog source data: brand, series, model, BTU or spec options, inverter status, warranty, retail source URL, price, and collection date.
 4. Match marketplace links second. Record Shopee, Lazada, and TikTok links in `docs/air-conditioner-marketplace-match.csv`.
 5. If direct marketplace access is blocked, keep working from retailer, brand, Lazada, TikTok, cached, or user-provided proof. Treat user-assisted capture as a fallback, not as the default user burden.
-6. Qualify products using the Friendsay rule: real reviews, ratings, comments, or sold evidence must be greater than 5 for a full review. The proof may come from Shopee, Lazada, TikTok, HomePro, Power Buy, brand stores, or another checkable retailer source.
-7. Create or confirm an `evidence_id` in the evidence ledger before writing a full review.
-8. If sold count is hidden, use `review_signal_pass`. Never invent sales numbers.
-9. Select the next product by priority: catalog verified, strong review evidence, clear model or specs, trusted shop, useful comparison value.
-10. Write one review at a time using the product review operating template.
-11. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
-12. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
-13. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
-14. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
-15. Include exactly or at least 6 buyer-review recommendation cards. Each card must turn review patterns into a concrete recommendation, not merely say that many reviews exist.
-16. Add Shopee, Lazada, and TikTok buy buttons when links exist. If exact product links are not found yet, use exact brand + model search links and mark direct affiliate matching as a follow-up. Always include a centered responsive sticky buy bar.
-17. Add comparison UX: alternatives, compare CTA, or compare tray when available.
-18. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
-19. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
+6. Default quality rule: real reviews, ratings, comments, or sold evidence should be greater than 5 for a polished full review. The proof may come from Shopee, Lazada, TikTok, HomePro, Power Buy, brand stores, or another checkable retailer source.
+7. User override for the air-conditioner batch: when the user says to review every model first and they will check Shopee/affiliate links later, create draft review pages for every catalog model without blocking on sold-count or review-count confirmation. Do not invent proof; write as expert buyer guidance until proof is added.
+8. Create or confirm an `evidence_id` in the evidence ledger before upgrading a draft page to a polished proof-backed full review.
+9. If sold count is hidden, use `review_signal_pass` internally. Never invent sales numbers.
+10. Select the next product by priority: catalog verified, strong review evidence, clear model or specs, trusted shop, useful comparison value.
+11. Write one review at a time using the product review operating template unless the user explicitly asks for a data-driven batch draft.
+12. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
+13. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
+14. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
+15. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
+16. Include exactly or at least 6 buyer-review or buyer-decision recommendation cards. When proof is pending, make the cards useful pre-purchase checks instead of pretending they came from buyer reviews.
+17. Add Shopee, Lazada, and TikTok buy buttons when links exist. If exact product links are not found yet, use exact brand + model search links and mark direct affiliate matching as a follow-up. Always include a centered responsive sticky buy bar.
+18. Add comparison UX: alternatives, compare CTA, or compare tray when available.
+19. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
+20. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
 
 ## Writing Rules
 
@@ -76,8 +77,10 @@ If a reference is missing, continue with the closest available source and note t
 - Use `docs/air-conditioner-market-catalog.csv` to answer how many air-conditioner models are known, verified, matched, qualified, and reviewed.
 - Use `docs/air-conditioner-marketplace-match.csv` to track Shopee, Lazada, and TikTok product links.
 - Keep `docs/air-conditioner-review-priority.csv` complete for every known catalog product, even when a product still needs sales or review evidence.
-- Use `docs/air-conditioner-review-master-queue.csv` first, then `docs/air-conditioner-review-priority.csv`, to decide the next review. The next review must be the highest-ranked item that is not done and has real sales or review evidence above the threshold.
-- Do not create a full air-conditioner review for a model without real review count, rating/comment count, or visible sold count evidence above the threshold.
+- Use `docs/air-conditioner-review-master-queue.csv` first, then `docs/air-conditioner-review-priority.csv`, to decide the next review.
+- For polished proof-backed reviews, prefer items with real sales or review evidence above the threshold.
+- For the current all-air-conditioner batch, create draft review pages for every known model even if proof is pending, because the user will verify Shopee and provide affiliate links later.
+- Do not create fake proof for a model without real review count, rating/comment count, or visible sold count evidence above the threshold.
 - Treat Shopee as a marketplace match layer, not the catalog layer.
 - Search marketplace by exact product key, brand, series, model, and BTU after the model exists in the market catalog.
 - If Shopee blocks collection, continue with retailer, brand, Lazada, or TikTok sources instead of stopping the whole inventory project.
@@ -91,8 +94,8 @@ If a reference is missing, continue with the closest available source and note t
 Use this mode when the user says "รวบรวมรุ่นทั้งหมดมา แล้วไล่ทำรีวิวไปทีละอัน" or similar.
 
 1. Open `docs/air-conditioner-review-master-queue.csv`.
-2. Pick the first row where `work_status` is `ready_retailer_review` or another ready status, skipping rows marked `done`.
-3. If the top row lacks enough proof, change it to `needs_more_evidence` or `needs_sales_or_review_evidence` and move to the next row.
+2. If the user asks for all models without proof confirmation, generate draft review pages for every catalog row and use exact search links until affiliate links are available.
+3. If the user asks for the next polished review, pick the first row with strong proof that is not done.
 4. Do not ask the user which model to do unless two ready rows have equal priority and the choice changes business direction.
 5. Public copy must explain the product as an expert buyer guide. Do not publish process excuses such as "Shopee was blocked" or "sold count was hidden".
 

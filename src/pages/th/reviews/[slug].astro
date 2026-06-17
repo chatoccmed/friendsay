@@ -1,0 +1,808 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PriceButtons from "../../../components/PriceButtons.astro";
+import ScoreBars from "../../../components/ScoreBars.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import { queuedAirConditionerReviews, type QueuedAirConditionerReview } from "../../../data/airConditionerReviewQueue";
+
+export function getStaticPaths() {
+  return queuedAirConditionerReviews.map((review) => ({
+    params: { slug: review.reviewSlug },
+    props: { review }
+  }));
+}
+
+type Props = {
+  review: QueuedAirConditionerReview;
+};
+
+const { review } = Astro.props;
+const proofLabel =
+  review.proofCount > 5
+    ? `${review.sourceName} มีรีวิว ${review.proofCount.toLocaleString("th-TH")} รายการ`
+    : "ทำเป็นคู่มือก่อนซื้อ รอเติมลิงก์ร้านจริง";
+
+const firstBtu = review.btuOptions[0] ?? "9,000 BTU";
+const articleTitle = `${review.shortName} แอร์ ${firstBtu} ตัวเลือกน่าเทียบสำหรับคนอยากซื้อให้จบ`;
+const description = `${review.name} เหมาะกับใคร ต้องถามร้านเรื่องอะไร และควรเทียบ BTU/ค่าติดตั้ง/ประกันยังไงก่อนซื้อ`;
+
+const scoreItems = [
+  { label: "ความน่าเอาเข้ารอบ", value: review.score },
+  { label: "ความมั่นใจผู้ซื้อ", value: review.buyerConfidence },
+  { label: "ความคุ้มค่า", value: review.value },
+  { label: "เลือก BTU ง่าย", value: review.roomFit },
+  { label: "ความชัดเจนติดตั้ง", value: review.installClarity },
+  { label: "ประกัน/บริการ", value: review.warrantySafety }
+];
+
+const recommendationCards = [
+  {
+    label: "01",
+    title: `เริ่มจากขนาดห้อง ไม่ใช่เริ่มจากราคา`,
+    body: `${review.shortName} อยู่ในกลุ่ม ${review.btuOptions.join(" / ")} ก่อนกดซื้อให้วัดขนาดห้อง ทิศแดด จำนวนคน และหน้าต่างจริง เพราะแอร์ที่ถูกลงนิดเดียวแต่ BTU ไม่พอจะจ่ายแพงกว่าในระยะยาว`
+  },
+  {
+    label: "02",
+    title: "ถามราคาจบให้เป็นตัวเลขเดียว",
+    body: `อย่าดูแค่ ${review.priceLabel} ให้ถามร้านว่าเครื่อง ติดตั้ง ท่อ ราง ขาแขวน สายไฟ เบรกเกอร์ งานเจาะ และค่าเดินทางรวมแล้วเท่าไหร่ ถ้าร้านตอบชัด รุ่นนี้จะเทียบกับตัวอื่นง่ายขึ้นมาก`
+  },
+  {
+    label: "03",
+    title: "เช็กชื่อรุ่นเต็มก่อนจ่าย",
+    body: `${review.brand} มีรหัสรุ่นใกล้กันหลายตัว ให้ส่งชื่อเต็ม ${review.model} กลับไปถามร้านอีกครั้ง โดยเฉพาะถ้าใน Shopee/Lazada มีหลายร้านลงรูปคล้ายกัน`
+  },
+  {
+    label: "04",
+    title: "ดูงานติดตั้งมากกว่าคำว่าแถมฟรี",
+    body: "ถ้าติดในคอนโดหรือห้องที่เดินท่อยาก ให้ถามก่อนว่าช่างรับงานแบบไหน ต้องแจ้งนิติไหม เดินท่อน้ำทิ้งยังไง และมีรูปงานติดตั้งจริงให้ดูหรือไม่"
+  },
+  {
+    label: "05",
+    title: "ประกันต้องรู้ว่าคุ้มครองอะไร",
+    body: `ถามให้ชัดว่าเครื่อง คอมเพรสเซอร์ อะไหล่ และค่าแรงรับประกันกี่ปี เคลมผ่านร้านหรือศูนย์ ${review.brand} และต้องใช้เอกสารอะไรบ้าง`
+  },
+  {
+    label: "06",
+    title: "เทียบกับ 2 รุ่นในงบเดียวกันก่อน",
+    body: `ก่อนจ่ายจริงให้เปิดเทียบ ${review.shortName} กับรุ่นที่ราคาใกล้กันอย่างน้อย 2 ตัว ดูว่าเงินที่เพิ่มหรือลดได้อะไรกลับมา เช่น BTU ฟีเจอร์ ประกัน หรือความมั่นใจของร้าน`
+  }
+];
+
+const btuCards = review.btuOptions.map((btu) => ({
+  btu,
+  room:
+    Number.parseInt(btu.replace(/[^0-9]/g, ""), 10) >= 10000
+      ? "ห้องนอนใหญ่ / ห้องแดดแรง"
+      : "ห้องนอนเล็ก / คอนโด / ห้องทำงาน",
+  note:
+    Number.parseInt(btu.replace(/[^0-9]/g, ""), 10) >= 10000
+      ? "เหมาะเมื่อพื้นที่ร้อนกว่าปกติ แต่ต้องให้ร้านช่วยประเมินไฟ จุดวางคอยล์ร้อน และค่าเดินระบบก่อน"
+      : "เหมาะกับห้องทั่วไปที่แดดไม่จัดมาก ถ้าห้องมีหน้าต่างเยอะหรือโดนแดดบ่าย ให้ถามร้านก่อนขยับ BTU"
+}));
+
+const questions = [
+  `รุ่นที่ส่งจริงคือ ${review.model} ใช่ไหม`,
+  "ราคานี้รวมติดตั้งมาตรฐานกี่เมตร",
+  "ถ้าเกินมาตรฐานคิดค่าอุปกรณ์เพิ่มอย่างไร",
+  "รับประกันเครื่อง คอมเพรสเซอร์ อะไหล่ และค่าแรงกี่ปี",
+  "ถ้าคอนโดต้องใช้เอกสารช่างหรือแจ้งนิติก่อนหรือไม่",
+  "มีรูปงานติดตั้งหรือรีวิวร้านล่าสุดให้ดูไหม"
+];
+
+const faqItems = [
+  {
+    q: `${review.shortName} เหมาะกับห้องประมาณไหน`,
+    a: `ดูจาก BTU หลักคือ ${review.btuOptions.join(" / ")} เหมาะกับ ${review.roomHint} แต่ต้องประเมินแดด หน้าต่าง ฝ้า และจำนวนคนในห้องก่อน`
+  },
+  {
+    q: "ควรซื้อทันทีไหม",
+    a: "ถ้าราคาและค่าติดตั้งชัด รุ่นนี้เอาเข้ารอบได้ แต่ถ้าร้านตอบเรื่องติดตั้งหรือประกันไม่ชัด ให้เทียบร้านอื่นก่อน"
+  },
+  {
+    q: "ยังไม่มีลิงก์ affiliate ตรงรุ่นใช่ไหม",
+    a: "ปุ่มซื้อรอบนี้เป็นลิงก์ค้นหาชื่อรุ่นตรงๆ เพื่อให้ตรวจร้านได้เร็ว หลังจากตรวจ Shopee แล้วสามารถแทนด้วยลิงก์ affiliate ตรงรุ่นได้"
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Review",
+  itemReviewed: {
+    "@type": "Product",
+    name: review.name,
+    brand: review.brand,
+    category: "Wall mounted air conditioner"
+  },
+  reviewRating: {
+    "@type": "Rating",
+    ratingValue: review.score,
+    bestRating: 10,
+    worstRating: 1
+  },
+  author: {
+    "@type": "Organization",
+    name: "Friendsay"
+  }
+};
+---
+
+<BaseLayout
+  title={`${articleTitle} | Friendsay`}
+  description={description}
+  canonical={`https://friendsay.com/th/reviews/${review.reviewSlug}/`}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="draft-hero" style={`--accent:${review.accent};`}>
+    <div class="hero-copy">
+      <span class="eyebrow">Air Conditioner Review Queue 2026</span>
+      <h1>{articleTitle}</h1>
+      <p>{review.buyerAngle}</p>
+      <div class="hero-actions">
+        <PriceButtons links={review.links} context={`${review.productKey}-hero`} />
+        <a class="soft-link" href="/th/reviews/air-conditioners/">ดูรีวิวแอร์ทั้งหมด</a>
+      </div>
+    </div>
+    <a class="hero-visual" href={review.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`${review.productKey}-hero-image`}>
+      <img src={review.heroImage} alt={`ภาพประกอบรีวิว ${review.name}`} loading="eager" />
+      <div class="hero-card">
+        <span>{proofLabel}</span>
+        <strong>{review.score.toFixed(1)}/10</strong>
+        <p>เอาเข้ารอบได้ ถ้าร้านตอบเรื่องติดตั้งและประกันชัด</p>
+      </div>
+    </a>
+  </section>
+
+  <section class="section">
+    <div class="container quick-grid">
+      <article class="quick-card primary" id="quick">
+        <span>คำตอบเร็ว</span>
+        <h2>ถ้ากำลังเทียบแอร์อยู่ รุ่นนี้ควรดูตรงไหนก่อน</h2>
+        <p>{review.bestFor}</p>
+      </article>
+      <article class="quick-card">
+        <span>ไม่เหมาะกับ</span>
+        <p>{review.notFor}</p>
+      </article>
+      <article class="quick-card">
+        <span>ราคาอ้างอิง</span>
+        <p>{review.priceLabel}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section visual-proof">
+    <div class="container">
+      <div class="section-heading">
+        <span>ดูภาพแล้วตัดสินใจง่ายขึ้น</span>
+        <h2>คิดภาพการใช้งานจริงก่อนเลือก BTU</h2>
+      </div>
+      <div class="visual-grid">
+        <a href={review.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`${review.productKey}-visual-main`}>
+          <img src={review.secondaryImage} alt={`ภาพประกอบการเลือก ${review.name}`} loading="lazy" />
+          <strong>{review.roomHint}</strong>
+        </a>
+        <div class="visual-note">
+          <h3>สิ่งที่ต้องดูให้จบก่อนซื้อ</h3>
+          <ul>
+            {review.watchouts.slice(0, 4).map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="review-proof">
+    <div class="container">
+      <div class="section-heading">
+        <span>Buyer Guide</span>
+        <h2>6 ข้อที่ควรเช็กก่อนกดซื้อ {review.shortName}</h2>
+      </div>
+      <div class="recommend-grid">
+        {recommendationCards.map((card) => (
+          <article class="recommend-card">
+            <span>{card.label}</span>
+            <h3>{card.title}</h3>
+            <p>{card.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="btu">
+    <div class="container">
+      <div class="section-heading">
+        <span>BTU</span>
+        <h2>เลือก BTU ให้ตรงห้องก่อนดูโปร</h2>
+      </div>
+      <div class="btu-grid">
+        {btuCards.map((card) => (
+          <article>
+            <strong>{card.btu}</strong>
+            <h3>{card.room}</h3>
+            <p>{card.note}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section article-zone">
+    <div class="container article-layout">
+      <article class="article-body">
+        <section id="fit">
+          <h2>เหมาะกับใคร</h2>
+          <p>{review.bestFor}</p>
+        </section>
+
+        <section id="score">
+          <h2>คะแนนแบบ Friendsay</h2>
+          <ScoreBars scores={scoreItems} />
+        </section>
+
+        <section id="good">
+          <h2>ข้อดีที่ทำให้รุ่นนี้น่าเข้ารอบ</h2>
+          <div class="pill-list">{review.strengths.map((item) => <span>{item}</span>)}</div>
+        </section>
+
+        <section id="watch">
+          <h2>จุดต้องระวังก่อนกดซื้อ</h2>
+          <div class="watch-list">{review.watchouts.map((item) => <p>{item}</p>)}</div>
+        </section>
+
+        <section id="cost">
+          <h2>ต้นทุนจริงไม่ใช่แค่ราคาเครื่อง</h2>
+          <p>แอร์ต้องคิดแบบราคารวมหน้าใช้งานครับ เครื่องหนึ่งเครื่องมีค่าเครื่อง ค่าติดตั้ง ท่อ ราง ขาแขวน สายไฟ เบรกเกอร์ และคิวช่าง ถ้าถามครบตั้งแต่แรกจะเทียบรุ่นได้แม่นกว่าเยอะ</p>
+        </section>
+
+        <section id="install">
+          <h2>ติดตั้งให้ดีตั้งแต่วันแรก</h2>
+          <p>จุดติดตั้งคอยล์เย็น จุดวางคอยล์ร้อน ระยะท่อ และทางน้ำทิ้งมีผลกับทั้งความเย็น เสียง และค่าซ่อมในอนาคต ถ้าห้องเป็นคอนโดให้ถามนิติและร้านก่อนจ่ายเงินเสมอ</p>
+        </section>
+
+        <section id="warranty">
+          <h2>ประกันและบริการหลังซื้อ</h2>
+          <p>รุ่นจากแบรนด์ใหญ่ไม่ได้แปลว่าจบเสมอ ต้องรู้ว่าร้านออกใบเสร็จอย่างไร เคลมผ่านศูนย์หรือร้าน ต้องลงทะเบียนไหม และค่าแรงหลังปีแรกคิดอย่างไร</p>
+        </section>
+
+        <section id="alternatives">
+          <h2>ควรเทียบกับรุ่นไหน</h2>
+          <p>ถ้าดู {review.shortName} อยู่ ให้เทียบกับรุ่นราคาใกล้กันในกลุ่ม Mitsubishi, Daikin, Panasonic, LG, Sharp หรือ Carrier อีก 2-3 ตัวก่อน เพื่อดูว่าเงินที่จ่ายเพิ่มได้ความมั่นใจ ฟีเจอร์ หรือ BTU เพิ่มจริงไหม</p>
+        </section>
+
+        <section id="questions">
+          <h2>ถามร้านก่อนซื้อ</h2>
+          <ol class="question-list">
+            {questions.map((item) => <li>{item}</li>)}
+          </ol>
+        </section>
+
+        <section id="price">
+          <h2>เช็กราคา</h2>
+          <p>ปุ่มด้านล่างเป็นลิงก์ค้นหาชื่อรุ่นตรงๆ เพื่อให้เทียบร้านได้เร็ว หลังได้ affiliate link ตรงรุ่นแล้วสามารถแทนลิงก์เหล่านี้ได้ทันที</p>
+          <PriceButtons links={review.links} context={`${review.productKey}-article-price`} />
+        </section>
+
+        <section id="faq">
+          <h2>FAQ</h2>
+          {faqItems.map((item) => (
+            <details>
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </section>
+
+        <section id="final">
+          <h2>สรุป</h2>
+          <p>{review.shortName} เป็นรุ่นที่ควรเก็บไว้เทียบ ถ้าขนาด BTU ตรงห้องและร้านตอบเรื่องราคารวม ติดตั้ง และประกันได้ชัด รุ่นนี้ก็มีเหตุผลพอให้เข้ารอบก่อนตัดสินใจซื้อจริงครับ</p>
+        </section>
+      </article>
+
+      <aside class="toc" aria-label="สารบัญ">
+        <strong>ในหน้านี้</strong>
+        <a href="#quick">คำตอบเร็ว</a>
+        <a href="#review-proof">6 ข้อก่อนซื้อ</a>
+        <a href="#btu">เลือก BTU</a>
+        <a href="#fit">เหมาะกับใคร</a>
+        <a href="#score">คะแนน</a>
+        <a href="#good">ข้อดี</a>
+        <a href="#watch">จุดระวัง</a>
+        <a href="#cost">ต้นทุนจริง</a>
+        <a href="#install">ติดตั้ง</a>
+        <a href="#warranty">ประกัน</a>
+        <a href="#alternatives">เทียบรุ่นอื่น</a>
+        <a href="#questions">ถามร้าน</a>
+        <a href="#price">เช็กราคา</a>
+        <a href="#faq">FAQ</a>
+        <a href="#final">สรุป</a>
+      </aside>
+    </div>
+  </section>
+
+  <nav class="air-sticky-buy" aria-label={`ปุ่มซื้อ ${review.shortName} แบบลอยตามหน้าจอ`}>
+    <span>{review.shortName}</span>
+    <a class="shopee" href={review.links.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`${review.productKey}-sticky`}>Shopee</a>
+    <a class="lazada" href={review.links.lazada} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context={`${review.productKey}-sticky`}>Lazada</a>
+    <a class="tiktok" href={review.links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context={`${review.productKey}-sticky`}>TikTok</a>
+  </nav>
+
+  <AffiliateClickTracker />
+</BaseLayout>
+
+<style>
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
+  .draft-hero,
+  .section {
+    background: #fffdf8;
+  }
+
+  .draft-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+    gap: clamp(24px, 5vw, 72px);
+    align-items: stretch;
+    min-height: calc(100vh - 88px);
+    padding: clamp(42px, 7vw, 96px) clamp(18px, 5vw, 72px);
+    border-bottom: 1px solid rgba(224, 205, 178, 0.9);
+  }
+
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 780px;
+  }
+
+  .eyebrow,
+  .section-heading span,
+  .quick-card span,
+  .recommend-card span {
+    color: var(--accent);
+    font-weight: 900;
+    letter-spacing: 0;
+  }
+
+  .hero-copy h1 {
+    margin: 16px 0 18px;
+    color: #101b2a;
+    font-size: clamp(46px, 8vw, 112px);
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  .hero-copy p {
+    max-width: 760px;
+    color: #425166;
+    font-size: clamp(18px, 2vw, 28px);
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    margin-top: 26px;
+  }
+
+  .soft-link {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    padding: 0 18px;
+    border: 1px solid #e8d9c7;
+    border-radius: 8px;
+    color: #162334;
+    font-weight: 900;
+    text-decoration: none;
+    background: #fffaf2;
+  }
+
+  .hero-visual {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    min-height: 520px;
+    border-radius: 8px;
+    border: 1px solid #e6d5bf;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 24px 70px rgba(22, 35, 52, 0.16);
+  }
+
+  .hero-visual img,
+  .visual-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-card {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+    padding: 22px;
+    border-radius: 8px;
+    background: rgba(255, 253, 248, 0.92);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(232, 217, 199, 0.9);
+  }
+
+  .hero-card span {
+    color: var(--accent);
+    font-weight: 900;
+  }
+
+  .hero-card strong {
+    display: block;
+    margin-top: 8px;
+    color: #101b2a;
+    font-size: clamp(52px, 7vw, 96px);
+    line-height: 1;
+  }
+
+  .hero-card p {
+    margin: 8px 0 0;
+    color: #516174;
+    font-weight: 800;
+  }
+
+  .section {
+    padding: clamp(40px, 6vw, 86px) 0;
+  }
+
+  .container {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .quick-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .quick-card,
+  .recommend-card,
+  .btu-grid article,
+  .article-body,
+  .toc,
+  .visual-note {
+    border: 1px solid #e7d5bf;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 16px 48px rgba(26, 33, 42, 0.08);
+  }
+
+  .quick-card {
+    padding: 26px;
+  }
+
+  .quick-card.primary {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, white), #fffdf8);
+  }
+
+  .quick-card h2,
+  .section-heading h2,
+  .article-body h2 {
+    margin: 10px 0 0;
+    color: #101b2a;
+    letter-spacing: 0;
+  }
+
+  .quick-card p {
+    color: #425166;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .section-heading {
+    margin-bottom: 22px;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(34px, 5vw, 68px);
+    line-height: 1.08;
+  }
+
+  .visual-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  .visual-grid a {
+    position: relative;
+    min-height: 420px;
+    overflow: hidden;
+    border: 1px solid #e7d5bf;
+    border-radius: 8px;
+    color: #101b2a;
+    text-decoration: none;
+  }
+
+  .visual-grid a strong {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    padding: 16px;
+    border-radius: 8px;
+    background: rgba(255, 253, 248, 0.92);
+    font-size: 22px;
+  }
+
+  .visual-note {
+    padding: 28px;
+  }
+
+  .visual-note ul,
+  .question-list {
+    padding-left: 22px;
+  }
+
+  .visual-note li,
+  .question-list li {
+    margin: 10px 0;
+    color: #425166;
+    line-height: 1.65;
+    font-weight: 750;
+  }
+
+  .recommend-grid,
+  .btu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .recommend-card,
+  .btu-grid article {
+    padding: 24px;
+  }
+
+  .recommend-card h3,
+  .btu-grid h3 {
+    color: #101b2a;
+    font-size: 22px;
+    line-height: 1.35;
+  }
+
+  .recommend-card p,
+  .btu-grid p,
+  .article-body p,
+  details p {
+    color: #425166;
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  .btu-grid strong {
+    display: inline-flex;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 12%, white);
+    color: var(--accent);
+  }
+
+  .article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .article-body {
+    padding: clamp(24px, 5vw, 54px);
+  }
+
+  .article-body section {
+    scroll-margin-top: 130px;
+    padding: 10px 0 32px;
+    border-bottom: 1px solid rgba(226, 211, 190, 0.75);
+  }
+
+  .article-body section:last-child {
+    border-bottom: 0;
+  }
+
+  .article-body h2 {
+    font-size: clamp(28px, 4vw, 46px);
+  }
+
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .pill-list span,
+  .watch-list p {
+    border: 1px solid #f0d5c8;
+    border-radius: 999px;
+    padding: 10px 14px;
+    background: #fff7f1;
+    color: #9c3d2f;
+    font-weight: 850;
+  }
+
+  .watch-list p {
+    border-radius: 8px;
+    background: #fffaf2;
+    color: #39485b;
+  }
+
+  details {
+    border: 1px solid #e7d5bf;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 12px 0;
+    background: #fffdf8;
+  }
+
+  summary {
+    cursor: pointer;
+    color: #101b2a;
+    font-weight: 900;
+    font-size: 18px;
+  }
+
+  .toc {
+    position: sticky;
+    top: 100px;
+    padding: 16px;
+  }
+
+  .toc strong {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .toc a {
+    display: block;
+    margin: 8px 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fffaf2;
+    color: #334155;
+    text-decoration: none;
+    font-weight: 850;
+  }
+
+  .air-sticky-buy {
+    position: fixed;
+    z-index: 20;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: minmax(120px, 1.1fr) repeat(3, minmax(92px, 0.7fr));
+    gap: 10px;
+    width: min(840px, calc(100% - 28px));
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(255, 253, 248, 0.94);
+    border: 1px solid #e7d5bf;
+    box-shadow: 0 16px 48px rgba(16, 27, 42, 0.18);
+    backdrop-filter: blur(16px);
+  }
+
+  .air-sticky-buy span,
+  .air-sticky-buy a {
+    min-height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: 950;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .air-sticky-buy span {
+    color: #101b2a;
+    background: #fffaf2;
+    padding: 0 10px;
+  }
+
+  .air-sticky-buy .shopee {
+    color: #fff;
+    background: #f04b2f;
+  }
+
+  .air-sticky-buy .lazada {
+    color: #fff;
+    background: #25469d;
+  }
+
+  .air-sticky-buy .tiktok {
+    color: #fff;
+    background: #050505;
+  }
+
+  @media (max-width: 920px) {
+    .draft-hero,
+    .quick-grid,
+    .visual-grid,
+    .recommend-grid,
+    .btu-grid,
+    .article-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .draft-hero {
+      min-height: 0;
+      padding-top: 34px;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(40px, 14vw, 72px);
+    }
+
+    .hero-visual {
+      min-height: 420px;
+    }
+
+    .toc {
+      position: static;
+      order: -1;
+    }
+
+    .air-sticky-buy {
+      grid-template-columns: repeat(3, 1fr);
+      bottom: 12px;
+    }
+
+    .air-sticky-buy span {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .container {
+      width: min(100% - 24px, 1180px);
+    }
+
+    .hero-actions :global(.price-buttons),
+    #price :global(.price-buttons) {
+      width: 100%;
+      grid-template-columns: 1fr;
+    }
+
+    .hero-visual {
+      min-height: 360px;
+    }
+
+    .hero-card {
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      padding: 16px;
+    }
+
+    .visual-grid a {
+      min-height: 320px;
+    }
+
+    .recommend-card,
+    .btu-grid article,
+    .quick-card,
+    .article-body {
+      padding: 20px;
+    }
+
+    .air-sticky-buy a {
+      min-height: 44px;
+      font-size: 14px;
+    }
+  }
+</style>
