@@ -1,5 +1,6 @@
 import { legacyProducts } from "../data/legacyProducts";
 import { queuedAirConditionerReviews } from "../data/airConditionerReviewQueue";
+import { queuedRefrigeratorReviews } from "../data/refrigeratorReviewQueue";
 
 const site = "https://friendsay.com";
 
@@ -12,6 +13,7 @@ const staticPaths = [
   "/th/best/water-heaters/",
   "/th/legacy-reviews/",
   "/th/reviews/air-conditioners/",
+  "/th/reviews/refrigerators/",
   "/th/reviews/candy-vpct-vpgt-air-conditioner/",
   "/th/reviews/tcl-savein-ai-air-conditioner/",
   "/th/reviews/xiaomi-mijia-air-inverter-eco/",
@@ -24,8 +26,14 @@ const staticPaths = [
 ];
 
 const airConditionerReviewPaths = queuedAirConditionerReviews.map((review) => `/th/reviews/${review.reviewSlug}/`);
+const refrigeratorReviewPaths = queuedRefrigeratorReviews.map((review) => `/th/reviews/refrigerators/${review.reviewSlug}/`);
 
-const paths = [...staticPaths, ...airConditionerReviewPaths, ...legacyProducts.map((product) => product.preservedPath)];
+const paths = [
+  ...staticPaths,
+  ...airConditionerReviewPaths,
+  ...refrigeratorReviewPaths,
+  ...legacyProducts.map((product) => product.preservedPath)
+];
 
 function escapeXml(value: string) {
   return value
