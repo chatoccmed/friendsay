@@ -219,6 +219,78 @@ const makeAdvice = (seed: RefrigeratorSeed): RefrigeratorAdvice[] => {
   ];
 };
 
+const titleBenefitFor = (seed: RefrigeratorSeed) => {
+  if (seed.type === "side-by-side") {
+    return seed.capacityCuFt >= 20
+      ? "ตู้ใหญ่สายตุนของ เหมาะกับบ้านที่อยากได้ช่องแช่จริงจัง"
+      : "ไซด์บายไซด์ราคาเข้าถึงง่ายสำหรับบ้านที่อยากได้พื้นที่แช่กว้างขึ้น";
+  }
+
+  if (seed.type === "multi-door") {
+    return "รุ่นหลายประตูสำหรับบ้านที่อยากจัดของเป็นโซนและให้ครัวดูพรีเมียมขึ้น";
+  }
+
+  if (seed.capacityCuFt <= 8) {
+    return "ตู้เย็นขนาดกะทัดรัดที่เหมาะกับคอนโดหรือบ้าน 1-2 คน";
+  }
+
+  if (seed.capacityCuFt <= 13) {
+    return "ขนาดกำลังพอดีสำหรับบ้านเล็กถึงกลางที่อยากซื้อให้จบง่าย";
+  }
+
+  return "พื้นที่แช่เยอะขึ้น เหมาะกับบ้านที่ทำอาหารและซื้อของสดบ่อย";
+};
+
+const priceToneFor = (seed: RefrigeratorSeed) => {
+  if (seed.price < 9000) {
+    return "จุดน่าสนใจคือราคาเริ่มไม่แรง เหมาะกับคนที่อยากคุมงบแต่ยังอยากได้รุ่นมีชื่อชัดเจน";
+  }
+
+  if (seed.price < 16000) {
+    return "เป็นช่วงราคาที่คนส่วนใหญ่น่าจะเริ่มเทียบจริงจัง เพราะยังไม่หลุดงบเกินไปและได้ความจุใช้งานในบ้านได้ดี";
+  }
+
+  if (seed.price < 25000) {
+    return "ราคาเริ่มขยับขึ้น จึงควรดูให้ครบทั้งความจุ ค่าไฟ ขนส่ง และประกัน ไม่ควรตัดสินจากโปรอย่างเดียว";
+  }
+
+  return "อยู่ในกลุ่มที่ต้องดูภาพรวมให้ละเอียด ทั้งพื้นที่ครัว ทางขนย้าย ประกัน และความคุ้มระยะยาว";
+};
+
+const proofLabelFor = (seed: RefrigeratorSeed) => {
+  if ((seed.reviewCount ?? 0) > 5) {
+    return `มีรีวิวบนหน้าร้าน ${seed.reviewCount?.toLocaleString("th-TH")} รายการให้ไล่อ่านต่อ โดยเฉพาะเรื่องเสียง พื้นที่แช่ และขนส่ง`;
+  }
+
+  if (seed.reviewCount) {
+    return `มีรีวิวบนหน้าร้าน ${seed.reviewCount.toLocaleString("th-TH")} รายการ รุ่นนี้ควรเช็กรีวิวล่าสุดเพิ่มก่อนจ่ายเงินจริง`;
+  }
+
+  return "ควรเช็กรีวิวล่าสุดและถามร้านให้ชัดก่อนซื้อ เพราะรุ่นนี้ต้องยืนยันร้าน สี และประกันให้ตรงก่อน";
+};
+
+const quickVerdictFor = (seed: RefrigeratorSeed, name: string, typeLabel: string, priceLabel: string) => {
+  const typeLead = seed.type === "side-by-side"
+    ? "เหมาะกับบ้านที่อยากได้ช่องแช่กว้าง เปิดหยิบของง่าย และมีพื้นที่ครัวพอ"
+    : seed.type === "multi-door"
+      ? "เหมาะกับบ้านที่อยากจัดของเป็นหมวดและอยากให้หน้าตาครัวดูเรียบร้อยขึ้น"
+      : seed.capacityCuFt <= 8
+        ? "เหมาะกับคอนโด ห้องเช่า หรือบ้านที่แช่ของไม่เยอะ"
+        : seed.capacityCuFt <= 13
+          ? "เหมาะกับบ้านเล็กถึงกลางที่อยากได้ตู้เย็นใช้ง่าย ดูแลง่าย"
+          : "เหมาะกับบ้านที่ทำอาหารบ่อยหรือซื้อของเข้าบ้านทีละเยอะ";
+
+  return `${name} เป็น${typeLabel} ${seed.capacityCuFt} คิว ที่${typeLead} งบประมาณอยู่ที่ ${priceLabel} ก่อนกดซื้อให้วัดช่องวางจริง เช็กค่าขนส่ง/ยกขึ้นชั้น และถามประกันให้ชัดครับ`;
+};
+
+const summaryFor = (seed: RefrigeratorSeed, name: string, priceLabel: string) => {
+  const reviewLine = (seed.reviewCount ?? 0) > 5
+    ? `รุ่นนี้มีรีวิวให้ตามอ่านพอสมควร จึงเหมาะกับการไล่ดูรูปจริงจากผู้ซื้อก่อนตัดสินใจ`
+    : `รุ่นนี้ควรใช้เป็นตัวเลือกเทียบราคาและสเปกก่อน แล้วค่อยยืนยันรีวิวล่าสุดในร้านอีกที`;
+
+  return `${name} น่าเอาเข้า shortlist ถ้าขนาด ${seed.capacityCuFt} คิวตรงกับพื้นที่บ้านและงบ ${priceLabel} ของคุณ ${reviewLine} จุดที่อยากให้เช็กเป็นพิเศษคือประตูเปิดสุดไหม ช่องฟรีซพอกับนิสัยแช่ของหรือเปล่า และร้านรับผิดชอบอย่างไรถ้าขนส่งมีรอยบุบ`;
+};
+
 const makeReview = (seed: RefrigeratorSeed): QueuedRefrigeratorReview => {
   const name = `${seed.brand} ${seed.model}`;
   const query = `${name} ตู้เย็น`;
@@ -227,16 +299,12 @@ const makeReview = (seed: RefrigeratorSeed): QueuedRefrigeratorReview => {
   const typeLabel = typeLabelMap[seed.type];
   const useCase = capacityUse(seed.capacityCuFt, seed.type);
   const priceLabel = `ประมาณ ${seed.price.toLocaleString("th-TH")} บาท`;
-  const reviewPart = seed.reviewCount
-    ? `มีรีวิวจากแหล่งอ้างอิง ${seed.reviewCount.toLocaleString("th-TH")} รายการ`
-    : "ควรเช็กรีวิวล่าสุดในร้านก่อนตัดสินใจ";
   const isLarge = seed.capacityCuFt >= 16;
   const isPremium = seed.price >= 20000 || seed.type !== "two-door";
-  const titleBenefit = isLarge
-    ? "พื้นที่แช่เยอะ เหมาะกับบ้านที่ซื้อของเข้าครัวจริงจัง"
-    : "ตัวเลือกใช้ง่ายสำหรับบ้านที่อยากซื้อตู้เย็นให้จบแบบไม่พลาด";
+  const titleBenefit = titleBenefitFor(seed);
   const scoreBase = Math.min(9.4, 7.7 + Math.min(seed.reviewCount ?? 1, 30) / 20 + (seed.rating ?? 4.6) / 12);
   const imageSet = imageSetFor(productKey);
+  const priceTone = priceToneFor(seed);
 
   return {
     queueRank: seed.queueRank,
@@ -256,12 +324,12 @@ const makeReview = (seed: RefrigeratorSeed): QueuedRefrigeratorReview => {
     sourceUrl: seed.sourcePath ? `https://www.homepro.co.th${seed.sourcePath}` : homeproSearchLink(query),
     rating: seed.rating,
     reviewCount: seed.reviewCount,
-    proofLabel: `${reviewPart} พร้อมข้อมูลราคาและชื่อรุ่นสำหรับเทียบก่อนซื้อ`,
+    proofLabel: proofLabelFor(seed),
     heroImage: imageSet.hero,
     secondaryImage: imageSet.productFront,
     imageSet,
-    quickVerdict: `${name} น่าเริ่มดูถ้าคุณอยากได้${typeLabel}ขนาด ${seed.capacityCuFt} คิว ในงบ ${priceLabel} จุดที่ควรเช็กก่อนจ่ายคือพื้นที่วางจริง ประตูเปิดสุดไหม และเงื่อนไขประกันหลังซื้อออนไลน์`,
-    summary: `รุ่นนี้อยู่ในกลุ่มที่ควรเปิดดู เพราะชื่อรุ่น ราคา และความจุค่อนข้างชัด เหมาะกับคนที่อยากเริ่มเทียบจากรุ่นจริง แล้วค่อยดูโปร สี ประกัน ค่าขนส่ง และร้านที่ตอบคำถามหลังการขายได้ครบก่อนจ่ายเงิน`,
+    quickVerdict: quickVerdictFor(seed, name, typeLabel, priceLabel),
+    summary: summaryFor(seed, name, priceLabel),
     bestFor: [
       useCase.best,
       `คนที่อยากเทียบตู้เย็น ${seed.brand} ในงบ ${priceLabel} แบบมีชื่อรุ่นชัดเจน`,
@@ -274,8 +342,8 @@ const makeReview = (seed: RefrigeratorSeed): QueuedRefrigeratorReview => {
     ],
     strengths: [
       `${typeLabel} ขนาด ${seed.capacityCuFt} คิว เหมาะกับการเทียบตามขนาดบ้านได้ง่าย`,
-      `ราคาอ้างอิง ${priceLabel} ทำให้ประเมินงบคร่าว ๆ ก่อนเทียบโปรในร้านออนไลน์ได้`,
-      seed.rating ? `คะแนนอ้างอิง ${seed.rating.toFixed(2)} จากหน้าร้านที่ตรวจได้` : "ชื่อรุ่นชัด เหมาะกับการค้นหาร้านที่ขายตรงรุ่น",
+      priceTone,
+      seed.rating ? `คะแนนที่เห็นในรอบเก็บข้อมูลอยู่ที่ ${seed.rating.toFixed(2)} ควรเปิดรีวิวล่าสุดอ่านประกอบอีกที` : "ชื่อรุ่นชัด เหมาะกับการค้นหาร้านที่ขายตรงรุ่น",
       isLarge ? "พื้นที่แช่เยอะ เหมาะกับบ้านที่ซื้อของสดและเครื่องดื่มเข้าบ้านทีละมาก" : "ขนาดไม่เวอร์จนเกินไปสำหรับบ้านไทยทั่วไป"
     ],
     watchouts: [

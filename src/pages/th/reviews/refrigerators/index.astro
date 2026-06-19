@@ -21,8 +21,8 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
 ---
 
 <BaseLayout
-  title="คลังรีวิวตู้เย็น 28 รุ่นยอดนิยมในไทย 2026 | Friendsay"
-  description="รวมคิวรีวิวตู้เย็น 28 รุ่นจากแหล่งขายในไทย พร้อมหน้ารวมรุ่น ตัวกรอง ประเภทตู้เย็น ความจุ ราคา และลิงก์อ่านรีวิวแยกรุ่นแบบ Friendsay"
+  title="คลังรีวิวตู้เย็น 28 รุ่นน่าเลือกในไทย 2026 | Friendsay"
+  description="รวมรีวิวตู้เย็น 28 รุ่นจากแหล่งขายในไทย พร้อมตัวกรอง ประเภทตู้เย็น ความจุ ราคา จุดควรถามร้าน และลิงก์อ่านรีวิวแยกรุ่นแบบ Friendsay"
   canonical="https://friendsay.com/th/reviews/refrigerators/"
 >
   <section class="fridge-hero">
@@ -32,28 +32,28 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
     <div class="container hero-grid">
       <div class="hero-copy">
         <span class="eyebrow">Friendsay Refrigerator Library 2026</span>
-        <h1>คลังรีวิวตู้เย็น 28 รุ่น เริ่มจากรุ่นที่คนซื้อควรเช็กก่อน</h1>
+        <h1>คลังรีวิวตู้เย็น 28 รุ่น เลือกง่ายขึ้นก่อนจ่ายเงินจริง</h1>
         <p>
-          หน้านี้คือฐานข้อมูลเริ่มต้นของหมวดตู้เย็น เรารวมรุ่นที่พบในแหล่งค้าปลีกไทยไว้ก่อน แล้วทำหน้ารีวิวแยกรุ่นให้เปิดดูได้ทันที
-          จุดสำคัญคือช่วยให้คุณเทียบขนาด ราคา ประเภทตู้ และสิ่งที่ควรถามร้านก่อนกดซื้อใน Shopee, Lazada หรือ TikTok
+          หน้านี้รวมตู้เย็นรุ่นที่คนไทยน่าจะเจอบ่อยเวลาเทียบซื้อออนไลน์ แล้วแยกรีวิวให้เปิดดูทีละรุ่นได้ทันที
+          จุดสำคัญคือช่วยให้คุณเทียบขนาด ราคา ประเภทตู้ พื้นที่วาง ความเสี่ยงขนส่ง และคำถามที่ควรถามร้านก่อนกดซื้อใน Shopee, Lazada หรือ TikTok
         </p>
         <div class="hero-actions">
           <a href="#all-models" class="primary-link">ดูครบ 28 รุ่น</a>
           <a href="#start-here" class="secondary-link">เริ่มจากรุ่นเด่น</a>
         </div>
       </div>
-      <div class="hero-stats" aria-label="สรุปคิวรีวิวตู้เย็น">
+      <div class="hero-stats" aria-label="สรุปรีวิวตู้เย็น">
         <div>
           <strong>{reviews.length}</strong>
-          <span>รุ่นในคิวเริ่มต้น</span>
+          <span>รุ่นที่เปิดอ่านได้แล้ว</span>
         </div>
         <div>
           <strong>{readyCount}</strong>
-          <span>รุ่นที่มีรีวิวอ้างอิงเกิน 5 รายการ</span>
+          <span>รุ่นที่มีรีวิวให้ไล่อ่านเกิน 5 รายการ</span>
         </div>
         <div>
           <strong>{refrigeratorReviewSummary.categoryCount}</strong>
-          <span>รายการสินค้าในหมวดแหล่งอ้างอิง</span>
+          <span>รายการสินค้าในหมวดที่ใช้ตั้งต้นสำรวจ</span>
         </div>
       </div>
     </div>
@@ -83,7 +83,7 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
     <div class="container section-heading">
       <span class="eyebrow">Start Here</span>
       <h2>6 รุ่นแรกที่ควรเปิดอ่านก่อน</h2>
-      <p>เรียงจากความน่าสนใจของราคา ความจุ คะแนน และจำนวนรีวิวอ้างอิงที่ช่วยให้เริ่มเทียบได้เร็วขึ้น</p>
+      <p>เรียงจากความน่าสนใจของราคา ความจุ คะแนน และจำนวนรีวิวที่เห็นในรอบสำรวจ เพื่อให้เริ่มเทียบได้เร็วขึ้น</p>
     </div>
     <div class="container priority-grid">
       {topReviews.map((item) => (
@@ -127,7 +127,7 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
         {types.map((type) => (
           <span>
             <strong>{type}</strong>
-            <small>{reviews.filter((item) => item.typeLabel === type).length} รุ่นในคิว</small>
+            <small>{reviews.filter((item) => item.typeLabel === type).length} รุ่นในคลัง</small>
           </span>
         ))}
       </div>
@@ -155,7 +155,7 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
   <section class="library-section all-models-section" id="all-models">
     <div class="container section-heading">
       <span class="eyebrow">All Models</span>
-      <h2>รายชื่อรุ่นทั้งหมดในคิวตู้เย็น</h2>
+      <h2>รายชื่อรุ่นทั้งหมดในคลังตู้เย็น</h2>
       <p>ค้นจากแบรนด์ รุ่น ประเภท หรือความจุได้เลย ทุกแถวมีลิงก์ไปหน้ารีวิวแยกรุ่น พร้อมทางลัดไปเช็กราคาและรีวิวล่าสุดก่อนตัดสินใจ</p>
     </div>
 
@@ -201,7 +201,7 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
             <div class="row-meta">
               <span>{item.capacityLabel}</span>
               <span>{item.priceLabel}</span>
-              <span>{item.reviewCount ? `${formatNumber(item.reviewCount)} รีวิวอ้างอิง` : "เช็กราคาและรีวิวล่าสุดก่อนซื้อ"}</span>
+              <span>{item.reviewCount ? `${formatNumber(item.reviewCount)} รีวิวให้ไล่อ่าน` : "เช็กราคาและรีวิวล่าสุดก่อนซื้อ"}</span>
             </div>
           </div>
           <div class="row-check">

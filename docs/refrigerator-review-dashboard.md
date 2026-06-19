@@ -16,6 +16,7 @@ This dashboard tracks the first Friendsay refrigerator review batch. Public revi
 - Generated visual kits: 28/28 models, 7 images per model
 - Generated image path: `public/images/refrigerators/models/`
 - Image ledger: `docs/refrigerator-image-asset-ledger.csv`
+- Public copy pass: buyer-facing title, quick verdict, proof label, strengths, and summary improved for all 28 generated reviews
 - Marketplace link state: exact brand + model search links are ready; exact affiliate URLs are pending user verification
 
 ## Active Files
@@ -36,6 +37,7 @@ This dashboard tracks the first Friendsay refrigerator review batch. Public revi
 - Recommendation cards should tell the reader what to check or ask, not merely say that reviews exist.
 - When product images are added later, use clean product images first and make every major visual clickable to Shopee.
 - Every refrigerator detail page now has model-specific generated visuals for hero, clean product, detail, capacity, space, delivery, and warranty sections.
+- Generated copy must stay useful even before exact affiliate URLs arrive: tell readers what to check, what risk matters, and who the model fits.
 - Exact real product photos are tracked separately in the image ledger and should be added only after the exact marketplace or brand image source is verified.
 
 ## Next Rounds
