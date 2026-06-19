@@ -54,6 +54,14 @@ const imageLinkAttrs = {
   target: "_blank",
   rel: "sponsored noopener"
 };
+const adviceVisuals = [
+  { src: review.imageSet.spaceScene, alt: `Kitchen space check for ${review.name}` },
+  { src: review.imageSet.productDetail, alt: `Product detail view for ${review.name}` },
+  { src: review.imageSet.capacityScene, alt: `Capacity planning for ${review.name}` },
+  { src: review.imageSet.warrantyScene, alt: `Warranty and energy check for ${review.name}` },
+  { src: review.imageSet.deliveryScene, alt: `Delivery inspection for ${review.name}` },
+  { src: review.imageSet.productFront, alt: `Clean product view for ${review.name}` }
+];
 const reviewJsonLd = {
   "@context": "https://schema.org",
   "@type": "Review",
@@ -220,13 +228,22 @@ const breadcrumbJsonLd = {
       <p>สรุปเป็นภาษาคนซื้อจริง: ไม่ต้องอ่านยาว แต่รู้ว่าต้องเช็กอะไรและถามร้านตรงไหนก่อนจ่ายเงิน</p>
     </div>
     <div class="container advice-grid">
-      {review.reviewAdvice.map((item, index) => (
-        <article class="advice-card">
-          <span>{(index + 1).toString().padStart(2, "0")}</span>
-          <h3>{item.title}</h3>
-          <p>{item.body}</p>
-        </article>
-      ))}
+      {review.reviewAdvice.map((item, index) => {
+        const visual = adviceVisuals[index % adviceVisuals.length];
+
+        return (
+          <article class="advice-card">
+            <a class="advice-card__image" {...imageLinkAttrs}>
+              <img src={visual.src} alt={visual.alt} loading={index < 2 ? "eager" : "lazy"} />
+            </a>
+            <div class="advice-card__body">
+              <span>{(index + 1).toString().padStart(2, "0")}</span>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
+          </article>
+        );
+      })}
     </div>
   </section>
 
@@ -735,10 +752,44 @@ const breadcrumbJsonLd = {
   }
 
   .advice-card {
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 152px 1fr;
+  }
+
+  .advice-card__image {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    min-height: 152px;
+    background: linear-gradient(135deg, #eef6f4, #fff2ec);
+  }
+
+  .advice-card__image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(23, 32, 42, 0.1));
+    pointer-events: none;
+  }
+
+  .advice-card__image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 220ms ease;
+  }
+
+  .advice-card:hover .advice-card__image img {
+    transform: scale(1.035);
+  }
+
+  .advice-card__body {
     padding: 18px;
   }
 
-  .advice-card span {
+  .advice-card__body span {
     display: inline-flex;
     width: 42px;
     height: 42px;
@@ -750,14 +801,14 @@ const breadcrumbJsonLd = {
     font-weight: 950;
   }
 
-  .advice-card h3 {
+  .advice-card__body h3 {
     margin: 16px 0 8px;
     color: #17202a;
     font-size: 1.35rem;
     line-height: 1.25;
   }
 
-  .advice-card p {
+  .advice-card__body p {
     margin: 0;
     color: #5d6b78;
     line-height: 1.55;
