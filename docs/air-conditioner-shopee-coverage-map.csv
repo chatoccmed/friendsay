@@ -1,4 +1,5 @@
 coverage_id,batch,keyword,search_intent,collection_status,target_items,candidate_count,detail_verified_count,evidence_id,last_checked,next_check_due,notes
+aircov-exact-queue-models-2026-06-18,3,review_queue_exact_model_search,review_queue_exact_model_search,blocked_by_verification,24,1,0,air-shopee-2026-06-18-search-blocked-verification,2026-06-18,2026-06-30,"Tried exact-model Shopee collection for the remaining queue. One Mitsubishi MSY-GT candidate had search-level proof from an earlier visible result; a new exact search for Mitsubishi Heavy Duty returned Verify to Continue CAPTCHA, so the round stopped."
 aircov-main-wall-ac-2026-06-14,1,แอร์ติดผนัง,main_category,search_captured,20,15,4,air-shopee-2026-06-14-main-search-candidates,2026-06-14,2026-06-30,"เจอ candidate 15 รายการ ยืนยันรายละเอียดแล้ว 4 รายการ ต้องเปิด candidate ที่เหลือ"
 aircov-9000-btu,1,แอร์ 9000 BTU,small_room,pending,20,0,0,,,"2026-06-30","ยังไม่ได้เก็บรอบ BTU"
 aircov-12000-btu,1,แอร์ 12000 BTU,bedroom_medium,pending,20,0,0,,,"2026-06-30","ยังไม่ได้เก็บรอบ BTU"

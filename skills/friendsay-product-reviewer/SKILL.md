@@ -21,8 +21,10 @@ When working inside the Friendsay project, read these first:
 - `docs/air-conditioner-shopee-data-system.md` for durable Shopee evidence and coverage rules
 - `docs/air-conditioner-shopee-collection-dashboard.md`, `docs/air-conditioner-shopee-collection-rounds.csv`, and `docs/air-conditioner-shopee-collection-eta.csv` to answer how many collection rounds remain and when the target pace should finish
 - `docs/air-conditioner-shopee-evidence-ledger.csv` to confirm that the product has a reusable evidence id
+- `docs/air-conditioner-review-source-ledger.csv` to confirm whether a review can show public proof counts or must stay as a catalog draft
 - `docs/air-conditioner-shopee-coverage-map.csv` to understand which search/brand/BTU rounds are complete
 - `docs/air-conditioner-shopee-review-queue.csv` for the active air-conditioner queue
+- `docs/refrigerator-market-catalog-system.md`, `docs/refrigerator-review-dashboard.md`, `docs/refrigerator-review-master-queue.csv`, and `docs/refrigerator-marketplace-match.csv` when working on refrigerator reviews
 - `src/pages/th/reviews/candy-vpct-vpgt-air-conditioner.astro` as the current review-page reference
 - `src/pages/th/reviews/[slug].astro` as the batch-review route. When using this dynamic route, keep the same full template standard as the Candy/Midea pages; do not let queued reviews collapse into thin summary pages.
 
@@ -38,18 +40,20 @@ If a reference is missing, continue with the closest available source and note t
 6. Default quality rule: real reviews, ratings, comments, or sold evidence should be greater than 5 for a polished full review. The proof may come from Shopee, Lazada, TikTok, HomePro, Power Buy, brand stores, or another checkable retailer source.
 7. User override for the air-conditioner batch: when the user says to review every model first and they will check Shopee/affiliate links later, create draft review pages for every catalog model without blocking on sold-count or review-count confirmation. Do not invent proof; write as expert buyer guidance until proof is added.
 8. Create or confirm an `evidence_id` in the evidence ledger before upgrading a draft page to a polished proof-backed full review.
-9. If sold count is hidden, use `review_signal_pass` internally. Never invent sales numbers.
-10. Select the next product by priority: catalog verified, strong review evidence, clear model or specs, trusted shop, useful comparison value.
-11. Write one review at a time using the product review operating template unless the user explicitly asks for a data-driven batch draft.
-12. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
-13. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
-14. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
-15. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
-16. Include exactly or at least 6 buyer-review or buyer-decision recommendation cards. When proof is pending, make the cards useful pre-purchase checks instead of pretending they came from buyer reviews.
-17. Add Shopee, Lazada, and TikTok buy buttons when links exist. If exact product links are not found yet, use exact brand + model search links and mark direct affiliate matching as a follow-up. Always include a centered responsive sticky buy bar.
-18. Add comparison UX: alternatives, compare CTA, or compare tray when available.
-19. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
-20. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
+9. Check `docs/air-conditioner-review-source-ledger.csv` before writing public proof copy. If `proof_count` is `0`, do not display a fake `1+` count or claim that buyer reviews exist; use buyer-useful checks instead.
+10. If sold count is hidden, keep that as an internal note only. Never invent sales numbers or show internal labels in public HTML.
+11. Select the next product by priority: catalog verified, strong review evidence, clear model or specs, trusted shop, useful comparison value.
+12. Write one review at a time using the product review operating template unless the user explicitly asks for a data-driven batch draft.
+13. Create a click-worthy article title before writing the hero: lead with the product name, then the strongest buyer benefit, then the reason it deserves a shortlist or the key buying condition.
+14. Include a clear verdict near the top: buy, shortlist, or skip, who it fits, who it does not fit, and what to ask before paying.
+15. After the top proof and category guide, build a full lower article section using `article-layout`, `article-body`, and `toc`; do not stop with a thin summary section.
+16. Include at least 2 clean real product images when available, plus unique generated or contextual visuals matching the section.
+17. Do not use another brand's product image as a filler. If an exact product image is not available, use a neutral category image or a clearly contextual generated image for the relevant section.
+18. Include exactly or at least 6 buyer-review or buyer-decision recommendation cards. When proof is pending, make the cards useful pre-purchase checks instead of pretending they came from buyer reviews.
+19. Add Shopee, Lazada, and TikTok buy buttons when links exist. If exact product links are not found yet, use exact brand + model search links and mark direct affiliate matching as a follow-up. Always include a centered responsive sticky buy bar.
+20. Add comparison UX: alternatives, compare CTA, or compare tray when available.
+21. Verify mobile, tablet, and desktop, including actual clicks on at least two table-of-contents links.
+22. Build, copy changes to `.github-ready`, build there, and commit when deploy workflow is expected.
 
 ## Writing Rules
 
@@ -89,6 +93,16 @@ If a reference is missing, continue with the closest available source and note t
 - If the product has no proof above 5, keep it in the queue, update the next action, and move to the next ready product instead of stopping.
 - If Codex cannot access a marketplace page and the user offers to help capture it, use `docs/marketplace-user-assisted-capture.md` and import a capture file.
 - If the user asks how many air conditioners remain, answer from the market catalog and catalog rounds, not from arbitrary Shopee round counts.
+
+## Refrigerator Catalog Rules
+
+- Use `docs/refrigerator-review-dashboard.md` for current refrigerator progress.
+- Use `docs/refrigerator-review-master-queue.csv` as the active model queue.
+- Use `docs/refrigerator-marketplace-match.csv` for Shopee, Lazada, and TikTok matching status.
+- Public refrigerator pages must not mention internal link status, affiliate matching, or search-link placeholders.
+- If exact marketplace URLs are pending, keep exact brand + model search links in the data and keep the pending note in docs only.
+- Refrigerator watch-outs should focus on size fit, door swing, heat clearance, delivery dents, warranty, return window, shipping and lifting cost, and variant/color mismatch.
+- Recommendation cards should help the reader decide what to measure, ask, or check before buying.
 
 ## Simple Queue Mode
 

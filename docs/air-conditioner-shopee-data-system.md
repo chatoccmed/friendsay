@@ -1,5 +1,18 @@
 # Shopee Air Conditioner Data System
 
+## 2026-06-18 exact queue collection update
+
+The current air-conditioner review queue now has a dedicated Shopee model proof map at `docs/air-conditioner-shopee-model-proof-map.csv`.
+
+Status after the latest collection attempt:
+
+- 4 models have Shopee product-detail proof with rating/review/comment/media counts.
+- 1 model, `mitsubishi-msy-gt09vf`, has search-result proof only. The candidate URL is recorded, but Shopee product detail opened traffic verification, so review/sold counts must not be used yet.
+- 23 models are marked `needs_shopee_capture`.
+- A follow-up exact search for `MITSUBISHI HEAVY DUTY DXK10CXV-W1` returned Shopee `Verify to Continue` CAPTCHA, so collection stopped per the B+D rules.
+
+Public review pages must not show internal blocking notes. Use this status only for editorial workflow, affiliate-link matching, and future capture planning.
+
 ## Workflow update
 
 ตั้งแต่ 16 มิถุนายน 2026 ระบบแอร์ของ Friendsay ไม่ใช้ Shopee เป็นฐานค้นหารุ่นหลักแล้ว

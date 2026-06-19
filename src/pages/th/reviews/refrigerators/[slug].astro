@@ -1,0 +1,959 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import PriceButtons from "../../../../components/PriceButtons.astro";
+import ScoreBars from "../../../../components/ScoreBars.astro";
+import AffiliateClickTracker from "../../../../components/AffiliateClickTracker.astro";
+import {
+  queuedRefrigeratorReviews,
+  type QueuedRefrigeratorReview
+} from "../../../../data/refrigeratorReviewQueue";
+
+export function getStaticPaths() {
+  return queuedRefrigeratorReviews.map((review) => ({
+    params: { slug: review.reviewSlug },
+    props: { review }
+  }));
+}
+
+type Props = {
+  review: QueuedRefrigeratorReview;
+};
+
+const { review } = Astro.props;
+const title = `${review.articleTitle} | Friendsay`;
+const description = `${review.name} ${review.capacityLabel} ${review.typeLabel} สรุปแบบเพื่อนช่วยเลือก พร้อมคะแนน จุดเด่น จุดระวัง คำถามก่อนซื้อ และลิงก์เช็กราคา Shopee Lazada TikTok`;
+const scoreBars = [
+  { label: "ความนิยม", value: review.scores.popularity },
+  { label: "ความมั่นใจผู้ซื้อ", value: review.scores.buyerConfidence },
+  { label: "ความคุ้มค่า", value: review.scores.value },
+  { label: "ความจุเหมาะบ้าน", value: review.scores.capacityFit },
+  { label: "ค่าไฟ/เสียงรบกวน", value: review.scores.energyComfort },
+  { label: "ดูแลรักษาง่าย", value: review.scores.maintenanceEase },
+  { label: "ความเสี่ยงขนส่ง", value: review.scores.deliveryRisk }
+];
+const tocItems = [
+  ["quick", "คำตอบเร็ว"],
+  ["buyer-advice", "6 ข้อที่ควรรู้"],
+  ["fit", "เหมาะกับใคร"],
+  ["capacity", "เลือกความจุ"],
+  ["score", "คะแนน"],
+  ["good", "ข้อดี"],
+  ["watch", "จุดระวัง"],
+  ["cost", "ต้นทุนจริง"],
+  ["space", "พื้นที่วาง"],
+  ["warranty", "ประกัน"],
+  ["compare", "เทียบรุ่นอื่น"],
+  ["shop-questions", "ถามร้านก่อนซื้อ"],
+  ["price", "เช็กราคา"],
+  ["faq", "FAQ"],
+  ["final", "สรุป"]
+];
+const imageLinkAttrs = {
+  href: review.links.shopee,
+  target: "_blank",
+  rel: "sponsored noopener"
+};
+---
+
+<BaseLayout title={title} description={description} canonical={`https://friendsay.com/th/reviews/refrigerators/${review.reviewSlug}/`}>
+  <AffiliateClickTracker pageContext={`refrigerator-review-${review.productKey}`} />
+
+  <section class="review-hero">
+    <a class="review-hero__media" {...imageLinkAttrs}>
+      <img src={review.heroImage} alt={`ภาพประกอบรีวิว ${review.name}`} />
+    </a>
+    <div class="review-hero__overlay"></div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Friendsay Refrigerator Review 2026</span>
+        <h1>{review.articleTitle}</h1>
+        <p>{review.quickVerdict}</p>
+        <div class="hero-actions">
+          <a href="#quick" class="primary-link">ดูคำตอบ 90 วินาที</a>
+          <a href="#buyer-advice" class="secondary-link">ดู 6 ข้อที่ควรรู้</a>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <a {...imageLinkAttrs} class="hero-card__image">
+          <img src={review.secondaryImage} alt={`ภาพช่วยตัดสินใจ ${review.name}`} />
+        </a>
+        <span>คะแนน Friendsay</span>
+        <strong>{review.score.toFixed(1)}/10</strong>
+        <p>{review.proofLabel}</p>
+        <PriceButtons links={review.links} label={`เช็กราคา ${review.name}`} context={`refrigerator-hero-${review.productKey}`} />
+      </aside>
+    </div>
+  </section>
+
+  <nav class="sticky-buy" aria-label="ลิงก์ซื้อสินค้าแบบลอย">
+    <a class="sticky-buy__shopee" href={review.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`refrigerator-sticky-${review.productKey}`}>Shopee</a>
+    <a class="sticky-buy__lazada" href={review.links.lazada} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context={`refrigerator-sticky-${review.productKey}`}>Lazada</a>
+    <a class="sticky-buy__tiktok" href={review.links.tiktok} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context={`refrigerator-sticky-${review.productKey}`}>TikTok</a>
+  </nav>
+
+  <section class="decision-section" id="quick">
+    <div class="container decision-grid">
+      <a class="decision-image" {...imageLinkAttrs}>
+        <img src="/images/refrigerators/refrigerator-capacity-organization.png" alt="ภาพตัวอย่างการจัดของในตู้เย็น" loading="lazy" />
+      </a>
+      <div class="decision-card">
+        <span class="pill">คำตอบเร็ว</span>
+        <h2>ถ้ากำลังเทียบรุ่นนี้ ให้ดู 3 เรื่องก่อน</h2>
+        <ol>
+          <li><strong>พื้นที่วางจริง:</strong> วัดช่องตู้และทางขนย้ายก่อนดูโปร</li>
+          <li><strong>นิสัยซื้อของ:</strong> {review.capacityLabel} เหมาะไหมกับจำนวนคนและของที่แช่ประจำ</li>
+          <li><strong>ประกัน/ขนส่ง:</strong> ถามร้านเรื่องรอยบุบ เปลี่ยนคืน และประกันคอมเพรสเซอร์ให้ชัด</li>
+        </ol>
+      </div>
+      <div class="decision-card price-card">
+        <span class="pill">ราคาอ้างอิง</span>
+        <h2>{review.priceLabel}</h2>
+        <p>ใช้เป็นจุดตั้งต้นเทียบโปรได้ แต่ราคาจริงอาจเปลี่ยนตามคูปอง สี ค่าขนส่ง และร้านที่ขาย</p>
+        <PriceButtons links={review.links} label={`เช็กราคา ${review.name}`} context={`refrigerator-quick-${review.productKey}`} />
+      </div>
+    </div>
+  </section>
+
+  <section class="proof-section" id="buyer-advice">
+    <div class="container section-heading">
+      <span class="eyebrow">Buyer Notes</span>
+      <h2>6 ข้อที่ควรรู้ก่อนกดซื้อ {review.shortName}</h2>
+      <p>สรุปเป็นภาษาคนซื้อจริง: ไม่ต้องอ่านยาว แต่รู้ว่าต้องเช็กอะไรและถามร้านตรงไหนก่อนจ่ายเงิน</p>
+    </div>
+    <div class="container advice-grid">
+      {review.reviewAdvice.map((item, index) => (
+        <article class="advice-card">
+          <span>{(index + 1).toString().padStart(2, "0")}</span>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="photo-wall">
+    <div class="container photo-grid">
+      <a {...imageLinkAttrs} class="photo-large">
+        <img src={review.heroImage} alt={`ภาพรวม ${review.name}`} loading="lazy" />
+        <span><strong>ตัวเลือกในตลาด</strong> ดูชื่อรุ่น ความจุ และประเภทตู้ให้ตรงก่อน</span>
+      </a>
+      <a {...imageLinkAttrs}>
+        <img src="/images/refrigerators/refrigerator-measure-space.png" alt="ภาพวัดพื้นที่วางตู้เย็น" loading="lazy" />
+        <span><strong>พื้นที่วาง</strong> วัดช่องตู้และระยะเปิดประตู</span>
+      </a>
+      <a {...imageLinkAttrs}>
+        <img src="/images/refrigerators/refrigerator-energy-warranty.png" alt="ภาพเช็กค่าไฟและประกันตู้เย็น" loading="lazy" />
+        <span><strong>ค่าไฟ/ประกัน</strong> ถามให้ชัดก่อนจ่ายเงิน</span>
+      </a>
+      <a {...imageLinkAttrs}>
+        <img src="/images/refrigerators/refrigerator-delivery-check.png" alt="ภาพตรวจรับตู้เย็นหลังขนส่ง" loading="lazy" />
+        <span><strong>ขนส่ง</strong> ถ่ายคลิปตอนรับของไว้เสมอ</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="article-zone">
+    <div class="container article-layout">
+      <article class="article-body">
+        <section id="fit" class="content-block">
+          <div class="fit-grid">
+            <div>
+              <h2>เหมาะกับใคร</h2>
+              <ul>
+                {review.bestFor.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h2>ไม่เหมาะกับใคร</h2>
+              <ul>
+                {review.notFor.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="capacity" class="content-block visual-block">
+          <div>
+            <span class="eyebrow">Capacity</span>
+            <h2>{review.capacityLabel} ใช้กับบ้านแบบไหนถึงจะพอดี</h2>
+            <p>
+              {review.name} อยู่ในกลุ่ม {review.typeLabel} ขนาด {review.capacityLabel}
+              ถ้าเป็นบ้านที่ทำอาหารบ่อย ให้คิดจากพื้นที่ช่องผัก ช่องขวดน้ำ และช่องฟรีซมากกว่าดูตัวเลขคิวอย่างเดียว
+              ส่วนบ้านที่ซื้อของสดไม่เยอะ รุ่นใหญ่เกินไปอาจเปลืองพื้นที่และค่าไฟมากกว่าความจำเป็น
+            </p>
+          </div>
+          <a {...imageLinkAttrs}>
+            <img src="/images/refrigerators/refrigerator-capacity-organization.png" alt="ภาพช่วยเลือกความจุตู้เย็น" loading="lazy" />
+          </a>
+        </section>
+
+        <section id="score" class="content-block">
+          <span class="eyebrow">Friendsay Score</span>
+          <h2>คะแนนแบบ Friendsay</h2>
+          <ScoreBars scores={scoreBars} />
+          <p>
+            คะแนนนี้ใช้ดูภาพรวม ไม่ใช่คำตัดสินสุดท้าย รุ่นที่คะแนนสูงมักมีจุดแข็งเรื่องความชัดของชื่อรุ่น ราคา และความเหมาะกับบ้านไทย
+            แต่ถ้าพื้นที่วางไม่พอดีหรือร้านตอบเรื่องประกันไม่ชัด ก็ควรชะลอไว้ก่อน
+          </p>
+        </section>
+
+        <section id="good" class="content-block">
+          <span class="eyebrow">Good Points</span>
+          <h2>ข้อดีที่ทำให้รุ่นนี้ควรอยู่ใน shortlist</h2>
+          <div class="point-grid">
+            {review.strengths.map((item) => (
+              <div class="point-card">
+                <strong>{item}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="watch" class="content-block">
+          <span class="eyebrow">Watchouts</span>
+          <h2>จุดระวังก่อนกดซื้อ</h2>
+          <div class="point-grid point-grid--warn">
+            {review.watchouts.map((item) => (
+              <div class="point-card">
+                <strong>{item}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="cost" class="content-block">
+          <span class="eyebrow">Real Cost</span>
+          <h2>ต้นทุนจริงไม่ได้มีแค่ราคาเครื่อง</h2>
+          <p>
+            ราคาอ้างอิงของรุ่นนี้คือ {review.priceLabel} แต่เวลาซื้อออนไลน์ให้รวมค่าส่ง ค่ายกขึ้นชั้น ค่ากำจัดตู้เก่า
+            และความเสี่ยงเรื่องการเปลี่ยนคืน ถ้าโปรถูกมากแต่ร้านไม่ตอบเรื่องขนส่งและประกันให้ชัด รุ่นที่แพงกว่านิดหน่อยอาจสบายใจกว่า
+          </p>
+        </section>
+
+        <section id="space" class="content-block visual-block">
+          <div>
+            <span class="eyebrow">Space Check</span>
+            <h2>วัดพื้นที่วางให้จบก่อนดูสีและโปร</h2>
+            <p>
+              ตู้เย็นต้องมีพื้นที่ระบายความร้อน และต้องเปิดประตูได้สุดพอให้ดึงลิ้นชักหรือชั้นวางออกมาได้ ถ้าทางเข้าบ้านแคบ
+              ให้ถามร้านเรื่องขนาดกล่องและบริการยกขึ้นชั้นก่อน โดยเฉพาะรุ่นขนาด {review.capacityLabel}
+            </p>
+          </div>
+          <a {...imageLinkAttrs}>
+            <img src="/images/refrigerators/refrigerator-measure-space.png" alt="ภาพวัดช่องวางตู้เย็น" loading="lazy" />
+          </a>
+        </section>
+
+        <section id="warranty" class="content-block visual-block">
+          <div>
+            <span class="eyebrow">Warranty</span>
+            <h2>ประกันคือเรื่องที่ต้องถามก่อน ไม่ใช่หลังเสีย</h2>
+            <p>
+              ให้ถามร้านว่าเป็นสินค้าใหม่ศูนย์ไทยหรือไม่ รับประกันตัวเครื่องและคอมเพรสเซอร์กี่ปี ต้องลงทะเบียนเองไหม
+              และกรณีซื้อผ่านร้านออนไลน์ ใครเป็นผู้ประสานงานเคลม ถ้าคำตอบคลุมเครือให้เก็บแชตไว้ก่อนตัดสินใจ
+            </p>
+          </div>
+          <a {...imageLinkAttrs}>
+            <img src="/images/refrigerators/refrigerator-energy-warranty.png" alt="ภาพเอกสารประกันและค่าไฟตู้เย็น" loading="lazy" />
+          </a>
+        </section>
+
+        <section id="compare" class="content-block">
+          <span class="eyebrow">Compare</span>
+          <h2>ถ้ายังลังเล ให้เทียบกับรุ่นใกล้กันก่อน</h2>
+          <p>
+            วิธีเทียบง่ายที่สุดคือเอา {review.brand} {review.model} ไปเทียบกับตู้เย็นขนาดใกล้กันในงบเดียวกัน
+            ดู 4 อย่างพร้อมกัน: ความจุจริง ประเภทตู้ ค่าไฟ และเงื่อนไขหลังการขาย อย่าเทียบจากราคาหน้าโปรอย่างเดียว
+          </p>
+          <a class="compare-link" href="/th/reviews/refrigerators/">กลับไปดูคลังตู้เย็น 28 รุ่น</a>
+        </section>
+
+        <section id="shop-questions" class="content-block">
+          <span class="eyebrow">Ask Before Pay</span>
+          <h2>6 คำถามที่ควรถามร้านก่อนซื้อ</h2>
+          <div class="question-list">
+            {review.questions.map((item, index) => (
+              <div>
+                <span>{index + 1}</span>
+                <p>{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="price" class="content-block price-check">
+          <span class="eyebrow">Price Check</span>
+          <h2>เช็กราคาล่าสุด</h2>
+          <p>
+            ราคาหน้าโปรเปลี่ยนได้ตลอด ก่อนกดซื้อให้ดูชื่อรุ่น สี ความจุ รหัสท้ายรุ่น ค่าขนส่ง ยกขึ้นชั้น ประกัน และเงื่อนไขเปลี่ยนคืนให้ตรงกัน
+            ร้านที่ตอบคำถามครบและมีรีวิวล่าสุดให้อ่านชัด มักน่าไว้ใจกว่าร้านที่ถูกกว่าเล็กน้อยแต่ข้อมูลคลุมเครือ
+          </p>
+          <PriceButtons links={review.links} label={`เช็กราคา ${review.name}`} context={`refrigerator-price-${review.productKey}`} />
+        </section>
+
+        <section id="faq" class="content-block faq-block">
+          <span class="eyebrow">FAQ</span>
+          <h2>คำถามที่เจอบ่อย</h2>
+          <details open>
+            <summary>{review.capacityLabel} พอกับบ้านกี่คน?</summary>
+            <p>ขึ้นกับนิสัยซื้อของ ถ้าซื้อของสดบ่อยและแช่เยอะ ให้ขยับขนาดขึ้นจากที่คิดไว้เล็กน้อย แต่ถ้ากินข้างนอกบ่อย ขนาดกลางมักพอแล้ว</p>
+          </details>
+          <details>
+            <summary>ซื้อผ่าน Shopee ต้องระวังอะไร?</summary>
+            <p>ระวังชื่อรุ่น สี ประกันศูนย์ไทย ค่าขนส่ง ยกขึ้นชั้น และเงื่อนไขเปลี่ยนคืนเมื่อเจอรอยบุบหรือเครื่องมีปัญหา</p>
+          </details>
+          <details>
+            <summary>ควรเสียบปลั๊กทันทีหลังรับของไหม?</summary>
+            <p>ควรดูคู่มือของรุ่นนั้น ๆ ก่อน โดยทั่วไปตู้เย็นที่ผ่านการขนส่งควรตั้งให้นิ่งก่อนเสียบปลั๊ก เพื่อให้น้ำยาทำความเย็นและระบบภายในเข้าที่</p>
+          </details>
+        </section>
+
+        <section id="final" class="content-block final-card">
+          <span class="eyebrow">Final Verdict</span>
+          <h2>สรุปสั้น ๆ</h2>
+          <p>
+            {review.name} เป็นรุ่นที่ควรใส่ไว้ในลิสต์ถ้าคุณต้องการ {review.typeLabel} ขนาด {review.capacityLabel}
+            และอยากเทียบราคาก่อนซื้อแบบมีรหัสรุ่นชัด จุดตัดสินใจจริงอยู่ที่พื้นที่วาง ประกัน และร้านที่ขาย ไม่ใช่แค่ราคาหน้าโปร
+          </p>
+          <PriceButtons links={review.links} label={`เช็กราคา ${review.name}`} context={`refrigerator-final-${review.productKey}`} />
+        </section>
+      </article>
+
+      <aside class="toc" aria-label="เมนูในบทความ">
+        <div class="toc-card">
+          <span>อ่าน</span>
+          <strong>ในหน้านี้</strong>
+          {tocItems.map(([id, label], index) => (
+            <a href={`#${id}`}>
+              <span>{(index + 1).toString().padStart(2, "0")}</span>
+              {label}
+            </a>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
+  :global(body) {
+    padding-bottom: 92px;
+  }
+
+  .container {
+    width: min(1220px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .review-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: min(800px, calc(100vh - 82px));
+    background: #111d27;
+    color: #fff;
+  }
+
+  .review-hero__media,
+  .review-hero__media img,
+  .review-hero__overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .review-hero__media img {
+    object-fit: cover;
+    object-position: 64% center;
+    opacity: 0.58;
+    filter: saturate(0.92) contrast(1.03);
+  }
+
+  .review-hero__overlay {
+    background:
+      linear-gradient(90deg, rgba(17, 29, 39, 0.96), rgba(17, 29, 39, 0.76) 45%, rgba(17, 29, 39, 0.25)),
+      linear-gradient(180deg, rgba(255, 107, 90, 0.1), rgba(17, 29, 39, 0.76));
+  }
+
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 430px);
+    gap: clamp(28px, 5vw, 78px);
+    align-items: end;
+    min-height: min(800px, calc(100vh - 82px));
+    padding: clamp(72px, 11vw, 132px) 0 clamp(44px, 7vw, 84px);
+  }
+
+  .eyebrow {
+    color: #ff7a68;
+    font-size: 0.78rem;
+    font-weight: 950;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .hero-copy h1 {
+    max-width: 880px;
+    margin: 12px 0 18px;
+    font-size: clamp(42px, 7.4vw, 96px);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .hero-copy p,
+  .hero-card p,
+  .section-heading p,
+  .content-block p,
+  .decision-card li,
+  .fit-grid li {
+    line-height: 1.68;
+  }
+
+  .hero-copy p {
+    max-width: 770px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: clamp(17px, 1.75vw, 23px);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 26px;
+  }
+
+  .primary-link,
+  .secondary-link,
+  .compare-link {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-weight: 950;
+    text-decoration: none;
+  }
+
+  .primary-link,
+  .compare-link {
+    background: #ff6b5a;
+    color: #fff;
+  }
+
+  .secondary-link {
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .hero-card {
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.13);
+    padding: 16px;
+    backdrop-filter: blur(18px);
+  }
+
+  .hero-card__image {
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 1.4;
+    border-radius: 8px;
+    margin-bottom: 18px;
+  }
+
+  .hero-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-card span {
+    color: #ffdfd7;
+    font-weight: 950;
+  }
+
+  .hero-card strong {
+    display: block;
+    margin: 8px 0 6px;
+    font-size: clamp(58px, 6vw, 92px);
+    line-height: 1;
+  }
+
+  .hero-card p {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .sticky-buy {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(120px, 1fr));
+    gap: 8px;
+    width: min(640px, calc(100% - 24px));
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.88);
+    padding: 8px;
+    box-shadow: 0 20px 60px rgba(23, 32, 42, 0.2);
+    backdrop-filter: blur(18px);
+    transform: translateX(-50%);
+  }
+
+  .sticky-buy a {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 950;
+    text-decoration: none;
+  }
+
+  .sticky-buy__shopee {
+    background: #f4512c;
+  }
+
+  .sticky-buy__lazada {
+    background: #2447a8;
+  }
+
+  .sticky-buy__tiktok {
+    background: #050505;
+  }
+
+  .decision-section,
+  .proof-section,
+  .photo-wall,
+  .article-zone {
+    background: #fffdf8;
+  }
+
+  .decision-section,
+  .proof-section,
+  .photo-wall {
+    padding: clamp(42px, 6vw, 82px) 0;
+  }
+
+  .decision-grid {
+    display: grid;
+    grid-template-columns: 0.92fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .decision-image,
+  .decision-card,
+  .advice-card,
+  .content-block,
+  .toc-card,
+  .point-card {
+    border: 1px solid rgba(223, 208, 186, 0.92);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 18px 58px rgba(23, 32, 42, 0.08);
+  }
+
+  .decision-image {
+    overflow: hidden;
+    min-height: 100%;
+  }
+
+  .decision-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .decision-card {
+    padding: 22px;
+  }
+
+  .pill {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+    border-radius: 999px;
+    background: #fff0ea;
+    padding: 7px 12px;
+    color: #d94f41;
+    font-size: 0.8rem;
+    font-weight: 950;
+  }
+
+  .decision-card h2 {
+    margin: 14px 0;
+    color: #17202a;
+    font-size: clamp(28px, 3.4vw, 46px);
+    line-height: 1.08;
+  }
+
+  .decision-card ol {
+    margin: 0;
+    padding-left: 22px;
+    color: #445467;
+    font-weight: 750;
+  }
+
+  .price-card h2 {
+    color: #047a6e;
+  }
+
+  .section-heading {
+    margin-bottom: 24px;
+  }
+
+  .section-heading h2,
+  .content-block h2 {
+    margin: 10px 0 12px;
+    color: #17202a;
+    font-size: clamp(34px, 5vw, 68px);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .section-heading p {
+    max-width: 820px;
+    margin: 0;
+    color: #617080;
+    font-size: clamp(16px, 1.5vw, 20px);
+  }
+
+  .advice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .advice-card {
+    padding: 18px;
+  }
+
+  .advice-card span {
+    display: inline-flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eaf6f4;
+    color: #047a6e;
+    font-weight: 950;
+  }
+
+  .advice-card h3 {
+    margin: 16px 0 8px;
+    color: #17202a;
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+
+  .advice-card p {
+    margin: 0;
+    color: #5d6b78;
+    line-height: 1.55;
+  }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.9fr 0.9fr;
+    gap: 14px;
+  }
+
+  .photo-grid a {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    min-height: 260px;
+    border: 1px solid rgba(223, 208, 186, 0.92);
+    border-radius: 8px;
+    color: #17202a;
+    text-decoration: none;
+    box-shadow: 0 18px 58px rgba(23, 32, 42, 0.09);
+  }
+
+  .photo-grid a:first-child {
+    grid-row: span 2;
+  }
+
+  .photo-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-grid span {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 14px;
+    color: #445467;
+    font-weight: 850;
+    backdrop-filter: blur(10px);
+  }
+
+  .photo-grid strong {
+    display: block;
+    color: #d94f41;
+  }
+
+  .article-zone {
+    padding: clamp(36px, 6vw, 86px) 0;
+  }
+
+  .article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 34px;
+    align-items: start;
+  }
+
+  .article-body {
+    display: grid;
+    gap: 18px;
+  }
+
+  .content-block {
+    padding: clamp(22px, 4vw, 36px);
+    scroll-margin-top: 112px;
+  }
+
+  .content-block p {
+    margin: 0;
+    color: #445467;
+    font-size: clamp(16px, 1.45vw, 20px);
+  }
+
+  .fit-grid,
+  .visual-block {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .fit-grid > div {
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .fit-grid ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #445467;
+    font-weight: 760;
+  }
+
+  .visual-block {
+    align-items: center;
+  }
+
+  .visual-block a {
+    overflow: hidden;
+    aspect-ratio: 1.62;
+    border-radius: 8px;
+  }
+
+  .visual-block img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .point-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .point-card {
+    padding: 18px;
+    box-shadow: none;
+  }
+
+  .point-card strong {
+    color: #17202a;
+    line-height: 1.5;
+  }
+
+  .point-grid--warn .point-card {
+    background: #fff7f1;
+  }
+
+  .question-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .question-list div {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .question-list span {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #17202a;
+    color: #fff;
+    font-weight: 950;
+  }
+
+  .faq-block details {
+    border-top: 1px solid rgba(223, 208, 186, 0.88);
+    padding: 16px 0;
+  }
+
+  .faq-block summary {
+    color: #17202a;
+    cursor: pointer;
+    font-weight: 950;
+  }
+
+  .final-card {
+    background: linear-gradient(135deg, #12202a, #213442);
+    color: #fff;
+  }
+
+  .final-card h2,
+  .final-card p {
+    color: #fff;
+  }
+
+  .toc {
+    position: sticky;
+    top: 94px;
+  }
+
+  .toc-card {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+  }
+
+  .toc-card > span {
+    color: #d94f41;
+    font-weight: 950;
+  }
+
+  .toc-card > strong {
+    color: #17202a;
+    font-size: 1.15rem;
+  }
+
+  .toc-card a {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
+    border: 1px solid rgba(223, 208, 186, 0.92);
+    border-radius: 8px;
+    padding: 10px;
+    color: #334253;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  .toc-card a span {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #edf6f6;
+    color: #376d82;
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 1100px) {
+    .hero-grid,
+    .decision-grid,
+    .article-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .toc {
+      position: static;
+      order: -1;
+    }
+
+    .toc-card {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .toc-card > span,
+    .toc-card > strong {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .advice-grid,
+    .photo-grid,
+    .fit-grid,
+    .visual-block,
+    .point-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .photo-grid a:first-child {
+      grid-row: auto;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      width: min(100% - 24px, 1220px);
+    }
+
+    .review-hero,
+    .hero-grid {
+      min-height: auto;
+    }
+
+    .hero-grid {
+      padding: 56px 0 34px;
+    }
+
+    .hero-card strong {
+      font-size: 56px;
+    }
+
+    .sticky-buy {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      bottom: 10px;
+      padding: 6px;
+    }
+
+    .sticky-buy a {
+      min-height: 44px;
+      font-size: 0.92rem;
+    }
+
+    .toc-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

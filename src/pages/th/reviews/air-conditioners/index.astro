@@ -1,187 +1,1211 @@
 ---
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { airConditioners } from "../../../../data/airConditioners";
 import { queuedAirConditionerReviews } from "../../../../data/airConditionerReviewQueue";
+import {
+  airConditionerShopeeProofs,
+  airConditionerShopeeProofSummary,
+  type AirConditionerShopeeProof
+} from "../../../../data/airConditionerShopeeProof";
 
-const finishedReviews = [
-  {
-    href: "/th/reviews/candy-vpct-vpgt-air-conditioner/",
-    name: "CANDY VPCT/VPGT Series",
-    status: "รีวิวละเอียดเสร็จแล้ว",
-    rank: 1
+const formatNumber = (value: number | undefined) =>
+  value ? value.toLocaleString("th-TH") : "";
+
+const shopeeSearchLink = (query: string) =>
+  `https://shopee.co.th/search?keyword=${encodeURIComponent(query)}`;
+
+const queuedByKey = new Map(
+  queuedAirConditionerReviews.map((review) => [review.productKey, review])
+);
+
+const readyByKey = new Map(
+  airConditioners.map((product) => [
+    product.slug,
+    {
+      name: product.name,
+      shortName: product.shortName,
+      btuOptions: product.btuOptions,
+      priceLabel: product.priceLabel,
+      sourceName: "Shopee",
+      proofCount: product.ratingsCount,
+      score: product.score,
+      image: product.image.url,
+      links: product.links,
+      strengths: product.pros,
+      watchouts: product.watch
+    }
+  ])
+);
+
+const statusCopy: Record<
+  AirConditionerShopeeProof["status"],
+  { label: string; shortLabel: string; className: string }
+> = {
+  detail_verified: {
+    label: "ยืนยันรีวิว Shopee แล้ว",
+    shortLabel: "Shopee พร้อม",
+    className: "is-verified"
   },
-  {
-    href: "/th/reviews/tcl-savein-ai-air-conditioner/",
-    name: "TCL SaveIN AI Series",
-    status: "รีวิวละเอียดเสร็จแล้ว",
-    rank: 2
+  search_candidate_only: {
+    label: "พบหน้าสินค้า รอตรวจรีวิวล่าสุด",
+    shortLabel: "พบสินค้า",
+    className: "is-candidate"
   },
-  {
-    href: "/th/reviews/xiaomi-mijia-air-inverter-eco/",
-    name: "Xiaomi Mijia Air Inverter Eco",
-    status: "รีวิวละเอียดเสร็จแล้ว",
-    rank: 3
-  },
-  {
-    href: "/th/reviews/midea-celest-msce-air-conditioner/",
-    name: "Midea Celest MSCE",
-    status: "รีวิวละเอียดเสร็จแล้ว",
-    rank: 4
+  needs_shopee_capture: {
+    label: "พร้อมอ่านรีวิว รอลิงก์ซื้อที่ตรงรุ่น",
+    shortLabel: "รอลิงก์ซื้อ",
+    className: "is-pending"
   }
-];
+};
 
-const queuedReviews = queuedAirConditionerReviews.map((review) => ({
-  href: `/th/reviews/${review.reviewSlug}/`,
-  name: review.name,
-  status: review.proofCount > 5 ? `มีรีวิวจาก ${review.sourceName} ${review.proofCount} รายการ` : "รอเติมลิงก์ affiliate หลังตรวจร้าน",
-  rank: review.queueRank
-}));
+const modelRows = airConditionerShopeeProofs
+  .map((proof) => {
+    const queued = queuedByKey.get(proof.productKey);
+    const ready = readyByKey.get(proof.productKey);
+    const sourceName = proof.status === "detail_verified" ? "Shopee" : queued?.sourceName ?? ready?.sourceName ?? "Friendsay";
+    const proofCount = proof.status === "detail_verified" ? proof.ratingsCount ?? 0 : queued?.proofCount ?? ready?.proofCount ?? 0;
+    const score = queued?.score ?? ready?.score ?? 8;
+    const priceLabel = queued?.priceLabel ?? ready?.priceLabel ?? "เช็กราคาหน้าร้านก่อนซื้อ";
+    const image = queued?.heroImage ?? ready?.image ?? "/images/air-conditioners/wall-ac-condo-hero.jpg";
+    const btuOptions = queued?.btuOptions ?? ready?.btuOptions ?? ["เช็ก BTU จากหน้าร้าน"];
+    const links = queued?.links ?? ready?.links ?? {
+      shopee: shopeeSearchLink(proof.searchQuery),
+      lazada: `https://www.lazada.co.th/catalog/?q=${encodeURIComponent(proof.searchQuery)}`,
+      tiktok: `https://www.tiktok.com/search?q=${encodeURIComponent(`${proof.searchQuery} TikTok Shop`)}`
+    };
+    const shopeeHref = proof.productUrl ?? links.shopee;
+    const name = queued?.name ?? ready?.name ?? `${proof.brand} ${proof.modelOrSeries}`;
+    const shortName = queued?.shortName ?? ready?.shortName ?? proof.modelOrSeries;
+    const strengths = queued?.strengths ?? ready?.strengths ?? [
+      "มีชื่อรุ่นชัดเจน",
+      "เหมาะสำหรับเทียบราคาและ BTU",
+      "ใช้เป็นตัวเลือกในคิวรีวิวแอร์ 2026"
+    ];
+    const watchouts = queued?.watchouts ?? ready?.watchouts ?? [
+      "เช็กรุ่นย่อยให้ตรงก่อนซื้อ",
+      "ถามค่าติดตั้งและอุปกรณ์เพิ่ม",
+      "อ่านเงื่อนไขประกันให้ชัด"
+    ];
 
-const allReviews = [...finishedReviews, ...queuedReviews].sort((a, b) => a.rank - b.rank);
+    const proofLine =
+      proof.status === "detail_verified"
+        ? `มีข้อมูลรีวิว Shopee ${formatNumber(proof.ratingsCount)}+ รายการ และคอมเมนต์ ${formatNumber(proof.commentsCount)}+ รายการให้ตามอ่าน`
+        : proofCount > 0
+          ? `มีข้อมูลรีวิวจาก ${sourceName} ${formatNumber(proofCount)} รายการ ช่วยใช้คัดกรองก่อนเทียบราคาจริง`
+          : "ใช้เป็นเช็กลิสต์รุ่น/BTU/ราคา แล้วรอจับคู่ลิงก์ซื้อที่ตรงรุ่น";
+
+    return {
+      ...proof,
+      name,
+      shortName,
+      sourceName,
+      proofCount,
+      proofLine,
+      score,
+      scorePercent: Math.round(score * 10),
+      priceLabel,
+      image,
+      btuText: btuOptions.join(" / "),
+      links: { ...links, shopee: shopeeHref },
+      statusMeta: statusCopy[proof.status],
+      strengths: strengths.slice(0, 3),
+      watchouts: watchouts.slice(0, 3),
+      reviewHref: `/th/reviews/${proof.reviewSlug}/`
+    };
+  })
+  .sort((a, b) => a.queueRank - b.queueRank);
+
+const verifiedRows = modelRows.filter((row) => row.status === "detail_verified");
+const candidateRows = modelRows.filter((row) => row.status === "search_candidate_only");
+const pendingRows = modelRows.filter((row) => row.status === "needs_shopee_capture");
+const topRows = modelRows.slice(0, 6);
+
+const brandGroups = Array.from(
+  modelRows.reduce((map, row) => {
+    map.set(row.brand, (map.get(row.brand) ?? 0) + 1);
+    return map;
+  }, new Map<string, number>())
+).sort((a, b) => b[1] - a[1]);
+
+const brandFilterOptions = brandGroups.map(([brand]) => brand);
+const btuFilterOptions = Array.from(
+  new Set(modelRows.flatMap((row) => row.btuText.match(/\d{1,2},?\d{3}/g) ?? []))
+).sort((a, b) => Number(a.replace(",", "")) - Number(b.replace(",", "")));
+
+const pageTitle = "คลังรีวิวแอร์ติดผนัง 28 รุ่นในไทย 2026 | Friendsay";
+const pageDescription =
+  "หน้ารวมรีวิวแอร์ติดผนัง 28 รุ่น พร้อมข้อมูลรีวิว Shopee ที่ยืนยันแล้ว คิวรุ่นที่รอลิงก์ซื้อ และทางลัดอ่านรีวิวแต่ละรุ่นแบบ Friendsay";
 ---
 
 <BaseLayout
-  title="รีวิวแอร์ติดผนังทั้งหมด 2026 | Friendsay"
-  description="หน้ารวมรีวิวแอร์ติดผนังทุกรุ่นในคิว Friendsay พร้อมลิงก์ตรวจงานและลิงก์รีวิวแต่ละรุ่น"
+  title={pageTitle}
+  description={pageDescription}
   canonical="https://friendsay.com/th/reviews/air-conditioners/"
 >
-  <section class="review-index-hero">
-    <div class="container">
-      <span>Friendsay Air Review Library</span>
-      <h1>รีวิวแอร์ติดผนังทั้งหมดในคิว 2026</h1>
-      <p>หน้านี้คือจุดรวมตรวจงาน รีวิวที่ทำละเอียดแล้วและรีวิว draft รอบแรกจะอยู่ในลิสต์เดียวกัน จากนั้นค่อยเติมลิงก์ affiliate และภาพสินค้าจริงรายรุ่นได้ทีหลัง</p>
-      <div class="stats">
-        <strong>{allReviews.length} รุ่น</strong>
-        <strong>{finishedReviews.length} รีวิวละเอียด</strong>
-        <strong>{queuedReviews.length} หน้า draft</strong>
+  <section class="air-library-hero">
+    <div class="air-library-hero__media" aria-hidden="true">
+      <img src="/images/air-conditioners/wall-ac-condo-hero.jpg" alt="" />
+    </div>
+    <div class="air-library-hero__overlay"></div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Friendsay Air Review Library 2026</span>
+        <h1>คลังรีวิวแอร์ติดผนัง 28 รุ่น ที่คนซื้อควรเปิดดูก่อนจ่าย</h1>
+        <p>
+          รวมรุ่นที่เรากำลังไล่ทำรีวิวแบบละเอียด ทั้งรุ่นที่มีข้อมูลรีวิว Shopee แล้ว
+          รุ่นที่มีรีวิวจากร้านใหญ่ และรุ่นที่รอจับคู่ลิงก์ซื้อให้ตรงที่สุด เพื่อให้คุณเทียบได้เร็วขึ้นว่า
+          รุ่นไหนน่าอ่านต่อ รุ่นไหนเหมาะกับห้องคุณ และต้องถามร้านเรื่องอะไรบ้างก่อนกดซื้อ
+        </p>
+        <div class="hero-actions">
+          <a href="#all-models" class="button-main">ดูครบ 28 รุ่น</a>
+          <a href="#verified" class="button-ghost">ดูรุ่นที่มีข้อมูล Shopee</a>
+        </div>
+      </div>
+      <div class="hero-board" aria-label="สรุปสถานะคิวรีวิวแอร์">
+        <div>
+          <span>{modelRows.length}</span>
+          <strong>รุ่นในคิว</strong>
+        </div>
+        <div>
+          <span>{airConditionerShopeeProofSummary.detailVerified}</span>
+          <strong>ยืนยันจาก Shopee</strong>
+        </div>
+        <div>
+          <span>{candidateRows.length + pendingRows.length}</span>
+          <strong>รอจับคู่ลิงก์ซื้อ</strong>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container review-grid">
-      {allReviews.map((review) => (
-        <a class="review-card" href={review.href}>
-          <span>#{review.rank.toString().padStart(2, "0")}</span>
-          <h2>{review.name}</h2>
-          <p>{review.status}</p>
-          <strong>เปิดรีวิว</strong>
-        </a>
+  <section class="library-strip" aria-label="ภาพรวมคิวรีวิว">
+    <div class="container strip-grid">
+      <a href="#verified">
+        <span>01</span>
+        <strong>รุ่นที่มีรีวิว Shopee แล้ว</strong>
+        <small>{verifiedRows.length} รุ่น พร้อมตัวเลขรีวิวให้ตรวจ</small>
+      </a>
+      <a href="#priority">
+        <span>02</span>
+        <strong>ตัวที่ควรอ่านก่อน</strong>
+        <small>เรียงตามคิวและความน่าสนใจของผู้ซื้อ</small>
+      </a>
+      <a href="#all-models">
+        <span>03</span>
+        <strong>ตารางครบ 28 รุ่น</strong>
+        <small>เปิดรีวิวและเช็กราคาจากแต่ละช่องทาง</small>
+      </a>
+      <a href="#brand-map">
+        <span>04</span>
+        <strong>ดูตามแบรนด์</strong>
+        <small>รู้ทันทีว่าในคลังมีแบรนด์ไหนกี่รุ่น</small>
+      </a>
+    </div>
+  </section>
+
+  <section class="library-section" id="verified">
+    <div class="container section-heading">
+      <span class="eyebrow">Shopee Review Ready</span>
+      <h2>รุ่นที่มีข้อมูลรีวิว Shopee ให้ใช้ตัดสินใจก่อน</h2>
+      <p>
+        กลุ่มนี้มีตัวเลขรีวิวและคอมเมนต์จากหน้าสินค้า Shopee แล้ว จึงเหมาะสำหรับเริ่มอ่านก่อน
+        เพราะมีเสียงผู้ซื้อจริงให้ตามดูเรื่องความเย็น เสียง การติดตั้ง และความคุ้มค่า
+      </p>
+    </div>
+
+    <div class="container verified-grid">
+      {verifiedRows.map((row) => (
+        <article class="verified-card">
+          <a href={row.links.shopee} target="_blank" rel="sponsored noopener" class="verified-card__image">
+            <img src={row.image} alt={`ภาพประกอบ ${row.name}`} loading="lazy" />
+          </a>
+          <div class="verified-card__body">
+            <div class="card-topline">
+              <span>#{row.queueRank.toString().padStart(2, "0")}</span>
+              <strong>{row.statusMeta.shortLabel}</strong>
+            </div>
+            <h3>{row.name}</h3>
+            <p>{row.proofLine}</p>
+            <div class="mini-stats">
+              <span>{row.visibleRating?.toFixed(1) ?? "-"} คะแนน</span>
+              <span>{formatNumber(row.ratingsCount)} รีวิว</span>
+              <span>{formatNumber(row.commentsCount)} คอมเมนต์</span>
+            </div>
+            <div class="card-actions">
+              <a href={row.reviewHref}>อ่านรีวิวรุ่นนี้</a>
+              <a href={row.links.shopee} target="_blank" rel="sponsored noopener">Shopee</a>
+            </div>
+          </div>
+        </article>
       ))}
+    </div>
+  </section>
+
+  <section class="library-section priority-section" id="priority">
+    <div class="container section-heading">
+      <span class="eyebrow">Start Here</span>
+      <h2>6 รุ่นแรกที่ควรเปิดอ่านก่อน ถ้ากำลังเลือกแอร์ใหม่</h2>
+      <p>
+        ถ้ายังไม่รู้จะเริ่มจากตัวไหน ให้เริ่มจากกลุ่มนี้ก่อน เพราะมีทั้งรุ่นรีวิวเยอะ รุ่นราคาเริ่มน่าสนใจ
+        และรุ่นแบรนด์ใหญ่ที่คนมักเอาไปเทียบกันจริงตอนจะซื้อ
+      </p>
+    </div>
+
+    <div class="container priority-grid">
+      {topRows.map((row) => (
+        <article class="priority-card">
+          <a href={row.links.shopee} target="_blank" rel="sponsored noopener" class="priority-image">
+            <img src={row.image} alt={`ภาพประกอบ ${row.name}`} loading="lazy" />
+          </a>
+          <div class="priority-copy">
+            <div class={`status-pill ${row.statusMeta.className}`}>{row.statusMeta.label}</div>
+            <h3>{row.shortName}</h3>
+            <p>{row.proofLine}</p>
+            <div class="score-line">
+              <span>Friendsay {row.score.toFixed(1)}/10</span>
+              <i style={`--score:${row.scorePercent}%`}></i>
+            </div>
+            <ul>
+              {row.strengths.map((item) => <li>{item}</li>)}
+            </ul>
+            <div class="card-actions">
+              <a href={row.reviewHref}>อ่านรีวิวรุ่นนี้</a>
+              <a href={row.links.shopee} target="_blank" rel="sponsored noopener">เช็กราคา</a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="library-section all-models-section" id="all-models">
+    <div class="container section-heading">
+      <span class="eyebrow">All 28 Models</span>
+      <h2>ตารางรีวิวแอร์ครบ 28 รุ่น</h2>
+      <p>
+        ทุกแถวเปิดอ่านรีวิวได้ทันที และมีทางลัดไป Shopee, Lazada, TikTok เพื่อเช็กราคาล่าสุด
+        รุ่นที่ยังไม่ได้จับคู่ลิงก์สินค้าแบบตรงรุ่นจะพาไปหน้าค้นหาด้วยชื่อรุ่นก่อน
+      </p>
+    </div>
+
+    <div class="container model-tools" data-air-filter>
+      <div class="model-tools__copy">
+        <span>หาเร็ว</span>
+        <strong>เลือกแบรนด์หรือ BTU แล้วกดอ่านรีวิวรายรุ่นได้เลย</strong>
+      </div>
+      <div class="filter-controls" aria-label="ตัวกรองรีวิวแอร์">
+        <label>
+          <span>ค้นหารุ่น</span>
+          <input type="search" data-filter-search placeholder="เช่น Daikin, 9,000, MSY" autocomplete="off" />
+        </label>
+        <label>
+          <span>แบรนด์</span>
+          <select data-filter-brand>
+            <option value="">ทุกแบรนด์</option>
+            {brandFilterOptions.map((brand) => <option value={brand}>{brand}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>BTU</span>
+          <select data-filter-btu>
+            <option value="">ทุกขนาด</option>
+            {btuFilterOptions.map((btu) => <option value={btu}>{btu} BTU</option>)}
+          </select>
+        </label>
+        <label>
+          <span>สถานะ</span>
+          <select data-filter-status>
+            <option value="">ทุกสถานะ</option>
+            <option value="detail_verified">มีข้อมูล Shopee แล้ว</option>
+            <option value="search_candidate_only">พบสินค้ารอเช็กลิงก์</option>
+            <option value="needs_shopee_capture">รอจับคู่ลิงก์ซื้อ</option>
+          </select>
+        </label>
+        <button type="button" data-filter-reset>ล้างตัวกรอง</button>
+      </div>
+      <p class="model-tools__result">
+        ตอนนี้แสดง <strong data-visible-count>{modelRows.length}</strong> จาก {modelRows.length} รุ่น
+      </p>
+    </div>
+
+    <div class="container model-list">
+      {modelRows.map((row) => (
+        <article
+          class="model-row"
+          data-model-row
+          data-brand={row.brand}
+          data-btu={row.btuText}
+          data-status={row.status}
+          data-search={`${row.name} ${row.shortName} ${row.brand} ${row.modelOrSeries} ${row.btuText}`}
+        >
+          <a href={row.links.shopee} target="_blank" rel="sponsored noopener" class="model-thumb">
+            <img src={row.image} alt={`ภาพประกอบ ${row.name}`} loading="lazy" />
+          </a>
+          <div class="model-main">
+            <div class="row-kicker">
+              <span>#{row.queueRank.toString().padStart(2, "0")}</span>
+              <span class={`status-pill ${row.statusMeta.className}`}>{row.statusMeta.shortLabel}</span>
+              <a class="review-badge" href={row.reviewHref}>หน้ารีวิวแยกรุ่น</a>
+            </div>
+            <h3><a class="model-title-link" href={row.reviewHref}>{row.name}</a></h3>
+            <p>{row.proofLine}</p>
+            <div class="row-meta">
+              <span>{row.btuText}</span>
+              <span>{row.priceLabel}</span>
+              <span>{row.sourceName}{row.proofCount ? ` ${formatNumber(row.proofCount)} รีวิว` : ""}</span>
+            </div>
+          </div>
+          <div class="row-check">
+            <strong>ต้องดูเพิ่ม</strong>
+            <ul>
+              {row.watchouts.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+          <div class="row-actions">
+            <a class="read-link" href={row.reviewHref}>อ่านรีวิวรุ่นนี้</a>
+            <a href={row.links.shopee} target="_blank" rel="sponsored noopener">Shopee</a>
+            <a href={row.links.lazada} target="_blank" rel="sponsored noopener">Lazada</a>
+            <a href={row.links.tiktok} target="_blank" rel="sponsored noopener">TikTok</a>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="container empty-result" data-empty-result hidden>ยังไม่เจอรุ่นที่ตรงกับตัวกรอง ลองล้างตัวกรองก่อนครับ</p>
+  </section>
+
+  <section class="library-section brand-section" id="brand-map">
+    <div class="container brand-layout">
+      <div class="section-heading brand-heading">
+        <span class="eyebrow">Brand Map</span>
+        <h2>ดูตามแบรนด์ จะเห็นภาพเร็วขึ้นว่าตลาดแอร์ไทยกว้างแค่ไหน</h2>
+        <p>
+          กลุ่มนี้ไม่ได้มีแค่แบรนด์ใหญ่ในห้าง แต่รวมรุ่นออนไลน์ที่คนค้นหาเยอะด้วย
+          เป้าหมายคือค่อย ๆ ทำให้ครบทุกตัวที่คนไทยมีโอกาสซื้อจริง
+        </p>
+      </div>
+      <div class="brand-chips">
+        {brandGroups.map(([brand, count]) => (
+          <span>
+            <strong>{brand}</strong>
+            <small>{count} รุ่น</small>
+          </span>
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .review-index-hero,
-  .section {
-    background: #fffdf8;
-  }
-
-  .review-index-hero {
-    padding: clamp(52px, 9vw, 120px) 0 clamp(36px, 6vw, 72px);
-    border-bottom: 1px solid #e7d5bf;
-  }
-
   .container {
-    width: min(1180px, calc(100% - 32px));
+    width: min(1220px, calc(100% - 32px));
     margin: 0 auto;
   }
 
-  .review-index-hero span {
-    color: #e5533d;
-    font-weight: 950;
+  .air-library-hero {
+    position: relative;
+    min-height: min(780px, calc(100vh - 84px));
+    overflow: hidden;
+    background: #101b2a;
+    color: #fff;
   }
 
-  .review-index-hero h1 {
-    margin: 12px 0 16px;
-    max-width: 980px;
-    color: #101b2a;
-    font-size: clamp(46px, 8vw, 96px);
-    line-height: 0.98;
+  .air-library-hero__media,
+  .air-library-hero__overlay {
+    position: absolute;
+    inset: 0;
+  }
+
+  .air-library-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 74% center;
+    filter: saturate(0.82) contrast(1.02);
+    transform: scale(1.04);
+  }
+
+  .air-library-hero__overlay {
+    background:
+      linear-gradient(90deg, rgba(10, 18, 28, 0.94), rgba(10, 18, 28, 0.74) 42%, rgba(10, 18, 28, 0.2)),
+      linear-gradient(180deg, rgba(255, 107, 90, 0.1), rgba(16, 27, 42, 0.82));
+  }
+
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+    gap: clamp(28px, 5vw, 84px);
+    align-items: end;
+    min-height: min(780px, calc(100vh - 84px));
+    padding: clamp(72px, 11vw, 132px) 0 clamp(44px, 7vw, 84px);
+  }
+
+  .eyebrow {
+    color: #ff7a68;
+    font-size: 0.78rem;
+    font-weight: 950;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .hero-copy h1,
+  .section-heading h2 {
     letter-spacing: 0;
   }
 
-  .review-index-hero p {
-    max-width: 820px;
-    color: #425166;
-    font-size: clamp(18px, 2vw, 24px);
-    line-height: 1.7;
+  .hero-copy h1 {
+    max-width: 890px;
+    margin: 14px 0 18px;
+    font-size: clamp(46px, 8.4vw, 112px);
+    line-height: 0.95;
   }
 
-  .stats {
+  .hero-copy p {
+    max-width: 780px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(17px, 1.8vw, 23px);
+    line-height: 1.65;
+  }
+
+  .hero-actions,
+  .card-actions,
+  .row-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 24px;
+    gap: 10px;
   }
 
-  .stats strong {
-    padding: 12px 16px;
-    border: 1px solid #e7d5bf;
+  .hero-actions {
+    margin-top: 28px;
+  }
+
+  .button-main,
+  .button-ghost,
+  .card-actions a,
+  .row-actions a {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 8px;
-    background: #fffaf2;
-  }
-
-  .section {
-    padding: clamp(34px, 6vw, 82px) 0;
-  }
-
-  .review-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-  }
-
-  .review-card {
-    display: flex;
-    min-height: 230px;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 24px;
-    border: 1px solid #e7d5bf;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.82);
-    box-shadow: 0 16px 48px rgba(26, 33, 42, 0.08);
-    color: #101b2a;
+    padding: 12px 18px;
+    font-weight: 950;
     text-decoration: none;
   }
 
-  .review-card span {
-    color: #e5533d;
+  .button-main {
+    background: #ff6b5a;
+    color: #fff;
+  }
+
+  .button-ghost {
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  .hero-board {
+    display: grid;
+    gap: 12px;
+  }
+
+  .hero-board div {
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 22px;
+    backdrop-filter: blur(16px);
+  }
+
+  .hero-board span {
+    display: block;
+    font-size: clamp(40px, 5vw, 74px);
+    font-weight: 950;
+    line-height: 1;
+  }
+
+  .hero-board strong {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .library-strip,
+  .library-section {
+    background: #fffdf8;
+  }
+
+  .library-strip {
+    border-bottom: 1px solid rgba(223, 208, 186, 0.82);
+    padding: 16px 0;
+  }
+
+  .strip-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .strip-grid a {
+    display: grid;
+    gap: 5px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.76);
+    padding: 16px;
+    color: #17202a;
+    text-decoration: none;
+  }
+
+  .strip-grid span {
+    color: #d94f41;
     font-weight: 950;
   }
 
-  .review-card h2 {
-    margin: 14px 0 10px;
-    font-size: 25px;
-    line-height: 1.25;
-    letter-spacing: 0;
+  .strip-grid strong,
+  .strip-grid small {
+    display: block;
   }
 
-  .review-card p {
-    color: #516174;
-    line-height: 1.6;
+  .strip-grid small {
+    color: #617080;
     font-weight: 750;
+    line-height: 1.45;
   }
 
-  .review-card strong {
+  .library-section {
+    padding: clamp(42px, 7vw, 92px) 0;
+  }
+
+  .section-heading {
+    margin-bottom: 24px;
+  }
+
+  .section-heading h2 {
+    max-width: 920px;
+    margin: 10px 0 12px;
+    color: #17202a;
+    font-size: clamp(34px, 5.2vw, 72px);
+    line-height: 1;
+  }
+
+  .section-heading p {
+    max-width: 820px;
+    margin: 0;
+    color: #617080;
+    font-size: clamp(16px, 1.6vw, 21px);
+    line-height: 1.7;
+  }
+
+  .verified-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .verified-card,
+  .priority-card,
+  .model-row {
+    border: 1px solid rgba(223, 208, 186, 0.92);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 18px 58px rgba(23, 32, 42, 0.09);
+  }
+
+  .verified-card {
+    overflow: hidden;
+  }
+
+  .verified-card__image,
+  .priority-image,
+  .model-thumb {
+    display: block;
+    overflow: hidden;
+    background: #f6f8f9;
+  }
+
+  .verified-card__image {
+    aspect-ratio: 1.2;
+  }
+
+  .verified-card__image img,
+  .priority-image img,
+  .model-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .verified-card__body {
+    padding: 18px;
+  }
+
+  .card-topline,
+  .row-kicker,
+  .mini-stats,
+  .row-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .card-topline {
+    justify-content: space-between;
+  }
+
+  .card-topline span,
+  .card-topline strong {
+    color: #d94f41;
+    font-size: 0.84rem;
+    font-weight: 950;
+  }
+
+  .verified-card h3,
+  .priority-card h3,
+  .model-row h3 {
+    margin: 12px 0 8px;
+    color: #17202a;
+    letter-spacing: 0;
+    line-height: 1.2;
+  }
+
+  .verified-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .verified-card p,
+  .priority-card p,
+  .model-row p {
+    color: #617080;
+    line-height: 1.55;
+  }
+
+  .mini-stats span,
+  .row-meta span {
+    border-radius: 999px;
+    background: #fff0ea;
+    padding: 7px 10px;
+    color: #8a382f;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+
+  .card-actions {
     margin-top: 18px;
-    color: #e5533d;
   }
 
-  @media (max-width: 920px) {
-    .review-grid {
+  .card-actions a,
+  .row-actions a {
+    border: 1px solid rgba(223, 208, 186, 0.92);
+    background: #fff;
+    color: #17202a;
+  }
+
+  .card-actions a:first-child,
+  .row-actions .read-link {
+    background: #17202a;
+    color: #fff;
+  }
+
+  .priority-section {
+    background:
+      linear-gradient(180deg, rgba(233, 251, 247, 0.72), rgba(255, 253, 248, 0.95)),
+      #fffdf8;
+  }
+
+  .priority-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .priority-card {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.84fr) minmax(0, 1.16fr);
+    overflow: hidden;
+  }
+
+  .priority-image {
+    min-height: 100%;
+  }
+
+  .priority-copy {
+    padding: 22px;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    border-radius: 999px;
+    padding: 7px 11px;
+    font-size: 0.78rem;
+    font-weight: 950;
+  }
+
+  .is-verified {
+    background: rgba(46, 196, 182, 0.16);
+    color: #047a6e;
+  }
+
+  .is-candidate {
+    background: rgba(255, 200, 87, 0.24);
+    color: #8b5a00;
+  }
+
+  .is-pending {
+    background: rgba(58, 134, 255, 0.12);
+    color: #285a9f;
+  }
+
+  .score-line {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .score-line span {
+    font-weight: 950;
+    color: #17202a;
+  }
+
+  .score-line i {
+    width: 100%;
+    height: 12px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e8eef0;
+  }
+
+  .score-line i::before {
+    display: block;
+    width: var(--score);
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #2ec4b6, #3a86ff);
+    content: "";
+  }
+
+  .priority-copy ul,
+  .row-check ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .priority-copy li,
+  .row-check li {
+    position: relative;
+    padding-left: 16px;
+    color: #445467;
+    line-height: 1.45;
+  }
+
+  .priority-copy li + li,
+  .row-check li + li {
+    margin-top: 7px;
+  }
+
+  .priority-copy li::before,
+  .row-check li::before {
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #ff6b5a;
+    content: "";
+  }
+
+  .all-models-section {
+    background:
+      radial-gradient(circle at 12% 0%, rgba(58, 134, 255, 0.09), transparent 32%),
+      radial-gradient(circle at 88% 12%, rgba(255, 107, 90, 0.09), transparent 34%),
+      #fffdf8;
+  }
+
+  .model-tools {
+    position: sticky;
+    top: 86px;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: minmax(220px, 0.58fr) minmax(0, 1.42fr);
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 18px;
+    border: 1px solid rgba(223, 208, 186, 0.94);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    padding: 14px;
+    box-shadow: 0 18px 52px rgba(23, 32, 42, 0.1);
+    backdrop-filter: blur(18px);
+  }
+
+  .model-tools__copy {
+    display: grid;
+    gap: 4px;
+  }
+
+  .model-tools__copy span,
+  .model-tools__result strong {
+    color: #d94f41;
+    font-weight: 950;
+  }
+
+  .model-tools__copy strong {
+    color: #17202a;
+    font-size: 1.02rem;
+    line-height: 1.35;
+  }
+
+  .filter-controls {
+    display: grid;
+    grid-template-columns: minmax(180px, 1.25fr) repeat(3, minmax(128px, 0.72fr)) minmax(126px, 0.58fr);
+    gap: 8px;
+  }
+
+  .filter-controls label {
+    display: grid;
+    gap: 5px;
+  }
+
+  .filter-controls label span {
+    color: #617080;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+
+  .filter-controls input,
+  .filter-controls select,
+  .filter-controls button {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid rgba(223, 208, 186, 0.96);
+    border-radius: 8px;
+    background: #fffdf8;
+    color: #17202a;
+    font: inherit;
+    font-weight: 850;
+  }
+
+  .filter-controls input,
+  .filter-controls select {
+    padding: 9px 11px;
+  }
+
+  .filter-controls button {
+    align-self: end;
+    background: #17202a;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .model-tools__result {
+    grid-column: 1 / -1;
+    margin: -3px 0 0;
+    color: #617080;
+    font-size: 0.92rem;
+    font-weight: 850;
+  }
+
+  .model-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .model-row {
+    display: grid;
+    grid-template-columns: 152px minmax(0, 1.15fr) minmax(210px, 0.72fr) minmax(178px, 0.52fr);
+    gap: 18px;
+    align-items: center;
+    padding: 12px;
+  }
+
+  .model-thumb {
+    aspect-ratio: 1.1;
+    border-radius: 8px;
+  }
+
+  .row-kicker > span:first-child {
+    color: #d94f41;
+    font-weight: 950;
+  }
+
+  .review-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    border: 1px solid rgba(46, 196, 182, 0.38);
+    border-radius: 999px;
+    background: rgba(46, 196, 182, 0.11);
+    padding: 7px 11px;
+    color: #047a6e;
+    font-size: 0.78rem;
+    font-weight: 950;
+    text-decoration: none;
+  }
+
+  .model-row h3 {
+    font-size: clamp(22px, 2.2vw, 32px);
+  }
+
+  .model-title-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .model-title-link:hover {
+    color: #d94f41;
+  }
+
+  .model-row p {
+    margin: 0 0 12px;
+  }
+
+  .row-check strong {
+    display: block;
+    margin-bottom: 9px;
+    color: #17202a;
+  }
+
+  .row-actions {
+    justify-content: flex-end;
+  }
+
+  .row-actions a {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .model-row[hidden],
+  .empty-result[hidden] {
+    display: none;
+  }
+
+  .empty-result {
+    margin-top: 18px;
+    border: 1px solid rgba(223, 208, 186, 0.94);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.88);
+    padding: 18px;
+    color: #617080;
+    font-weight: 900;
+    text-align: center;
+  }
+
+  .brand-section {
+    border-top: 1px solid rgba(223, 208, 186, 0.82);
+  }
+
+  .brand-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .brand-heading {
+    margin-bottom: 0;
+  }
+
+  .brand-chips {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .brand-chips span {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid rgba(223, 208, 186, 0.92);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.86);
+    padding: 14px;
+  }
+
+  .brand-chips strong {
+    color: #17202a;
+  }
+
+  .brand-chips small {
+    color: #d94f41;
+    font-weight: 950;
+  }
+
+  @media (max-width: 1100px) {
+    .hero-grid,
+    .brand-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-board {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .verified-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .model-tools {
+      grid-template-columns: 1fr;
+      top: 72px;
+    }
+
+    .filter-controls {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .model-row {
+      grid-template-columns: 132px minmax(0, 1fr);
+    }
+
+    .row-check {
+      grid-column: 2;
+    }
+
+    .row-actions {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 820px) {
+    .strip-grid,
+    .priority-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .model-tools {
+      position: static;
+    }
+
+    .filter-controls {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .priority-card {
+      grid-template-columns: 1fr;
+    }
+
+    .priority-image {
+      aspect-ratio: 1.58;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      width: min(100% - 24px, 1220px);
+    }
+
+    .air-library-hero {
+      min-height: auto;
+    }
+
+    .air-library-hero__media img {
+      object-position: center;
+    }
+
+    .air-library-hero__overlay {
+      background:
+        linear-gradient(180deg, rgba(10, 18, 28, 0.9), rgba(10, 18, 28, 0.78)),
+        rgba(16, 27, 42, 0.8);
+    }
+
+    .hero-grid {
+      min-height: auto;
+      padding: 58px 0 36px;
+    }
+
+    .hero-board {
+      grid-template-columns: 1fr;
+    }
+
+    .verified-grid,
+    .brand-chips {
+      grid-template-columns: 1fr;
+    }
+
+    .model-row {
+      grid-template-columns: 1fr;
+      padding: 10px;
+    }
+
+    .filter-controls {
+      grid-template-columns: 1fr;
+    }
+
+    .row-check {
+      grid-column: auto;
+    }
+
+    .model-thumb {
+      aspect-ratio: 1.45;
+    }
+
+    .row-actions {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-
-  @media (max-width: 560px) {
-    .container {
-      width: min(100% - 24px, 1180px);
-    }
-
-    .review-grid {
-      grid-template-columns: 1fr;
-    }
-  }
 </style>
+
+<script is:inline>
+  (() => {
+    const filterRoot = document.querySelector("[data-air-filter]");
+    const rows = Array.from(document.querySelectorAll("[data-model-row]"));
+    if (!filterRoot || rows.length === 0) return;
+
+    const searchInput = filterRoot.querySelector("[data-filter-search]");
+    const brandSelect = filterRoot.querySelector("[data-filter-brand]");
+    const btuSelect = filterRoot.querySelector("[data-filter-btu]");
+    const statusSelect = filterRoot.querySelector("[data-filter-status]");
+    const resetButton = filterRoot.querySelector("[data-filter-reset]");
+    const visibleCount = filterRoot.querySelector("[data-visible-count]");
+    const emptyResult = document.querySelector("[data-empty-result]");
+
+    const normalize = (value) => String(value || "").toLowerCase().trim();
+
+    const applyFilters = () => {
+      const searchValue = normalize(searchInput?.value);
+      const brandValue = brandSelect?.value || "";
+      const btuValue = btuSelect?.value || "";
+      const statusValue = statusSelect?.value || "";
+      let shown = 0;
+
+      rows.forEach((row) => {
+        const rowSearch = normalize(row.dataset.search);
+        const rowBrand = row.dataset.brand || "";
+        const rowBtu = row.dataset.btu || "";
+        const rowStatus = row.dataset.status || "";
+        const isMatch =
+          (!searchValue || rowSearch.includes(searchValue)) &&
+          (!brandValue || rowBrand === brandValue) &&
+          (!btuValue || rowBtu.includes(btuValue)) &&
+          (!statusValue || rowStatus === statusValue);
+
+        row.hidden = !isMatch;
+        if (isMatch) shown += 1;
+      });
+
+      if (visibleCount) visibleCount.textContent = String(shown);
+      if (emptyResult) emptyResult.hidden = shown !== 0;
+    };
+
+    [searchInput, brandSelect, btuSelect, statusSelect].forEach((control) => {
+      control?.addEventListener("input", applyFilters);
+      control?.addEventListener("change", applyFilters);
+    });
+
+    resetButton?.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      if (brandSelect) brandSelect.value = "";
+      if (btuSelect) btuSelect.value = "";
+      if (statusSelect) statusSelect.value = "";
+      applyFilters();
+      searchInput?.focus();
+    });
+  })();
+</script>

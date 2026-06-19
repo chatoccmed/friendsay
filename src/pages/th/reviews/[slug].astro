@@ -23,14 +23,42 @@ const { review } = Astro.props;
 const firstBtu = review.btuOptions[0] ?? "9,000 BTU";
 const btuText = review.btuOptions.join(" / ");
 const proofCountText = review.proofCount.toLocaleString("th-TH");
-const articleTitle = `${review.shortName}: แอร์ ${firstBtu} สำหรับคนอยากซื้อให้จบแบบสบายใจ`;
+const hasReviewProof = review.proofCount > 0;
+const proofBadgeText = hasReviewProof ? `${proofCountText}+ ข้อมูลให้ตรวจ` : "เช็กสเปก ราคา และร้านก่อนซื้อ";
+const titleOverrides: Record<string, string> = {
+  "mitsubishi-msy-gt09vf": "Mitsubishi MSY-GT09VF: แอร์แบรนด์ไว้ใจง่ายสำหรับห้องนอน ก่อนจ่ายต้องเช็ก BTU กับงานติดตั้ง",
+  "mitsubishi-heavy-duty-dxk10cxv-w1": "Mitsubishi Heavy DXK10CXV: แอร์ญี่ปุ่นคุมงบ สำหรับคนอยากได้แบรนด์ไว้ใจง่าย",
+  "sharp-ah-au-xp10ymb": "Sharp XP10YMB: แอร์ 9,000 BTU แบรนด์คุ้นชื่อ สำหรับห้องเล็กที่อยากซื้อให้จบง่าย",
+  "daikin-ftkz09vv2s": "Daikin FTKZ09VV2S: แอร์พรีเมียมสำหรับห้องนอน ที่ซื้อเพราะอยากสบายใจระยะยาว",
+  "panasonic-cs-cu-xku9wkt": "Panasonic XKU9WKT: แอร์ห้องนอนแบรนด์คุ้นชื่อ ที่ต้องเช็กรหัสรุ่นก่อนจ่าย",
+  "daikin-ftkq09yv2s": "Daikin FTKQ09YV2S: แอร์ Daikin รุ่นคุมงบ สำหรับคนอยากซื้อให้จบแบบสบายใจ",
+  "mitsubishi-msy-ky09vf": "Mitsubishi Electric MSY-KY09VF: แอร์ห้องนอนแบรนด์ไว้ใจง่าย ที่ต้องเทียบรหัสให้คุ้มก่อนซื้อ",
+  "panasonic-cs-cu-yn9ykt": "Panasonic YN9YKT: แอร์ห้องเล็กราคาน่าคบ สำหรับคนอยากได้แบรนด์คุ้นชื่อ",
+  "lg-icq11mn-ju1": "LG ICQ11MN.JU1: แอร์ดีไซน์ทันสมัยราคากลาง ๆ ที่ต้องเช็กฟีเจอร์ให้ตรงรุ่น",
+  "mitsubishi-heavy-duty-dxk10yyp-w1": "Mitsubishi Heavy DXK10YYP-W1: แอร์ 9,585 BTU สำหรับห้องที่อยากเผื่อความเย็นอีกนิด",
+  "daikin-ftm09pv2s": "Daikin FTM09PV2S: แอร์ Daikin ราคาคุมง่าย สำหรับคนอยากได้แบรนด์ไว้ใจได้",
+  "panasonic-cs-cu-yu9zkt": "Panasonic YU9ZKT: แอร์ Panasonic คุมงบ ที่ควรเทียบรุ่นพี่ก่อนกดซื้อ",
+  "panasonic-cs-cu-xu9akt": "Panasonic XU9AKT: แอร์ 9,518 BTU สำหรับห้องร้อนขึ้นที่อยากได้ Panasonic",
+  "panasonic-cs-cu-tu9akt": "Panasonic TU9AKT: แอร์ห้องนอนรุ่นคุมงบ ที่ต้องเทียบ YU ก่อนจ่าย",
+  "sharp-ah-x10bb": "Sharp AH-X10BB: แอร์ 9,300 BTU เผื่อเย็นอีกนิด สำหรับห้องนอนที่ร้อนกว่าปกติ",
+  "mitsubishi-msy-gy09vf": "Mitsubishi MSY-GY09VF: แอร์ห้องนอนที่จ่ายเพิ่มเพื่อความสบายใจ แต่ต้องเทียบรหัสก่อนซื้อ",
+  "mitsubishi-msy-jy09vf": "Mitsubishi MSY-JY09VF: รุ่นกลางน่าคบของสาย Mitsubishi ที่ควรเทียบก่อนจ่ายจริง",
+  "daikin-ftkc09yv2s": "Daikin FTKC09YV2S: แอร์ Inverter งบกลางที่ควรเทียบก่อนขยับไป FTKZ",
+  "lg-ice11mn-ju1": "LG ICE11MN: แอร์ LG ราคาน่าคบสำหรับห้องนอน ก่อนเพิ่มเงินไป IEQ/ICQ",
+  "lg-ieq10en-ju1": "LG IEQ10EN: รุ่นกลางของ LG ที่ต้องถามให้ชัดว่าเพิ่มเงินแล้วคุ้มตรงไหน",
+  "carrier-42tvba010": "Carrier 42TVBA010: แอร์แบรนด์สายตรงที่ต้องเทียบราคาจบกับ Daikin และ LG",
+  "carrier-42tvab010abi": "Carrier 42TVAB010ABI: รุ่นราคาสูงที่ควรซื้อเพราะบริการและฟีเจอร์ชัดจริง",
+  "beko-bseog090": "Beko BSEOG090: แอร์แบรนด์ทางเลือกงบไม่แรง ก่อนซื้อให้เช็กศูนย์บริการให้ชัด",
+  "samsung-ar10dyeaawknst": "Samsung AR10DY: แอร์ 10,000 BTU สายเทคที่ต้องเทียบความคุ้มก่อนซื้อ"
+};
+const articleTitle = titleOverrides[review.productKey] ?? `${review.shortName}: แอร์ ${firstBtu} สำหรับคนอยากซื้อให้จบแบบสบายใจ`;
 const description = `${review.name} รีวิวแบบเพื่อนช่วยดู เหมาะกับห้องแบบไหน จุดเด่น จุดต้องถามร้าน BTU ค่าติดตั้ง ประกัน และลิงก์เช็กราคา Shopee Lazada TikTok`;
 
 const product = {
   slug: review.productKey,
   name: review.name,
   shortName: review.shortName,
-  statusLabel: `${review.sourceName} มีข้อมูลให้เทียบ ${proofCountText}+ รายการ`,
+  statusLabel: hasReviewProof ? `${review.sourceName} มีข้อมูลให้เทียบ ${proofCountText}+ รายการ` : "เช็กสเปก ราคา และร้านก่อนซื้อ",
   score: review.score,
   priceLabel: review.priceLabel,
   links: review.links,
@@ -59,37 +87,313 @@ const imageLinkAttrs = {
 };
 
 const imagePool = [
-  "/images/air-conditioners/wall-ac-condo-hero.png",
-  "/images/air-conditioners/wall-ac-btu-bedroom.png",
-  "/images/air-conditioners/wall-ac-installation-check.png",
-  "/images/air-conditioners/wall-ac-cost-warranty.png",
-  "/images/air-conditioners/midea-celest-hero-bedroom.png",
-  "/images/air-conditioners/midea-celest-energy-day.png",
-  "/images/air-conditioners/midea-celest-install-plan.png",
-  "/images/air-conditioners/midea-celest-review-room-fit.png",
-  "/images/air-conditioners/midea-celest-review-install-cost.png",
-  "/images/air-conditioners/midea-celest-review-warranty-docs.png",
-  "/images/air-conditioners/midea-celest-review-shop-service.png",
-  "/images/air-conditioners/tcl-savein-ai-clean-unit.png",
-  "/images/air-conditioners/tcl-savein-ai-install-concrete.png",
-  "/images/air-conditioners/xiaomi-mijia-quiet-night.png",
-  "/images/air-conditioners/xiaomi-mijia-cost-checklist.png"
+  "/images/air-conditioners/wall-ac-condo-hero.jpg",
+  "/images/air-conditioners/wall-ac-btu-bedroom.jpg",
+  "/images/air-conditioners/wall-ac-installation-check.jpg",
+  "/images/air-conditioners/wall-ac-cost-warranty.jpg",
+  "/images/air-conditioners/midea-celest-hero-bedroom.jpg",
+  "/images/air-conditioners/midea-celest-energy-day.jpg",
+  "/images/air-conditioners/midea-celest-install-plan.jpg",
+  "/images/air-conditioners/midea-celest-review-room-fit.jpg",
+  "/images/air-conditioners/midea-celest-review-install-cost.jpg",
+  "/images/air-conditioners/midea-celest-review-warranty-docs.jpg",
+  "/images/air-conditioners/midea-celest-review-shop-service.jpg",
+  "/images/air-conditioners/tcl-savein-ai-clean-unit.jpg",
+  "/images/air-conditioners/tcl-savein-ai-install-concrete.jpg",
+  "/images/air-conditioners/xiaomi-mijia-quiet-night.jpg",
+  "/images/air-conditioners/xiaomi-mijia-cost-checklist.jpg"
 ];
 
 const imageOffset = review.queueRank % imagePool.length;
 const rotatedImages = [...imagePool.slice(imageOffset), ...imagePool.slice(0, imageOffset)];
 const productVisualOverrides: Record<string, string[]> = {
   "mitsubishi-msy-gt09vf": [
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-hero-premium.png",
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-product-set.png",
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-clean-unit.png",
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-btu-room.png",
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-install-cost.png",
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-cost-check.png",
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-quiet-night.png",
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-shop-service.png",
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-review-proof.png",
-    "/images/air-conditioners/mitsubishi-msy-gt09vf-warranty-docs.png"
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-hero-premium.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-product-set.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-clean-unit.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-btu-room.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-install-cost.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-cost-check.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-quiet-night.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-shop-service.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-review-proof.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gt09vf-warranty-docs.jpg"
+  ],
+  "mitsubishi-heavy-duty-dxk10cxv-w1": [
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-hero-room.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-product-set.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-clean-unit.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-btu-room.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-install-plan.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-cost-check.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-quiet-night.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-warranty-docs.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg"
+  ],
+  "sharp-ah-au-xp10ymb": [
+    "/images/air-conditioners/sharp-xp10ymb-clean-unit.jpg",
+    "/images/air-conditioners/sharp-xp10ymb-decision-desk.jpg",
+    "/images/air-conditioners/sharp-xp10ymb-install-plan.jpg",
+    "/images/air-conditioners/sharp-xp10ymb-cost-check.jpg",
+    "/images/air-conditioners/sharp-xp10ymb-quiet-night.jpg",
+    "/images/air-conditioners/sharp-xp10ymb-review-proof.jpg",
+    "/images/air-conditioners/wall-ac-condo-hero.jpg",
+    "/images/air-conditioners/wall-ac-btu-bedroom.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg"
+  ],
+  "daikin-ftkz09vv2s": [
+    "/images/air-conditioners/daikin-ftkz09vv2s-hero-room.jpg",
+    "/images/air-conditioners/daikin-ftkz09vv2s-product-set.jpg",
+    "/images/air-conditioners/daikin-ftkz09vv2s-clean-unit.jpg",
+    "/images/air-conditioners/daikin-ftkz09vv2s-btu-room.jpg",
+    "/images/air-conditioners/daikin-ftkz09vv2s-install-plan.jpg",
+    "/images/air-conditioners/daikin-ftkz09vv2s-cost-check.jpg",
+    "/images/air-conditioners/daikin-ftkz09vv2s-quiet-night.jpg",
+    "/images/air-conditioners/daikin-ftkz09vv2s-warranty-docs.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg"
+  ],
+  "panasonic-cs-cu-xku9wkt": [
+    "/images/air-conditioners/panasonic-xku9wkt-hero-room.jpg",
+    "/images/air-conditioners/panasonic-xku9wkt-product-set.jpg",
+    "/images/air-conditioners/panasonic-xku9wkt-clean-unit.jpg",
+    "/images/air-conditioners/panasonic-xku9wkt-btu-room.jpg",
+    "/images/air-conditioners/panasonic-xku9wkt-install-plan.jpg",
+    "/images/air-conditioners/panasonic-xku9wkt-cost-check.jpg",
+    "/images/air-conditioners/panasonic-xku9wkt-quiet-night.jpg",
+    "/images/air-conditioners/panasonic-xku9wkt-warranty-docs.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg"
+  ],
+  "daikin-ftkq09yv2s": [
+    "/images/air-conditioners/daikin-ftkq09yv2s-hero-room.jpg",
+    "/images/air-conditioners/daikin-ftkq09yv2s-product-set.jpg",
+    "/images/air-conditioners/daikin-ftkq09yv2s-clean-unit.jpg",
+    "/images/air-conditioners/daikin-ftkq09yv2s-btu-room.jpg",
+    "/images/air-conditioners/daikin-ftkq09yv2s-install-plan.jpg",
+    "/images/air-conditioners/daikin-ftkq09yv2s-cost-check.jpg",
+    "/images/air-conditioners/daikin-ftkq09yv2s-quiet-night.jpg",
+    "/images/air-conditioners/daikin-ftkq09yv2s-warranty-docs.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg"
+  ],
+  "mitsubishi-msy-ky09vf": [
+    "/images/air-conditioners/mitsubishi-msy-ky09vf-hero-room.jpg",
+    "/images/air-conditioners/mitsubishi-msy-ky09vf-product-set.jpg",
+    "/images/air-conditioners/mitsubishi-msy-ky09vf-clean-unit.jpg",
+    "/images/air-conditioners/mitsubishi-msy-ky09vf-btu-room.jpg",
+    "/images/air-conditioners/mitsubishi-msy-ky09vf-install-plan.jpg",
+    "/images/air-conditioners/mitsubishi-msy-ky09vf-cost-check.jpg",
+    "/images/air-conditioners/mitsubishi-msy-ky09vf-quiet-night.jpg",
+    "/images/air-conditioners/mitsubishi-msy-ky09vf-warranty-docs.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg"
+  ],
+  "panasonic-cs-cu-yn9ykt": [
+    "/images/air-conditioners/panasonic-yn9ykt-hero-room.jpg",
+    "/images/air-conditioners/panasonic-yn9ykt-product-set.jpg",
+    "/images/air-conditioners/panasonic-yn9ykt-clean-unit.jpg",
+    "/images/air-conditioners/panasonic-yn9ykt-btu-room.jpg",
+    "/images/air-conditioners/panasonic-yn9ykt-install-plan.jpg",
+    "/images/air-conditioners/panasonic-yn9ykt-cost-check.jpg",
+    "/images/air-conditioners/panasonic-yn9ykt-quiet-night.jpg",
+    "/images/air-conditioners/panasonic-yn9ykt-warranty-docs.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg"
+  ],
+  "lg-icq11mn-ju1": [
+    "/images/air-conditioners/lg-icq11mn-hero-room.jpg",
+    "/images/air-conditioners/lg-icq11mn-product-set.jpg",
+    "/images/air-conditioners/lg-icq11mn-clean-unit.jpg",
+    "/images/air-conditioners/lg-icq11mn-btu-room.jpg",
+    "/images/air-conditioners/lg-icq11mn-install-plan.jpg",
+    "/images/air-conditioners/lg-icq11mn-cost-check.jpg",
+    "/images/air-conditioners/lg-icq11mn-quiet-night.jpg",
+    "/images/air-conditioners/lg-icq11mn-warranty-docs.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg"
+  ],
+  "mitsubishi-heavy-duty-dxk10yyp-w1": [
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-hero-room.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-product-set.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-clean-unit.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-btu-room.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-install-plan.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-cost-check.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-quiet-night.jpg",
+    "/images/air-conditioners/mitsubishi-heavy-dxk10yyp-warranty-docs.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg"
+  ],
+  "daikin-ftm09pv2s": [
+    "/images/air-conditioners/daikin-ftm09pv2s-hero-room.jpg",
+    "/images/air-conditioners/daikin-ftm09pv2s-product-set.jpg",
+    "/images/air-conditioners/daikin-ftm09pv2s-clean-unit.jpg",
+    "/images/air-conditioners/daikin-ftm09pv2s-btu-room.jpg",
+    "/images/air-conditioners/daikin-ftm09pv2s-install-plan.jpg",
+    "/images/air-conditioners/daikin-ftm09pv2s-cost-check.jpg",
+    "/images/air-conditioners/daikin-ftm09pv2s-quiet-night.jpg",
+    "/images/air-conditioners/daikin-ftm09pv2s-warranty-docs.jpg",
+    "/images/air-conditioners/wall-ac-cost-warranty.jpg",
+    "/images/air-conditioners/wall-ac-installation-check.jpg"
+  ],
+  "panasonic-cs-cu-yu9zkt": [
+    "/images/air-conditioners/panasonic-yu9zkt-hero-room.jpg",
+    "/images/air-conditioners/panasonic-yu9zkt-product-set.jpg",
+    "/images/air-conditioners/panasonic-yu9zkt-clean-unit.jpg",
+    "/images/air-conditioners/panasonic-yu9zkt-btu-room.jpg",
+    "/images/air-conditioners/panasonic-yu9zkt-install-plan.jpg",
+    "/images/air-conditioners/panasonic-yu9zkt-cost-check.jpg",
+    "/images/air-conditioners/panasonic-yu9zkt-quiet-night.jpg",
+    "/images/air-conditioners/panasonic-yu9zkt-shop-service.jpg",
+    "/images/air-conditioners/panasonic-yu9zkt-review-proof.jpg",
+    "/images/air-conditioners/panasonic-yu9zkt-warranty-docs.jpg"
+  ],
+  "panasonic-cs-cu-xu9akt": [
+    "/images/air-conditioners/panasonic-xu9akt-hero-room.jpg",
+    "/images/air-conditioners/panasonic-xu9akt-product-set.jpg",
+    "/images/air-conditioners/panasonic-xu9akt-clean-unit.jpg",
+    "/images/air-conditioners/panasonic-xu9akt-btu-room.jpg",
+    "/images/air-conditioners/panasonic-xu9akt-install-plan.jpg",
+    "/images/air-conditioners/panasonic-xu9akt-cost-check.jpg",
+    "/images/air-conditioners/panasonic-xu9akt-quiet-night.jpg",
+    "/images/air-conditioners/panasonic-xu9akt-shop-service.jpg",
+    "/images/air-conditioners/panasonic-xu9akt-review-proof.jpg",
+    "/images/air-conditioners/panasonic-xu9akt-warranty-docs.jpg"
+  ],
+  "panasonic-cs-cu-tu9akt": [
+    "/images/air-conditioners/panasonic-tu9akt-hero-room.jpg",
+    "/images/air-conditioners/panasonic-tu9akt-product-set.jpg",
+    "/images/air-conditioners/panasonic-tu9akt-clean-unit.jpg",
+    "/images/air-conditioners/panasonic-tu9akt-btu-room.jpg",
+    "/images/air-conditioners/panasonic-tu9akt-install-plan.jpg",
+    "/images/air-conditioners/panasonic-tu9akt-cost-check.jpg",
+    "/images/air-conditioners/panasonic-tu9akt-quiet-night.jpg",
+    "/images/air-conditioners/panasonic-tu9akt-shop-service.jpg",
+    "/images/air-conditioners/panasonic-tu9akt-review-proof.jpg",
+    "/images/air-conditioners/panasonic-tu9akt-warranty-docs.jpg"
+  ],
+  "sharp-ah-x10bb": [
+    "/images/air-conditioners/sharp-ahx10bb-hero-room.jpg",
+    "/images/air-conditioners/sharp-ahx10bb-product-set.jpg",
+    "/images/air-conditioners/sharp-ahx10bb-clean-unit.jpg",
+    "/images/air-conditioners/sharp-ahx10bb-btu-room.jpg",
+    "/images/air-conditioners/sharp-ahx10bb-install-plan.jpg",
+    "/images/air-conditioners/sharp-ahx10bb-cost-check.jpg",
+    "/images/air-conditioners/sharp-ahx10bb-quiet-night.jpg",
+    "/images/air-conditioners/sharp-ahx10bb-shop-service.jpg",
+    "/images/air-conditioners/sharp-ahx10bb-review-proof.jpg",
+    "/images/air-conditioners/sharp-ahx10bb-warranty-docs.jpg"
+  ],
+  "mitsubishi-msy-gy09vf": [
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-hero-room.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-product-set.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-clean-unit.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-btu-room.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-install-plan.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-cost-check.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-quiet-night.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-shop-service.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-review-proof.jpg",
+    "/images/air-conditioners/mitsubishi-msy-gy09vf-warranty-docs.jpg"
+  ],
+  "mitsubishi-msy-jy09vf": [
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-hero-room.jpg",
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-product-set.jpg",
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-clean-unit.jpg",
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-btu-room.jpg",
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-install-plan.jpg",
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-cost-check.jpg",
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-quiet-night.jpg",
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-shop-service.jpg",
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-review-proof.jpg",
+    "/images/air-conditioners/mitsubishi-msy-jy09vf-warranty-docs.jpg"
+  ],
+  "daikin-ftkc09yv2s": [
+    "/images/air-conditioners/daikin-ftkc09yv2s-hero-room.jpg",
+    "/images/air-conditioners/daikin-ftkc09yv2s-product-set.jpg",
+    "/images/air-conditioners/daikin-ftkc09yv2s-clean-unit.jpg",
+    "/images/air-conditioners/daikin-ftkc09yv2s-btu-room.jpg",
+    "/images/air-conditioners/daikin-ftkc09yv2s-install-plan.jpg",
+    "/images/air-conditioners/daikin-ftkc09yv2s-cost-check.jpg",
+    "/images/air-conditioners/daikin-ftkc09yv2s-quiet-night.jpg",
+    "/images/air-conditioners/daikin-ftkc09yv2s-shop-service.jpg",
+    "/images/air-conditioners/daikin-ftkc09yv2s-review-proof.jpg",
+    "/images/air-conditioners/daikin-ftkc09yv2s-warranty-docs.jpg"
+  ],
+  "lg-ice11mn-ju1": [
+    "/images/air-conditioners/lg-ice11mn-hero-room.jpg",
+    "/images/air-conditioners/lg-ice11mn-product-set.jpg",
+    "/images/air-conditioners/lg-ice11mn-clean-unit.jpg",
+    "/images/air-conditioners/lg-ice11mn-btu-room.jpg",
+    "/images/air-conditioners/lg-ice11mn-install-plan.jpg",
+    "/images/air-conditioners/lg-ice11mn-cost-check.jpg",
+    "/images/air-conditioners/lg-ice11mn-quiet-night.jpg",
+    "/images/air-conditioners/lg-ice11mn-shop-service.jpg",
+    "/images/air-conditioners/lg-ice11mn-review-proof.jpg",
+    "/images/air-conditioners/lg-ice11mn-warranty-docs.jpg"
+  ],
+  "lg-ieq10en-ju1": [
+    "/images/air-conditioners/lg-ieq10en-hero-room.jpg",
+    "/images/air-conditioners/lg-ieq10en-product-set.jpg",
+    "/images/air-conditioners/lg-ieq10en-clean-unit.jpg",
+    "/images/air-conditioners/lg-ieq10en-btu-room.jpg",
+    "/images/air-conditioners/lg-ieq10en-install-plan.jpg",
+    "/images/air-conditioners/lg-ieq10en-cost-check.jpg",
+    "/images/air-conditioners/lg-ieq10en-quiet-night.jpg",
+    "/images/air-conditioners/lg-ieq10en-shop-service.jpg",
+    "/images/air-conditioners/lg-ieq10en-review-proof.jpg",
+    "/images/air-conditioners/lg-ieq10en-warranty-docs.jpg"
+  ],
+  "carrier-42tvba010": [
+    "/images/air-conditioners/carrier-42tvba010-hero-room.jpg",
+    "/images/air-conditioners/carrier-42tvba010-product-set.jpg",
+    "/images/air-conditioners/carrier-42tvba010-clean-unit.jpg",
+    "/images/air-conditioners/carrier-42tvba010-btu-room.jpg",
+    "/images/air-conditioners/carrier-42tvba010-install-plan.jpg",
+    "/images/air-conditioners/carrier-42tvba010-cost-check.jpg",
+    "/images/air-conditioners/carrier-42tvba010-quiet-night.jpg",
+    "/images/air-conditioners/carrier-42tvba010-shop-service.jpg",
+    "/images/air-conditioners/carrier-42tvba010-review-proof.jpg",
+    "/images/air-conditioners/carrier-42tvba010-warranty-docs.jpg"
+  ],
+  "carrier-42tvab010abi": [
+    "/images/air-conditioners/carrier-42tvab010abi-hero-room.jpg",
+    "/images/air-conditioners/carrier-42tvab010abi-product-set.jpg",
+    "/images/air-conditioners/carrier-42tvab010abi-clean-unit.jpg",
+    "/images/air-conditioners/carrier-42tvab010abi-btu-room.jpg",
+    "/images/air-conditioners/carrier-42tvab010abi-install-plan.jpg",
+    "/images/air-conditioners/carrier-42tvab010abi-cost-check.jpg",
+    "/images/air-conditioners/carrier-42tvab010abi-quiet-night.jpg",
+    "/images/air-conditioners/carrier-42tvab010abi-shop-service.jpg",
+    "/images/air-conditioners/carrier-42tvab010abi-review-proof.jpg",
+    "/images/air-conditioners/carrier-42tvab010abi-warranty-docs.jpg"
+  ],
+  "beko-bseog090": [
+    "/images/air-conditioners/beko-bseog090-hero-room.jpg",
+    "/images/air-conditioners/beko-bseog090-product-set.jpg",
+    "/images/air-conditioners/beko-bseog090-clean-unit.jpg",
+    "/images/air-conditioners/beko-bseog090-btu-room.jpg",
+    "/images/air-conditioners/beko-bseog090-install-plan.jpg",
+    "/images/air-conditioners/beko-bseog090-cost-check.jpg",
+    "/images/air-conditioners/beko-bseog090-quiet-night.jpg",
+    "/images/air-conditioners/beko-bseog090-shop-service.jpg",
+    "/images/air-conditioners/beko-bseog090-review-proof.jpg",
+    "/images/air-conditioners/beko-bseog090-warranty-docs.jpg"
+  ],
+  "samsung-ar10dyeaawknst": [
+    "/images/air-conditioners/samsung-ar10dy-hero-room.jpg",
+    "/images/air-conditioners/samsung-ar10dy-product-set.jpg",
+    "/images/air-conditioners/samsung-ar10dy-clean-unit.jpg",
+    "/images/air-conditioners/samsung-ar10dy-btu-room.jpg",
+    "/images/air-conditioners/samsung-ar10dy-install-plan.jpg",
+    "/images/air-conditioners/samsung-ar10dy-cost-check.jpg",
+    "/images/air-conditioners/samsung-ar10dy-quiet-night.jpg",
+    "/images/air-conditioners/samsung-ar10dy-shop-service.jpg",
+    "/images/air-conditioners/samsung-ar10dy-review-proof.jpg",
+    "/images/air-conditioners/samsung-ar10dy-warranty-docs.jpg"
   ]
 };
 const overrideImages = productVisualOverrides[review.productKey] ?? [];
@@ -493,7 +797,7 @@ const jsonLd = {
             </div>
             <div class="air-review-proof-stats" aria-label="จำนวนข้อมูลที่ใช้ประกอบการรีวิว">
               <strong>{review.score.toFixed(1)}/10</strong>
-              <span>{proofCountText}+ ข้อมูลให้ตรวจ</span>
+              <span>{proofBadgeText}</span>
               <span>{review.sourceName}</span>
               <span>{review.model}</span>
             </div>
@@ -966,6 +1270,8 @@ const jsonLd = {
   }
 
   .air-verdict-card {
+    min-width: 0;
+    box-sizing: border-box;
     overflow: hidden;
     align-self: center;
     border: 1px solid rgba(234, 218, 197, 0.9);
@@ -996,12 +1302,15 @@ const jsonLd = {
 
   .badge {
     display: inline-flex;
+    max-width: calc(100% - 44px);
+    box-sizing: border-box;
     margin: 18px 22px 0;
     padding: 8px 13px;
     border-radius: 999px;
     background: color-mix(in srgb, var(--accent) 12%, white);
     color: var(--accent);
     font-weight: 950;
+    overflow-wrap: anywhere;
   }
 
   .air-verdict-card > strong {
@@ -1365,6 +1674,9 @@ const jsonLd = {
   .air-real-review-grid article {
     display: grid;
     grid-template-columns: 160px minmax(0, 1fr);
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 0;
     overflow: hidden;
     min-height: 220px;
   }
@@ -1376,7 +1688,16 @@ const jsonLd = {
   }
 
   .air-real-review-grid article > div {
+    min-width: 0;
+    box-sizing: border-box;
     padding: 20px;
+  }
+
+  .air-real-review-grid span,
+  .air-real-review-grid strong,
+  .air-real-review-grid p,
+  .air-real-review-grid em {
+    overflow-wrap: anywhere;
   }
 
   .air-btu-stage {

@@ -17,7 +17,7 @@ export type AirConditionerProduct = {
   shortName: string;
   brand: string;
   store: string;
-  status: "review_signal_pass" | "candidate" | "needs_manual_check";
+  status: "review_ready" | "candidate" | "needs_manual_check";
   statusLabel: string;
   sourceUrl: string;
   image: {
@@ -61,13 +61,13 @@ export const airConditioners: AirConditionerProduct[] = [
     shortName: "CANDY VPCT/VPGT",
     brand: "CANDY / Haier official shop",
     store: "haier.officialshop",
-    status: "review_signal_pass",
+    status: "review_ready",
     statusLabel: "รีวิวแน่น ควรเทียบ",
     sourceUrl: "https://shopee.co.th/product/184920733/26853787935",
     image: {
-      url: "/images/air-conditioners/wall-ac-condo-hero.png",
+      url: "/images/air-conditioners/wall-ac-condo-hero.jpg",
       alt: "ภาพประกอบแอร์ติดผนังในคอนโดสว่างสบาย",
-      source: "/images/air-conditioners/wall-ac-condo-hero.png",
+      source: "/images/air-conditioners/wall-ac-condo-hero.jpg",
       note: "ภาพประกอบการเลือกแอร์ติดผนัง ไม่ใช่ภาพสินค้าจริงจากร้าน"
     },
     priceLabel: "พบราคาประมาณ 7,995 บาทหลังคูปอง ณ วันที่เก็บข้อมูล",
@@ -122,13 +122,13 @@ export const airConditioners: AirConditionerProduct[] = [
     shortName: "TCL SaveIN AI",
     brand: "TCL",
     store: "TCL Authorized Store",
-    status: "review_signal_pass",
+    status: "review_ready",
     statusLabel: "รีวิวแน่น ควรเทียบ",
     sourceUrl: "https://shopee.co.th/product/1025131800/23777230236",
     image: {
-      url: "/images/air-conditioners/tcl-savein-ai-product-set.png",
+      url: "/images/air-conditioners/tcl-savein-ai-product-set.jpg",
       alt: "ภาพ TCL SaveIN AI Series พร้อมชุดคอยล์ร้อน รีโมต และอุปกรณ์ติดตั้ง",
-      source: "/images/air-conditioners/tcl-savein-ai-product-set.png",
+      source: "/images/air-conditioners/tcl-savein-ai-product-set.jpg",
       note: "ภาพชุดสินค้าและอุปกรณ์สำหรับรีวิว TCL SaveIN AI Series"
     },
     priceLabel: "พบราคาประมาณ 8,590 บาทหลังคูปอง ณ วันที่เก็บข้อมูล",
@@ -191,13 +191,13 @@ export const airConditioners: AirConditionerProduct[] = [
     shortName: "Xiaomi Mijia Eco",
     brand: "Mijia / Xiaomi",
     store: "XIAOMI OFFICIAL STORE",
-    status: "review_signal_pass",
+    status: "review_ready",
     statusLabel: "รีวิวดี ควรเทียบต่อ",
     sourceUrl: "https://shopee.co.th/product/389528981/49105546219",
     image: {
-      url: "/images/air-conditioners/xiaomi-mijia-product-set.png",
+      url: "/images/air-conditioners/xiaomi-mijia-product-set.jpg",
       alt: "ภาพประกอบ Xiaomi Mijia Air Inverter Eco พร้อมชุดอุปกรณ์",
-      source: "/images/air-conditioners/xiaomi-mijia-product-set.png",
+      source: "/images/air-conditioners/xiaomi-mijia-product-set.jpg",
       note: "ภาพประกอบชุดสินค้าและอุปกรณ์สำหรับรีวิว Xiaomi Mijia"
     },
     priceLabel: "พบราคาประมาณ 7,924 บาท ณ วันที่เก็บข้อมูล",
@@ -261,13 +261,13 @@ export const airConditioners: AirConditionerProduct[] = [
     shortName: "Midea Celest",
     brand: "Midea",
     store: "Lucky Plaza Online",
-    status: "review_signal_pass",
+    status: "review_ready",
     statusLabel: "ราคาเริ่มดี ประกันเด่น",
     sourceUrl: "https://shopee.co.th/product/338734338/57308205291",
     image: {
-      url: "/images/air-conditioners/midea-celest-product-set.png",
+      url: "/images/air-conditioners/midea-celest-product-set.jpg",
       alt: "ภาพประกอบ Midea Celest MSCE พร้อมชุดอุปกรณ์แอร์",
-      source: "/images/air-conditioners/midea-celest-product-set.png",
+      source: "/images/air-conditioners/midea-celest-product-set.jpg",
       note: "ภาพชุดสินค้าและอุปกรณ์สำหรับรีวิว Midea Celest MSCE"
     },
     priceLabel: "พบช่วงราคาประมาณ 7,490-8,490 บาท ณ วันที่เก็บข้อมูล",
