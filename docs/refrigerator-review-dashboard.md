@@ -18,6 +18,7 @@ This dashboard tracks the first Friendsay refrigerator review batch. Public revi
 - Image ledger: `docs/refrigerator-image-asset-ledger.csv`
 - Public copy pass: buyer-facing title, quick verdict, proof label, strengths, and summary improved for all 28 generated reviews
 - Public library UX: added a "Best By Need" shortcut section so readers can start from budget, small home, family home, large home, side-by-side, or premium use cases
+- SEO/AEO pass: added ItemList/Breadcrumb schema to the refrigerator library and Review/FAQ/Breadcrumb schema to all refrigerator detail pages
 - Marketplace link state: exact brand + model search links are ready; exact affiliate URLs are pending user verification
 
 ## Active Files

@@ -22,6 +22,7 @@ type Props = {
 const { review } = Astro.props;
 const title = `${review.articleTitle} | Friendsay`;
 const description = `${review.name} ${review.capacityLabel} ${review.typeLabel} สรุปแบบเพื่อนช่วยเลือก พร้อมคะแนน จุดเด่น จุดระวัง คำถามก่อนซื้อ และลิงก์เช็กราคา Shopee Lazada TikTok`;
+const pageUrl = `https://friendsay.com/th/reviews/refrigerators/${review.reviewSlug}/`;
 const scoreBars = [
   { label: "ความนิยม", value: review.scores.popularity },
   { label: "ความมั่นใจผู้ซื้อ", value: review.scores.buyerConfidence },
@@ -53,9 +54,107 @@ const imageLinkAttrs = {
   target: "_blank",
   rel: "sponsored noopener"
 };
+const reviewJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Review",
+  name: review.articleTitle,
+  headline: review.articleTitle,
+  url: pageUrl,
+  image: `https://friendsay.com${review.heroImage}`,
+  datePublished: "2026-06-19",
+  dateModified: "2026-06-19",
+  inLanguage: "th-TH",
+  reviewBody: review.summary,
+  author: {
+    "@type": "Organization",
+    name: "Friendsay",
+    url: "https://friendsay.com"
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Friendsay",
+    url: "https://friendsay.com"
+  },
+  reviewRating: {
+    "@type": "Rating",
+    ratingValue: review.score.toFixed(1),
+    bestRating: "10",
+    worstRating: "1"
+  },
+  itemReviewed: {
+    "@type": "Product",
+    name: review.name,
+    brand: {
+      "@type": "Brand",
+      name: review.brand
+    },
+    model: review.model,
+    category: "ตู้เย็น",
+    image: `https://friendsay.com${review.secondaryImage}`,
+    description
+  }
+};
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: `${review.capacityLabel} พอกับบ้านกี่คน?`,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "ขึ้นกับนิสัยซื้อของ ถ้าซื้อของสดบ่อยและแช่เยอะ ให้ขยับขนาดขึ้นจากที่คิดไว้เล็กน้อย แต่ถ้ากินข้างนอกบ่อย ขนาดกลางมักพอแล้ว"
+      }
+    },
+    {
+      "@type": "Question",
+      name: "ซื้อผ่าน Shopee ต้องระวังอะไร?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "ระวังชื่อรุ่น สี ประกันศูนย์ไทย ค่าขนส่ง ยกขึ้นชั้น และเงื่อนไขเปลี่ยนคืนเมื่อเจอรอยบุบหรือเครื่องมีปัญหา"
+      }
+    },
+    {
+      "@type": "Question",
+      name: "ควรเสียบปลั๊กทันทีหลังรับของไหม?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "ควรดูคู่มือของรุ่นนั้น ๆ ก่อน โดยทั่วไปตู้เย็นที่ผ่านการขนส่งควรตั้งให้นิ่งก่อนเสียบปลั๊ก เพื่อให้น้ำยาทำความเย็นและระบบภายในเข้าที่"
+      }
+    }
+  ]
+};
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "หน้าแรก",
+      item: "https://friendsay.com/th/"
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "รีวิวตู้เย็น",
+      item: "https://friendsay.com/th/reviews/refrigerators/"
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: review.name,
+      item: pageUrl
+    }
+  ]
+};
 ---
 
-<BaseLayout title={title} description={description} canonical={`https://friendsay.com/th/reviews/refrigerators/${review.reviewSlug}/`}>
+<BaseLayout title={title} description={description} canonical={pageUrl}>
+  <script type="application/ld+json" set:html={JSON.stringify(reviewJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+
   <AffiliateClickTracker pageContext={`refrigerator-review-${review.productKey}`} />
 
   <section class="review-hero">
