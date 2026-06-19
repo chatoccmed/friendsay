@@ -94,7 +94,7 @@ const imageLinkAttrs = {
   <section class="decision-section" id="quick">
     <div class="container decision-grid">
       <a class="decision-image" {...imageLinkAttrs}>
-        <img src="/images/refrigerators/refrigerator-capacity-organization.png" alt="ภาพตัวอย่างการจัดของในตู้เย็น" loading="lazy" />
+        <img src={review.imageSet.capacityScene} alt="ภาพตัวอย่างการจัดของในตู้เย็น" loading="lazy" />
       </a>
       <div class="decision-card">
         <span class="pill">คำตอบเร็ว</span>
@@ -134,19 +134,19 @@ const imageLinkAttrs = {
   <section class="photo-wall">
     <div class="container photo-grid">
       <a {...imageLinkAttrs} class="photo-large">
-        <img src={review.heroImage} alt={`ภาพรวม ${review.name}`} loading="lazy" />
+        <img src={review.imageSet.productDetail} alt={`ภาพรวม ${review.name}`} loading="lazy" />
         <span><strong>ตัวเลือกในตลาด</strong> ดูชื่อรุ่น ความจุ และประเภทตู้ให้ตรงก่อน</span>
       </a>
       <a {...imageLinkAttrs}>
-        <img src="/images/refrigerators/refrigerator-measure-space.png" alt="ภาพวัดพื้นที่วางตู้เย็น" loading="lazy" />
+        <img src={review.imageSet.spaceScene} alt="ภาพวัดพื้นที่วางตู้เย็น" loading="lazy" />
         <span><strong>พื้นที่วาง</strong> วัดช่องตู้และระยะเปิดประตู</span>
       </a>
       <a {...imageLinkAttrs}>
-        <img src="/images/refrigerators/refrigerator-energy-warranty.png" alt="ภาพเช็กค่าไฟและประกันตู้เย็น" loading="lazy" />
+        <img src={review.imageSet.warrantyScene} alt="ภาพเช็กค่าไฟและประกันตู้เย็น" loading="lazy" />
         <span><strong>ค่าไฟ/ประกัน</strong> ถามให้ชัดก่อนจ่ายเงิน</span>
       </a>
       <a {...imageLinkAttrs}>
-        <img src="/images/refrigerators/refrigerator-delivery-check.png" alt="ภาพตรวจรับตู้เย็นหลังขนส่ง" loading="lazy" />
+        <img src={review.imageSet.deliveryScene} alt="ภาพตรวจรับตู้เย็นหลังขนส่ง" loading="lazy" />
         <span><strong>ขนส่ง</strong> ถ่ายคลิปตอนรับของไว้เสมอ</span>
       </a>
     </div>
@@ -183,7 +183,7 @@ const imageLinkAttrs = {
             </p>
           </div>
           <a {...imageLinkAttrs}>
-            <img src="/images/refrigerators/refrigerator-capacity-organization.png" alt="ภาพช่วยเลือกความจุตู้เย็น" loading="lazy" />
+            <img src={review.imageSet.capacityScene} alt="ภาพช่วยเลือกความจุตู้เย็น" loading="lazy" />
           </a>
         </section>
 
@@ -240,7 +240,7 @@ const imageLinkAttrs = {
             </p>
           </div>
           <a {...imageLinkAttrs}>
-            <img src="/images/refrigerators/refrigerator-measure-space.png" alt="ภาพวัดช่องวางตู้เย็น" loading="lazy" />
+            <img src={review.imageSet.spaceScene} alt="ภาพวัดช่องวางตู้เย็น" loading="lazy" />
           </a>
         </section>
 
@@ -254,7 +254,7 @@ const imageLinkAttrs = {
             </p>
           </div>
           <a {...imageLinkAttrs}>
-            <img src="/images/refrigerators/refrigerator-energy-warranty.png" alt="ภาพเอกสารประกันและค่าไฟตู้เย็น" loading="lazy" />
+            <img src={review.imageSet.warrantyScene} alt="ภาพเอกสารประกันและค่าไฟตู้เย็น" loading="lazy" />
           </a>
         </section>
 

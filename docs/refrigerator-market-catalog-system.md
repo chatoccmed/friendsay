@@ -14,6 +14,9 @@ This is the catalog-first workflow for the Friendsay refrigerator category. It f
 - Public review route: `/th/reviews/refrigerators/`
 - Detail pages generated: 28 model pages
 - Models with visible review count above 5 in the first source round: 18
+- Generated visual kits: 28 models x 7 JPG images
+- Generated image path: `public/images/refrigerators/models/`
+- Image asset ledger: `docs/refrigerator-image-asset-ledger.csv`
 - Marketplace tracking file: `docs/refrigerator-marketplace-match.csv`
 
 ## Rules For Refrigerator Reviews
@@ -27,6 +30,8 @@ This is the catalog-first workflow for the Friendsay refrigerator category. It f
 - Review-proof cards must become six useful recommendations, not weak text such as "there are many reviews".
 - Product images and visual cards should link to Shopee search or the exact affiliate link when available.
 - Large refrigerators need stronger delivery and measurement cautions than small models.
+- Generated visuals are acceptable for section-specific guidance, but do not describe them as real product photos.
+- Real product photos must come from an exact verified product, brand, or user-provided source before they are treated as real product images.
 
 ## Next Data Rounds
 

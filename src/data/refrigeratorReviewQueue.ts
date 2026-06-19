@@ -16,6 +16,16 @@ export type RefrigeratorScoreSet = {
   deliveryRisk: number;
 };
 
+export type RefrigeratorImageSet = {
+  hero: string;
+  productFront: string;
+  productDetail: string;
+  capacityScene: string;
+  spaceScene: string;
+  deliveryScene: string;
+  warrantyScene: string;
+};
+
 export type RefrigeratorAdvice = {
   title: string;
   body: string;
@@ -42,6 +52,7 @@ export type QueuedRefrigeratorReview = {
   proofLabel: string;
   heroImage: string;
   secondaryImage: string;
+  imageSet: RefrigeratorImageSet;
   quickVerdict: string;
   summary: string;
   bestFor: string[];
@@ -93,18 +104,18 @@ const typeLabelMap: Record<RefrigeratorType, string> = {
   "side-by-side": "ตู้เย็นไซด์บายไซด์"
 };
 
-const typeHeroMap: Record<RefrigeratorType, string> = {
-  "one-door": "/images/refrigerators/refrigerator-product-set.png",
-  "two-door": "/images/refrigerators/refrigerator-library-hero.png",
-  "multi-door": "/images/refrigerators/refrigerator-capacity-organization.png",
-  "side-by-side": "/images/refrigerators/refrigerator-product-set.png"
-};
+const imageSetFor = (productKey: string): RefrigeratorImageSet => {
+  const base = `/images/refrigerators/models/${productKey}`;
 
-const typeSecondaryMap: Record<RefrigeratorType, string> = {
-  "one-door": "/images/refrigerators/refrigerator-measure-space.png",
-  "two-door": "/images/refrigerators/refrigerator-capacity-organization.png",
-  "multi-door": "/images/refrigerators/refrigerator-energy-warranty.png",
-  "side-by-side": "/images/refrigerators/refrigerator-delivery-check.png"
+  return {
+    hero: `${base}-hero.jpg`,
+    productFront: `${base}-product-clean.jpg`,
+    productDetail: `${base}-product-detail.jpg`,
+    capacityScene: `${base}-capacity.jpg`,
+    spaceScene: `${base}-space.jpg`,
+    deliveryScene: `${base}-delivery.jpg`,
+    warrantyScene: `${base}-warranty.jpg`
+  };
 };
 
 const refrigeratorSeeds: RefrigeratorSeed[] = [
@@ -211,7 +222,8 @@ const makeAdvice = (seed: RefrigeratorSeed): RefrigeratorAdvice[] => {
 const makeReview = (seed: RefrigeratorSeed): QueuedRefrigeratorReview => {
   const name = `${seed.brand} ${seed.model}`;
   const query = `${name} ตู้เย็น`;
-  const reviewSlug = `${slugify(seed.brand, seed.model)}-refrigerator`;
+  const productKey = slugify(seed.brand, seed.model);
+  const reviewSlug = `${productKey}-refrigerator`;
   const typeLabel = typeLabelMap[seed.type];
   const useCase = capacityUse(seed.capacityCuFt, seed.type);
   const priceLabel = `ประมาณ ${seed.price.toLocaleString("th-TH")} บาท`;
@@ -224,10 +236,11 @@ const makeReview = (seed: RefrigeratorSeed): QueuedRefrigeratorReview => {
     ? "พื้นที่แช่เยอะ เหมาะกับบ้านที่ซื้อของเข้าครัวจริงจัง"
     : "ตัวเลือกใช้ง่ายสำหรับบ้านที่อยากซื้อตู้เย็นให้จบแบบไม่พลาด";
   const scoreBase = Math.min(9.4, 7.7 + Math.min(seed.reviewCount ?? 1, 30) / 20 + (seed.rating ?? 4.6) / 12);
+  const imageSet = imageSetFor(productKey);
 
   return {
     queueRank: seed.queueRank,
-    productKey: slugify(seed.brand, seed.model),
+    productKey,
     reviewSlug,
     brand: seed.brand,
     model: seed.model,
@@ -244,8 +257,9 @@ const makeReview = (seed: RefrigeratorSeed): QueuedRefrigeratorReview => {
     rating: seed.rating,
     reviewCount: seed.reviewCount,
     proofLabel: `${reviewPart} พร้อมข้อมูลราคาและชื่อรุ่นสำหรับเทียบก่อนซื้อ`,
-    heroImage: typeHeroMap[seed.type],
-    secondaryImage: typeSecondaryMap[seed.type],
+    heroImage: imageSet.hero,
+    secondaryImage: imageSet.productFront,
+    imageSet,
     quickVerdict: `${name} น่าเริ่มดูถ้าคุณอยากได้${typeLabel}ขนาด ${seed.capacityCuFt} คิว ในงบ ${priceLabel} จุดที่ควรเช็กก่อนจ่ายคือพื้นที่วางจริง ประตูเปิดสุดไหม และเงื่อนไขประกันหลังซื้อออนไลน์`,
     summary: `รุ่นนี้อยู่ในกลุ่มที่ควรเปิดดู เพราะชื่อรุ่น ราคา และความจุค่อนข้างชัด เหมาะกับคนที่อยากเริ่มเทียบจากรุ่นจริง แล้วค่อยดูโปร สี ประกัน ค่าขนส่ง และร้านที่ตอบคำถามหลังการขายได้ครบก่อนจ่ายเงิน`,
     bestFor: [
