@@ -18,6 +18,46 @@ const types = Array.from(new Set(reviews.map((item) => item.typeLabel)));
 const readyCount = refrigeratorReviewSummary.reviewSignalReady;
 const formatNumber = (value: number | undefined) => value ? value.toLocaleString("th-TH") : "";
 const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
+const firstReview = (predicate: (item: typeof reviews[number]) => boolean) =>
+  reviews.find(predicate) ?? reviews[0];
+const bestByNeed = [
+  {
+    label: "คุมงบ",
+    title: "อยากได้ตู้เย็นใช้ง่าย ราคาไม่แรง",
+    note: "เริ่มจากรุ่นขนาดพอดีบ้านเล็กก่อน แล้วค่อยเทียบโปร",
+    item: firstReview((item) => item.priceLabel.includes("6,990") || item.priceLabel.includes("7,390") || item.priceLabel.includes("7,790"))
+  },
+  {
+    label: "บ้านเล็ก",
+    title: "คอนโดหรือบ้าน 1-2 คน",
+    note: "ดูรุ่น 6-8 คิวก่อน ถ้าแช่ของสดเยอะค่อยขยับขึ้น",
+    item: firstReview((item) => item.capacityCuFt <= 8)
+  },
+  {
+    label: "บ้านกลาง",
+    title: "บ้าน 2-4 คนที่ซื้อของทุกสัปดาห์",
+    note: "ช่วง 9-14 คิวมักบาลานซ์พื้นที่ ราคา และค่าไฟได้ดี",
+    item: firstReview((item) => item.capacityCuFt >= 9 && item.capacityCuFt <= 14)
+  },
+  {
+    label: "บ้านใหญ่",
+    title: "ทำอาหารบ่อยหรือซื้อของเข้าบ้านทีละเยอะ",
+    note: "เริ่มดู 16 คิวขึ้นไป แต่ต้องวัดทางขนย้ายจริงจัง",
+    item: firstReview((item) => item.capacityCuFt >= 16)
+  },
+  {
+    label: "ไซด์บายไซด์",
+    title: "อยากได้ช่องแช่กว้างและหยิบของง่าย",
+    note: "เหมาะกับครัวที่มีพื้นที่หน้าเครื่องพอเปิดประตูสองฝั่ง",
+    item: firstReview((item) => item.type === "side-by-side")
+  },
+  {
+    label: "พรีเมียม",
+    title: "อยากให้ครัวดูเรียบร้อยและจัดของเป็นโซน",
+    note: "มัลติดอร์เหมาะกับบ้านที่ยอมจ่ายเพิ่มเพื่อความเป็นระเบียบ",
+    item: firstReview((item) => item.type === "multi-door")
+  }
+];
 ---
 
 <BaseLayout
@@ -107,6 +147,31 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
               <a href={reviewHref(item.reviewSlug)}>อ่านรีวิวรุ่นนี้</a>
               <a href={item.links.shopee} target="_blank" rel="sponsored noopener">Shopee</a>
             </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="need-section" id="best-by-need">
+    <div class="container section-heading">
+      <span class="eyebrow">Best By Need</span>
+      <h2>ไม่อยากอ่านครบ 28 รุ่น ให้เริ่มจากโจทย์นี้ก่อน</h2>
+      <p>เลือกจากสถานการณ์ใกล้ตัว แล้วค่อยเปิดรีวิวรุ่นที่เหมาะที่สุดเพื่อเช็กจุดละเอียดก่อนซื้อจริง</p>
+    </div>
+    <div class="container need-grid">
+      {bestByNeed.map(({ label, title, note, item }) => (
+        <article class="need-card">
+          <a href={item.links.shopee} target="_blank" rel="sponsored noopener">
+            <img src={item.secondaryImage} alt={`ภาพประกอบ ${item.name}`} loading="lazy" />
+          </a>
+          <div>
+            <span>{label}</span>
+            <h3>{title}</h3>
+            <p>{note}</p>
+            <strong>{item.name}</strong>
+            <small>{item.capacityLabel} / {item.priceLabel}</small>
+            <a class="need-link" href={reviewHref(item.reviewSlug)}>อ่านรีวิวรุ่นนี้</a>
           </div>
         </article>
       ))}
@@ -387,6 +452,12 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
     background: #fffdf8;
   }
 
+  .need-section {
+    background:
+      linear-gradient(180deg, #fffdf8, #f7fbfa 68%, #fffdf8);
+    padding: clamp(42px, 7vw, 92px) 0;
+  }
+
   .visual-strip {
     border-bottom: 1px solid rgba(223, 208, 186, 0.86);
     padding: 18px 0;
@@ -469,6 +540,7 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
   }
 
   .priority-card,
+  .need-card,
   .model-row,
   .model-tools,
   .type-cards span,
@@ -485,8 +557,101 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
     overflow: hidden;
   }
 
+  .need-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .need-card {
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr);
+    gap: 14px;
+    overflow: hidden;
+    padding: 12px;
+  }
+
+  .need-card > a {
+    display: block;
+    overflow: hidden;
+    align-self: stretch;
+    min-height: 172px;
+    border-radius: 8px;
+    background: #edf5f4;
+  }
+
+  .need-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .need-card div {
+    display: grid;
+    align-content: start;
+    gap: 7px;
+    min-width: 0;
+    padding: 4px 2px;
+  }
+
+  .need-card span {
+    width: max-content;
+    border-radius: 999px;
+    background: #fff0ea;
+    padding: 7px 10px;
+    color: #d94f41;
+    font-size: 0.78rem;
+    font-weight: 950;
+  }
+
+  .need-card h3 {
+    margin: 0;
+    color: #17202a;
+    font-size: clamp(20px, 1.8vw, 28px);
+    line-height: 1.14;
+    letter-spacing: 0;
+  }
+
+  .need-card p {
+    margin: 0;
+    color: #617080;
+    font-size: 0.96rem;
+    font-weight: 760;
+    line-height: 1.45;
+  }
+
+  .need-card strong,
+  .need-card small {
+    color: #17202a;
+    font-weight: 950;
+    line-height: 1.35;
+  }
+
+  .need-card small {
+    color: #607080;
+    font-size: 0.86rem;
+  }
+
+  .need-link {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    max-width: 100%;
+    border-radius: 8px;
+    background: #17202a;
+    padding: 9px 12px;
+    color: #fff;
+    font-weight: 950;
+    text-decoration: none;
+  }
+
   .priority-image,
+  .need-card > a,
   .priority-image img,
+  .need-card img,
   .model-thumb,
   .model-thumb img,
   .guide-grid img,
@@ -806,6 +971,10 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
       grid-template-columns: 1fr;
     }
 
+    .need-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .model-tools {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       position: static;
@@ -828,6 +997,7 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
 
   @media (max-width: 820px) {
     .priority-grid,
+    .need-grid,
     .type-cards,
     .capacity-list {
       grid-template-columns: 1fr;
@@ -864,6 +1034,14 @@ const reviewHref = (slug: string) => `/th/reviews/refrigerators/${slug}/`;
 
     .model-thumb {
       aspect-ratio: 1.45;
+    }
+
+    .need-card {
+      grid-template-columns: 118px minmax(0, 1fr);
+    }
+
+    .need-card > a {
+      min-height: 160px;
     }
 
     .row-check {
