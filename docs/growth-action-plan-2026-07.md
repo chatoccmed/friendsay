@@ -17,7 +17,8 @@
 
 ## แผน 30 วัน (เรียงตามผลตอบแทน)
 
-- [ ] 1. สมัคร/แก้บัญชี Shopee Affiliate (affiliate.shopee.co.th) + สมัคร Involve Asia หรือ Accesstrade สำรอง → เติม tracking ทุกลิงก์ (เจ้าของต้องทำเอง: สมัครบัญชี)
+- [x] 1a. บัญชี Shopee Affiliate — **มีอยู่แล้ว ใช้งานได้** (ยืนยัน 2026-07-02, เข้า dashboard ได้) → เหลือสร้างลิงก์ 4 รุ่น verified แล้วเดินสายเข้าเว็บ
+- [ ] 1b. สมัคร Involve Asia หรือ Accesstrade สำรอง (สำหรับ Lazada ด้วย)
 - [ ] 2. ติด Cloudflare Web Analytics + Google Search Console
 - [ ] 3. ย้ายโดเมน friendsay.com → เว็บใหม่ ตาม docs/pre-domain-migration-checklist.md พร้อม redirect URL เก่า (เจ้าของต้องทำเอง: กดใน Cloudflare)
 - [ ] 4. ถอดหน้ารีวิวที่ proofCount = 0 ออกจาก sitemap / ใส่ noindex จนกว่าจะมี proof
