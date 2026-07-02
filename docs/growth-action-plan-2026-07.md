@@ -31,6 +31,8 @@
 
 โครงที่ใช้: hub-and-spoke — บทความรวม (hub) เป็นทางเข้า traffic → ลิงก์ลงหน้ารีวิวเดี่ยว (spoke) ที่มีอยู่แล้ว → หน้า compare
 
+แผนแม่บทหัวข้อ+ลำดับผลิตทั้งหมดของหมวดแอร์: `docs/air-conditioner-content-master-plan.md` (45 หัวข้อ, 3 เฟส)
+
 กติกาที่ต้องรักษา (จาก docs/shopee-b-plus-d-review-system.md):
 - บทความรวมต้องมี ≥10 รุ่นที่ status เป็น verified_sold หรือ review_signal_pass (ตอนนี้มีแค่ 4 → ต้องเก็บ evidence เพิ่มก่อน)
 - ห้ามใช้คำ "ขายดีที่สุด" ถ้า sold_count ไม่ครบ ให้ใช้ "น่าสนใจจากจำนวนรีวิวใน Shopee"
