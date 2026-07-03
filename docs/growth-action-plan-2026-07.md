@@ -17,7 +17,9 @@
 
 ## แผน 30 วัน (เรียงตามผลตอบแทน)
 
-- [x] 1a. บัญชี Shopee Affiliate — **มีอยู่แล้ว ใช้งานได้** (ยืนยัน 2026-07-02, เข้า dashboard ได้) → เหลือสร้างลิงก์ 4 รุ่น verified แล้วเดินสายเข้าเว็บ
+- [x] 1a. บัญชี Shopee Affiliate — **มีอยู่แล้ว ใช้งานได้** (ยืนยัน 2026-07-02, เข้า dashboard ได้)
+- [x] 1a-2. สร้างลิงก์ affiliate 4 รุ่น verified + เดินสายเข้า `airConditioners.ts` แล้ว (2026-07-02) — sub_id รูปแบบ `friendsay` / `<รุ่นย่อ>` ผ่านหน้า "ลิงก์ที่กำหนดเอง" ใน dashboard; ทดสอบ redirect ถูกตัวครบ 4 ลิงก์
+  - CANDY `https://s.shopee.co.th/8KncHGDn7M` · TCL `https://s.shopee.co.th/6L2XtfRyjI` · Xiaomi `https://s.shopee.co.th/9UzZfZRNTi` · Midea `https://s.shopee.co.th/6Aj7hUU7nt`
 - [ ] 1b. สมัคร Involve Asia หรือ Accesstrade สำรอง (สำหรับ Lazada ด้วย)
 - [ ] 2. ติด Cloudflare Web Analytics + Google Search Console
 - [ ] 3. ย้ายโดเมน friendsay.com → เว็บใหม่ ตาม docs/pre-domain-migration-checklist.md พร้อม redirect URL เก่า (เจ้าของต้องทำเอง: กดใน Cloudflare)

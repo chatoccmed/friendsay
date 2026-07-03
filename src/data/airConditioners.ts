@@ -113,7 +113,8 @@ export const airConditioners: AirConditionerProduct[] = [
       "ใช้คะแนน รีวิว ภาพ/วิดีโอผู้ซื้อ ราคา และเงื่อนไขติดตั้งเป็นหลักในการประเมิน",
       "ข้อมูลราคาและคูปองเปลี่ยนได้ ควรกดเช็กหน้าร้านก่อนซื้อทุกครั้ง"
     ],
-    links: searchLinks("CANDY VPCT VPGT แอร์อินเวอร์เตอร์", "https://shopee.co.th/product/184920733/26853787935"),
+    // ลิงก์ affiliate (สร้าง 2026-07-02, sub_id: friendsay/candyvpct) — ห้ามแทนด้วย URL ตรง ไม่งั้นเสียค่าคอม
+    links: searchLinks("CANDY VPCT VPGT แอร์อินเวอร์เตอร์", "https://s.shopee.co.th/8KncHGDn7M"),
     updated: "2026-06-15"
   },
   {
@@ -182,7 +183,8 @@ export const airConditioners: AirConditionerProduct[] = [
       "เก็บใบเสร็จ หลักฐานแชท เลข serial และภาพตอนรับของไว้ให้ครบ"
     ],
     sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จึงใช้รีวิวผู้ซื้อเป็นหลักในการประเมิน"],
-    links: searchLinks("TCL SaveIN AI Series แอร์ Full DC Inverter", "https://shopee.co.th/product/1025131800/23777230236"),
+    // ลิงก์ affiliate (สร้าง 2026-07-02, sub_id: friendsay/tclsavein)
+    links: searchLinks("TCL SaveIN AI Series แอร์ Full DC Inverter", "https://s.shopee.co.th/6L2XtfRyjI"),
     updated: "2026-06-15"
   },
   {
@@ -252,7 +254,8 @@ export const airConditioners: AirConditionerProduct[] = [
       "เก็บใบเสร็จ เลขเครื่อง กล่องสินค้า และแชทร้านไว้ให้ครบหลังติดตั้ง"
     ],
     sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 14 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จึงใช้รีวิวผู้ซื้อเป็นหลักในการประเมิน"],
-    links: searchLinks("Xiaomi Mijia Air Inverter Eco แอร์", "https://shopee.co.th/product/389528981/49105546219"),
+    // ลิงก์ affiliate (สร้าง 2026-07-02, sub_id: friendsay/xiaomieco)
+    links: searchLinks("Xiaomi Mijia Air Inverter Eco แอร์", "https://s.shopee.co.th/9UzZfZRNTi"),
     updated: "2026-06-14"
   },
   {
@@ -323,7 +326,8 @@ export const airConditioners: AirConditionerProduct[] = [
       "เก็บใบเสร็จ เลขเครื่อง กล่องสินค้า รูปตอนติดตั้ง และแชทร้านไว้ให้ครบหลังซื้อ"
     ],
     sourceNotes: ["เก็บข้อมูลจาก Shopee วันที่ 15 มิถุนายน 2026", "ยอดขายไม่ปรากฏชัด จึงใช้รีวิวผู้ซื้อเป็นหลักในการประเมิน"],
-    links: searchLinks("Midea Celest MSCE แอร์ Inverter", "https://shopee.co.th/product/338734338/57308205291"),
+    // ลิงก์ affiliate (สร้าง 2026-07-02, sub_id: friendsay/mideacelest)
+    links: searchLinks("Midea Celest MSCE แอร์ Inverter", "https://s.shopee.co.th/6Aj7hUU7nt"),
     updated: "2026-06-15"
   }
 ];
