@@ -2648,6 +2648,71 @@ button {
   }
 }
 
+.btu-calc {
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+  padding: 28px;
+  box-shadow: var(--shadow-soft);
+}
+
+.btu-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.btu-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.btu-form input,
+.btu-form select {
+  border: 1px solid rgba(31, 41, 55, 0.22);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #fff;
+}
+
+.btu-form input:focus,
+.btu-form select:focus {
+  outline: 2px solid var(--coral, #ff6b5a);
+  outline-offset: 1px;
+}
+
+.btu-result {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+  border-radius: var(--radius);
+  background: #10203a;
+  color: #fff;
+  padding: 22px 24px;
+}
+
+.btu-result strong {
+  font-size: 2.2rem;
+  line-height: 1.1;
+  color: #ffd9d3;
+}
+
+.btu-result p {
+  margin: 0 0 10px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 700px) {
+  .btu-form {
+    grid-template-columns: 1fr;
+  }
+}
+
 .page-hero {
   padding: 54px 0;
 }

@@ -1,0 +1,230 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+
+const updatedLabel = "2 กรกฎาคม 2026";
+
+const btuTable = [
+  { room: "9–14 ตร.ม.", example: "ห้องนอนเล็ก คอนโดสตูดิโอ", normal: "9,000 BTU", sunny: "12,000 BTU" },
+  { room: "15–20 ตร.ม.", example: "ห้องนอนใหญ่ คอนโด 1 ห้องนอน", normal: "12,000 BTU", sunny: "15,000 BTU" },
+  { room: "21–28 ตร.ม.", example: "ห้องนั่งเล่น ห้องนอนมาสเตอร์", normal: "15,000–18,000 BTU", sunny: "18,000–20,000 BTU" },
+  { room: "29–35 ตร.ม.", example: "ห้องนั่งเล่นรวมครัวเปิด", normal: "20,000–24,000 BTU", sunny: "24,000–26,000 BTU" },
+  { room: "36–45 ตร.ม.", example: "ห้องโถงบ้านเดี่ยว ออฟฟิศเล็ก", normal: "25,000–30,000 BTU", sunny: "30,000–36,000 BTU" }
+];
+
+const faqs = [
+  {
+    q: "ซื้อ BTU เผื่อไว้เยอะ ๆ ดีกว่าไหม?",
+    a: "ไม่ดีครับ แอร์ใหญ่เกินห้องจะตัดการทำงานถี่ (short cycle) ทำให้ห้องเย็นไม่สม่ำเสมอ ความชื้นสูง และเปลืองไฟกว่าที่ควร ส่วนแอร์เล็กเกินห้องจะทำงานหนักตลอดเวลา กินไฟและพังเร็ว — เลือกให้พอดีตามตารางแล้วบวกเผื่อเฉพาะเมื่อมีปัจจัยความร้อนจริง"
+  },
+  {
+    q: "ห้องโดนแดดบ่าย ต้องเผื่อเท่าไหร่?",
+    a: "ห้องที่ผนังหรือหน้าต่างรับแดดตะวันตกช่วงบ่าย ควรเผื่อ BTU ขึ้นราว 15-20% จากค่าปกติ และถ้าเป็นห้องชั้นบนสุดที่หลังคารับแดดตรง ๆ ควรเผื่อรวมประมาณ 20-25% เครื่องคิดเลขในหน้านี้บวกเผื่อให้อัตโนมัติแล้ว"
+  },
+  {
+    q: "เพดานสูงกว่าปกติมีผลไหม?",
+    a: "มีครับ ตารางมาตรฐานคิดที่เพดานสูง ~2.5-2.7 เมตร ถ้าเพดานสูง 3 เมตรขึ้นไป (เช่น บ้านสไตล์ลอฟต์ ห้องใต้หลังคา) ปริมาตรอากาศที่ต้องทำความเย็นเพิ่มขึ้น ควรเผื่อ BTU ราว 10-15%"
+  },
+  {
+    q: "ค่า BTU ที่ร้านเขียน กับที่ฉลากเบอร์ 5 ไม่ตรงกัน ดูอันไหน?",
+    a: "ดูฉลากเบอร์ 5 หรือสเปกจริงของรุ่นย่อยครับ ชื่อรุ่นมักปัดเลขกลม ๆ เช่น '9000 BTU' แต่ค่าจริงอาจเป็น 9,212 หรือ 9,500 BTU ต่างกันไม่มากพอจะเปลี่ยนการตัดสินใจ แต่ให้ใช้ค่าจริงตอนเทียบค่าไฟ (SEER) ระหว่างรุ่น"
+  },
+  {
+    q: "คิด BTU ได้แล้ว เลือกรุ่นไหนต่อ?",
+    a: "ไปที่หน้าจัดอันดับแอร์ 2026 ของเรา — ทุกรุ่นบอกช่วง BTU ที่มีขาย ราคาที่พบจริง รีวิวผู้ซื้อ และจุดระวังก่อนจ่ายเงิน ครบพอให้ตัดสินใจได้เลย"
+  }
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a }
+  }))
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "แอร์กี่ BTU ถึงพอ: ตารางเลือก BTU ตามขนาดห้อง + เครื่องคิดเลข",
+  description: "วิธีเลือก BTU แอร์ให้ตรงห้องแบบเข้าใจง่าย มีตารางขนาดห้อง เครื่องคิดเลขที่เผื่อแดดบ่าย ชั้นบนสุด และเพดานสูงให้อัตโนมัติ",
+  inLanguage: "th",
+  dateModified: "2026-07-02",
+  author: { "@type": "Organization", name: "Friendsay" }
+};
+---
+
+<BaseLayout
+  title="แอร์กี่ BTU ถึงพอ: ตารางเลือกตามขนาดห้อง + เครื่องคิดเลข | Friendsay"
+  description="เลือก BTU แอร์ให้ตรงห้องใน 1 นาที — ตารางขนาดห้อง × BTU, เครื่องคิดเลขที่เผื่อแดดบ่าย ชั้นบนสุด เพดานสูงให้อัตโนมัติ พร้อมลิงก์ไปรุ่นแนะนำที่ตรงผลลัพธ์ อัปเดต 2 ก.ค. 2026"
+  canonical="https://friendsay.com/th/guides/btu-calculator/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge badge-coral">คู่มือเลือกซื้อ</span>
+        <span class="badge badge-teal">อัปเดต {updatedLabel}</span>
+      </div>
+      <h1>แอร์กี่ BTU ถึงพอ ตอบได้ใน 1 นาที</h1>
+      <p class="muted">
+        BTU คือ "กำลังทำความเย็น" ของแอร์ เลือกเล็กไปห้องไม่เย็นและเครื่องทำงานหนัก
+        เลือกใหญ่ไปเปลืองเงินและห้องชื้น — ใช้เครื่องคิดเลขด้านล่างหรือเปิดตารางเทียบเอง แล้วไปเลือกรุ่นต่อได้เลย
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="calculator">
+    <div class="container">
+      <div class="btu-calc" id="btu-calc">
+        <h2 class="headline">เครื่องคิด BTU เฉพาะห้องของคุณ</h2>
+        <div class="btu-form">
+          <label>
+            <span>ขนาดห้อง (ตารางเมตร)</span>
+            <input type="number" id="btu-area" min="4" max="120" value="16" inputmode="decimal" />
+          </label>
+          <label>
+            <span>ห้องโดนแดดบ่ายไหม? (ผนัง/หน้าต่างทิศตะวันตก)</span>
+            <select id="btu-sun">
+              <option value="1">ไม่โดน / โดนแค่ช่วงเช้า</option>
+              <option value="1.18">โดนแดดบ่ายเต็ม ๆ</option>
+            </select>
+          </label>
+          <label>
+            <span>เป็นห้องชั้นบนสุด (หลังคารับแดด) ไหม?</span>
+            <select id="btu-top">
+              <option value="1">ไม่ใช่</option>
+              <option value="1.1">ใช่ ชั้นบนสุด</option>
+            </select>
+          </label>
+          <label>
+            <span>เพดานสูงเกิน 3 เมตรไหม?</span>
+            <select id="btu-ceiling">
+              <option value="1">ไม่เกิน (บ้าน/คอนโดทั่วไป)</option>
+              <option value="1.12">เกิน 3 เมตร</option>
+            </select>
+          </label>
+        </div>
+        <div class="btu-result" id="btu-result" aria-live="polite">
+          <span>ห้องของคุณควรใช้ประมาณ</span>
+          <strong id="btu-number">12,800 BTU</strong>
+          <p id="btu-advice">แนะนำเลือกรุ่นขนาด 12,000–13,000 BTU</p>
+          <a class="button button-primary" id="btu-cta" href="/th/best/air-conditioners/">ดูรุ่นแนะนำที่มีขนาดนี้ →</a>
+        </div>
+        <p class="compare-note">
+          สูตร: พื้นที่ × 800 BTU/ตร.ม. (ห้องปกติ เพดานมาตรฐาน) แล้วบวกเผื่อแดดบ่าย +18%, ชั้นบนสุด +10%, เพดานสูง +12%
+          — เป็นค่าประเมินเบื้องต้นสำหรับห้องพักอาศัย ห้องที่มีคนอยู่หนาแน่นหรืออุปกรณ์ปล่อยความร้อนเยอะควรให้ช่างประเมินหน้างาน
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="table">
+    <div class="container">
+      <p class="eyebrow">ตารางมาตรฐาน</p>
+      <h2 class="headline">ขนาดห้อง × BTU ที่เหมาะสม</h2>
+      <div class="compare-shell">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>ขนาดห้อง</th>
+              <th>ตัวอย่างห้อง</th>
+              <th>ห้องปกติ</th>
+              <th>ห้องโดนแดดบ่าย</th>
+            </tr>
+          </thead>
+          <tbody>
+            {btuTable.map((row) => (
+              <tr>
+                <td><strong>{row.room}</strong></td>
+                <td>{row.example}</td>
+                <td>{row.normal}</td>
+                <td>{row.sunny}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">อิงเกณฑ์ ~750–800 BTU ต่อตารางเมตรสำหรับห้องพักอาศัยเพดานมาตรฐาน — แดดบ่ายเผื่อเพิ่มราว 15–20%</p>
+    </div>
+  </section>
+
+  <section class="section" id="mistakes">
+    <div class="container">
+      <p class="eyebrow">พลาดกันบ่อย</p>
+      <h2 class="headline">3 ความเข้าใจผิดเรื่อง BTU ที่ทำให้เสียเงินฟรี</h2>
+      <div class="scenario-grid">
+        <article>
+          <h3>"ซื้อใหญ่ไว้ก่อน เย็นชัวร์"</h3>
+          <p>แอร์ใหญ่เกินห้องจะเย็นเร็วจนตัดการทำงานก่อนรีดความชื้นออก ผลคือห้องเย็นแบบชื้น ๆ อึดอัด และกินไฟช่วงสตาร์ทบ่อย — จ่ายแพงกว่าทั้งค่าเครื่องและค่าไฟ</p>
+        </article>
+        <article>
+          <h3>"ห้อง 20 ตร.ม. ก็ 9,000 BTU พอ เดี๋ยวก็เย็น"</h3>
+          <p>เครื่องเล็กเกินจะวิ่ง 100% ตลอดเวลาไม่มีช่วงพัก คอมเพรสเซอร์สึกเร็ว ค่าไฟไม่ได้ถูกลงเพราะเครื่องไม่เคยได้ลดรอบ และวันที่อากาศร้อนจัดห้องจะไม่เย็นเลย</p>
+        </article>
+        <article>
+          <h3>"BTU เท่ากัน รุ่นไหนก็เหมือนกัน"</h3>
+          <p>BTU บอกแค่กำลังความเย็น แต่ค่าไฟตัดสินด้วยค่า SEER (ยิ่งสูงยิ่งประหยัด) รุ่น inverter SEER 18-19 กับรุ่นธรรมดา SEER 12-13 ที่ BTU เท่ากัน ค่าไฟต่างกันได้เป็นพันบาทต่อปี</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="faq">
+    <div class="container">
+      <p class="eyebrow">คำถามที่ถูกถามบ่อย</p>
+      <h2 class="headline">เรื่อง BTU ที่คนถามบ่อยสุด</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+      <div class="roundup-actions" style="margin-top: 24px;">
+        <a class="button button-primary" href="/th/best/air-conditioners/">ดู 10 อันดับแอร์น่าซื้อ 2026 →</a>
+        <a class="button" href="/th/compare/air-conditioners/">เปิดหน้าเปรียบเทียบแอร์</a>
+      </div>
+    </div>
+  </section>
+
+  <AffiliateClickTracker />
+
+  <script>
+    const area = document.getElementById("btu-area") as HTMLInputElement;
+    const sun = document.getElementById("btu-sun") as HTMLSelectElement;
+    const top = document.getElementById("btu-top") as HTMLSelectElement;
+    const ceiling = document.getElementById("btu-ceiling") as HTMLSelectElement;
+    const numberEl = document.getElementById("btu-number");
+    const adviceEl = document.getElementById("btu-advice");
+
+    const sizes = [9000, 12000, 13000, 15000, 18000, 20000, 24000, 26000, 30000, 36000];
+
+    function update() {
+      const sqm = Math.min(120, Math.max(4, parseFloat(area.value) || 0));
+      const raw = sqm * 800 * parseFloat(sun.value) * parseFloat(top.value) * parseFloat(ceiling.value);
+      const rounded = Math.round(raw / 100) * 100;
+      if (numberEl) numberEl.textContent = `${rounded.toLocaleString("th-TH")} BTU`;
+
+      const fit = sizes.filter((s) => s >= raw * 0.92);
+      const pick = fit.length ? fit[0] : sizes[sizes.length - 1];
+      const upper = sizes.find((s) => s > pick);
+      if (adviceEl) {
+        adviceEl.textContent = raw > 36000 * 1.08
+          ? "ห้องใหญ่ระดับนี้ควรใช้แอร์มากกว่า 1 เครื่อง หรือปรึกษาช่างเรื่องแอร์เชิงพาณิชย์"
+          : `แนะนำเลือกรุ่นขนาด ${pick.toLocaleString("th-TH")}${upper && raw > pick * 0.95 ? `–${upper.toLocaleString("th-TH")}` : ""} BTU`;
+      }
+    }
+
+    [area, sun, top, ceiling].forEach((el) => {
+      el?.addEventListener("input", update);
+      el?.addEventListener("change", update);
+    });
+    update();
+  </script>
+</BaseLayout>

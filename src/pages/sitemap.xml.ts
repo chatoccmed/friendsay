@@ -9,6 +9,7 @@ const staticPaths = [
   "/",
   "/th/",
   "/th/best/air-conditioners/",
+  "/th/guides/btu-calculator/",
   "/th/compare/air-conditioners/",
   "/th/best/air-fryers/",
   "/th/best/water-heaters/",
