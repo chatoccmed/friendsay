@@ -2564,6 +2564,90 @@ button {
   color: #ffffff;
 }
 
+.compare-detail-link {
+  font-size: 0.82rem;
+  color: var(--coral-dark);
+  text-decoration: underline;
+}
+
+.compare-buy {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.compare-note {
+  margin-top: 12px;
+  font-size: 0.88rem;
+  color: rgba(31, 41, 55, 0.66);
+}
+
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.scenario-grid article {
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+.scenario-grid h3 {
+  margin: 0 0 8px;
+  font-size: 1.02rem;
+}
+
+.scenario-grid p {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.scenario-grid a {
+  color: var(--coral-dark);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.faq-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+  max-width: 860px;
+}
+
+.faq-item {
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 4px 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  padding: 14px 0;
+  font-weight: 800;
+  list-style-position: outside;
+}
+
+.faq-item p {
+  margin: 0 0 16px;
+  line-height: 1.7;
+  color: rgba(31, 41, 55, 0.82);
+}
+
+@media (max-width: 900px) {
+  .scenario-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .page-hero {
   padding: 54px 0;
 }

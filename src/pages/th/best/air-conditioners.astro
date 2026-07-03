@@ -62,6 +62,53 @@ const quickPicks = [
     reason: "ธีมรีวิวที่ชมซ้ำมากที่สุดคือความเงียบ"
   }
 ].map((pick) => ({ ...pick, score: pickScore(pick.slug) }));
+
+// ข้อมูลสรุปสำหรับตารางเทียบ — ยึดจากหลักฐานรอบ 2026-07-02; ช่องที่ไม่เห็นข้อมูลจริงเขียนว่าให้เช็ก/ถามร้าน
+const compareExtras: Record<string, { priceShort: string; soldLabel: string; warrantyShort: string; fitShort: string }> = {
+  "daikin-ftkb-sabai-series": { priceShort: "~12,875.-", soldLabel: "10พัน+", warrantyShort: "คอม 5 ปี", fitShort: "แบรนด์ญี่ปุ่นรีวิวแน่นสุด อยากจ้างช่างเองคุมงบ" },
+  "hisense-ce-series": { priceShort: "~8,452.-", soldLabel: "10พัน+", warrantyShort: "คอม 12 ปี + onsite", fitShort: "งบต่ำสุดที่ได้ inverter จากร้าน official" },
+  "haier-vqec-series": { priceShort: "~9,545.-", soldLabel: "8พัน+", warrantyShort: "คอม 10 ปี", fitShort: "เน้นประหยัดไฟ มีค่า SEER แจ้งชัดทุกขนาด" },
+  "candy-vpct-vpgt-series": { priceShort: "~7,995.-", soldLabel: "ไม่แสดง", warrantyShort: "คอม 5 ปี", fitShort: "คอนโด/ห้องนอนคุมงบ รีวิวผู้ซื้อเยอะมาก" },
+  "tcl-savein-ai-series": { priceShort: "~8,590.-", soldLabel: "ไม่แสดง", warrantyShort: "ถามร้านยืนยัน", fitShort: "Full DC Inverter ฟีเจอร์แน่น BTU ให้เลือกกว้าง" },
+  "xiaomi-mijia-air-inverter-eco": { priceShort: "~7,924.-", soldLabel: "ไม่แสดง", warrantyShort: "ถามร้านยืนยัน", fitShort: "สาย Smart Home คุมผ่านแอป Mi Home" },
+  "midea-celest-msce": { priceShort: "~7,490.-", soldLabel: "ไม่แสดง", warrantyShort: "ถามร้านยืนยัน", fitShort: "งบประหยัดที่อยากได้ WiFi ในตัว" },
+  "mitsubishi-msy-ka-vf-series": { priceShort: "~14,668.-", soldLabel: "2พัน+", warrantyShort: "โรงงาน 5 ปี", fitShort: "ห้องนอน เน้นเงียบที่สุดในกลุ่ม" },
+  "panasonic-cs-cu-yu9zkt": { priceShort: "~12,750.-", soldLabel: "267", warrantyShort: "ผู้ผลิต 5 ปี", fitShort: "ซื้อตรง official อยากรู้ค่าติดตั้งล่วงหน้า" },
+  "panasonic-cs-cu-yn9ykt": { priceShort: "~12,750.-", soldLabel: "428", warrantyShort: "ผู้ผลิต (ถามปีคอม)", fitShort: "ตัวธรรมดา Non-Inverter เปิดใช้ช่วงสั้น ๆ" }
+};
+
+const faqs = [
+  {
+    q: "ราคาในหน้านี้ใช้ได้ถึงเมื่อไหร่?",
+    a: "ราคาทั้งหมดคือราคาที่เห็นจริง ณ วันที่ 2 กรกฎาคม 2026 ส่วนใหญ่เป็นราคาช่วง Flash Sale ซึ่งเปลี่ยนได้ทุกวัน ก่อนตัดสินใจให้กดปุ่มเช็กราคาเพื่อดูราคาปัจจุบันบนหน้าร้านเสมอ"
+  },
+  {
+    q: "ตัวเลขยอดขายและรีวิวเอามาจากไหน?",
+    a: "เราเปิดหน้าสินค้าจริงบน Shopee ทีละรุ่นแล้วบันทึกเฉพาะตัวเลขที่แสดงบนหน้า ถ้ารุ่นไหน Shopee ไม่แสดงยอดขาย เราเขียนว่า 'ไม่แสดง' ตรง ๆ ไม่มีการประมาณเอง ทุกรุ่นมีหลักฐานวันที่เก็บข้อมูลกำกับ"
+  },
+  {
+    q: "ซื้อแอร์ออนไลน์แล้วใครติดตั้งให้?",
+    a: "ส่วนใหญ่กดเลือกบริการติดตั้งเพิ่มได้ตอนสั่งซื้อ (ทีมคิวช้างจะติดต่อนัดวัน) แต่ค่าติดตั้งที่เห็นตอนกดมักไม่ใช่ราคาจบ — 90% ของงานมีค่าอุปกรณ์หน้างานเพิ่ม เช่น รางครอบท่อ ขาแขวน ท่อส่วนเกิน ร้าน Daikin ในอันดับ 1 ถึงกับเขียนเตือนเรื่องนี้เอง ถ้าหาช่างใกล้บ้านแบบเหมาจ่ายได้จะคุมงบง่ายกว่า"
+  },
+  {
+    q: "ทำไมบางยี่ห้อดัง ๆ ไม่อยู่ในอันดับ?",
+    a: "หน้านี้ใส่เฉพาะรุ่นที่เราเปิดหน้าสินค้าจริงและผ่านเกณฑ์หลักฐานแล้วเท่านั้น (รีวิวมากพอ + ร้านน่าเชื่อถือ) ยี่ห้ออย่าง LG, Carrier, Samsung และ Sharp อยู่ระหว่างเก็บหลักฐานรอบถัดไป ผ่านเกณฑ์เมื่อไหร่จะเพิ่มเข้าอันดับทันที"
+  },
+  {
+    q: "Friendsay ได้อะไรจากหน้านี้?",
+    a: "ลิงก์ไปร้านค้าเป็นลิงก์พันธมิตร (affiliate) ถ้าคุณซื้อผ่านลิงก์ เราได้ค่าคอมมิชชันเล็กน้อยจาก Shopee โดยคุณไม่จ่ายแพงขึ้น ค่าคอมไม่มีผลต่ออันดับ — อันดับมาจากหลักฐานตามเกณฑ์ที่ประกาศไว้ อ่านเพิ่มได้ที่หน้านโยบายความโปร่งใส"
+  }
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a }
+  }))
+};
 ---
 
 <BaseLayout
@@ -71,6 +118,7 @@ const quickPicks = [
   ogImage="/images/air-conditioners/wall-ac-condo-hero.jpg"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
 
   <section class="roundup-hero air-roundup-hero">
     <img class="roundup-hero-image" src="/images/air-conditioners/wall-ac-condo-hero.jpg" alt="แอร์ติดผนังในคอนโดสว่างสบาย" loading="eager" />
@@ -168,6 +216,55 @@ const quickPicks = [
     </div>
   </section>
 
+  <section class="section" id="compare-table">
+    <div class="wide-container">
+      <p class="eyebrow">ตารางเปรียบเทียบ · อัปเดต {updatedLabel}</p>
+      <h2 class="headline">เทียบครบ 10 รุ่นในตาเดียว</h2>
+      <div class="compare-shell">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>อันดับ / รุ่น</th>
+              <th>คะแนน</th>
+              <th>ราคาที่พบ</th>
+              <th>BTU</th>
+              <th>รีวิว Shopee</th>
+              <th>ยอดขายที่เห็น</th>
+              <th>ประกันคอมฯ</th>
+              <th>เหมาะสุดกับ</th>
+              <th>เช็กราคา</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rankedAirConditioners.map((product, index) => {
+              const extra = compareExtras[product.slug];
+              return (
+                <tr>
+                  <td>
+                    <strong>{index + 1}. {product.shortName}</strong>
+                    <br />
+                    <a class="compare-detail-link" href={`#${product.slug}`}>ดูรายละเอียด ↓</a>
+                  </td>
+                  <td><span class="score-pill">{product.score.toFixed(1)}</span></td>
+                  <td>{extra?.priceShort}</td>
+                  <td>{product.btuOptions[0]?.replace(" BTU", "")}–{product.btuOptions[product.btuOptions.length - 1]?.replace(" BTU", "")}</td>
+                  <td>{product.rating.toFixed(1)} ★ ({product.ratingsCount.toLocaleString("th-TH")}+)</td>
+                  <td>{extra?.soldLabel}</td>
+                  <td>{extra?.warrantyShort}</td>
+                  <td>{extra?.fitShort}</td>
+                  <td>
+                    <a class="button button-primary compare-buy" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`best-air-table-rank-${index + 1}`}>Shopee</a>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">ราคาคือราคาที่เห็นจริง ณ วันที่ {updatedLabel} (ส่วนใหญ่เป็นราคาช่วงโปร) เปลี่ยนได้ทุกวัน · "ไม่แสดง" = Shopee ไม่โชว์ยอดขายบนหน้าสินค้า เราจึงไม่อ้างตัวเลขเอง</p>
+    </div>
+  </section>
+
   <section class="section band" id="shortlist">
     <div class="wide-container">
       <p class="eyebrow">10 อันดับ · อัปเดต {updatedLabel}</p>
@@ -231,6 +328,54 @@ const quickPicks = [
               <a class="button" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="best-air-open-shopee">เปิด Shopee</a>
             </div>
           </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="which-one">
+    <div class="wide-container">
+      <p class="eyebrow">เลือกตามโจทย์ของคุณ</p>
+      <h2 class="headline">บอกสถานการณ์มา เดี๋ยวชี้รุ่นให้</h2>
+      <div class="scenario-grid">
+        <article>
+          <h3>ห้องนอน อยากเงียบสุด</h3>
+          <p>เอา <a href="#mitsubishi-msy-ka-vf-series">Mitsubishi KA</a> — ธีมรีวิวที่ชมซ้ำมากที่สุดคือความเงียบ แลกกับราคาสูงกว่าแบรนด์จีนราว 30-50%</p>
+        </article>
+        <article>
+          <h3>งบจำกัด แต่อยากได้ inverter</h3>
+          <p>เอา <a href="#hisense-ce-series">Hisense CE</a> (~8,452.-) จากร้าน official ประกันคอม 12 ปี หรือ <a href="#haier-vqec-series">Haier VQEC</a> (~9,545.-) ประกันคอม 10 ปี</p>
+        </article>
+        <article>
+          <h3>อยากได้แบรนด์ญี่ปุ่นที่คนซื้อจริงเยอะสุด</h3>
+          <p>เอา <a href="#daikin-ftkb-sabai-series">Daikin FTKB Sabai</a> — 6,200+ รีวิว คะแนนเต็ม 5.0 ขายแล้ว 10,000+ เครื่อง มี BTU ครบ 5 ขนาด</p>
+        </article>
+        <article>
+          <h3>คอนโดห้องเล็ก คุมงบต่ำสุด</h3>
+          <p>เอา <a href="#candy-vpct-vpgt-series">CANDY VPCT</a> (~7,995.-) หรือ <a href="#midea-celest-msce">Midea Celest</a> (~7,490.-) — สองตัวถูกสุดที่รีวิวยังแน่น</p>
+        </article>
+        <article>
+          <h3>สาย Smart Home คุมผ่านมือถือ</h3>
+          <p>เอา <a href="#xiaomi-mijia-air-inverter-eco">Xiaomi Mijia Eco</a> คุมผ่านแอป Mi Home หรือ <a href="#tcl-savein-ai-series">TCL SaveIN AI</a> ที่ฟีเจอร์ AI แน่นกว่า</p>
+        </article>
+        <article>
+          <h3>เปิดแอร์แค่วันละ 2-3 ชั่วโมง</h3>
+          <p>ตัวธรรมดาอย่าง <a href="#panasonic-cs-cu-yn9ykt">Panasonic YN-YKT</a> ก็พอ — แต่ถ้าเปิดยาวทุกคืน inverter คืนส่วนต่างราคาผ่านค่าไฟแน่นอน</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="faq">
+    <div class="wide-container">
+      <p class="eyebrow">คำถามที่ถูกถามบ่อย</p>
+      <h2 class="headline">ก่อนกดซื้อ อ่านตรงนี้ก่อน</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
         ))}
       </div>
     </div>
