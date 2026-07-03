@@ -340,10 +340,10 @@ export const airConditioners: AirConditionerProduct[] = [
     statusLabel: "ขายแล้ว 10พัน+ รีวิวแน่นสุดในกลุ่ม",
     sourceUrl: "https://shopee.co.th/product/120361613/2148527960",
     image: {
-      url: "/images/air-conditioners/wall-ac-installation-check.jpg",
-      alt: "ภาพประกอบการเช็กงานติดตั้งแอร์ติดผนังก่อนจ่ายเงิน",
-      source: "/images/air-conditioners/wall-ac-installation-check.jpg",
-      note: "ภาพประกอบการเช็กงานติดตั้ง ไม่ใช่ภาพสินค้าจริงจากร้าน"
+      url: "/images/air-conditioners/daikin-ftkb-sabai-real-product-1.jpg",
+      alt: "ภาพสินค้าจริงแอร์ Daikin FTKB Max Inverter Sabai Series จากหน้าร้าน Shopee",
+      source: "https://down-th.img.susercontent.com/file/th-11134207-23020-q3v9fhq0gjnvfd",
+      note: "ภาพสินค้าจริงจากหน้าร้าน Shopee ณ วันที่เก็บข้อมูล"
     },
     priceLabel: "พบราคาประมาณ 12,875 บาทช่วง Flash Sale ณ วันที่เก็บข้อมูล",
     btuOptions: ["9,200 BTU", "12,300 BTU", "15,000 BTU", "18,100 BTU", "20,500 BTU"],
@@ -411,10 +411,10 @@ export const airConditioners: AirConditionerProduct[] = [
     statusLabel: "ถูกสุดในกลุ่ม ประกันคอม 12 ปี",
     sourceUrl: "https://shopee.co.th/product/54473054/25171357270",
     image: {
-      url: "/images/air-conditioners/wall-ac-cost-warranty.jpg",
-      alt: "ภาพประกอบการเช็กราคาและประกันก่อนซื้อแอร์ติดผนัง",
-      source: "/images/air-conditioners/wall-ac-cost-warranty.jpg",
-      note: "ภาพประกอบการเช็กราคาและประกัน ไม่ใช่ภาพสินค้าจริงจากร้าน"
+      url: "/images/air-conditioners/hisense-ce-real-product-1.jpg",
+      alt: "ภาพสินค้าจริงแอร์ Hisense CE Series Inverter จากหน้าร้าน Shopee",
+      source: "https://down-th.img.susercontent.com/file/th-11134207-7rasc-m5xxryfwvik660",
+      note: "ภาพสินค้าจริงจากหน้าร้าน Shopee (ครอปเฉพาะตัวเครื่อง)"
     },
     priceLabel: "พบราคาประมาณ 8,452 บาทช่วง Flash Sale ณ วันที่เก็บข้อมูล",
     btuOptions: ["9,500 BTU", "12,000 BTU", "18,000 BTU", "23,500 BTU"],
@@ -482,10 +482,10 @@ export const airConditioners: AirConditionerProduct[] = [
     statusLabel: "ประกันคอม 10 ปี ราคาต่ำหมื่น",
     sourceUrl: "https://shopee.co.th/product/184920733/29154242468",
     image: {
-      url: "/images/air-conditioners/wall-ac-condo-hero.jpg",
-      alt: "ภาพประกอบแอร์ติดผนังในคอนโดสว่างสบาย",
-      source: "/images/air-conditioners/wall-ac-condo-hero.jpg",
-      note: "ภาพประกอบการเลือกแอร์ติดผนัง ไม่ใช่ภาพสินค้าจริงจากร้าน"
+      url: "/images/air-conditioners/haier-vqec-real-product-1.jpg",
+      alt: "ภาพสินค้าจริงแอร์ Haier VQEC Series Inverter จากหน้าร้าน Shopee",
+      source: "https://down-th.img.susercontent.com/file/th-11134207-81ztl-moj87byzumfjf3",
+      note: "ภาพสินค้าจริงจากหน้าร้าน Shopee (ครอปเฉพาะตัวเครื่อง)"
     },
     priceLabel: "พบราคาประมาณ 9,545 บาทหลังโค้ดร้าน ณ วันที่เก็บข้อมูล",
     btuOptions: ["9,000 BTU", "12,000 BTU", "18,000 BTU", "24,000 BTU"],
@@ -553,10 +553,10 @@ export const airConditioners: AirConditionerProduct[] = [
     statusLabel: "แบรนด์ญี่ปุ่นยอดฮิต เสียงเงียบ",
     sourceUrl: "https://shopee.co.th/product/141005876/23280824297",
     image: {
-      url: "/images/air-conditioners/wall-ac-btu-bedroom.jpg",
-      alt: "ภาพประกอบการเลือก BTU แอร์สำหรับห้องนอน",
-      source: "/images/air-conditioners/wall-ac-btu-bedroom.jpg",
-      note: "ภาพประกอบการเลือกแอร์ห้องนอน ไม่ใช่ภาพสินค้าจริงจากร้าน"
+      url: "/images/air-conditioners/mitsubishi-msy-ka-real-product-1.jpg",
+      alt: "ภาพสินค้าจริงแอร์ Mitsubishi Electric MSY-KA Happy Inverter จากหน้าร้าน Shopee",
+      source: "https://down-th.img.susercontent.com/file/th-11134207-81zte-mn5l4hhvetjc65",
+      note: "ภาพสินค้าจริงจากหน้าร้าน Shopee (ครอปเฉพาะตัวเครื่อง)"
     },
     priceLabel: "พบราคาประมาณ 14,668 บาทช่วง Flash Sale ณ วันที่เก็บข้อมูล",
     btuOptions: ["9,200 BTU", "12,200 BTU", "18,000 BTU"],
