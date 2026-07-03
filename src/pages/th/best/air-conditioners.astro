@@ -2,19 +2,26 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PriceButtons from "../../../components/PriceButtons.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
-import { airConditioners, topAirConditionerPicks } from "../../../data/airConditioners";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import { airConditioners } from "../../../data/airConditioners";
+
+const updatedLabel = "2 กรกฎาคม 2026";
+
+const rankedAirConditioners = airConditioners
+  .slice()
+  .sort((a, b) => b.score - a.score);
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "แอร์ติดผนังรุ่นไหนดีใน Shopee 2026",
-  description: "หน้ารวบรวมข้อมูลแอร์ติดผนังจาก Shopee ปี 2026 โดยเริ่มจากรุ่นที่มีรีวิวผู้ซื้อจริงมากพอและข้อมูลเพียงพอสำหรับรีวิวละเอียด",
+  headline: "แอร์ยี่ห้อไหนดี 2026: 10 รุ่นน่าซื้อจากรีวิวผู้ซื้อจริงใน Shopee",
+  description: "จัดอันดับแอร์ติดผนัง 10 รุ่นจากข้อมูลรีวิวผู้ซื้อจริงใน Shopee ที่ตรวจหลักฐานรายรุ่น พร้อมราคา BTU จุดระวัง และเงื่อนไขติดตั้ง",
   inLanguage: "th",
-  dateModified: "2026-06-15",
+  dateModified: "2026-07-02",
   author: { "@type": "Organization", name: "Friendsay" },
   mainEntity: {
     "@type": "ItemList",
-    itemListElement: airConditioners.map((product, index) => ({
+    itemListElement: rankedAirConditioners.map((product, index) => ({
       "@type": "ListItem",
       position: index + 1,
       name: product.name,
@@ -27,14 +34,38 @@ const reviewLinks: Record<string, string> = {
   "candy-vpct-vpgt-series": "/th/reviews/candy-vpct-vpgt-air-conditioner/",
   "tcl-savein-ai-series": "/th/reviews/tcl-savein-ai-air-conditioner/",
   "xiaomi-mijia-air-inverter-eco": "/th/reviews/xiaomi-mijia-air-inverter-eco/",
-  "midea-celest-msce": "/th/reviews/midea-celest-msce-air-conditioner/"
+  "midea-celest-msce": "/th/reviews/midea-celest-msce-air-conditioner/",
+  "panasonic-cs-cu-yu9zkt": "/th/reviews/panasonic-cs-cu-yu9zkt-air-conditioner/",
+  "panasonic-cs-cu-yn9ykt": "/th/reviews/panasonic-cs-cu-yn9ykt-air-conditioner/"
 };
+
+const quickPicks = [
+  {
+    label: "ดีสุดโดยรวม",
+    slug: "daikin-ftkb-sabai-series",
+    name: "Daikin FTKB Sabai",
+    reason: "รีวิว 6.2 พัน คะแนน 5.0 ขายแล้ว 10พัน+ เครื่อง"
+  },
+  {
+    label: "คุ้มสุดต่ำหมื่น",
+    slug: "hisense-ce-series",
+    name: "Hisense CE",
+    reason: "inverter ~8,452 บาท ประกันคอม 12 ปี จากร้าน official"
+  },
+  {
+    label: "ห้องนอน/เงียบ",
+    slug: "mitsubishi-msy-ka-vf-series",
+    name: "Mitsubishi KA",
+    reason: "ธีมรีวิวที่ชมซ้ำมากที่สุดคือความเงียบ"
+  }
+];
 ---
 
 <BaseLayout
-  title="แอร์ติดผนังรุ่นไหนดีใน Shopee 2026 | Friendsay"
-  description="เริ่มรวบรวมแอร์ติดผนังยอดนิยมใน Shopee ปี 2026 แบบโปร่งใส ดูคะแนน รีวิวจริง BTU ราคา เงื่อนไขติดตั้ง และลิงก์เช็กราคา Shopee Lazada TikTok"
+  title="แอร์ยี่ห้อไหนดี 2026: 10 รุ่นน่าซื้อจากรีวิวผู้ซื้อจริงใน Shopee | Friendsay"
+  description="จัดอันดับแอร์ติดผนัง 10 รุ่นปี 2026 จากรีวิวผู้ซื้อจริงใน Shopee ที่ตรวจหลักฐานรายรุ่น — Daikin, Hisense, Haier, Mitsubishi, Panasonic ดูราคา BTU จุดระวัง เงื่อนไขติดตั้ง อัปเดต 2 ก.ค. 2026"
   canonical="https://friendsay.com/th/best/air-conditioners/"
+  ogImage="/images/air-conditioners/wall-ac-condo-hero.jpg"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
@@ -45,28 +76,29 @@ const reviewLinks: Record<string, string> = {
       <div class="roundup-hero-copy">
         <div class="badge-row">
           <span class="badge badge-coral">Shopee 2026</span>
-          <span class="badge badge-teal">Research in progress</span>
+          <span class="badge badge-teal">อัปเดต {updatedLabel}</span>
         </div>
-        <h1>แอร์ติดผนังรุ่นไหนดีใน Shopee 2026</h1>
+        <h1>แอร์ยี่ห้อไหนดี 2026: 10 รุ่นน่าซื้อจากรีวิวผู้ซื้อจริง</h1>
         <p>
-          เริ่มจากรุ่นที่มีรีวิวจริงมากพอให้ตรวจ pattern ได้ แล้วค่อยขยายเป็นคลังรีวิวแอร์ทุกรุ่น:
-          ดู BTU ให้ตรงห้อง เช็กติดตั้งให้ชัด และไม่เติมตัวเลขยอดขายถ้ายังไม่เห็นจริง
+          ทุกรุ่นในหน้านี้ผ่านการเปิดหน้าสินค้าจริงและตรวจหลักฐานรายรุ่น — คะแนนรีวิว จำนวนผู้ซื้อ
+          เงื่อนไขติดตั้ง และประกัน ถ้าเราไม่เห็นยอดขายจริง เราไม่อ้างตัวเลข
+          และทุกรุ่นมี "ไม่เหมาะกับใคร" บอกตรง ๆ
         </p>
         <div class="roundup-actions">
-          <a class="button button-primary" href="#shortlist">ดูรุ่นที่รีวิวผ่านเกณฑ์</a>
-          <a class="button button-dark" href="/th/reviews/candy-vpct-vpgt-air-conditioner/">อ่านรีวิวตัวอย่าง</a>
+          <a class="button button-primary" href="#shortlist">ดูอันดับทั้งหมด</a>
+          <a class="button button-dark" href="#how-we-rank">เกณฑ์การจัดอันดับ</a>
         </div>
       </div>
 
-      <aside class="roundup-panel" aria-label="รุ่นแนะนำรอบแรก">
-        <span>Round 1 shortlist</span>
-        <strong>ตอนนี้ยังเป็นรอบเก็บข้อมูล ไม่ใช่อันดับสุดท้าย</strong>
+      <aside class="roundup-panel" aria-label="เลือกด่วนตามโจทย์">
+        <span>เลือกด่วนใน 15 วินาที</span>
+        <strong>สามตัวจบสำหรับสามโจทย์ที่คนถามบ่อยสุด</strong>
         <div class="roundup-picks">
-          {topAirConditionerPicks.map((product) => (
-            <a href={`#${product.slug}`}>
-              <span>{product.score.toFixed(1)}</span>
-              <strong>{product.shortName}</strong>
-              <small>{product.statusLabel}</small>
+          {quickPicks.map((pick) => (
+            <a href={`#${pick.slug}`}>
+              <span>{pick.label}</span>
+              <strong>{pick.name}</strong>
+              <small>{pick.reason}</small>
             </a>
           ))}
         </div>
@@ -77,34 +109,35 @@ const reviewLinks: Record<string, string> = {
   <section class="roundup-signal-band">
     <div class="wide-container roundup-signals">
       <div>
-        <span>รอบนี้เก็บแล้ว</span>
+        <span>รุ่นที่ผ่านเกณฑ์</span>
         <strong>{airConditioners.length} รุ่น</strong>
       </div>
       <div>
-        <span>สถานะหลัก</span>
-        <strong>รีวิวผ่านเกณฑ์</strong>
+        <span>เห็นยอดขายจริง</span>
+        <strong>6 รุ่น (สูงสุด 10พัน+)</strong>
       </div>
       <div>
         <span>ตัวเลขยอดขาย</span>
-        <strong>ยังไม่ใช้ถ้าไม่เห็นจริง</strong>
+        <strong>ไม่ใช้ถ้าไม่เห็นจริง</strong>
       </div>
       <div>
-        <span>อัปเดต</span>
-        <strong>15 มิ.ย. 2026</strong>
+        <span>อัปเดตล่าสุด</span>
+        <strong>{updatedLabel}</strong>
       </div>
     </div>
   </section>
 
-  <section class="section air-system-section">
+  <section class="section air-system-section" id="how-we-rank">
     <div class="wide-container">
       <div class="section-heading home-section-split">
         <div>
-          <p class="eyebrow">How we choose</p>
-          <h2 class="headline">ระบบนี้ออกแบบมาเพื่อทำรีวิวแอร์จำนวนมากโดยยังน่าเชื่อถือ</h2>
+          <p class="eyebrow">เกณฑ์การจัดอันดับ</p>
+          <h2 class="headline">อันดับมาจากหลักฐานที่ตรวจย้อนได้ ไม่ใช่ความรู้สึก</h2>
         </div>
         <p>
-          หมวดแอร์จะไม่ใช้วิธีดูดาวรวมแล้วจัดอันดับทันที เพราะแอร์มีความเสี่ยงเรื่อง BTU, ติดตั้ง, ค่าอุปกรณ์เพิ่ม,
-          ประกัน และศูนย์บริการ เราจึงแยกสถานะข้อมูลให้ชัดก่อนเขียนรีวิวจริง
+          ทุกรุ่นถูกเปิดหน้าสินค้าจริงและบันทึกหลักฐาน ณ วันที่ {updatedLabel} คะแนนเต็ม 10 ถ่วงน้ำหนักจาก
+          ความนิยมจากรีวิวจริง ความน่าเชื่อถือของร้าน ความคุ้มราคา ความง่ายในการเลือกขนาด ความประหยัด/สบาย
+          ความเสี่ยงงานติดตั้ง ประกัน และสัดส่วนคำร้องเรียน — ราคาเปลี่ยนได้ทุกวัน ควรกดเช็กหน้าร้านก่อนซื้อเสมอ
         </p>
       </div>
       <div class="source-grid air-source-grid">
@@ -134,18 +167,19 @@ const reviewLinks: Record<string, string> = {
 
   <section class="section band" id="shortlist">
     <div class="wide-container">
-      <p class="eyebrow">Review evidence</p>
-      <h2 class="headline">รุ่นที่มีรีวิวพอสำหรับรอบแรก</h2>
+      <p class="eyebrow">10 อันดับ · อัปเดต {updatedLabel}</p>
+      <h2 class="headline">แอร์ติดผนังน่าซื้อ เรียงตามคะแนน Friendsay</h2>
       <div class="air-product-grid">
-        {airConditioners.map((product) => (
+        {rankedAirConditioners.map((product, index) => (
           <article class="product-card air-product-card" id={product.slug}>
-            <a class="product-photo" href={product.sourceUrl} target="_blank" rel="noopener">
+            <a class="product-photo" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`best-air-rank-${index + 1}-photo`}>
               <img src={product.image.url} alt={product.image.alt} loading="lazy" />
               <span>{product.image.note}</span>
             </a>
             <div class="product-card-head">
               <div>
                 <div class="badge-row">
+                  <span class="badge badge-dark">อันดับ {index + 1}</span>
                   <span class="badge badge-coral">{product.statusLabel}</span>
                   <span class="badge badge-blue">{product.rating.toFixed(1)}/5 Shopee</span>
                 </div>
@@ -188,12 +222,10 @@ const reviewLinks: Record<string, string> = {
               <button class="button compare-toggle" type="button" data-air-compare-slug={product.slug}>
                 + เปรียบเทียบ
               </button>
-              {reviewLinks[product.slug] ? (
+              {reviewLinks[product.slug] && (
                 <a class="button button-primary" href={reviewLinks[product.slug]}>อ่านรีวิวละเอียด</a>
-              ) : (
-                <a class="button" href={product.sourceUrl} target="_blank" rel="noopener">ดูแหล่งข้อมูล Shopee</a>
               )}
-              <a class="button" href={product.sourceUrl} target="_blank" rel="noopener">เปิด Shopee</a>
+              <a class="button" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="best-air-open-shopee">เปิด Shopee</a>
             </div>
           </article>
         ))}
@@ -202,4 +234,5 @@ const reviewLinks: Record<string, string> = {
   </section>
 
   <AirCompareTray products={airConditioners} />
+  <AffiliateClickTracker />
 </BaseLayout>

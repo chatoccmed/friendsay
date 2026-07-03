@@ -2558,6 +2558,12 @@ button {
   color: #1956ad;
 }
 
+.badge-dark {
+  border-color: rgba(15, 23, 42, 0.35);
+  background: #10203a;
+  color: #ffffff;
+}
+
 .page-hero {
   padding: 54px 0;
 }

@@ -23,8 +23,8 @@
 - [ ] 1b. สมัคร Involve Asia หรือ Accesstrade สำรอง (สำหรับ Lazada ด้วย)
 - [ ] 2. ติด Cloudflare Web Analytics + Google Search Console
 - [ ] 3. ย้ายโดเมน friendsay.com → เว็บใหม่ ตาม docs/pre-domain-migration-checklist.md พร้อม redirect URL เก่า (เจ้าของต้องทำเอง: กดใน Cloudflare)
-- [ ] 4. ถอดหน้ารีวิวที่ proofCount = 0 ออกจาก sitemap / ใส่ noindex จนกว่าจะมี proof
-- [ ] 5. เพิ่ม og:image ทุกหน้า + Product/Review/ItemList JSON-LD + ป้าย "อัปเดตล่าสุด" บนหน้ารีวิว
+- [x] 4. (บางส่วน 2026-07-02) หน้ารีวิวแอร์คิวที่ไม่มีหลักฐาน detail_verified ติด noindex + ถูกตัดจาก sitemap แล้ว (22 หน้า) — เหลือหมวดตู้เย็นรอทำแบบเดียวกัน
+- [x] 5. (บางส่วน 2026-07-02) og:image + twitter card ทุกหน้าผ่าน BaseLayout แล้ว; หน้าจัดอันดับแอร์มี ItemList schema + ป้ายวันที่อัปเดต — เหลือ Product/Review schema รายหน้ารีวิวเดี่ยว
 - [ ] 6. สร้างหน้าผู้เขียน + byline ทุกบทความ + ชูหน้า methodology สาธารณะ
 - [ ] 7. เริ่มช่องทางกระจาย 1 ช่องทาง (แนะนำ Facebook Page) + เครื่องมือแรก (BTU calculator)
 

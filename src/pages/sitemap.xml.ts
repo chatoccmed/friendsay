@@ -1,6 +1,7 @@
 import { legacyProducts } from "../data/legacyProducts";
 import { queuedAirConditionerReviews } from "../data/airConditionerReviewQueue";
 import { queuedRefrigeratorReviews } from "../data/refrigeratorReviewQueue";
+import { airConditionerShopeeProofByKey } from "../data/airConditionerShopeeProof";
 
 const site = "https://friendsay.com";
 
@@ -25,7 +26,10 @@ const staticPaths = [
   "/affiliate-disclosure/"
 ];
 
-const airConditionerReviewPaths = queuedAirConditionerReviews.map((review) => `/th/reviews/${review.reviewSlug}/`);
+// เฉพาะรุ่นที่มีหลักฐาน Shopee ระดับ detail_verified เท่านั้น — หน้าที่เหลือติด noindex อยู่
+const airConditionerReviewPaths = queuedAirConditionerReviews
+  .filter((review) => airConditionerShopeeProofByKey[review.productKey]?.status === "detail_verified")
+  .map((review) => `/th/reviews/${review.reviewSlug}/`);
 const refrigeratorReviewPaths = queuedRefrigeratorReviews.map((review) => `/th/reviews/refrigerators/${review.reviewSlug}/`);
 
 const paths = [

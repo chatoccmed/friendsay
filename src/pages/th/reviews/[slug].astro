@@ -6,6 +6,7 @@ import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { queuedAirConditionerReviews, type QueuedAirConditionerReview } from "../../../data/airConditionerReviewQueue";
+import { airConditionerShopeeProofByKey } from "../../../data/airConditionerShopeeProof";
 
 export function getStaticPaths() {
   return queuedAirConditionerReviews.map((review) => ({
@@ -24,6 +25,9 @@ const firstBtu = review.btuOptions[0] ?? "9,000 BTU";
 const btuText = review.btuOptions.join(" / ");
 const proofCountText = review.proofCount.toLocaleString("th-TH");
 const hasReviewProof = review.proofCount > 0;
+// noindex จนกว่ารุ่นนั้นจะมีหลักฐาน Shopee ระดับ detail_verified — กัน scaled content abuse
+const shopeeProof = airConditionerShopeeProofByKey[review.productKey];
+const isIndexable = shopeeProof?.status === "detail_verified";
 const proofBadgeText = hasReviewProof ? `${proofCountText}+ ข้อมูลให้ตรวจ` : "เช็กสเปก ราคา และร้านก่อนซื้อ";
 const titleOverrides: Record<string, string> = {
   "mitsubishi-msy-gt09vf": "Mitsubishi MSY-GT09VF: แอร์แบรนด์ไว้ใจง่ายสำหรับห้องนอน ก่อนจ่ายต้องเช็ก BTU กับงานติดตั้ง",
@@ -687,6 +691,7 @@ const jsonLd = {
   title={`${articleTitle} | Friendsay`}
   description={description}
   canonical={`https://friendsay.com/th/reviews/${review.reviewSlug}/`}
+  noindex={!isIndexable}
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
