@@ -1,5 +1,6 @@
 export type ShopeeAirProofStatus =
   | "detail_verified"
+  | "detail_low_signal"
   | "search_candidate_only"
   | "needs_shopee_capture";
 
@@ -11,6 +12,8 @@ export type AirConditionerShopeeProof = {
   modelOrSeries: string;
   status: ShopeeAirProofStatus;
   productUrl?: string;
+  // ลิงก์ affiliate ที่ทดสอบ redirect แล้ว — ใช้กับปุ่มซื้อ; productUrl คือหลักฐาน ห้ามสลับกัน
+  affiliateUrl?: string;
   searchQuery: string;
   visiblePrice?: number;
   visibleRating?: number;
@@ -25,10 +28,11 @@ export type AirConditionerShopeeProof = {
 };
 
 export const airConditionerShopeeProofSummary = {
-  lastChecked: "2026-06-18",
-  detailVerified: 4,
-  searchCandidateOnly: 1,
-  needsShopeeCapture: 23,
+  lastChecked: "2026-07-02",
+  detailVerified: 8,
+  detailLowSignal: 1,
+  searchCandidateOnly: 0,
+  needsShopeeCapture: 21,
   rule: "Use Shopee sold/review counts only when product-detail proof exists. Search candidates are for matching only."
 } as const;
 
@@ -41,6 +45,7 @@ export const airConditionerShopeeProofs: AirConditionerShopeeProof[] = [
     modelOrSeries: "VPCT/VPGT Series",
     status: "detail_verified",
     productUrl: "https://shopee.co.th/product/184920733/26853787935",
+    affiliateUrl: "https://s.shopee.co.th/8KncHGDn7M",
     searchQuery: "CANDY VPCT VPGT air conditioner",
     visiblePrice: 7995,
     visibleRating: 4.9,
@@ -61,6 +66,7 @@ export const airConditionerShopeeProofs: AirConditionerShopeeProof[] = [
     modelOrSeries: "SaveIN AI Series",
     status: "detail_verified",
     productUrl: "https://shopee.co.th/product/1025131800/23777230236",
+    affiliateUrl: "https://s.shopee.co.th/6L2XtfRyjI",
     searchQuery: "TCL SaveIN AI air conditioner",
     visiblePrice: 8590,
     visibleRating: 4.9,
@@ -81,6 +87,7 @@ export const airConditionerShopeeProofs: AirConditionerShopeeProof[] = [
     modelOrSeries: "Mijia Air Inverter Eco",
     status: "detail_verified",
     productUrl: "https://shopee.co.th/product/389528981/49105546219",
+    affiliateUrl: "https://s.shopee.co.th/9UzZfZRNTi",
     searchQuery: "Xiaomi Mijia Air Inverter Eco",
     visiblePrice: 7924,
     visibleRating: 4.9,
@@ -101,6 +108,7 @@ export const airConditionerShopeeProofs: AirConditionerShopeeProof[] = [
     modelOrSeries: "Celest MSCE",
     status: "detail_verified",
     productUrl: "https://shopee.co.th/product/338734338/57308205291",
+    affiliateUrl: "https://s.shopee.co.th/6Aj7hUU7nt",
     searchQuery: "Midea Celest MSCE air conditioner",
     visiblePrice: 7490,
     visibleRating: 5.0,
@@ -119,16 +127,102 @@ export const airConditionerShopeeProofs: AirConditionerShopeeProof[] = [
     reviewSlug: "mitsubishi-msy-gt09vf-air-conditioner",
     brand: "MITSUBISHI",
     modelOrSeries: "MSY-GT09VF",
-    status: "search_candidate_only",
+    status: "detail_low_signal",
     productUrl: "https://shopee.co.th/product/12389480/9782528111",
     searchQuery: "MITSUBISHI MSY-GT09VF air conditioner",
-    visiblePrice: 22455,
+    visiblePrice: 28069,
     visibleRating: 5.0,
-    soldCountVisible: "unknown",
-    reviewThemeSource: "shopee_search_2026-06-18",
-    nextAction: "open_product_detail_with_user_capture",
-    notes: "Search result showed a real MSY/GT-VF series listing, but product detail opened to Shopee traffic verification. Do not use review or sold numbers until detail is captured.",
-    lastChecked: "2026-06-18"
+    ratingsCount: 2,
+    commentsCount: 2,
+    soldCountVisible: true,
+    reviewThemeSource: "shopee_detail_2026-07-02",
+    nextAction: "park_and_track_ka_series_instead",
+    notes: "Detail captured 2026-07-02: only 2 reviews and 6 sold from non-official shop (Mr.Cool). Fails B+D minimum - do not publish as full review. Mitsubishi market volume sits in MSY-KA VF (see queueRank 30). Queue proofCount 86 contradicts this evidence - verify before use.",
+    lastChecked: "2026-07-02"
+  },
+  {
+    queueRank: 12,
+    productKey: "panasonic-cs-cu-yn9ykt",
+    reviewSlug: "panasonic-cs-cu-yn9ykt-air-conditioner",
+    brand: "PANASONIC",
+    modelOrSeries: "CS/CU-YN-YKT (Eco Non-Inverter YN Series)",
+    status: "detail_verified",
+    productUrl: "https://shopee.co.th/product/315769706/22741284722",
+    affiliateUrl: "https://s.shopee.co.th/8pjtCabw1f",
+    searchQuery: "แอร์ Panasonic YN-YKT",
+    visiblePrice: 12750,
+    visibleRating: 4.9,
+    ratingsCount: 176,
+    commentsCount: 45,
+    mediaCount: 35,
+    soldCountVisible: true,
+    reviewThemeSource: "shopee_detail_2026-07-02",
+    nextAction: "write_full_review",
+    notes: "Panasonic official store. Sold 428 visible. CRITICAL: unit is NON-INVERTER despite energy-saving listing title - reviews must warn buyers clearly. BTU 9000/12000/18000/24000.",
+    lastChecked: "2026-07-02"
+  },
+  {
+    queueRank: 16,
+    productKey: "panasonic-cs-cu-yu9zkt",
+    reviewSlug: "panasonic-cs-cu-yu9zkt-air-conditioner",
+    brand: "PANASONIC",
+    modelOrSeries: "CS/CU-YU-ZKT (Standard Inverter YU Series)",
+    status: "detail_verified",
+    productUrl: "https://shopee.co.th/product/315769706/25912587679",
+    affiliateUrl: "https://s.shopee.co.th/5fmrQjARba",
+    searchQuery: "แอร์ Panasonic YU-ZKT",
+    visiblePrice: 12750,
+    visibleRating: 4.9,
+    ratingsCount: 118,
+    commentsCount: 28,
+    mediaCount: 23,
+    soldCountVisible: true,
+    reviewThemeSource: "shopee_detail_2026-07-02",
+    nextAction: "write_full_review",
+    notes: "Panasonic official store (107.5k followers). Sold 267 visible. Page carries full standard installation cost table - reuse for install-cost guide. Warranty 5y manufacturer. BTU 9000/13000/18000/24000.",
+    lastChecked: "2026-07-02"
+  },
+  {
+    queueRank: 30,
+    productKey: "mitsubishi-msy-ka-vf-series",
+    reviewSlug: "mitsubishi-msy-ka-happy-inverter-air-conditioner",
+    brand: "MITSUBISHI ELECTRIC",
+    modelOrSeries: "MSY-KA VF (Happy Inverter / Mr.Slim)",
+    status: "detail_verified",
+    productUrl: "https://shopee.co.th/product/141005876/23280824297",
+    affiliateUrl: "https://s.shopee.co.th/7AbfDRSYz6",
+    searchQuery: "แอร์ Mitsubishi Happy Inverter MSY-KA",
+    visiblePrice: 14668,
+    visibleRating: 4.8,
+    ratingsCount: 838,
+    commentsCount: 157,
+    mediaCount: 170,
+    soldCountVisible: true,
+    reviewThemeSource: "shopee_detail_2026-07-02",
+    nextAction: "write_full_review",
+    notes: "Shopee Mall shop Sala Electronics Plaza (46k shop rating). Sold 2k+ visible. Factory warranty 5y. Review themes: very quiet, cools fast, buyers often misread price as install-included - installation is a paid add-on. BTU 9200/12200/18000.",
+    lastChecked: "2026-07-02"
+  },
+  {
+    queueRank: 31,
+    productKey: "daikin-ftkb-sabai-series",
+    reviewSlug: "daikin-ftkb-sabai-inverter-air-conditioner",
+    brand: "DAIKIN",
+    modelOrSeries: "FTKB AV2S/ZV2S (Max Inverter Sabai Series)",
+    status: "detail_verified",
+    productUrl: "https://shopee.co.th/product/120361613/2148527960",
+    affiliateUrl: "https://s.shopee.co.th/2LWPSgU3El",
+    searchQuery: "แอร์ Daikin FTKB Sabai Inverter",
+    visiblePrice: 12875,
+    visibleRating: 5.0,
+    ratingsCount: 6200,
+    commentsCount: 2100,
+    mediaCount: 1300,
+    soldCountVisible: true,
+    reviewThemeSource: "shopee_detail_2026-07-02",
+    nextAction: "write_full_review",
+    notes: "King Air shop - listed as direct Siam Daikin Sales dealer. Sold 10k+ visible - strongest listing captured so far. Warranty: compressor 5y, outdoor PCB 3y, parts 1y. Shop itself warns the 2,000 baht install option is not the final cost (90% pay extra). BTU 9200-20500 (5 sizes).",
+    lastChecked: "2026-07-02"
   },
   ...[
     [6, "mitsubishi-heavy-duty-dxk10cxv-w1", "mitsubishi-heavy-duty-dxk10cxv-w1-air-conditioner", "MITSUBISHI HEAVY DUTY", "DXK10CXV-W1"],
@@ -137,11 +231,9 @@ export const airConditionerShopeeProofs: AirConditionerShopeeProof[] = [
     [9, "panasonic-cs-cu-xku9wkt", "panasonic-cs-cu-xku9wkt-air-conditioner", "PANASONIC", "CS/CU-XKU9WKT"],
     [10, "daikin-ftkq09yv2s", "daikin-ftkq09yv2s-air-conditioner", "DAIKIN", "FTKQ09YV2S"],
     [11, "mitsubishi-msy-ky09vf", "mitsubishi-msy-ky09vf-air-conditioner", "MITSUBISHI", "MSY-KY09VF"],
-    [12, "panasonic-cs-cu-yn9ykt", "panasonic-cs-cu-yn9ykt-air-conditioner", "PANASONIC", "CS/CU-YN9YKT"],
     [13, "lg-icq11mn-ju1", "lg-icq11mn-ju1-air-conditioner", "LG", "ICQ11MN.JU1"],
     [14, "mitsubishi-heavy-duty-dxk10yyp-w1", "mitsubishi-heavy-duty-dxk10yyp-w1-air-conditioner", "MITSUBISHI HEAVY DUTY", "DXK10YYP-W1"],
     [15, "daikin-ftm09pv2s", "daikin-ftm09pv2s-air-conditioner", "DAIKIN", "FTM09PV2S"],
-    [16, "panasonic-cs-cu-yu9zkt", "panasonic-cs-cu-yu9zkt-air-conditioner", "PANASONIC", "CS/CU-YU9ZKT"],
     [17, "panasonic-cs-cu-xu9akt", "panasonic-cs-cu-xu9akt-air-conditioner", "PANASONIC", "CS/CU-XU9AKT"],
     [18, "panasonic-cs-cu-tu9akt", "panasonic-cs-cu-tu9akt-air-conditioner", "PANASONIC", "CS/CU-TU9AKT"],
     [19, "sharp-ah-x10bb", "sharp-ah-x10bb-air-conditioner", "SHARP", "AH-X10BB"],

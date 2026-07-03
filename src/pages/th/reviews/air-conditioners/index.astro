@@ -46,6 +46,11 @@ const statusCopy: Record<
     shortLabel: "Shopee พร้อม",
     className: "is-verified"
   },
+  detail_low_signal: {
+    label: "พบหน้าสินค้า แต่รีวิวยังน้อย รอลิสติ้งที่ชัดกว่า",
+    shortLabel: "รีวิวยังน้อย",
+    className: "is-candidate"
+  },
   search_candidate_only: {
     label: "พบหน้าสินค้า รอตรวจรีวิวล่าสุด",
     shortLabel: "พบสินค้า",
@@ -73,7 +78,7 @@ const modelRows = airConditionerShopeeProofs
       lazada: `https://www.lazada.co.th/catalog/?q=${encodeURIComponent(proof.searchQuery)}`,
       tiktok: `https://www.tiktok.com/search?q=${encodeURIComponent(`${proof.searchQuery} TikTok Shop`)}`
     };
-    const shopeeHref = proof.productUrl ?? links.shopee;
+    const shopeeHref = proof.affiliateUrl ?? proof.productUrl ?? links.shopee;
     const name = queued?.name ?? ready?.name ?? `${proof.brand} ${proof.modelOrSeries}`;
     const shortName = queued?.shortName ?? ready?.shortName ?? proof.modelOrSeries;
     const strengths = queued?.strengths ?? ready?.strengths ?? [
