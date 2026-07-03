@@ -39,6 +39,9 @@ const reviewLinks: Record<string, string> = {
   "panasonic-cs-cu-yn9ykt": "/th/reviews/panasonic-cs-cu-yn9ykt-air-conditioner/"
 };
 
+const pickScore = (slug: string) =>
+  airConditioners.find((product) => product.slug === slug)?.score ?? 0;
+
 const quickPicks = [
   {
     label: "ดีสุดโดยรวม",
@@ -58,7 +61,7 @@ const quickPicks = [
     name: "Mitsubishi KA",
     reason: "ธีมรีวิวที่ชมซ้ำมากที่สุดคือความเงียบ"
   }
-];
+].map((pick) => ({ ...pick, score: pickScore(pick.slug) }));
 ---
 
 <BaseLayout
@@ -96,8 +99,8 @@ const quickPicks = [
         <div class="roundup-picks">
           {quickPicks.map((pick) => (
             <a href={`#${pick.slug}`}>
-              <span>{pick.label}</span>
-              <strong>{pick.name}</strong>
+              <span>{pick.score.toFixed(1)}</span>
+              <strong>{pick.label} · {pick.name}</strong>
               <small>{pick.reason}</small>
             </a>
           ))}
