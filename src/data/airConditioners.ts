@@ -624,10 +624,10 @@ export const airConditioners: AirConditionerProduct[] = [
     statusLabel: "ร้าน official แจ้งค่าติดตั้งชัดสุด",
     sourceUrl: "https://shopee.co.th/product/315769706/25912587679",
     image: {
-      url: "/images/air-conditioners/panasonic-yu9zkt-hero-room.jpg",
-      alt: "ภาพประกอบแอร์ Panasonic YU-ZKT ในห้องนั่งเล่นโทนสว่าง",
-      source: "/images/air-conditioners/panasonic-yu9zkt-hero-room.jpg",
-      note: "ภาพประกอบบรรยากาศการใช้งาน ไม่ใช่ภาพสินค้าจริงจากร้าน"
+      url: "/images/air-conditioners/panasonic-yu-zkt-real-product-1.jpg",
+      alt: "ภาพสินค้าจริงแอร์ Panasonic YU-ZKT Standard Inverter จากหน้าร้าน Shopee",
+      source: "https://down-th.img.susercontent.com/file/th-11134207-7r98p-lvwnbeyjeyswe8",
+      note: "ภาพสินค้าจริงจากหน้าร้าน Shopee (ครอปเฉพาะตัวเครื่อง)"
     },
     priceLabel: "พบราคาประมาณ 12,750 บาทช่วง Flash Sale ณ วันที่เก็บข้อมูล",
     btuOptions: ["9,000 BTU", "13,000 BTU", "18,000 BTU", "24,000 BTU"],
@@ -695,10 +695,10 @@ export const airConditioners: AirConditionerProduct[] = [
     statusLabel: "ตัวธรรมดาจากร้าน official — ไม่ใช่ inverter",
     sourceUrl: "https://shopee.co.th/product/315769706/22741284722",
     image: {
-      url: "/images/air-conditioners/panasonic-yn9ykt-hero-room.jpg",
-      alt: "ภาพประกอบแอร์ Panasonic YN-YKT ในห้องนอนโทนอบอุ่น",
-      source: "/images/air-conditioners/panasonic-yn9ykt-hero-room.jpg",
-      note: "ภาพประกอบบรรยากาศการใช้งาน ไม่ใช่ภาพสินค้าจริงจากร้าน"
+      url: "/images/air-conditioners/panasonic-yn-ykt-real-product-1.jpg",
+      alt: "ภาพสินค้าจริงแอร์ Panasonic YN-YKT Eco Non-Inverter จากหน้าร้าน Shopee",
+      source: "https://down-th.img.susercontent.com/file/th-11134207-7r98p-lvu3e4h4m9pse4",
+      note: "ภาพสินค้าจริงจากหน้าร้าน Shopee (ครอปเฉพาะตัวเครื่อง)"
     },
     priceLabel: "พบราคาประมาณ 12,750 บาทช่วง Flash Sale ณ วันที่เก็บข้อมูล",
     btuOptions: ["9,000 BTU", "12,000 BTU", "18,000 BTU", "24,000 BTU"],
