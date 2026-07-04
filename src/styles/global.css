@@ -2831,6 +2831,77 @@ body:has(.air-sticky-buy) .compare-floating-tray {
   }
 }
 
+/* โพเดียมอันดับ 1-2-3 บนหน้าจัดอันดับ */
+.podium {
+  position: relative;
+  border-top: 4px solid transparent;
+}
+
+.podium::before {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  content: "";
+}
+
+.podium-1::before {
+  background: linear-gradient(90deg, #f6c453, #f1a208);
+}
+
+.podium-2::before {
+  background: linear-gradient(90deg, #cfd6de, #9aa7b4);
+}
+
+.podium-3::before {
+  background: linear-gradient(90deg, #e2a377, #b96d40);
+}
+
+.podium-1 {
+  box-shadow:
+    0 2px 6px rgba(31, 24, 16, 0.06),
+    0 22px 48px -20px rgba(241, 162, 8, 0.35);
+}
+
+/* best-in-column ในตารางเทียบ */
+.compare-table td.is-best {
+  background: rgba(46, 196, 182, 0.12);
+  font-weight: 700;
+  position: relative;
+}
+
+.compare-table td.is-best::after {
+  content: " ✓";
+  color: #0a8f81;
+  font-weight: 900;
+}
+
+.compare-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.compare-table tbody tr:hover {
+  background: rgba(255, 107, 90, 0.05);
+}
+
+/* มือถือ: ปัดตารางแนวนอนโดยคอลัมน์ชื่อรุ่นค้างซ้าย */
+@media (max-width: 760px) {
+  .compare-table th:first-child,
+  .compare-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #fffdf8;
+    box-shadow: 6px 0 8px -6px rgba(31, 24, 16, 0.16);
+  }
+
+  .compare-table thead th:first-child {
+    background: inherit;
+  }
+}
+
 .page-hero {
   padding: 54px 0;
 }

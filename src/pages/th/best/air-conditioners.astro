@@ -63,6 +63,14 @@ const quickPicks = [
   }
 ].map((pick) => ({ ...pick, score: pickScore(pick.slug) }));
 
+// ไฮไลต์ค่าที่ดีที่สุดในตาราง (best-in-column) — คิดจากข้อมูลจริง
+const bestScore = Math.max(...airConditioners.map((p) => p.score));
+const bestReviews = Math.max(...airConditioners.map((p) => p.ratingsCount));
+// อิงราคา/ประกัน/ยอดขายที่เห็นจริง ณ 2026-07-02 (ดู compareExtras) — อัปเดตพร้อมรอบราคา
+const bestPriceSlug = "midea-celest-msce";
+const bestWarrantySlug = "hisense-ce-series";
+const bestSoldSlugs = ["daikin-ftkb-sabai-series", "hisense-ce-series"];
+
 // ข้อมูลสรุปสำหรับตารางเทียบ — ยึดจากหลักฐานรอบ 2026-07-02; ช่องที่ไม่เห็นข้อมูลจริงเขียนว่าให้เช็ก/ถามร้าน
 const compareExtras: Record<string, { priceShort: string; soldLabel: string; warrantyShort: string; fitShort: string }> = {
   "daikin-ftkb-sabai-series": { priceShort: "~12,875.-", soldLabel: "10พัน+", warrantyShort: "คอม 5 ปี", fitShort: "แบรนด์ญี่ปุ่นรีวิวแน่นสุด อยากจ้างช่างเองคุมงบ" },
@@ -246,12 +254,12 @@ const faqJsonLd = {
                     <br />
                     <a class="compare-detail-link" href={`#${product.slug}`}>ดูรายละเอียด ↓</a>
                   </td>
-                  <td><span class="score-pill">{product.score.toFixed(1)}</span></td>
-                  <td>{extra?.priceShort}</td>
+                  <td class={product.score === bestScore ? "is-best" : undefined}><span class="score-pill">{product.score.toFixed(1)}</span></td>
+                  <td class={product.slug === bestPriceSlug ? "is-best" : undefined}>{extra?.priceShort}</td>
                   <td>{product.btuOptions[0]?.replace(" BTU", "")}–{product.btuOptions[product.btuOptions.length - 1]?.replace(" BTU", "")}</td>
-                  <td>{product.rating.toFixed(1)} ★ ({product.ratingsCount.toLocaleString("th-TH")}+)</td>
-                  <td>{extra?.soldLabel}</td>
-                  <td>{extra?.warrantyShort}</td>
+                  <td class={product.ratingsCount === bestReviews ? "is-best" : undefined}>{product.rating.toFixed(1)} ★ ({product.ratingsCount.toLocaleString("th-TH")}+)</td>
+                  <td class={bestSoldSlugs.includes(product.slug) ? "is-best" : undefined}>{extra?.soldLabel}</td>
+                  <td class={product.slug === bestWarrantySlug ? "is-best" : undefined}>{extra?.warrantyShort}</td>
                   <td>{extra?.fitShort}</td>
                   <td>
                     <a class="button button-primary compare-buy" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`best-air-table-rank-${index + 1}`}>Shopee</a>
@@ -272,7 +280,7 @@ const faqJsonLd = {
       <h2 class="headline">แอร์ติดผนังน่าซื้อ เรียงตามคะแนน Friendsay</h2>
       <div class="air-product-grid">
         {rankedAirConditioners.map((product, index) => (
-          <article class="product-card air-product-card" id={product.slug}>
+          <article class={`product-card air-product-card${index < 3 ? ` podium podium-${index + 1}` : ""}`} id={product.slug}>
             <a class="product-photo" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`best-air-rank-${index + 1}-photo`}>
               <img src={product.image.url} alt={product.image.alt} loading="lazy" />
               <span>{product.image.note}</span>
