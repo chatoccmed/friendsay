@@ -1,0 +1,286 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+
+const updatedLabel = "2 กรกฎาคม 2026";
+
+type RainyPick = {
+  name: string;
+  shortName: string;
+  price: string;
+  rating: number;
+  reviews: string;
+  sold: string;
+  shopNote: string;
+  best: string;
+  watch: string;
+  affiliateUrl: string;
+  sourceUrl: string;
+};
+
+type RainySection = {
+  id: string;
+  pain: string;
+  headline: string;
+  intro: string;
+  picks: RainyPick[];
+};
+
+// ข้อมูลทุกตัวเก็บจากหน้า Shopee จริง 2 ก.ค. 2026 — ลิงก์ affiliate ทดสอบ redirect แล้วทุกลิงก์
+const sections: RainySection[] = [
+  {
+    id: "dryer",
+    pain: "ผ้าไม่แห้ง เหม็นอับ",
+    headline: "เครื่องอบผ้า: ตากในห้องกี่วันก็ไม่แห้งเท่ากดปุ่มเดียว",
+    intro:
+      "หน้าฝนผ้าตากสามวันยังชื้น กลิ่นอับติดเสื้อ เครื่องอบผ้าคือทางออกที่ตรงที่สุด — เลือกตามงบ: ตู้อบราคาหลักร้อยสำหรับห้องเช่า จนถึงเครื่องอบฝาหน้าจริงจังสำหรับบ้านทั้งหลัง",
+    picks: [
+      {
+        name: "little Swan ตู้อบผ้า 4000W",
+        shortName: "ตัวเริ่มต้นหลักร้อย",
+        price: "~644 บาท",
+        rating: 4.8,
+        reviews: "688 รีวิว",
+        sold: "ขายแล้ว 2พัน+ ชิ้น",
+        shopNote: "ร้านทั่วไป — เช็กคะแนนร้านก่อนซื้อ",
+        best: "ห้องเช่า/หอพักที่อยากได้ตู้อบผ้าถูกสุดที่รีวิวยังแน่น มี 2 รุ่นย่อย (ฆ่าเชื้อ/แห้งเร็ว) เก็บเงินปลายทางได้",
+        watch: "เป็นตู้อบผ้าแบบเป่าลมร้อน ไม่ใช่เครื่องอบฝาหน้า — เหมาะผ้าจำนวนน้อย และควรเผื่อเวลาอบมากกว่าที่โฆษณา",
+        affiliateUrl: "https://s.shopee.co.th/30m8ZdNsig",
+        sourceUrl: "https://shopee.co.th/product/1235343041/27353400058"
+      },
+      {
+        name: "Haier เครื่องอบผ้า 7 กก. รุ่น HDV70E1",
+        shortName: "ตัวกลางจากร้าน official",
+        price: "~6,290 บาท",
+        rating: 4.9,
+        reviews: "726 รีวิว",
+        sold: "ขายแล้ว 1พัน+ ชิ้น",
+        shopNote: "haier.officialshop (ร้านเดียวกับแอร์ Haier ที่เราตรวจแล้ว)",
+        best: "ครอบครัวเล็กที่อยากได้เครื่องอบจริงจังจากร้าน official ถังสเตนเลสแท้ ราคาหลังโค้ดคุ้มสุดในกลุ่มแบรนด์",
+        watch: "ขนาด 7 กก. เหมาะผ้ารอบซัก 1-2 คน ถ้าซักครั้งละเยอะควรขยับไป 9 กก.",
+        affiliateUrl: "https://s.shopee.co.th/2qSiNKOW3d",
+        sourceUrl: "https://shopee.co.th/product/184920733/28534442763"
+      },
+      {
+        name: "TCL เครื่องอบผ้าฝาหน้า 9 กก. รุ่น WT09KFDYW",
+        shortName: "ตัวท็อปยอดขายสูงสุด",
+        price: "~7,290 บาท",
+        rating: 4.9,
+        reviews: "1.6พัน รีวิว",
+        sold: "ขายแล้ว 8พัน+ ชิ้น",
+        shopNote: "TCL Authorized Store (ร้านเดียวกับแอร์ TCL ที่เราตรวจแล้ว)",
+        best: "บ้านที่ซักผ้าบ่อย อยากได้เครื่องอบฝาหน้าตัวจริง มีตรวจจับความชื้นและโปรแกรมลดรอยยับ ยอดขายสูงสุดในหมวดที่เราเจอ",
+        watch: "ตอนเก็บข้อมูลขึ้นสถานะพรีออเดอร์ จัดส่งใน 30 วัน — ถ้ารีบใช้หน้าฝนนี้ต้องเช็กรอบส่งกับร้านก่อนกด",
+        affiliateUrl: "https://s.shopee.co.th/2g9IB1P9Oa",
+        sourceUrl: "https://shopee.co.th/product/1025131800/26169839808"
+      }
+    ]
+  },
+  {
+    id: "shoes",
+    pain: "รองเท้าเปียก เหม็นอับ",
+    headline: "เครื่องอบรองเท้า: ของเล็กที่คนลืม แต่ใช้ทุกวันหน้าฝน",
+    intro:
+      "รองเท้าโดนฝนแล้วตากไม่ทันเช้า คือปัญหาที่คนซื้อเครื่องอบรองเท้าหลักหมื่นชิ้นต่อเดือนใน Shopee — ราคาไม่ถึงพันแต่ตัดปัญหากลิ่นอับและเชื้อราได้ทั้งฤดู",
+    picks: [
+      {
+        name: "Sothing เครื่องเป่ารองเท้า กำจัดกลิ่น",
+        shortName: "ตัวคุ้มยอดนิยม",
+        price: "~319-676 บาท",
+        rating: 4.7,
+        reviews: "3.2พัน รีวิว",
+        sold: "ขายแล้ว 8พัน+ ชิ้น",
+        shopNote: "ร้านยอดนิยม Favorite 9.9k",
+        best: "จุดเริ่มต้นที่ถูกสุดสำหรับบ้านที่รองเท้าเปียกประจำ เสียบทิ้งไว้ข้ามคืนแห้งหอมพร้อมใส่",
+        watch: "มีหลายเวอร์ชัน (มาตรฐาน/ตั้งเวลาได้) ราคาต่างกัน — เช็กตัวเลือกให้ตรงก่อนกด เวอร์ชันตั้งเวลาคุ้มกว่าถ้าใช้ทุกวัน",
+        affiliateUrl: "https://s.shopee.co.th/3B5YlwNFNj",
+        sourceUrl: "https://shopee.co.th/product/72571276/4904134878"
+      },
+      {
+        name: "Deerma Shoes Dryer HX10",
+        shortName: "ตัวขายดีที่สุด",
+        price: "~925 บาท",
+        rating: 4.9,
+        reviews: "2.1พัน รีวิว",
+        sold: "ขายแล้ว 10พัน+ ชิ้น",
+        shopNote: "ร้าน thgogadget (คะแนนร้าน 94.3k)",
+        best: "แบรนด์ในระบบนิเวศ Xiaomi ที่ขายทะลุหมื่นชิ้น งานประกอบเนี้ยบกว่า เหมาะคนอยากได้ของที่ใช้ยาว ๆ",
+        watch: "ตอนเก็บข้อมูลเป็นพรีออเดอร์ส่งใน 30 วัน — ถ้ารอไม่ได้ให้ดู Sothing ที่ส่งภายในสัปดาห์",
+        affiliateUrl: "https://s.shopee.co.th/3LOyyFMc2m",
+        sourceUrl: "https://shopee.co.th/product/163255636/5228924497"
+      }
+    ]
+  },
+  {
+    id: "dehumidifier",
+    pain: "ห้องชื้น ผนังขึ้นรา",
+    headline: "เครื่องลดความชื้น: แก้ที่ต้นเหตุของกลิ่นอับทั้งห้อง",
+    intro:
+      "ความชื้นหน้าฝนคือสาเหตุของเชื้อราบนผนัง เสื้อผ้าในตู้เหม็นอับ และไรฝุ่น — เครื่องลดความชื้นทำงานเงียบ ๆ แต่เปลี่ยนทั้งห้องได้จริง โดยเฉพาะคอนโดที่เปิดระบายอากาศไม่ได้",
+    picks: [
+      {
+        name: "HAFELE เครื่องลดความชื้น สำหรับห้อง 20 ตร.ม.",
+        shortName: "ตัวคุ้มขายดี",
+        price: "~2,690 บาท",
+        rating: 4.9,
+        reviews: "2พัน รีวิว",
+        sold: "ขายแล้ว 6พัน+ ชิ้น",
+        shopNote: "แบรนด์ฮาร์ดแวร์เยอรมันที่คนไทยรู้จัก",
+        best: "ห้องนอน/คอนโดขนาดไม่เกิน 20 ตร.ม. ราคาสมเหตุสมผลที่สุดในกลุ่มที่รีวิวแน่นระดับพันรีวิว",
+        watch: "ระบุพื้นที่ห้อง 20 ตร.ม. — ห้องใหญ่กว่านี้หรือเปิดโล่งถึงกัน ควรขยับไปรุ่นความจุสูงกว่า",
+        affiliateUrl: "https://s.shopee.co.th/2Vprykk0tA",
+        sourceUrl: "https://shopee.co.th/product/105090190/10632577009"
+      },
+      {
+        name: "Xiaomi Smart Dehumidifier 22 ลิตร/วัน",
+        shortName: "ตัวแรงสำหรับบ้านชื้นจัด",
+        price: "~7,290 บาท",
+        rating: 5.0,
+        reviews: "213 รีวิว",
+        sold: "ขายแล้ว 772 ชิ้น",
+        shopNote: "สินค้า Xiaomi — เชื่อมแอป Mi Home ได้",
+        best: "บ้าน/ห้องใหญ่ที่ชื้นจัด ดูดถึง 22 ลิตรต่อวัน คุมผ่านแอปได้ เหมาะสาย Smart Home ที่ใช้ Xiaomi อยู่แล้ว",
+        watch: "ราคาช่วงลดแรง (-46%) จาก 13,599 — ถ้าพลาดโปรราคาเต็มจะไม่คุ้มเท่า ควรกดช่วงแคมเปญ",
+        affiliateUrl: "https://s.shopee.co.th/2LWRmRkeE9",
+        sourceUrl: "https://shopee.co.th/product/30330278/43973076326"
+      }
+    ]
+  }
+];
+
+const allPicks = sections.flatMap((section) => section.picks);
+
+const faqs = [
+  {
+    q: "เครื่องอบผ้ากับตู้อบผ้าต่างกันยังไง?",
+    a: "เครื่องอบผ้าฝาหน้า (หลักพันถึงหมื่น) ปั่นและเป่าลมร้อนให้ผ้าแห้งสนิทในเครื่องเดียว เหมาะซักเยอะซักบ่อย ส่วนตู้อบผ้า (หลักร้อย) คือโครงตู้ + ฮีตเตอร์เป่าลมร้อน เหมาะผ้าจำนวนน้อยและงบจำกัด แต่ใช้เวลานานกว่าและต้องแขวนผ้าเอง"
+  },
+  {
+    q: "เครื่องลดความชื้นต่างจากเครื่องฟอกอากาศไหม?",
+    a: "คนละหน้าที่ครับ เครื่องฟอกอากาศกรองฝุ่น/PM2.5 แต่ไม่ลดความชื้น ส่วนเครื่องลดความชื้นดูดไอน้ำออกจากอากาศเป็นน้ำในถัง — ปัญหาผนังขึ้นรา ตู้เสื้อผ้าเหม็นอับหน้าฝน ต้องใช้เครื่องลดความชื้นเท่านั้น"
+  },
+  {
+    q: "ราคาในหน้านี้เชื่อได้แค่ไหน?",
+    a: `ทุกตัวเลขคือราคาที่เราเห็นจริงบนหน้าร้าน ณ วันที่ ${updatedLabel} ส่วนใหญ่เป็นราคาช่วงโปรซึ่งเปลี่ยนได้ทุกวัน โปรดกดเช็กราคาปัจจุบันก่อนตัดสินใจเสมอ และสองรายการ (TCL, Deerma) ตอนเก็บข้อมูลขึ้นสถานะพรีออเดอร์ส่ง 30 วัน`
+  },
+  {
+    q: "Friendsay ได้อะไรจากหน้านี้?",
+    a: "ลิงก์ไปร้านค้าเป็นลิงก์พันธมิตร ถ้าซื้อผ่านลิงก์เราได้ค่าคอมมิชชันเล็กน้อยโดยคุณไม่จ่ายแพงขึ้น ทุกรายการคัดจากหลักฐานยอดขายและรีวิวจริงที่เราเปิดดูเองทีละหน้า ไม่ใช่รายการที่ร้านจ่ายเงินซื้อพื้นที่"
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "ของสู้หน้าฝน 2026: 7 ตัวช่วยผ้าแห้ง รองเท้าหอม บ้านไม่ขึ้นรา",
+  description: "รวมเครื่องอบผ้า เครื่องอบรองเท้า และเครื่องลดความชื้นที่ขายจริงหลักพันถึงหมื่นชิ้นใน Shopee ตรวจหลักฐานรายชิ้น พร้อมจุดระวังก่อนจ่ายเงิน",
+  inLanguage: "th",
+  dateModified: "2026-07-02",
+  author: { "@type": "Organization", name: "Friendsay" },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: allPicks.map((pick, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: pick.name
+    }))
+  }
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a }
+  }))
+};
+---
+
+<BaseLayout
+  title="ของสู้หน้าฝน 2026: 7 ตัวช่วยผ้าแห้ง รองเท้าหอม บ้านไม่ขึ้นรา | Friendsay"
+  description="หน้าฝนผ้าไม่แห้ง รองเท้าเหม็นอับ ผนังขึ้นรา — รวม 7 ตัวช่วยที่ขายจริงหลักพันถึงหมื่นชิ้นใน Shopee: เครื่องอบผ้า เครื่องอบรองเท้า เครื่องลดความชื้น พร้อมราคาจริงและจุดระวัง อัปเดต 2 ก.ค. 2026"
+  canonical="https://friendsay.com/th/best/rainy-season-gear/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge badge-teal">ฤดูฝน 2026</span>
+        <span class="badge badge-coral">อัปเดต {updatedLabel}</span>
+      </div>
+      <h1>ของสู้หน้าฝน: 7 ตัวช่วยผ้าแห้ง รองเท้าหอม บ้านไม่ขึ้นรา</h1>
+      <p class="muted">
+        ทุกชิ้นในหน้านี้เราเปิดหน้าสินค้าจริงและเห็นยอดขายจริงก่อนแนะนำ (ต่ำสุด 772 ชิ้น สูงสุด 10,000+ ชิ้น)
+        แบ่งตาม 3 ปัญหาที่หน้าฝนชอบสร้าง — เลือกจากปัญหาของคุณได้เลย
+      </p>
+      <div class="roundup-actions">
+        <a class="button button-primary" href="#dryer">ผ้าไม่แห้ง</a>
+        <a class="button" href="#shoes">รองเท้าเปียก</a>
+        <a class="button" href="#dehumidifier">ห้องชื้น/ขึ้นรา</a>
+      </div>
+    </div>
+  </section>
+
+  {sections.map((section) => (
+    <section class="section" id={section.id}>
+      <div class="container">
+        <p class="eyebrow">{section.pain}</p>
+        <h2 class="headline">{section.headline}</h2>
+        <p class="muted" style="max-width: 720px;">{section.intro}</p>
+        <div class="scenario-grid" style="margin-top: 22px;">
+          {section.picks.map((pick) => (
+            <article class="rainy-pick-card">
+              <div class="badge-row">
+                <span class="badge badge-coral">{pick.shortName}</span>
+                <span class="badge badge-blue">{pick.rating.toFixed(1)}/5</span>
+              </div>
+              <h3>{pick.name}</h3>
+              <div class="rainy-facts">
+                <span><b>{pick.price}</b></span>
+                <span>{pick.reviews}</span>
+                <span><b>{pick.sold}</b></span>
+              </div>
+              <p class="rainy-shop">{pick.shopNote}</p>
+              <p><b>เหมาะกับ:</b> {pick.best}</p>
+              <p class="rainy-watch"><b>ระวัง:</b> {pick.watch}</p>
+              <a
+                class="button button-primary"
+                href={pick.affiliateUrl}
+                target="_blank"
+                rel="sponsored noopener"
+                data-affiliate-link
+                data-affiliate-store="shopee"
+                data-affiliate-context={`rainy-gear-${section.id}`}
+              >เช็กราคาวันนี้ใน Shopee</a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section band" id="faq">
+    <div class="container">
+      <p class="eyebrow">ก่อนกดซื้อ</p>
+      <h2 class="headline">คำถามที่คนถามบ่อย</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+      <p class="compare-note">
+        ราคาและสถานะสินค้าเก็บจากหน้า Shopee จริงวันที่ {updatedLabel} · ตัวเลขยอดขายคือตัวเลขที่แสดงบนหน้าร้าน ไม่ใช่การประมาณ ·
+        อ่านมาตรฐานรีวิวของเราได้ที่ <a href="/editorial-policy/">Editorial Policy</a>
+      </p>
+    </div>
+  </section>
+
+  <AffiliateClickTracker />
+</BaseLayout>

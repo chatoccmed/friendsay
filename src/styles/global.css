@@ -2886,6 +2886,61 @@ body:has(.air-sticky-buy) .compare-floating-tray {
   background: rgba(255, 107, 90, 0.05);
 }
 
+/* การ์ดของสู้หน้าฝน */
+.rainy-pick-card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+  padding: 22px;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.22s ease;
+}
+
+.rainy-pick-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 2px 6px rgba(31, 24, 16, 0.06),
+    0 18px 40px -18px rgba(31, 24, 16, 0.28);
+}
+
+.rainy-pick-card h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.rainy-pick-card p {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.65;
+}
+
+.rainy-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 0.92rem;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 214, 186, 0.22);
+}
+
+.rainy-shop {
+  color: rgba(31, 41, 55, 0.6);
+  font-size: 0.85rem;
+}
+
+.rainy-watch {
+  color: #a4452f;
+}
+
+.rainy-pick-card .button {
+  margin-top: 6px;
+  justify-self: start;
+}
+
 /* Radar chart หน้าเปรียบเทียบ */
 .compare-radar-panel {
   margin-top: 34px;
