@@ -49,6 +49,7 @@ npm.cmd run build                # ต้องรันให้ผ่านก
 ## Definition of Done ของทุกงาน
 
 1. เนื้อหาผ่าน QA checklist ใน `docs/product-review-operating-template.md`
-2. ตรวจ responsive มือถือ/แท็บเล็ต/คอม
-3. `npm.cmd run build` ผ่าน
-4. commit พร้อมข้อความชัดเจน
+2. **บทความ roundup ต้องผ่าน Publish Gate 8 ข้อ** ใน `docs/design-upgrade-plan-2026-07.md` (ภาพจริงทุกรายการ / ตารางเทียบ / กราฟ / quick-pick / จุดระวัง / FAQ+schema / วันที่ / ลิงก์ทดสอบแล้ว) — ขาดข้อเดียวห้าม commit; ถ้ารอบงานเดียวทำไม่ครบ ให้บอกเจ้าของตรง ๆ ว่าเหลืออะไร ห้ามลดสเปกแล้วเรียกว่าเสร็จ
+3. ตรวจ responsive มือถือ/แท็บเล็ต/คอม + ตรวจหน้า live ด้วยตาก่อนรายงานผล
+4. `npm.cmd run build` ผ่าน
+5. commit พร้อมข้อความชัดเจน
