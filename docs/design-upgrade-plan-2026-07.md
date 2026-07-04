@@ -40,7 +40,7 @@
 
 - [x] โพเดียมอันดับ 1-2-3 บนหน้าจัดอันดับ (แถบขอบทอง/เงิน/ทองแดง + glow อันดับ 1) — 2026-07-02
 - [x] ตารางเทียบ: best-in-column highlight (✓ เขียว 6 จุดจากข้อมูลจริง) + row hover + คอลัมน์แรก sticky บนมือถือ — 2026-07-02 (sticky header ติดข้อจำกัด overflow container ไว้รอบ redesign ตาราง)
-- [ ] Radar chart คะแนน 8 แกน (SVG) บนหน้าเปรียบเทียบ + ภาพสินค้าบนหัวคอลัมน์ + fly-in animation ตอนเลือกรุ่น
+- [x] Radar chart คะแนน 8 แกน (SVG animate scale-in ทีละรุ่น) บนหน้าเปรียบเทียบ — 2026-07-02 (เหลือ: ภาพสินค้าบนหัวคอลัมน์ + fly-in ตอนเลือกรุ่น)
 - [ ] หน้ารีวิวเดี่ยว: hero split แบบ magazine + score ring animate + gallery lightbox + TOC scroll-spy + carousel รีวิวผู้ซื้อ + pull quote
 - [ ] BTU calculator: ผลลัพธ์เป็น gauge เข็มกวาด + ปุ่มแชร์ผล
 - [ ] Homepage hero ใหม่: kinetic typography + parallax + การ์ดเครื่องมือ interactive
