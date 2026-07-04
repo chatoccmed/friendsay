@@ -145,6 +145,20 @@ const jsonLd = {
         <div class="compare-answer-grid" data-compare-answers></div>
       </section>
 
+      <section class="compare-radar-panel" aria-label="เรดาร์เทียบคะแนน 8 ด้าน">
+        <div class="section-heading home-section-split">
+          <div>
+            <p class="eyebrow">Radar view</p>
+            <h2 class="headline">บุคลิกของแต่ละรุ่นในภาพเดียว</h2>
+          </div>
+          <p>ยิ่งกางเต็มด้านไหน แปลว่ารุ่นนั้นแข็งด้านนั้น — เห็นจุดแข็งจุดอ่อนของทุกรุ่นพร้อมกันโดยไม่ต้องไล่อ่านตัวเลข</p>
+        </div>
+        <div class="compare-radar-layout">
+          <div class="compare-radar-chart" data-compare-radar></div>
+          <div class="compare-radar-legend" data-compare-radar-legend></div>
+        </div>
+      </section>
+
       <section class="compare-selected-products" aria-label="การ์ดรุ่นที่เลือก">
         <div class="section-heading home-section-split">
           <div>
@@ -387,10 +401,74 @@ const jsonLd = {
         `;
       };
 
+      const renderRadar = (items) => {
+        const host = document.querySelector("[data-compare-radar]");
+        if (!host) return;
+        const axes = [
+          ["popularity", "ความนิยม"],
+          ["buyerConfidence", "มั่นใจผู้ซื้อ"],
+          ["value", "คุ้มค่า"],
+          ["roomFit", "เลือกขนาดง่าย"],
+          ["energyComfort", "ประหยัด/สบาย"],
+          ["installRisk", "ติดตั้งสบายใจ"],
+          ["warrantySafety", "ประกัน"],
+          ["complaintRisk", "เสียงบ่นน้อย"]
+        ];
+        const colors = ["#ff6b5a", "#0ea5a0", "#3a86ff", "#f1a208"];
+        const size = 460;
+        const cx = size / 2;
+        const cy = size / 2;
+        const radius = 150;
+        const angle = (i) => (Math.PI * 2 * i) / axes.length - Math.PI / 2;
+        const px = (i, r) => cx + Math.cos(angle(i)) * r;
+        const py = (i, r) => cy + Math.sin(angle(i)) * r;
+        const pt = (i, r) => `${px(i, r).toFixed(1)},${py(i, r).toFixed(1)}`;
+
+        const rings = [0.25, 0.5, 0.75, 1]
+          .map((f) => `<polygon points="${axes.map((_, i) => pt(i, radius * f)).join(" ")}" fill="none" stroke="rgba(31,41,55,0.1)" />`)
+          .join("");
+        const spokes = axes
+          .map((_, i) => `<line x1="${cx}" y1="${cy}" x2="${px(i, radius).toFixed(1)}" y2="${py(i, radius).toFixed(1)}" stroke="rgba(31,41,55,0.1)" />`)
+          .join("");
+        const labels = axes
+          .map(([, label], i) => {
+            const lx = px(i, radius + 24);
+            const ly = py(i, radius + 24);
+            const anchor = Math.abs(lx - cx) < 14 ? "middle" : lx > cx ? "start" : "end";
+            return `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="middle">${escapeHtml(label)}</text>`;
+          })
+          .join("");
+        const shapes = items
+          .map((product, idx) => {
+            const points = axes
+              .map(([keyName], i) => pt(i, (radius * Math.max(0, Math.min(10, Number(product[keyName] || 0)))) / 10))
+              .join(" ");
+            const color = colors[idx % colors.length];
+            return `<polygon class="radar-shape" style="animation-delay:${idx * 120}ms" points="${points}" fill="${color}24" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" />`;
+          })
+          .join("");
+
+        host.innerHTML = `<svg viewBox="0 0 ${size} ${size}" role="img" aria-label="เรดาร์เทียบคะแนน 8 ด้านของรุ่นที่เลือก">${rings}${spokes}${labels}${shapes}</svg>`;
+
+        const legend = document.querySelector("[data-compare-radar-legend]");
+        if (legend) {
+          legend.innerHTML = items
+            .map((product, idx) => `
+              <span>
+                <i style="background:${colors[idx % colors.length]}"></i>
+                <b>${escapeHtml(product.shortName)}</b>
+                <em>${escapeHtml(product.score.toFixed(1))}/10</em>
+              </span>
+            `)
+            .join("");
+        }
+      };
+
       function renderAll() {
         const items = selectedProducts();
         renderPicker();
         renderAnswers(items);
+        renderRadar(items);
         renderCards(items);
         renderMatrix(items);
         renderTable(items);

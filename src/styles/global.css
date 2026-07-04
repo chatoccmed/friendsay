@@ -2886,6 +2886,92 @@ body:has(.air-sticky-buy) .compare-floating-tray {
   background: rgba(255, 107, 90, 0.05);
 }
 
+/* Radar chart หน้าเปรียบเทียบ */
+.compare-radar-panel {
+  margin-top: 34px;
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 28px;
+  box-shadow: var(--shadow-soft);
+}
+
+.compare-radar-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 520px) 1fr;
+  gap: 24px;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.compare-radar-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.compare-radar-chart text {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  fill: rgba(31, 41, 55, 0.72);
+}
+
+.radar-shape {
+  transform-origin: 50% 50%;
+  animation: radar-in 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes radar-in {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.compare-radar-legend {
+  display: grid;
+  gap: 10px;
+  align-content: center;
+}
+
+.compare-radar-legend span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+.compare-radar-legend i {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  flex: none;
+}
+
+.compare-radar-legend em {
+  margin-left: auto;
+  font-style: normal;
+  font-weight: 700;
+  color: rgba(31, 41, 55, 0.6);
+}
+
+@media (max-width: 860px) {
+  .compare-radar-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-shape {
+    animation: none;
+  }
+}
+
 /* มือถือ: ปัดตารางแนวนอนโดยคอลัมน์ชื่อรุ่นค้างซ้าย */
 @media (max-width: 760px) {
   .compare-table th:first-child,
