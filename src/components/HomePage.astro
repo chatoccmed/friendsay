@@ -1,196 +1,122 @@
 ---
-import { topAirFryerPicks } from "../data/airFryers";
-import { legacyProducts } from "../data/legacyProducts";
+import { searchIndex, searchIndexCount } from "../data/searchIndex";
 
 // ตัวเลขจริงเท่านั้น — อัปเดตทุกครั้งที่รอบเก็บหลักฐานเปลี่ยน (ล่าสุด 2026-07-02)
+const dataUpdatedLabel = "2 ก.ค. 2026";
+
+const heroChips = ["แอร์ต่ำกว่า 10,000", "เครื่องอบผ้า", "ของสู้หน้าฝน", "แอร์ประหยัดไฟ"];
+
 const heroSignals = [
-  { value: "10", count: 10, label: "รุ่นแอร์ที่ตรวจหลักฐานจริงแล้ว", href: "/th/best/air-conditioners/" },
+  { value: String(searchIndexCount), count: searchIndexCount, label: "รุ่นที่ตรวจหลักฐานจริงแล้ว", href: "/th/best/air-conditioners/" },
   { value: "10,000+", count: 10000, suffix: "+", label: "ยอดขายจริงสูงสุดที่เห็นบนหน้าร้าน", href: "/th/best/air-conditioners/" },
-  { value: "3", count: 3, label: "เช็กราคา Shopee Lazada TikTok", href: "/affiliate-disclosure/" },
-  { value: "2 ก.ค. 2026", label: "อัปเดตข้อมูลล่าสุด", href: "/th/best/air-conditioners/" }
+  { value: "0", count: 0, label: "อันดับที่รับเงินเพื่อจัดให้ — ไม่มีขายอันดับ", href: "/editorial-policy/" },
+  { value: dataUpdatedLabel, label: "รอบเก็บข้อมูลล่าสุด", href: "/th/best/rainy-season-gear/" }
 ];
 
-const decisionPaths = [
-  { label: "เริ่มจากคนใช้", value: "คอนโด ครอบครัว นักท่องเที่ยว" },
-  { label: "ตัดตัวเลือกเสี่ยง", value: "เสียง ขนาด ราคา เคลมเกินจริง" },
-  { label: "ค่อยกดซื้อ", value: "เทียบ Shopee Lazada TikTok" }
-];
-
-const readingPaths = [
+const featured = [
   {
-    step: "01",
-    title: "สรุป 3 นาที",
-    text: "รุ่นเด่น + ตัวที่ควรข้าม",
-    href: "/th/best/air-fryers/",
-    cue: "เริ่มจาก shortlist"
+    title: "แอร์ยี่ห้อไหนดี 2026: 10 อันดับจากหลักฐานจริง",
+    text: "ทุกรุ่นเปิดหน้าร้านจริงก่อนจัดอันดับ — ตารางเทียบ กราฟ และจุดระวังก่อนจ่ายเงิน",
+    href: "/th/best/air-conditioners/",
+    image: "/images/air-conditioners/wall-ac-condo-hero.jpg",
+    alt: "แอร์ติดผนังในคอนโดโทนอบอุ่น",
+    meta: ["10 อันดับ", "ตารางเทียบ + กราฟ", "อัปเดต " + dataUpdatedLabel]
   },
   {
-    step: "02",
-    title: "เทียบเร็ว",
-    text: "ราคา คะแนน จุดเด่น จุดเสี่ยง",
-    href: "/th/best/air-fryers/#compare-lab",
-    cue: "เหมาะก่อนกดซื้อ"
-  },
-  {
-    step: "03",
-    title: "อ่านลึก",
-    text: "ข้อดี ข้อเสีย เสียงผู้ใช้",
-    href: "/th/reviews/sample-air-fryer-pro/",
-    cue: "อ่านก่อนจ่ายจริง"
+    title: "ของสู้หน้าฝน 2026: 7 ตัวช่วยผ้าแห้ง บ้านไม่ขึ้นรา",
+    text: "เครื่องอบผ้า เครื่องอบรองเท้า เครื่องลดความชื้น — คัดจากยอดขายจริงหลักพันถึงหมื่นชิ้น",
+    href: "/th/best/rainy-season-gear/",
+    image: "/images/rainy-gear/tcl-wt09kfdyw-real-product.jpg",
+    alt: "เครื่องอบผ้า TCL ภาพสินค้าจริงจากหน้าร้าน",
+    meta: ["7 ตัวช่วย", "3 ปัญหาหน้าฝน", "อัปเดต " + dataUpdatedLabel]
   }
 ];
 
-const buyerJourneys = [
-  {
-    title: "เริ่มบ้านใหม่หรือคอนโด",
-    text: "เล็กพอดี วางง่าย ไม่รก",
-    href: "/th/best/water-heaters/",
-    image: "/images/air-fryers/air-fryer-compact-photo.png",
-    alt: "หม้อทอดไร้น้ำมันขนาดกะทัดรัดสำหรับคอนโด",
-    picks: ["หม้อทอด 3-4L", "เครื่องกรองน้ำ", "เครื่องดูดฝุ่น", "ปลั๊กพ่วง"]
-  },
-  {
-    title: "ครอบครัวที่ซื้อแล้วต้องใช้ยาว",
-    text: "ดูความจุ ความทน และประกัน",
-    href: "#product-worlds",
-    image: "/images/air-fryers/air-fryer-family-photo.png",
-    alt: "เครื่องใช้ในครัวสำหรับครอบครัว",
-    picks: ["เครื่องใช้ไฟฟ้า", "คาร์ซีท", "เครื่องฟอกอากาศ", "เครื่องทำน้ำอุ่น"]
-  },
-  {
-    title: "สุขภาพและความปลอดภัย",
-    text: "เช็กคำเคลมและแหล่งอ้างอิง",
-    href: "#product-worlds",
-    image: legacyProducts[2].oldImageUrl,
-    alt: "อุปกรณ์ตรวจวัดสุขภาพสำหรับใช้ในบ้าน",
-    picks: ["เครื่องวัดสุขภาพ", "ไฟฉุกเฉิน", "เครื่องฟอกอากาศ", "อุปกรณ์ผู้สูงอายุ"]
-  },
-  {
-    title: "นักท่องเที่ยวในไทย",
-    text: "ซื้อคุ้ม ใช้ง่าย พกกลับสะดวก",
-    href: "/en/tourist/",
-    image: "/images/friendsay-hero.png",
-    alt: "ของใช้หลายหมวดสำหรับนักท่องเที่ยวในไทย",
-    picks: ["ซิม", "กันแดด", "ปลั๊ก", "ของฝาก"]
-  }
+const workSteps = [
+  { title: "เปิดหน้าสินค้าจริงทีละหน้า", text: "เก็บราคา ยอดขาย รีวิว พร้อมวันที่เก็บข้อมูล ไม่เดาตัวเลขที่มองไม่เห็น" },
+  { title: "คัดเฉพาะตัวที่หลักฐานถึงเกณฑ์", text: "ยอดขายหรือรีวิวต้องแน่นพอให้ตามอ่านได้จริง ตัวที่ไม่ผ่านไม่ขึ้นหน้าเว็บ" },
+  { title: "บอกจุดระวังก่อนปุ่มซื้อ", text: "ค่าติดตั้งเพิ่ม คิวช่าง เงื่อนไขเคลม พรีออเดอร์ — ความเสี่ยงจริงต้องเห็นก่อนจ่าย" },
+  { title: "โปร่งใสเรื่องรายได้", text: "ลิงก์ไปร้านเป็นลิงก์พันธมิตร คุณไม่จ่ายแพงขึ้น และอันดับไม่มีขาย" }
 ];
 
-const productWorlds = [
-  {
-    title: "บ้านและครัว",
-    label: "หม้อทอด เครื่องครัว ของใช้ทุกวัน",
-    href: "/th/best/air-fryers/",
-    image: "/images/air-fryers/air-fryer-family-photo.png",
-    alt: "หม้อทอดไร้น้ำมันในครัวพร้อมตะกร้าด้านหน้า",
-    status: "เปิดอ่านแล้ว"
-  },
-  {
-    title: "เครื่องใช้ไฟฟ้าในบ้าน",
-    label: "น้ำอุ่น ฟอกอากาศ พัดลม ดูดฝุ่น",
-    href: "#product-worlds",
-    image: legacyProducts[0].oldImageUrl,
-    alt: "เครื่องทำน้ำอุ่น Haier สีขาว",
-    status: "หมวดยอดนิยม"
-  },
-  {
-    title: "สุขภาพและความปลอดภัย",
-    label: "เครื่องวัด ไฟฉุกเฉิน ของจำเป็น",
-    href: "#product-worlds",
-    image: legacyProducts[2].oldImageUrl,
-    alt: "เครื่องวัดออกซิเจนปลายนิ้ว ChoiceMMed",
-    status: "ต้องเช็กแหล่งอ้างอิง"
-  },
-  {
-    title: "นักท่องเที่ยวในไทย",
-    label: "ซิม ปลั๊ก กันแดด ของฝาก",
-    href: "/en/tourist/",
-    image: "/images/friendsay-hero.png",
-    alt: "โต๊ะรีวิวสินค้าพร้อมของใช้หลายหมวด",
-    status: "Tourist guide"
-  },
-  {
-    title: "Gadget และงาน",
-    label: "หูฟัง ชาร์จ โต๊ะ เก้าอี้",
-    href: "#product-worlds",
-    image: "/images/friendsay-hero.png",
-    alt: "โต๊ะรีวิวสินค้าหลากหลายหมวดสำหรับเปรียบเทียบ",
-    status: "ของใช้ทุกวัน"
-  },
-  {
-    title: "Beauty และของใช้ส่วนตัว",
-    label: "กันแดด ไดร์ โกนหนวด ดูแลผิว",
-    href: "#product-worlds",
-    image: "/images/air-fryers/air-fryer-cleaning-photo.png",
-    alt: "มือกำลังดูแลทำความสะอาดอุปกรณ์ในบ้าน",
-    status: "ใช้จริงสำคัญกว่าเคลม"
-  },
-  {
-    title: "แม่และเด็ก",
-    label: "คาร์ซีท รถเข็น กล้องดูเด็ก",
-    href: "#product-worlds",
-    image: "/images/friendsay-hero.png",
-    alt: "สินค้าหลายหมวดบนโต๊ะสำหรับรีวิวก่อนเลือกซื้อ",
-    status: "ต้องเลือกละเอียด"
-  },
-  {
-    title: "ดีไซน์และไลฟ์สไตล์",
-    label: "ของสวย ใช้ดี คุ้มจริง",
-    href: "#product-worlds",
-    image: legacyProducts[9].oldImageUrl,
-    alt: "เครื่องทำน้ำอุ่น Sharp Modi ดีไซน์เรียบ",
-    status: "ของสวยต้องใช้ดี"
-  }
+const roadmapOpen = [
+  { title: "หม้อทอดไร้น้ำมัน", href: "/th/best/air-fryers/", status: "รอรีเฟรชมาตรฐานใหม่" },
+  { title: "เครื่องทำน้ำอุ่น", href: "/th/best/water-heaters/", status: "รอรีเฟรชมาตรฐานใหม่" }
 ];
 
-const flagship = topAirFryerPicks[0];
+const roadmapSoon = [
+  { title: "ตู้เย็น", note: "กำลังเก็บหลักฐาน" },
+  { title: "เครื่องดูดฝุ่น", note: "คิวถัดไปหลังหน้าฝน" },
+  { title: "เครื่องฟอกอากาศ", note: "วางแผนรับฤดูฝุ่น" }
+];
+
+const latestArticles = [
+  { title: "แอร์ยี่ห้อไหนดี 2026: 10 อันดับจากรีวิวผู้ซื้อจริง", href: "/th/best/air-conditioners/", tag: "จัดอันดับ", date: dataUpdatedLabel },
+  { title: "ของสู้หน้าฝน 2026: 7 ตัวช่วยผ้าแห้ง รองเท้าหอม บ้านไม่ขึ้นรา", href: "/th/best/rainy-season-gear/", tag: "จัดอันดับ", date: dataUpdatedLabel },
+  { title: "เครื่องคิด BTU: ห้องคุณต้องใช้แอร์กี่ BTU", href: "/th/guides/btu-calculator/", tag: "เครื่องมือ", date: dataUpdatedLabel },
+  { title: "เทียบแอร์ 8 แกนแบบเลือกเองได้", href: "/th/compare/air-conditioners/", tag: "เปรียบเทียบ", date: dataUpdatedLabel },
+  { title: "รีวิวละเอียดแอร์รายรุ่น", href: "/th/reviews/air-conditioners/", tag: "รีวิวเดี่ยว", date: dataUpdatedLabel }
+];
 ---
 
-<section class="home-hero home-hero-v2" aria-labelledby="home-hero-title">
-  <img class="home-hero-image" src="/images/friendsay-hero.png" alt="โต๊ะรีวิวสินค้าพรีเมี่ยมพร้อมของใช้หลายหมวดสำหรับเปรียบเทียบ" loading="eager" />
-  <div class="home-hero-shade" aria-hidden="true"></div>
-  <div class="wide-container home-hero-inner home-hero-inner-v2">
-    <div class="home-hero-copy">
-      <div class="promise-row" aria-label="คำมั่นของ Friendsay">
-        <span>มีข้อเสียให้เห็น</span>
-        <span>เทียบให้เข้าใจง่าย</span>
-        <span>ไม่ให้ affiliate นำคำตอบ</span>
-      </div>
-      <h1 id="home-hero-title" class="home-brand-title">Friendsay</h1>
-      <p class="home-hero-kicker">เว็บรีวิวสินค้าแบบเพื่อนช่วยเลือก ที่จริงใจกับคนอ่านก่อนจริงใจกับยอดขาย</p>
-      <p class="home-hero-subhead">
-        รีวิวรวม รีวิวเจาะลึก ตารางเทียบ ภาพสินค้า และข้อควรระวังจากผู้ใช้จริง เพื่อให้รู้เร็วว่าอะไรเหมาะกับคุณ และอะไรควรข้าม
-      </p>
-      <form class="hero-search" action="/th/best/air-fryers/" method="get">
-        <input name="q" type="search" placeholder="ค้นหา: หม้อทอด เครื่องทำน้ำอุ่น ของใช้ในไทย" aria-label="ค้นหาสินค้า" />
-        <button class="button button-primary" type="submit">ค้นหารีวิว</button>
-      </form>
-      <div class="home-hero-actions">
-        <a class="button button-dark" href="/th/best/air-fryers/">ดูรีวิวเด่น</a>
-        <a class="hero-text-link" href="#product-worlds">ดูหมวดสินค้ายอดนิยม</a>
-      </div>
+<section class="home-search-hero" aria-labelledby="home-hero-title">
+  <div class="container home-search-inner">
+    <div class="promise-row" aria-label="คำมั่นของ Friendsay">
+      <span>มีข้อเสียให้เห็น</span>
+      <span>ตัวเลขจากหน้าร้านจริง</span>
+      <span>ไม่ให้ affiliate นำคำตอบ</span>
     </div>
+    <h1 id="home-hero-title" class="home-brand-title">Friendsay</h1>
+    <p class="home-search-kicker">พิมพ์สิ่งที่กำลังหา เดี๋ยวเพื่อนเช็กหลักฐานให้</p>
+    <form class="home-search-form" id="home-search-form" role="search" action="/th/" method="get">
+      <input
+        id="home-search-input"
+        name="q"
+        type="search"
+        placeholder="เช่น แอร์ราคาต่ำกว่า 10000"
+        aria-label="ค้นหาสินค้าที่ตรวจหลักฐานแล้ว"
+        autocomplete="off"
+      />
+      <button class="button button-primary" type="submit">ค้นหา</button>
+    </form>
+    <div class="home-search-chips" aria-label="คำค้นแนะนำ">
+      {heroChips.map((chip) => (
+        <button class="search-chip" type="button" data-search-chip={chip}>{chip}</button>
+      ))}
+    </div>
+    <p class="home-search-scope">
+      ค้นจากของจริง {searchIndexCount} รุ่นที่เราเปิดหน้าร้านตรวจหลักฐานแล้ว (ไม่ใช่ทั้ง Shopee) · ราคา ณ รอบเก็บข้อมูล {dataUpdatedLabel}
+    </p>
+  </div>
+</section>
 
-    <aside class="home-hero-lens" aria-label="ระบบคัดเลือกสินค้าของ Friendsay">
-      <div class="lens-media">
-        <img src={flagship.image.url} alt={flagship.image.alt} loading="lazy" />
-        <span>{flagship.score.toFixed(1)} / 10</span>
-      </div>
-      <div class="lens-copy">
-        <span>Editor’s desk</span>
-        <strong>เริ่มจาก “เหมาะกับใคร” ก่อน “ซื้อที่ไหน”</strong>
-        <p>ทุกบทความต้องช่วยตัดสินใจให้เร็วขึ้น โดยยังเหลือรายละเอียดให้คนที่อยากอ่านลึกตรวจต่อได้</p>
-      </div>
-      <div class="lens-steps">
-        {decisionPaths.map((path) => (
-          <div>
-            <span>{path.label}</span>
-            <strong>{path.value}</strong>
-          </div>
+<section class="section home-search-results" id="search-results" hidden>
+  <div class="container">
+    <p class="eyebrow">ผลการค้นหา</p>
+    <h2 class="headline" id="search-results-title">ผลการค้นหา</h2>
+    <p class="muted" id="search-results-note"></p>
+    <div class="scenario-grid" id="search-results-grid" style="margin-top: 18px;"></div>
+    <div class="home-search-empty" id="search-results-empty" hidden>
+      <p>
+        ยังไม่เจอในฐานที่ตรวจแล้ว — ตอนนี้เราตรวจลึกทีละหมวดเพื่อไม่ให้มีตัวเลขมั่ว
+        ลองคำค้นที่ฐานรองรับ หรือเปิดดูหมวดที่เปิดแล้วก่อนได้เลย
+      </p>
+      <div class="home-search-chips">
+        {heroChips.map((chip) => (
+          <button class="search-chip" type="button" data-search-chip={chip}>{chip}</button>
         ))}
       </div>
-    </aside>
+      <div class="roundup-actions" style="margin-top: 14px;">
+        <a class="button" href="/th/best/air-conditioners/">ดู 10 อันดับแอร์</a>
+        <a class="button" href="/th/best/rainy-season-gear/">ดูของสู้หน้าฝน</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div class="home-proof-strip" aria-label="สถานะเว็บ Friendsay">
+<section class="section home-proof-section" aria-label="สถานะเว็บ Friendsay">
+  <div class="container">
+    <div class="home-proof-strip">
       {heroSignals.map((signal) => (
         <a href={signal.href}>
           <strong data-countup={signal.count} data-suffix={signal.suffix}>{signal.value}</strong>
@@ -201,130 +127,256 @@ const flagship = topAirFryerPicks[0];
   </div>
 </section>
 
-<section class="section home-persona-section" aria-labelledby="home-persona-title">
-  <div class="wide-container home-persona-layout">
-    <div class="home-persona-intro">
-      <p class="eyebrow">Start with real life</p>
-      <h2 id="home-persona-title" class="headline">เลือกจากชีวิตจริง</h2>
-      <p>
-        คอนโด ครอบครัว สุขภาพ หรือนักท่องเที่ยว แตะภาพแล้วไปต่อทันที
-      </p>
-    </div>
-    <div class="home-persona-grid">
-      {buyerJourneys.map((journey) => (
-        <a class="home-persona-card" href={journey.href}>
-          <img src={journey.image} alt={journey.alt} loading="lazy" />
-          <div>
-            <strong>{journey.title}</strong>
-            <p>{journey.text}</p>
-            <ul>
-              {journey.picks.map((pick) => <li>{pick}</li>)}
-            </ul>
-          </div>
-        </a>
-      ))}
-    </div>
-  </div>
-</section>
-
-<section class="home-reading-section" aria-labelledby="home-reading-title">
-  <div class="wide-container home-reading-shell">
-    <div class="home-reading-intro">
-      <p class="eyebrow">How to read Friendsay</p>
-      <h2 id="home-reading-title">มีเวลาแค่ไหน</h2>
-      <p>เลือกทางลัดแล้วไปคำตอบที่ต้องใช้จริง</p>
-    </div>
-    <div class="home-reading-grid">
-      {readingPaths.map((path) => (
-        <a class="home-reading-card" href={path.href}>
-          <span>{path.step}</span>
-          <strong>{path.title}</strong>
-          <p>{path.text}</p>
-          <small>{path.cue}</small>
-        </a>
-      ))}
-    </div>
-  </div>
-</section>
-
-<section class="section home-showcase-section">
-  <div class="wide-container home-showcase-grid">
-    <a class="home-feature-story" href="/th/best/air-conditioners/">
-      <img src="/images/air-conditioners/wall-ac-condo-hero.jpg" alt="แอร์ติดผนังในคอนโดโทนอบอุ่น" loading="lazy" />
-      <div>
-        <span class="eyebrow">Flagship Review</span>
-        <h2>แอร์ยี่ห้อไหนดี 2026: 10 อันดับจากรีวิวผู้ซื้อจริง</h2>
-        <p>ทุกรุ่นตรวจหลักฐานจริงรายรุ่น — ตารางเทียบครบ เครื่องคิด BTU และจุดระวังก่อนจ่ายเงิน</p>
-      </div>
-      <div class="home-feature-meta">
-        <span>10 อันดับ</span>
-        <span>ตารางเทียบ + FAQ</span>
-        <span>เครื่องคิด BTU ฟรี</span>
-      </div>
-    </a>
-
-    <div class="home-editorial-rail" aria-label="ทางลัดสำคัญ">
-      <a href="#product-worlds">
-        <span>Popular in Thailand</span>
-        <strong>หมวดฮิต</strong>
-      </a>
-      <a href="/editorial-policy/">
-        <span>Review Standard</span>
-        <strong>วิธีให้คะแนน</strong>
-      </a>
-      <a href="/en/tourist/">
-        <span>Tourist Mode</span>
-        <strong>Tourist picks</strong>
-      </a>
-    </div>
-  </div>
-</section>
-
-<section class="section home-world-section" id="product-worlds">
+<section class="section" aria-labelledby="home-featured-title">
   <div class="container">
-    <div class="section-heading home-section-split">
-      <div>
-        <p class="eyebrow">Popular Thai product reviews</p>
-        <h2 class="headline">หมวดสินค้ายอดนิยม</h2>
-      </div>
-    </div>
-    <div class="home-world-grid">
-      {productWorlds.map((world) => (
-        <a class="home-world-card" href={world.href}>
-          <img src={world.image} alt={world.alt} loading="lazy" />
+    <p class="eyebrow">เริ่มจากหมวดที่ตรวจเสร็จแล้ว</p>
+    <h2 class="headline" id="home-featured-title">งานที่หลักฐานครบ พร้อมให้เปิดอ่าน</h2>
+    <div class="home-featured-grid">
+      {featured.map((item) => (
+        <a class="home-feature-story" href={item.href}>
+          <img src={item.image} alt={item.alt} loading="lazy" />
           <div>
-            <span>{world.status}</span>
-            <strong>{world.title}</strong>
-            <p>{world.label}</p>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
           </div>
+          <div class="home-feature-meta">
+            {item.meta.map((m) => <span>{m}</span>)}
+          </div>
+        </a>
+      ))}
+      <a class="home-feature-tool" href="/th/guides/btu-calculator/">
+        <span class="eyebrow">เครื่องมือฟรี</span>
+        <strong>เครื่องคิด BTU</strong>
+        <p>กรอกขนาดห้อง แดด และเพดาน — ได้ BTU ที่ควรซื้อใน 30 วินาที พร้อมรุ่นที่ตรวจแล้วในช่วงนั้น</p>
+        <span class="button button-primary">ลองคิดเลย</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section band" aria-labelledby="home-how-title">
+  <div class="container">
+    <p class="eyebrow">Why trust Friendsay</p>
+    <h2 class="headline" id="home-how-title">เราทำงานยังไง</h2>
+    <div class="home-work-grid">
+      {workSteps.map((step, index) => (
+        <article class="home-work-card">
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </article>
+      ))}
+    </div>
+    <p class="muted" style="margin-top: 16px;">
+      อ่านเกณฑ์เต็มได้ที่ <a href="/editorial-policy/">มาตรฐานรีวิวของเรา</a> · รายได้ affiliate เปิดเผยที่
+      <a href="/affiliate-disclosure/">หน้าความโปร่งใส</a>
+    </p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="home-roadmap-title">
+  <div class="container">
+    <p class="eyebrow">หมวดถัดไป</p>
+    <h2 class="headline" id="home-roadmap-title">กำลังทยอยตรวจทีละหมวด</h2>
+    <p class="muted">เราเปิดหมวดใหม่เมื่อหลักฐานครบเท่านั้น — หมวดที่ยังไม่พร้อมจะไม่มีตัวเลขมั่วขึ้นเว็บ</p>
+    <div class="home-roadmap-grid">
+      {roadmapOpen.map((item) => (
+        <a class="home-roadmap-card" href={item.href}>
+          <span class="badge badge-teal">เปิดอ่านได้</span>
+          <strong>{item.title}</strong>
+          <p>{item.status}</p>
+        </a>
+      ))}
+      {roadmapSoon.map((item) => (
+        <div class="home-roadmap-card is-soon">
+          <span class="badge">เร็ว ๆ นี้</span>
+          <strong>{item.title}</strong>
+          <p>{item.note}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section band" aria-labelledby="home-latest-title">
+  <div class="container">
+    <p class="eyebrow">อัปเดตล่าสุด</p>
+    <h2 class="headline" id="home-latest-title">บทความและเครื่องมือทั้งหมด</h2>
+    <div class="home-latest-list">
+      {latestArticles.map((article) => (
+        <a class="home-latest-row" href={article.href}>
+          <span class="badge badge-coral">{article.tag}</span>
+          <strong>{article.title}</strong>
+          <span class="home-latest-date">{article.date}</span>
         </a>
       ))}
     </div>
   </div>
 </section>
 
-<section class="section home-trust-section">
-  <div class="container home-trust-grid">
-    <div>
-      <p class="eyebrow">Why trust Friendsay</p>
-      <h2 class="headline">ไว้ใจได้ เพราะเริ่มจากคนอ่าน</h2>
-    </div>
-    <div class="home-trust-points">
-      <article>
-        <span>01</span>
-        <h3>คัดให้เหลือรุ่นน่าดู</h3>
-        <p>ตัดตัวเลือกให้เร็วขึ้น</p>
-      </article>
-      <article>
-        <span>02</span>
-        <h3>บอกข้อเสียชัด</h3>
-        <p>ไม่ขายฝันเกินจริง</p>
-      </article>
-      <article>
-        <span>03</span>
-        <h3>โปร่งใสเรื่อง affiliate</h3>
-        <p>รายได้ไม่ควรนำคำตอบ</p>
-      </article>
-    </div>
-  </div>
-</section>
+<script id="search-data" type="application/json" set:html={JSON.stringify(searchIndex)} />
+
+<script is:inline>
+  (() => {
+    const dataEl = document.getElementById("search-data");
+    const form = document.getElementById("home-search-form");
+    const input = document.getElementById("home-search-input");
+    const resultsSection = document.getElementById("search-results");
+    const resultsTitle = document.getElementById("search-results-title");
+    const resultsNote = document.getElementById("search-results-note");
+    const resultsGrid = document.getElementById("search-results-grid");
+    const resultsEmpty = document.getElementById("search-results-empty");
+    if (!dataEl || !form || !input || !resultsSection || !resultsGrid) return;
+
+    let items = [];
+    try {
+      items = JSON.parse(dataEl.textContent || "[]");
+    } catch {
+      return;
+    }
+
+    const CATEGORY_RULES = [
+      { match: ["แอร์", "เครื่องปรับอากาศ"], categories: ["แอร์"] },
+      { match: ["อบผ้า", "ตากผ้า", "ผ้าไม่แห้ง", "ผ้าเหม็นอับ"], categories: ["เครื่องอบผ้า", "ตู้อบผ้า"] },
+      { match: ["รองเท้า"], categories: ["เครื่องอบรองเท้า"] },
+      { match: ["ความชื้น", "ลดชื้น", "ห้องชื้น", "ขึ้นรา", "เหม็นอับ"], categories: ["เครื่องลดความชื้น"] },
+      { match: ["หน้าฝน", "ฤดูฝน", "สู้ฝน"], categories: ["เครื่องอบผ้า", "ตู้อบผ้า", "เครื่องอบรองเท้า", "เครื่องลดความชื้น"] }
+    ];
+
+    const PRICE_CAP_RE = /(?:ต่ำกว่า|ไม่เกิน|ไม่ถึง|งบ|ถูกกว่า)\s*([\d,]+)/;
+
+    const parsePriceCap = (query) => {
+      const m = query.match(PRICE_CAP_RE);
+      if (m) {
+        const cap = parseInt(m[1].replace(/,/g, ""), 10);
+        return Number.isFinite(cap) && cap > 0 ? cap : null;
+      }
+      if (/(?:ต่ำกว่า|ไม่เกิน|ไม่ถึง|งบ)\s*หมื่น/.test(query)) return 10000;
+      if (/(?:ต่ำกว่า|ไม่เกิน|ไม่ถึง|งบ)\s*พัน/.test(query)) return 1000;
+      return null;
+    };
+
+    const search = (rawQuery) => {
+      const query = rawQuery.trim().toLowerCase();
+      if (!query) return { matches: [], cap: null };
+
+      const cap = parsePriceCap(query);
+
+      const matchedCategories = new Set();
+      for (const rule of CATEGORY_RULES) {
+        if (rule.match.some((token) => query.includes(token))) {
+          rule.categories.forEach((c) => matchedCategories.add(c));
+        }
+      }
+
+      let scored = items
+        .map((item) => {
+          let score = 0;
+          if (matchedCategories.has(item.category)) score += 1;
+          for (const keyword of item.keywords) {
+            if (keyword.length >= 2 && query.includes(keyword.toLowerCase())) score += 1;
+          }
+          return { item, score };
+        })
+        .filter((entry) => entry.score > 0);
+
+      // มีแต่เพดานราคาโดยไม่บอกหมวด → ค้นทั้งฐานตามราคา
+      if (!scored.length && cap) {
+        scored = items.map((item) => ({ item, score: 1 }));
+      }
+
+      let matches = scored.map((entry) => entry);
+      if (cap) matches = matches.filter((entry) => entry.item.priceNum <= cap);
+
+      matches.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        const soldA = a.item.soldNum || 0;
+        const soldB = b.item.soldNum || 0;
+        if (soldB !== soldA) return soldB - soldA;
+        return b.item.ratingsCount - a.item.ratingsCount;
+      });
+
+      return { matches: matches.map((entry) => entry.item), cap };
+    };
+
+    const esc = (value) =>
+      String(value).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+
+    const renderCard = (item, index) => `
+      <article class="rainy-pick-card search-result-card">
+        <div class="badge-row">
+          <span class="badge badge-teal">${esc(item.category)}</span>
+          <span class="badge">อันดับ ${index + 1}</span>
+        </div>
+        <a href="${esc(item.affiliateUrl)}" target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="home-search">
+          <img class="rainy-img" src="${esc(item.image)}" alt="ภาพสินค้าจริง ${esc(item.name)}" loading="lazy" />
+        </a>
+        <h3>${esc(item.name)}</h3>
+        <p class="search-result-meta"><strong>${esc(item.priceLabel)}</strong><br />${esc(item.soldLabel)} · ${Number(item.rating).toFixed(1)} ★</p>
+        <p>${esc(item.blurb)}</p>
+        <div class="search-result-actions">
+          <a class="button button-primary" href="${esc(item.affiliateUrl)}" target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="home-search">เช็กราคา Shopee</a>
+          <a class="button" href="${esc(item.href)}">อ่านรีวิวของเรา</a>
+        </div>
+      </article>`;
+
+    const runSearch = (rawQuery, { scroll = true } = {}) => {
+      const query = rawQuery.trim();
+      if (!query) return;
+
+      const { matches } = search(query);
+      const top = matches.slice(0, 5);
+
+      resultsSection.hidden = false;
+      resultsTitle.textContent = `ผลการค้นหา “${query}”`;
+
+      if (top.length) {
+        resultsGrid.innerHTML = top.map((item, index) => renderCard(item, index)).join("");
+        resultsGrid.hidden = false;
+        resultsEmpty.hidden = true;
+        resultsNote.textContent =
+          (matches.length > 5
+            ? `เจอ ${matches.length} รุ่นที่ตรวจแล้ว โชว์ 5 อันดับแรก`
+            : `เจอ ${matches.length} รุ่นที่ตรวจแล้ว`) +
+          " · เรียงจากยอดขายจริงที่เห็นบนหน้าร้าน · ราคาเปลี่ยนได้ทุกวัน กดเช็กหน้าร้านก่อนซื้อ";
+      } else {
+        resultsGrid.innerHTML = "";
+        resultsGrid.hidden = true;
+        resultsEmpty.hidden = false;
+        resultsNote.textContent = "";
+      }
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "friendsay_home_search", query, results: matches.length });
+
+      if (scroll) resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      runSearch(input.value);
+      const url = new URL(location.href);
+      if (input.value.trim()) url.searchParams.set("q", input.value.trim());
+      else url.searchParams.delete("q");
+      history.replaceState(null, "", url);
+    });
+
+    document.addEventListener("click", (event) => {
+      const chip = event.target instanceof Element ? event.target.closest("[data-search-chip]") : null;
+      if (!chip) return;
+      const value = chip.getAttribute("data-search-chip") || "";
+      input.value = value;
+      runSearch(value);
+      const url = new URL(location.href);
+      url.searchParams.set("q", value);
+      history.replaceState(null, "", url);
+    });
+
+    // รับคำค้นจากช่องบน header ของหน้าอื่น (GET /th/?q=...)
+    const initialQuery = new URLSearchParams(location.search).get("q");
+    if (initialQuery && initialQuery.trim()) {
+      input.value = initialQuery.trim();
+      runSearch(initialQuery, { scroll: true });
+    }
+  })();
+</script>

@@ -1,12 +1,10 @@
 ---
 const navItems = [
-  { href: "/th/best/air-fryers/", label: "รีวิวรวม" },
   { href: "/th/best/air-conditioners/", label: "แอร์ 2026" },
+  { href: "/th/best/rainy-season-gear/", label: "ของสู้หน้าฝน" },
+  { href: "/th/guides/btu-calculator/", label: "เครื่องคิด BTU" },
   { href: "/th/compare/air-conditioners/", label: "เทียบแอร์" },
-  { href: "/th/best/water-heaters/", label: "น้ำอุ่น 2026" },
-  { href: "/th/#product-worlds", label: "หมวดยอดนิยม" },
   { href: "/th/reviews/air-conditioners/", label: "รีวิวละเอียด" },
-  { href: "/en/tourist/", label: "นักท่องเที่ยว" },
   { href: "/editorial-policy/", label: "มาตรฐานรีวิว" }
 ];
 ---
@@ -21,8 +19,10 @@ const navItems = [
       {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
     </nav>
     <div class="nav-actions">
+      <form class="nav-search" action="/th/" method="get" role="search">
+        <input type="search" name="q" placeholder="ค้นหา เช่น แอร์ต่ำกว่า 10000" aria-label="ค้นหาสินค้าที่ตรวจแล้ว" />
+      </form>
       <a class="pill-link" href="/affiliate-disclosure/">Affiliate โปร่งใส</a>
-      <a class="button button-primary" href="/th/best/air-conditioners/">เริ่มเลือกของ</a>
     </div>
   </div>
 </header>
