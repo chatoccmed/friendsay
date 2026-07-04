@@ -24,7 +24,7 @@
 - [x] แก้ sticky ซ้อน 2 ชั้นบนหน้ารีวิวเดี่ยว (compare tray ลอยเหนือ buy bar)
 - [ ] Normalize ภาพสินค้าให้พื้นหลัง/สัดส่วนเดียวกันทุกรุ่น (batch แต่งภาพ)
 - [ ] เปลี่ยนภาพ annotated (เครื่องวัดออกซิเจน) บนหน้าแรก — ต้องหา/ทำภาพ health & safety ใหม่ก่อน
-- [ ] ดาวน์โหลดรูป legacy ทั้งหมดจาก wp-content เข้า repo (บล็อกการย้ายโดเมน!)
+- [x] ดาวน์โหลดรูป legacy ทั้งหมด (11 ไฟล์) เข้า /images/legacy/ + เขียน path ใหม่ใน legacyProducts.ts — ปลดบล็อกการย้ายโดเมนแล้ว (2026-07-02)
 
 ## เฟส 2 — Motion pass (เริ่ม 2026-07-02)
 
@@ -38,8 +38,8 @@
 
 ## เฟส 3 — Signature pieces (ทีละชิ้น)
 
-- [ ] โพเดียมอันดับ 1-2-3 บนหน้าจัดอันดับ (การ์ดใหญ่กว่า + แถบขอบทอง/เงิน/ทองแดง)
-- [ ] ตารางเทียบ: sticky header + best-in-row highlight + คอลัมน์แรก sticky บนมือถือ
+- [x] โพเดียมอันดับ 1-2-3 บนหน้าจัดอันดับ (แถบขอบทอง/เงิน/ทองแดง + glow อันดับ 1) — 2026-07-02
+- [x] ตารางเทียบ: best-in-column highlight (✓ เขียว 6 จุดจากข้อมูลจริง) + row hover + คอลัมน์แรก sticky บนมือถือ — 2026-07-02 (sticky header ติดข้อจำกัด overflow container ไว้รอบ redesign ตาราง)
 - [ ] Radar chart คะแนน 8 แกน (SVG) บนหน้าเปรียบเทียบ + ภาพสินค้าบนหัวคอลัมน์ + fly-in animation ตอนเลือกรุ่น
 - [ ] หน้ารีวิวเดี่ยว: hero split แบบ magazine + score ring animate + gallery lightbox + TOC scroll-spy + carousel รีวิวผู้ซื้อ + pull quote
 - [ ] BTU calculator: ผลลัพธ์เป็น gauge เข็มกวาด + ปุ่มแชร์ผล
