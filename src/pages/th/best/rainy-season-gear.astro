@@ -8,12 +8,16 @@ type RainyPick = {
   name: string;
   shortName: string;
   price: string;
+  priceNum: number;
+  soldNum: number;
   rating: number;
   reviews: string;
   sold: string;
   shopNote: string;
   best: string;
+  fitShort: string;
   watch: string;
+  image: string;
   affiliateUrl: string;
   sourceUrl: string;
 };
@@ -39,12 +43,16 @@ const sections: RainySection[] = [
         name: "little Swan ตู้อบผ้า 4000W",
         shortName: "ตัวเริ่มต้นหลักร้อย",
         price: "~644 บาท",
+        priceNum: 644,
+        soldNum: 2000,
         rating: 4.8,
         reviews: "688 รีวิว",
         sold: "ขายแล้ว 2พัน+ ชิ้น",
         shopNote: "ร้านทั่วไป — เช็กคะแนนร้านก่อนซื้อ",
         best: "ห้องเช่า/หอพักที่อยากได้ตู้อบผ้าถูกสุดที่รีวิวยังแน่น มี 2 รุ่นย่อย (ฆ่าเชื้อ/แห้งเร็ว) เก็บเงินปลายทางได้",
         watch: "เป็นตู้อบผ้าแบบเป่าลมร้อน ไม่ใช่เครื่องอบฝาหน้า — เหมาะผ้าจำนวนน้อย และควรเผื่อเวลาอบมากกว่าที่โฆษณา",
+        image: "/images/rainy-gear/little-swan-dryer-real-product.jpg",
+        fitShort: "ตู้อบถูกสุดที่รีวิวแน่น เหมาะห้องเช่า",
         affiliateUrl: "https://s.shopee.co.th/30m8ZdNsig",
         sourceUrl: "https://shopee.co.th/product/1235343041/27353400058"
       },
@@ -52,12 +60,16 @@ const sections: RainySection[] = [
         name: "Haier เครื่องอบผ้า 7 กก. รุ่น HDV70E1",
         shortName: "ตัวกลางจากร้าน official",
         price: "~6,290 บาท",
+        priceNum: 6290,
+        soldNum: 1000,
         rating: 4.9,
         reviews: "726 รีวิว",
         sold: "ขายแล้ว 1พัน+ ชิ้น",
         shopNote: "haier.officialshop (ร้านเดียวกับแอร์ Haier ที่เราตรวจแล้ว)",
         best: "ครอบครัวเล็กที่อยากได้เครื่องอบจริงจังจากร้าน official ถังสเตนเลสแท้ ราคาหลังโค้ดคุ้มสุดในกลุ่มแบรนด์",
         watch: "ขนาด 7 กก. เหมาะผ้ารอบซัก 1-2 คน ถ้าซักครั้งละเยอะควรขยับไป 9 กก.",
+        image: "/images/rainy-gear/haier-hdv70e1-real-product.jpg",
+        fitShort: "เครื่องอบจริงจังจากร้าน official",
         affiliateUrl: "https://s.shopee.co.th/2qSiNKOW3d",
         sourceUrl: "https://shopee.co.th/product/184920733/28534442763"
       },
@@ -65,12 +77,16 @@ const sections: RainySection[] = [
         name: "TCL เครื่องอบผ้าฝาหน้า 9 กก. รุ่น WT09KFDYW",
         shortName: "ตัวท็อปยอดขายสูงสุด",
         price: "~7,290 บาท",
+        priceNum: 7290,
+        soldNum: 8000,
         rating: 4.9,
         reviews: "1.6พัน รีวิว",
         sold: "ขายแล้ว 8พัน+ ชิ้น",
         shopNote: "TCL Authorized Store (ร้านเดียวกับแอร์ TCL ที่เราตรวจแล้ว)",
         best: "บ้านที่ซักผ้าบ่อย อยากได้เครื่องอบฝาหน้าตัวจริง มีตรวจจับความชื้นและโปรแกรมลดรอยยับ ยอดขายสูงสุดในหมวดที่เราเจอ",
         watch: "ตอนเก็บข้อมูลขึ้นสถานะพรีออเดอร์ จัดส่งใน 30 วัน — ถ้ารีบใช้หน้าฝนนี้ต้องเช็กรอบส่งกับร้านก่อนกด",
+        image: "/images/rainy-gear/tcl-wt09kfdyw-real-product.jpg",
+        fitShort: "เครื่องอบยอดขายสูงสุด ครบฟังก์ชัน",
         affiliateUrl: "https://s.shopee.co.th/2g9IB1P9Oa",
         sourceUrl: "https://shopee.co.th/product/1025131800/26169839808"
       }
@@ -87,12 +103,16 @@ const sections: RainySection[] = [
         name: "Sothing เครื่องเป่ารองเท้า กำจัดกลิ่น",
         shortName: "ตัวคุ้มยอดนิยม",
         price: "~319-676 บาท",
+        priceNum: 319,
+        soldNum: 8000,
         rating: 4.7,
         reviews: "3.2พัน รีวิว",
         sold: "ขายแล้ว 8พัน+ ชิ้น",
         shopNote: "ร้านยอดนิยม Favorite 9.9k",
         best: "จุดเริ่มต้นที่ถูกสุดสำหรับบ้านที่รองเท้าเปียกประจำ เสียบทิ้งไว้ข้ามคืนแห้งหอมพร้อมใส่",
         watch: "มีหลายเวอร์ชัน (มาตรฐาน/ตั้งเวลาได้) ราคาต่างกัน — เช็กตัวเลือกให้ตรงก่อนกด เวอร์ชันตั้งเวลาคุ้มกว่าถ้าใช้ทุกวัน",
+        image: "/images/rainy-gear/sothing-shoe-dryer-real-product.jpg",
+        fitShort: "เริ่มต้นถูกสุดของหมวดรองเท้า",
         affiliateUrl: "https://s.shopee.co.th/3B5YlwNFNj",
         sourceUrl: "https://shopee.co.th/product/72571276/4904134878"
       },
@@ -100,12 +120,16 @@ const sections: RainySection[] = [
         name: "Deerma Shoes Dryer HX10",
         shortName: "ตัวขายดีที่สุด",
         price: "~925 บาท",
+        priceNum: 925,
+        soldNum: 10000,
         rating: 4.9,
         reviews: "2.1พัน รีวิว",
         sold: "ขายแล้ว 10พัน+ ชิ้น",
         shopNote: "ร้าน thgogadget (คะแนนร้าน 94.3k)",
         best: "แบรนด์ในระบบนิเวศ Xiaomi ที่ขายทะลุหมื่นชิ้น งานประกอบเนี้ยบกว่า เหมาะคนอยากได้ของที่ใช้ยาว ๆ",
         watch: "ตอนเก็บข้อมูลเป็นพรีออเดอร์ส่งใน 30 วัน — ถ้ารอไม่ได้ให้ดู Sothing ที่ส่งภายในสัปดาห์",
+        image: "/images/rainy-gear/deerma-hx10-real-product.jpg",
+        fitShort: "ขายดีสุดในหน้านี้ 10พัน+ ชิ้น",
         affiliateUrl: "https://s.shopee.co.th/3LOyyFMc2m",
         sourceUrl: "https://shopee.co.th/product/163255636/5228924497"
       }
@@ -121,13 +145,17 @@ const sections: RainySection[] = [
       {
         name: "HAFELE เครื่องลดความชื้น สำหรับห้อง 20 ตร.ม.",
         shortName: "ตัวคุ้มขายดี",
-        price: "~2,690 บาท",
+        price: "~2,434-2,690 บาท",
+        priceNum: 2434,
+        soldNum: 6000,
         rating: 4.9,
         reviews: "2พัน รีวิว",
         sold: "ขายแล้ว 6พัน+ ชิ้น",
         shopNote: "แบรนด์ฮาร์ดแวร์เยอรมันที่คนไทยรู้จัก",
         best: "ห้องนอน/คอนโดขนาดไม่เกิน 20 ตร.ม. ราคาสมเหตุสมผลที่สุดในกลุ่มที่รีวิวแน่นระดับพันรีวิว",
         watch: "ระบุพื้นที่ห้อง 20 ตร.ม. — ห้องใหญ่กว่านี้หรือเปิดโล่งถึงกัน ควรขยับไปรุ่นความจุสูงกว่า",
+        image: "/images/rainy-gear/hafele-dehumidifier-real-product.jpg",
+        fitShort: "ลดชื้นห้อง ≤20 ตร.ม. คุ้มสุด",
         affiliateUrl: "https://s.shopee.co.th/2Vprykk0tA",
         sourceUrl: "https://shopee.co.th/product/105090190/10632577009"
       },
@@ -135,12 +163,16 @@ const sections: RainySection[] = [
         name: "Xiaomi Smart Dehumidifier 22 ลิตร/วัน",
         shortName: "ตัวแรงสำหรับบ้านชื้นจัด",
         price: "~7,290 บาท",
+        priceNum: 7290,
+        soldNum: 772,
         rating: 5.0,
         reviews: "213 รีวิว",
         sold: "ขายแล้ว 772 ชิ้น",
         shopNote: "สินค้า Xiaomi — เชื่อมแอป Mi Home ได้",
         best: "บ้าน/ห้องใหญ่ที่ชื้นจัด ดูดถึง 22 ลิตรต่อวัน คุมผ่านแอปได้ เหมาะสาย Smart Home ที่ใช้ Xiaomi อยู่แล้ว",
         watch: "ราคาช่วงลดแรง (-46%) จาก 13,599 — ถ้าพลาดโปรราคาเต็มจะไม่คุ้มเท่า ควรกดช่วงแคมเปญ",
+        image: "/images/rainy-gear/xiaomi-dehumidifier-real-product.jpg",
+        fitShort: "แรงสุด 22 ลิตร/วัน คุม 10-40 ตร.ม.",
         affiliateUrl: "https://s.shopee.co.th/2LWRmRkeE9",
         sourceUrl: "https://shopee.co.th/product/30330278/43973076326"
       }
@@ -149,6 +181,9 @@ const sections: RainySection[] = [
 ];
 
 const allPicks = sections.flatMap((section) => section.picks);
+
+const chartColors: Record<string, string> = { dryer: "#ff6b5a", shoes: "#0ea5a0", dehumidifier: "#3a86ff" };
+const sectionIdOf = (pick: RainyPick) => sections.find((s) => s.picks.includes(pick))?.id || "dryer";
 
 const faqs = [
   {
@@ -225,6 +260,94 @@ const faqJsonLd = {
     </div>
   </section>
 
+  <section class="section" id="quick-pick">
+    <div class="container">
+      <p class="eyebrow">เลือกด่วนใน 15 วินาที</p>
+      <h2 class="headline">สามตัวจบ สามปัญหา</h2>
+      <div class="scenario-grid" style="margin-top: 18px;">
+        <article class="rainy-pick-card">
+          <div class="badge-row"><span class="badge badge-coral">ผ้าไม่แห้งจริงจัง</span></div>
+          <img class="rainy-img" src="/images/rainy-gear/tcl-wt09kfdyw-real-product.jpg" alt="เครื่องอบผ้า TCL 9 กก. ภาพสินค้าจริงจากหน้าร้าน" loading="lazy" />
+          <h3>TCL เครื่องอบผ้า 9 กก.</h3>
+          <p>ยอดขาย 8พัน+ รีวิว 1.6พัน — เครื่องอบฝาหน้าตัวจริงราคาคุ้มสุด</p>
+          <a class="button button-primary" href="#dryer">ดูรายละเอียด ↓</a>
+        </article>
+        <article class="rainy-pick-card">
+          <div class="badge-row"><span class="badge badge-teal">คุ้มสุดไม่ถึงพัน</span></div>
+          <img class="rainy-img" src="/images/rainy-gear/sothing-shoe-dryer-real-product.jpg" alt="เครื่องเป่ารองเท้า Sothing ภาพสินค้าจริงจากหน้าร้าน" loading="lazy" />
+          <h3>Sothing อบรองเท้า ~319.-</h3>
+          <p>ขายแล้ว 8พัน+ — เสียบข้ามคืน รองเท้าแห้งหอมพร้อมใส่ทุกเช้า</p>
+          <a class="button button-primary" href="#shoes">ดูรายละเอียด ↓</a>
+        </article>
+        <article class="rainy-pick-card">
+          <div class="badge-row"><span class="badge badge-blue">แก้ห้องชื้นทั้งห้อง</span></div>
+          <img class="rainy-img" src="/images/rainy-gear/hafele-dehumidifier-real-product.jpg" alt="เครื่องลดความชื้น HAFELE ภาพสินค้าจริงจากหน้าร้าน" loading="lazy" />
+          <h3>HAFELE ลดความชื้น</h3>
+          <p>ขายแล้ว 6พัน+ รีวิว 2พัน — จบปัญหาผนังขึ้นราในห้อง ≤20 ตร.ม.</p>
+          <a class="button button-primary" href="#dehumidifier">ดูรายละเอียด ↓</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="compare">
+    <div class="container">
+      <p class="eyebrow">ตารางเปรียบเทียบ · อัปเดต {updatedLabel}</p>
+      <h2 class="headline">เทียบครบทั้ง 7 ตัวในตาเดียว</h2>
+      <div class="compare-shell">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>รายการ</th>
+              <th>แก้ปัญหา</th>
+              <th>ราคาที่พบ</th>
+              <th>รีวิว Shopee</th>
+              <th>ยอดขายที่เห็น</th>
+              <th>เหมาะสุดกับ</th>
+              <th>เช็กราคา</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sections.flatMap((section) =>
+              section.picks.map((pick) => (
+                <tr>
+                  <td><strong>{pick.name.split(" ").slice(0, 3).join(" ")}</strong></td>
+                  <td>{section.pain}</td>
+                  <td class={pick.priceNum === 319 ? "is-best" : undefined}>{pick.price}</td>
+                  <td class={pick.rating === 5.0 ? "is-best" : undefined}>{pick.rating.toFixed(1)} ★ ({pick.reviews})</td>
+                  <td class={pick.soldNum >= 10000 ? "is-best" : undefined}>{pick.sold.replace("ขายแล้ว ", "").replace(" ชิ้น", "")}</td>
+                  <td>{pick.fitShort}</td>
+                  <td>
+                    <a class="button button-primary compare-buy" href={pick.affiliateUrl} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="rainy-gear-table">Shopee</a>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">✓ เขียว = ค่าที่ดีที่สุดของคอลัมน์ · ราคา ณ วันที่ {updatedLabel} ส่วนใหญ่เป็นราคาช่วงโปร เปลี่ยนได้ทุกวัน</p>
+
+      <h3 class="headline" style="margin-top: 36px; font-size: 1.3rem;">ภาพรวมราคา × ความนิยม</h3>
+      <div class="rainy-chart" role="img" aria-label="กราฟแท่งเทียบราคาและยอดขายของทั้ง 7 รายการ">
+        <svg viewBox={`0 0 900 ${allPicks.length * 46 + 10}`}>
+          {allPicks.map((pick, i) => {
+            const y = i * 46 + 8;
+            const barW = Math.max(30, (pick.priceNum / 7500) * 480);
+            return (
+              <g class="rainy-bar" style={`animation-delay:${i * 90}ms`}>
+                <text x="0" y={y + 19} class="rainy-bar-name">{pick.name.split(" ").slice(0, 2).join(" ")}</text>
+                <rect x="215" y={y} width={barW} height="28" rx="8" fill={chartColors[sectionIdOf(pick)]} opacity="0.85" />
+                <text x={222 + barW} y={y + 19} class="rainy-bar-value">{pick.price.replace("~", "")} · ขาย {pick.sold.replace("ขายแล้ว ", "").replace(" ชิ้น", "")}</text>
+              </g>
+            );
+          })}
+        </svg>
+        <p class="compare-note">ความยาวแท่ง = ราคา (สั้น = ถูกกว่า) · สี: <span style="color:#ff6b5a">■</span> อบผ้า <span style="color:#0ea5a0">■</span> อบรองเท้า <span style="color:#3a86ff">■</span> ลดความชื้น</p>
+      </div>
+    </div>
+  </section>
+
   {sections.map((section) => (
     <section class="section" id={section.id}>
       <div class="container">
@@ -238,6 +361,10 @@ const faqJsonLd = {
                 <span class="badge badge-coral">{pick.shortName}</span>
                 <span class="badge badge-blue">{pick.rating.toFixed(1)}/5</span>
               </div>
+              <a href={pick.affiliateUrl} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`rainy-gear-photo-${section.id}`}>
+                <img class="rainy-img" src={pick.image} alt={`${pick.name} ภาพสินค้าจริงจากหน้าร้าน Shopee`} loading="lazy" />
+              </a>
+              <span class="rainy-img-note">ภาพสินค้าจริงจากหน้าร้าน Shopee (ครอปเฉพาะตัวสินค้า) — กดภาพเพื่อเช็กราคา</span>
               <h3>{pick.name}</h3>
               <div class="rainy-facts">
                 <span><b>{pick.price}</b></span>

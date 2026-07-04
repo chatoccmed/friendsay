@@ -2941,6 +2941,72 @@ body:has(.air-sticky-buy) .compare-floating-tray {
   justify-self: start;
 }
 
+.rainy-img {
+  width: 100%;
+  height: 190px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(223, 208, 186, 0.6);
+}
+
+.rainy-img-note {
+  font-size: 0.74rem;
+  color: rgba(31, 41, 55, 0.5);
+}
+
+.rainy-chart {
+  margin-top: 14px;
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+  padding: 22px;
+  box-shadow: var(--shadow-soft);
+}
+
+.rainy-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.rainy-bar-name {
+  font-size: 15px;
+  font-weight: 700;
+  fill: rgba(31, 41, 55, 0.85);
+  font-family: inherit;
+}
+
+.rainy-bar-value {
+  font-size: 13.5px;
+  font-weight: 600;
+  fill: rgba(31, 41, 55, 0.62);
+  font-family: inherit;
+}
+
+.rainy-bar rect {
+  transform-origin: 215px 0;
+  animation: rainy-bar-in 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: inherit;
+}
+
+@keyframes rainy-bar-in {
+  from {
+    transform: scaleX(0.05);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rainy-bar rect {
+    animation: none;
+  }
+}
+
 /* Radar chart หน้าเปรียบเทียบ */
 .compare-radar-panel {
   margin-top: 34px;
