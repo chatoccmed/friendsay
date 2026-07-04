@@ -2713,6 +2713,124 @@ button {
   }
 }
 
+/* ===== Design System 2.0 (2026-07) — typography, depth, motion ===== */
+
+body {
+  font-family: "Anuphan", "IBM Plex Sans Thai Looped", "Segoe UI", -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+.headline {
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.28;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.1rem);
+}
+
+.headline,
+h2 {
+  font-size: clamp(1.45rem, 1.05rem + 1.5vw, 2.15rem);
+}
+
+p,
+li,
+td {
+  line-height: 1.72;
+}
+
+.eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.76rem;
+}
+
+/* depth hierarchy: การ์ดปกติ → ยกเมื่อ hover */
+.product-card,
+.home-persona-card,
+.home-reading-card,
+.home-world-card,
+.scenario-grid article,
+.source-grid article,
+.btu-calc {
+  transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.22s ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .product-card:hover,
+  .home-persona-card:hover,
+  .home-reading-card:hover,
+  .home-world-card:hover,
+  .scenario-grid article:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 2px 6px rgba(31, 24, 16, 0.06),
+      0 18px 40px -18px rgba(31, 24, 16, 0.28);
+  }
+
+  .product-photo img,
+  .home-persona-card img,
+  .home-world-card img {
+    transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .product-card:hover .product-photo img,
+  .home-persona-card:hover img,
+  .home-world-card:hover img {
+    transform: scale(1.03);
+  }
+}
+
+/* scroll reveal — ใส่โดย JS เท่านั้น (no-JS ปลอดภัย) */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.reveal-init.is-revealed {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* score bars เติมค่าเมื่อถูกเห็น */
+.js-motion .score-bar .bar-fill {
+  transition: width 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s;
+}
+
+.js-motion .score-bar:not(.is-revealed) .bar-fill {
+  width: 0;
+}
+
+/* กัน sticky ซ้อนกันบนหน้ารีวิวเดี่ยว: ยก compare tray ขึ้นเหนือ buy bar */
+body:has(.air-sticky-buy) .compare-floating-tray {
+  bottom: 96px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card,
+  .home-persona-card,
+  .home-reading-card,
+  .home-world-card,
+  .scenario-grid article,
+  .source-grid article,
+  .btu-calc,
+  .product-photo img {
+    transition: none !important;
+  }
+}
+
 .page-hero {
   padding: 54px 0;
 }

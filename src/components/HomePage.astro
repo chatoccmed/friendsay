@@ -2,11 +2,12 @@
 import { topAirFryerPicks } from "../data/airFryers";
 import { legacyProducts } from "../data/legacyProducts";
 
+// ตัวเลขจริงเท่านั้น — อัปเดตทุกครั้งที่รอบเก็บหลักฐานเปลี่ยน (ล่าสุด 2026-07-02)
 const heroSignals = [
-  { value: "50+", label: "หมวดสินค้ายอดนิยมที่วางแผนรีวิว", href: "#product-worlds" },
-  { value: "3", label: "เช็กราคา Shopee Lazada TikTok", href: "/affiliate-disclosure/" },
-  { value: "2", label: "รีวิวรวมและรีวิวเจาะลึกรายรุ่น", href: "/editorial-policy/" },
-  { value: "100%", label: "บอกจุดควรระวังก่อนปุ่มซื้อ", href: "/editorial-policy/" }
+  { value: "10", count: 10, label: "รุ่นแอร์ที่ตรวจหลักฐานจริงแล้ว", href: "/th/best/air-conditioners/" },
+  { value: "10,000+", count: 10000, suffix: "+", label: "ยอดขายจริงสูงสุดที่เห็นบนหน้าร้าน", href: "/th/best/air-conditioners/" },
+  { value: "3", count: 3, label: "เช็กราคา Shopee Lazada TikTok", href: "/affiliate-disclosure/" },
+  { value: "2 ก.ค. 2026", label: "อัปเดตข้อมูลล่าสุด", href: "/th/best/air-conditioners/" }
 ];
 
 const decisionPaths = [
@@ -192,7 +193,7 @@ const flagship = topAirFryerPicks[0];
     <div class="home-proof-strip" aria-label="สถานะเว็บ Friendsay">
       {heroSignals.map((signal) => (
         <a href={signal.href}>
-          <strong>{signal.value}</strong>
+          <strong data-countup={signal.count} data-suffix={signal.suffix}>{signal.value}</strong>
           <span>{signal.label}</span>
         </a>
       ))}
@@ -248,17 +249,17 @@ const flagship = topAirFryerPicks[0];
 
 <section class="section home-showcase-section">
   <div class="wide-container home-showcase-grid">
-    <a class="home-feature-story" href="/th/best/air-fryers/">
-      <img src={flagship.image.url} alt={flagship.image.alt} loading="lazy" />
+    <a class="home-feature-story" href="/th/best/air-conditioners/">
+      <img src="/images/air-conditioners/wall-ac-condo-hero.jpg" alt="แอร์ติดผนังในคอนโดโทนอบอุ่น" loading="lazy" />
       <div>
         <span class="eyebrow">Flagship Review</span>
-        <h2>หม้อทอดไร้น้ำมันรุ่นไหนดี 2026</h2>
-        <p>หน้าแม่แบบของ Friendsay: อ่านเร็ว เทียบง่าย มีภาพ ตาราง กราฟ และรีวิวแยกรายรุ่น</p>
+        <h2>แอร์ยี่ห้อไหนดี 2026: 10 อันดับจากรีวิวผู้ซื้อจริง</h2>
+        <p>ทุกรุ่นตรวจหลักฐานจริงรายรุ่น — ตารางเทียบครบ เครื่องคิด BTU และจุดระวังก่อนจ่ายเงิน</p>
       </div>
       <div class="home-feature-meta">
-        <span>{topAirFryerPicks.length} รุ่นเด่น</span>
-        <span>Compare Lab</span>
-        <span>สรุปตามความต้องการ</span>
+        <span>10 อันดับ</span>
+        <span>ตารางเทียบ + FAQ</span>
+        <span>เครื่องคิด BTU ฟรี</span>
       </div>
     </a>
 

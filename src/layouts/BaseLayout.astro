@@ -42,6 +42,12 @@ const siteJsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap"
+    />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -63,5 +69,89 @@ const siteJsonLd = {
       <slot />
     </main>
     <SiteFooter />
+    <script>
+      // Motion pass: scroll reveal + count-up + score-bar fill (ปิดเองเมื่อ prefers-reduced-motion)
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!prefersReduced) {
+        document.documentElement.classList.add("js-motion");
+
+        const selector = [
+          ".product-card",
+          ".home-persona-card",
+          ".home-reading-card",
+          ".home-world-card",
+          ".scenario-grid article",
+          ".source-grid article",
+          ".faq-item",
+          ".score-bar",
+          ".home-proof-strip a",
+          ".btu-calc",
+          ".compare-table tbody tr"
+        ].join(", ");
+
+        const targets = Array.from(document.querySelectorAll<HTMLElement>(selector));
+        const viewportCut = window.innerHeight * 0.92;
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-revealed");
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px -6% 0px", threshold: 0.05 }
+        );
+
+        for (const el of targets) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < viewportCut) {
+            // อยู่ในจอแรกแล้ว — ไม่ซ่อนเพื่อกันภาพวูบ (FOUC) แต่ยังให้ score bar เติมค่า
+            el.classList.add("is-revealed");
+            continue;
+          }
+          const siblings = el.parentElement ? Array.from(el.parentElement.children) : [el];
+          const order = Math.max(0, siblings.indexOf(el)) % 6;
+          el.style.setProperty("--reveal-delay", `${order * 70}ms`);
+          el.classList.add("reveal-init");
+          io.observe(el);
+        }
+
+        // score bars ในจอแรก: เติมค่าหลังโหลดเล็กน้อยให้เห็น animation
+        requestAnimationFrame(() => {
+          document.documentElement.classList.add("js-motion-ready");
+        });
+
+        // count-up ตัวเลข
+        const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+        document.querySelectorAll<HTMLElement>("[data-countup]").forEach((el) => {
+          const target = parseFloat(el.dataset.countup || "0");
+          if (!target) return;
+          const suffix = el.dataset.suffix || "";
+          const duration = 1100;
+          let started = false;
+          const run = () => {
+            if (started) return;
+            started = true;
+            const t0 = performance.now();
+            const tick = (now: number) => {
+              const p = Math.min(1, (now - t0) / duration);
+              const value = Math.round(easeOut(p) * target);
+              el.textContent = value.toLocaleString("th-TH") + suffix;
+              if (p < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          };
+          const cio = new IntersectionObserver((entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              run();
+              cio.disconnect();
+            }
+          });
+          cio.observe(el);
+        });
+      }
+    </script>
   </body>
 </html>
