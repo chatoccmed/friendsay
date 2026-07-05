@@ -15,6 +15,7 @@ const staticPaths = [
   "/th/best/air-conditioners-japanese-brands/",
   "/th/best/rainy-season-gear/",
   "/th/guides/btu-calculator/",
+  "/th/guides/price-history/",
   "/th/compare/air-conditioners/",
   "/th/best/air-fryers/",
   "/th/best/water-heaters/",
