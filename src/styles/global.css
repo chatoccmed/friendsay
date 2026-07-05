@@ -8890,3 +8890,87 @@ a.home-roadmap-card:hover {
     transition: none;
   }
 }
+
+/* ============================================================
+   Homepage hero motion: kinetic typography + parallax glow
+   (เฟส 3 — 2026-07-06) · ปิดทั้งหมดเมื่อ prefers-reduced-motion
+   ============================================================ */
+
+.home-search-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.home-search-hero .home-search-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.home-hero-glow {
+  position: absolute;
+  top: -260px;
+  left: calc(50% - 470px);
+  width: 940px;
+  height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 187, 150, 0.32), transparent 70%);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.home-brand-title .brand-ch {
+  display: inline-block;
+  animation: brand-ch-in 620ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: calc(80ms + var(--ch-i) * 45ms);
+}
+
+@keyframes brand-ch-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) rotate(2deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.home-search-hero .promise-row,
+.home-search-hero .home-search-kicker,
+.home-search-hero .home-search-form,
+.home-search-hero .home-search-chips,
+.home-search-hero .home-search-scope {
+  animation: home-hero-rise 600ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.home-search-hero .promise-row { animation-delay: 0ms; }
+.home-search-hero .home-search-kicker { animation-delay: 420ms; }
+.home-search-hero .home-search-form { animation-delay: 500ms; }
+.home-search-hero .home-search-chips { animation-delay: 580ms; }
+.home-search-hero .home-search-scope { animation-delay: 660ms; }
+
+@keyframes home-hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-brand-title .brand-ch,
+  .home-search-hero .promise-row,
+  .home-search-hero .home-search-kicker,
+  .home-search-hero .home-search-form,
+  .home-search-hero .home-search-chips,
+  .home-search-hero .home-search-scope {
+    animation: none;
+  }
+
+  .home-hero-glow {
+    display: none;
+  }
+}

@@ -65,13 +65,18 @@ const latestArticles = [
 ---
 
 <section class="home-search-hero" aria-labelledby="home-hero-title">
+  <div class="home-hero-glow" aria-hidden="true"></div>
   <div class="container home-search-inner">
     <div class="promise-row" aria-label="คำมั่นของ Friendsay">
       <span>มีข้อเสียให้เห็น</span>
       <span>ตัวเลขจากหน้าร้านจริง</span>
       <span>ไม่ให้ affiliate นำคำตอบ</span>
     </div>
-    <h1 id="home-hero-title" class="home-brand-title">Friendsay</h1>
+    <h1 id="home-hero-title" class="home-brand-title" aria-label="Friendsay">
+      {"Friendsay".split("").map((ch, i) => (
+        <span class="brand-ch" style={`--ch-i:${i}`} aria-hidden="true">{ch}</span>
+      ))}
+    </h1>
     <p class="home-search-kicker">พิมพ์สิ่งที่กำลังหา เดี๋ยวเพื่อนเช็กหลักฐานให้</p>
     <form class="home-search-form" id="home-search-form" role="search" action="/th/" method="get">
       <input
@@ -376,6 +381,24 @@ const latestArticles = [
       url.searchParams.set("q", value);
       history.replaceState(null, "", url);
     });
+
+    // parallax เบา ๆ บน glow ของ hero (transform อย่างเดียว + เคารพ reduced-motion)
+    const heroGlow = document.querySelector(".home-hero-glow");
+    if (heroGlow && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      let glowTicking = false;
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (glowTicking) return;
+          glowTicking = true;
+          window.requestAnimationFrame(() => {
+            heroGlow.style.transform = `translateY(${window.scrollY * 0.22}px)`;
+            glowTicking = false;
+          });
+        },
+        { passive: true }
+      );
+    }
 
     // รับคำค้นจากช่องบน header ของหน้าอื่น (GET /th/?q=...)
     const initialQuery = new URLSearchParams(location.search).get("q");
