@@ -23,6 +23,9 @@ const {
 
 const ogImageUrl = new URL(ogImage, "https://friendsay.com").href;
 
+// Google Analytics 4 — โหลดเฉพาะ build จริง (Cloudflare Pages) กัน traffic จาก npm run dev ปนข้อมูลจริง
+const GA_MEASUREMENT_ID = "G-WY18XP1JEJ";
+
 const siteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -42,6 +45,19 @@ const siteJsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {import.meta.env.PROD && (
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+    )}
+    {import.meta.env.PROD && (
+      <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag("js", new Date());
+        gtag("config", GA_MEASUREMENT_ID);
+      </script>
+    )}
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
