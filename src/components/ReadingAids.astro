@@ -20,6 +20,17 @@
     window.addEventListener("scroll", updateProgress, { passive: true });
     window.addEventListener("resize", updateProgress);
 
+    // ---- sticky buy bar slide-in เมื่อเลื่อนพ้น hero (เฟส 2 motion) ----
+    const stickyBuy = document.querySelector(".air-sticky-buy");
+    const heroSection = document.querySelector("section");
+    if (stickyBuy && heroSection && "IntersectionObserver" in window) {
+      stickyBuy.classList.add("is-offstage");
+      const buyBarIo = new IntersectionObserver(([entry]) => {
+        stickyBuy.classList.toggle("is-offstage", entry.isIntersecting);
+      }, { rootMargin: "-80px 0px 0px 0px" });
+      buyBarIo.observe(heroSection);
+    }
+
     // ---- TOC scroll-spy ----
     const tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
     const spyTargets = tocLinks

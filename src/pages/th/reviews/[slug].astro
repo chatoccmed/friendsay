@@ -1095,6 +1095,17 @@ const jsonLd = {
 
   <script is:inline>
     (() => {
+      // sticky buy bar slide-in เมื่อเลื่อนพ้น hero (เฟส 2 motion — คลาส/สไตล์อยู่ใน global.css)
+      const stickyBuy = document.querySelector(".air-sticky-buy");
+      const heroSection = document.querySelector("section");
+      if (stickyBuy && heroSection && "IntersectionObserver" in window) {
+        stickyBuy.classList.add("is-offstage");
+        const buyBarIo = new IntersectionObserver(([entry]) => {
+          stickyBuy.classList.toggle("is-offstage", entry.isIntersecting);
+        }, { rootMargin: "-80px 0px 0px 0px" });
+        buyBarIo.observe(heroSection);
+      }
+
       const offsetHashTarget = () => {
         if (!window.location.hash) return;
         const id = decodeURIComponent(window.location.hash.slice(1));
