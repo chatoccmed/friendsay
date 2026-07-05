@@ -110,10 +110,28 @@ const jsonLd = {
           </label>
         </div>
         <div class="btu-result" id="btu-result" aria-live="polite">
-          <span>ห้องของคุณควรใช้ประมาณ</span>
-          <strong id="btu-number">12,800 BTU</strong>
-          <p id="btu-advice">แนะนำเลือกรุ่นขนาด 12,000–13,000 BTU</p>
-          <a class="button button-primary" id="btu-cta" href="/th/best/air-conditioners/">ดูรุ่นแนะนำที่มีขนาดนี้ →</a>
+          <div class="btu-gauge" aria-hidden="true">
+            <svg viewBox="0 0 220 132">
+              <path class="btu-gauge-track" d="M 24 110 A 86 86 0 0 1 196 110" />
+              <path class="btu-gauge-fill" id="btu-gauge-fill" d="M 24 110 A 86 86 0 0 1 196 110" />
+              <g class="btu-needle" id="btu-needle">
+                <line x1="110" y1="110" x2="110" y2="40" />
+                <circle cx="110" cy="110" r="7" />
+              </g>
+              <text x="24" y="128" text-anchor="middle">0</text>
+              <text x="110" y="14" text-anchor="middle">18,000</text>
+              <text x="196" y="128" text-anchor="middle">36,000</text>
+            </svg>
+          </div>
+          <div class="btu-result-copy">
+            <span>ห้องของคุณควรใช้ประมาณ</span>
+            <strong id="btu-number">12,800 BTU</strong>
+            <p id="btu-advice">แนะนำเลือกรุ่นขนาด 12,000–13,000 BTU</p>
+            <div class="btu-result-actions">
+              <a class="button button-primary" id="btu-cta" href="/th/best/air-conditioners/">ดูรุ่นแนะนำที่มีขนาดนี้ →</a>
+              <button class="button btu-share" id="btu-share" type="button">แชร์ผลลัพธ์</button>
+            </div>
+          </div>
         </div>
         <p class="compare-note">
           สูตร: พื้นที่ × 800 BTU/ตร.ม. (ห้องปกติ เพดานมาตรฐาน) แล้วบวกเผื่อแดดบ่าย +18%, ชั้นบนสุด +10%, เพดานสูง +12%
@@ -202,14 +220,38 @@ const jsonLd = {
     const ceiling = document.getElementById("btu-ceiling") as HTMLSelectElement;
     const numberEl = document.getElementById("btu-number");
     const adviceEl = document.getElementById("btu-advice");
+    const needle = document.getElementById("btu-needle");
+    const gaugeFill = document.getElementById("btu-gauge-fill") as unknown as SVGPathElement | null;
+    const shareButton = document.getElementById("btu-share");
 
     const sizes = [9000, 12000, 13000, 15000, 18000, 20000, 24000, 26000, 30000, 36000];
+    const GAUGE_MAX = 36000;
+    const ARC_LENGTH = Math.PI * 86;
+    let lastRounded = 0;
+
+    // เปิดหน้าด้วยลิงก์ที่แชร์มา → เติมค่าเดิมให้เลย
+    const params = new URLSearchParams(location.search);
+    if (params.get("sqm")) area.value = params.get("sqm") || area.value;
+    const setSelect = (el: HTMLSelectElement, value: string | null) => {
+      if (value && Array.from(el.options).some((o) => o.value === value)) el.value = value;
+    };
+    setSelect(sun, params.get("sun"));
+    setSelect(top, params.get("top"));
+    setSelect(ceiling, params.get("ceil"));
 
     function update() {
       const sqm = Math.min(120, Math.max(4, parseFloat(area.value) || 0));
       const raw = sqm * 800 * parseFloat(sun.value) * parseFloat(top.value) * parseFloat(ceiling.value);
       const rounded = Math.round(raw / 100) * 100;
+      lastRounded = rounded;
       if (numberEl) numberEl.textContent = `${rounded.toLocaleString("th-TH")} BTU`;
+
+      const frac = Math.min(1, raw / GAUGE_MAX);
+      if (needle) needle.style.transform = `rotate(${-90 + 180 * frac}deg)`;
+      if (gaugeFill) {
+        gaugeFill.style.strokeDasharray = String(ARC_LENGTH);
+        gaugeFill.style.strokeDashoffset = String(ARC_LENGTH * (1 - frac));
+      }
 
       const fit = sizes.filter((s) => s >= raw * 0.92);
       const pick = fit.length ? fit[0] : sizes[sizes.length - 1];
@@ -219,7 +261,33 @@ const jsonLd = {
           ? "ห้องใหญ่ระดับนี้ควรใช้แอร์มากกว่า 1 เครื่อง หรือปรึกษาช่างเรื่องแอร์เชิงพาณิชย์"
           : `แนะนำเลือกรุ่นขนาด ${pick.toLocaleString("th-TH")}${upper && raw > pick * 0.95 ? `–${upper.toLocaleString("th-TH")}` : ""} BTU`;
       }
+
+      const url = new URL(location.href);
+      url.searchParams.set("sqm", String(sqm));
+      url.searchParams.set("sun", sun.value);
+      url.searchParams.set("top", top.value);
+      url.searchParams.set("ceil", ceiling.value);
+      history.replaceState(null, "", url);
     }
+
+    shareButton?.addEventListener("click", async () => {
+      const text = `ห้อง ${area.value} ตร.ม. ควรใช้แอร์ประมาณ ${lastRounded.toLocaleString("th-TH")} BTU — คิดจากเครื่องคิด BTU ของ Friendsay`;
+      const original = shareButton.textContent;
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: "เครื่องคิด BTU | Friendsay", text, url: location.href });
+        } else {
+          await navigator.clipboard.writeText(`${text}
+${location.href}`);
+          shareButton.textContent = "คัดลอกลิงก์แล้ว ✓";
+          setTimeout(() => { shareButton.textContent = original; }, 2200);
+        }
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({ event: "friendsay_btu_share", btu: lastRounded });
+      } catch {
+        // ผู้ใช้กดยกเลิก share sheet — ไม่ต้องทำอะไร
+      }
+    });
 
     [area, sun, top, ceiling].forEach((el) => {
       el?.addEventListener("input", update);

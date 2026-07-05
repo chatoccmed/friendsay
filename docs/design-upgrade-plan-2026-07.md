@@ -42,7 +42,7 @@
 - [x] ตารางเทียบ: best-in-column highlight (✓ เขียว 6 จุดจากข้อมูลจริง) + row hover + คอลัมน์แรก sticky บนมือถือ — 2026-07-02 (sticky header ติดข้อจำกัด overflow container ไว้รอบ redesign ตาราง)
 - [x] Radar chart คะแนน 8 แกน (SVG animate scale-in ทีละรุ่น) บนหน้าเปรียบเทียบ — 2026-07-02 (เหลือ: ภาพสินค้าบนหัวคอลัมน์ + fly-in ตอนเลือกรุ่น)
 - [ ] หน้ารีวิวเดี่ยว: hero split แบบ magazine + score ring animate + gallery lightbox + TOC scroll-spy + carousel รีวิวผู้ซื้อ + pull quote
-- [ ] BTU calculator: ผลลัพธ์เป็น gauge เข็มกวาด + ปุ่มแชร์ผล
+- [x] BTU calculator: ผลลัพธ์เป็น gauge เข็มกวาด + ปุ่มแชร์ผล — 2026-07-05
 - [ ] Homepage hero ใหม่: kinetic typography + parallax + การ์ดเครื่องมือ interactive
 - [ ] Performance budget: LCP < 2s, CLS < 0.05, รูป AVIF/WebP + blur-up
 
@@ -74,11 +74,11 @@
   - ช่องค้นหาตัวย่อขึ้น header ทุกหน้า (คน landing ที่หน้ารีวิวต้องเจอเครื่องมือ)
   - ยังคงแก้: ลิงก์วน #product-worlds, ถอดลิงก์หน้า sample, หมวด roadmap ติดป้าย "เร็ว ๆ นี้", เมนูใหม่
   - หลักการ funnel: บทความ = ซื้อคนเข้า (SEO/แชร์) · ช่องค้นหา = ใช้ซ้ำ · LINE = ดึงกลับ
-- [ ] 3. หน้าเปรียบเทียบ: ภาพสินค้าบน chip เลือกรุ่น + หัวคอลัมน์, ผลเทียบเป็นตารางจริง, fly-in ตอนเลือก
+- [x] 3. (2026-07-05) หน้าเปรียบเทียบ: ภาพสินค้าบน chip เลือกรุ่น + การ์ดรุ่นที่เลือก (กดไป Shopee ได้) + หัวคอลัมน์ตาราง, fly-in ตอนเลือก (เคารพ reduced-motion), เพิ่ม tracking ลิงก์ซื้อทั้งหน้า (เดิมไม่มี data-affiliate-link เลย)
 - [ ] 4. รีวิวเดี่ยว: progress bar + TOC scroll-spy, hero split + score ring, gallery lightbox, รวม sticky บาร์เดียว, pull-quote รีวิวจริง
-- [ ] 5. BTU: ผลลัพธ์เป็น gauge + ปุ่มแชร์
+- [x] 5. (2026-07-05) BTU: gauge เข็มกวาด SVG (โค้ง 0-36,000 + เข็ม + แถบ coral, animate 700ms) + ปุ่มแชร์ (Web Share / คัดลอกลิงก์) + จำค่าใน URL ?sqm=&sun=&top=&ceil= เปิดลิงก์แชร์แล้วได้ค่าเดิม
 - [ ] 6. Refresh หม้อทอด/น้ำอุ่นให้ถึงมาตรฐานก่อนกลับขึ้นเมนูเด่น
-- [ ] 7. กติกาลิงก์: ทุกหน้าใหม่ต้องมีทางเข้า ≥3 ทาง (เมนู/หน้าแรก/footer บทความล่าสุด) — ห้ามมีหน้า orphan
+- [x] 7. (2026-07-05) กติกาลิงก์: footer เพิ่มคอลัมน์ 'รีวิวและเครื่องมือ' 5 ลิงก์ (จัดอันดับแอร์/หน้าฝน/รีวิวละเอียด/เทียบ/BTU) — content หลักทุกหน้ามีทางเข้า ≥3 ทางแล้ว (เมนู + หน้าแรก + footer)
 
 ## Tone Unification (2026-07-05 — เจ้าของอนุมัติจาก hero หน้าแรกใหม่: "ปรับทั้งเว็บให้ออกโทนสีและแบบอักษรแบบนี้")
 

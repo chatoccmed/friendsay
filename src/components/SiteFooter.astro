@@ -1,5 +1,21 @@
 ---
 const year = new Date().getFullYear();
+
+// กติกาลิงก์ (Audit 2 ข้อ 7): ทุกหน้า content ต้องมีทางเข้า ≥3 ทาง — footer คือทางที่สาม
+const contentLinks = [
+  { href: "/th/best/air-conditioners/", label: "แอร์ยี่ห้อไหนดี 2026" },
+  { href: "/th/best/rainy-season-gear/", label: "ของสู้หน้าฝน 2026" },
+  { href: "/th/reviews/air-conditioners/", label: "รีวิวละเอียดแอร์รายรุ่น" },
+  { href: "/th/compare/air-conditioners/", label: "เปรียบเทียบแอร์" },
+  { href: "/th/guides/btu-calculator/", label: "เครื่องคิด BTU" }
+];
+
+const metaLinks = [
+  { href: "/about/", label: "About" },
+  { href: "/editorial-policy/", label: "มาตรฐานรีวิว" },
+  { href: "/affiliate-disclosure/", label: "Affiliate โปร่งใส" },
+  { href: "/en/tourist/", label: "Tourist Hub" }
+];
 ---
 
 <footer class="footer">
@@ -14,11 +30,13 @@ const year = new Date().getFullYear();
       </p>
       <p class="muted">© {year} Friendsay. Built for GitHub and Cloudflare Pages.</p>
     </div>
-    <nav class="footer-links" aria-label="Footer navigation">
-      <a href="/about/">About</a>
-      <a href="/editorial-policy/">Editorial Policy</a>
-      <a href="/affiliate-disclosure/">Affiliate Disclosure</a>
-      <a href="/en/tourist/">Tourist Hub</a>
+    <nav class="footer-col" aria-label="รีวิวและเครื่องมือ">
+      <strong>รีวิวและเครื่องมือ</strong>
+      {contentLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+    <nav class="footer-col" aria-label="เกี่ยวกับ Friendsay">
+      <strong>เกี่ยวกับเรา</strong>
+      {metaLinks.map((link) => <a href={link.href}>{link.label}</a>)}
     </nav>
   </div>
 </footer>

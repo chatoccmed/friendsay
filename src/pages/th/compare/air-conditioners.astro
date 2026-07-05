@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { queuedAirConditionerReviews } from "../../../data/airConditionerReviewQueue";
 
@@ -105,6 +106,7 @@ const jsonLd = {
   canonical="https://friendsay.com/th/compare/air-conditioners/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <AffiliateClickTracker />
 
   <section class="compare-page-hero">
     <div class="wide-container compare-page-hero-inner">
@@ -268,6 +270,7 @@ const jsonLd = {
           const isSelected = selected.includes(product.slug);
           return `
             <button class="compare-picker-chip ${isSelected ? "is-selected" : ""}" type="button" data-compare-page-slug="${escapeHtml(product.slug)}" aria-pressed="${isSelected}">
+              <img class="compare-chip-thumb" src="${escapeHtml(product.image.url)}" alt="" loading="lazy" />
               <span>${escapeHtml(product.score.toFixed(1))}</span>
               <strong>${escapeHtml(product.shortName)}</strong>
               <small>${escapeHtml(product.statusLabel)}</small>
@@ -322,6 +325,9 @@ const jsonLd = {
         }
         cards.innerHTML = items.map((product) => `
           <article class="compare-product-summary-card">
+            <a class="compare-card-media" href="${escapeHtml(product.links.shopee)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-page-card">
+              <img src="${escapeHtml(product.image.url)}" alt="ภาพสินค้าจริง ${escapeHtml(product.name)}" loading="lazy" />
+            </a>
             <div class="compare-card-top">
               <span>${escapeHtml(product.statusLabel)}</span>
               <strong>${escapeHtml(product.score.toFixed(1))}<small>/10</small></strong>
@@ -338,9 +344,9 @@ const jsonLd = {
               <span>${escapeHtml(product.watch[0])}</span>
             </div>
             <div class="compare-buy-grid">
-              <a class="price-button shopee" href="${escapeHtml(product.links.shopee)}" rel="sponsored noopener" target="_blank">Shopee</a>
-              <a class="price-button lazada" href="${escapeHtml(product.links.lazada)}" rel="sponsored noopener" target="_blank">Lazada</a>
-              <a class="price-button tiktok" href="${escapeHtml(product.links.tiktok)}" rel="sponsored noopener" target="_blank">TikTok</a>
+              <a class="price-button shopee" href="${escapeHtml(product.links.shopee)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-page">Shopee</a>
+              <a class="price-button lazada" href="${escapeHtml(product.links.lazada)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context="compare-page">Lazada</a>
+              <a class="price-button tiktok" href="${escapeHtml(product.links.tiktok)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context="compare-page">TikTok</a>
             </div>
           </article>
         `).join("");
@@ -386,7 +392,12 @@ const jsonLd = {
             <thead>
               <tr>
                 <th>หัวข้อ</th>
-                ${items.map((product) => `<th>${escapeHtml(product.shortName)}</th>`).join("")}
+                ${items.map((product) => `
+                  <th>
+                    <img class="compare-th-thumb" src="${escapeHtml(product.image.url)}" alt="" loading="lazy" />
+                    <span>${escapeHtml(product.shortName)}</span>
+                  </th>
+                `).join("")}
               </tr>
             </thead>
             <tbody>
@@ -464,6 +475,14 @@ const jsonLd = {
         }
       };
 
+      const flyIn = (container) => {
+        if (!container) return;
+        container.querySelectorAll(":scope > *").forEach((el, index) => {
+          el.classList.add("compare-fly");
+          el.style.animationDelay = `${Math.min(index, 5) * 70}ms`;
+        });
+      };
+
       function renderAll() {
         const items = selectedProducts();
         renderPicker();
@@ -472,6 +491,9 @@ const jsonLd = {
         renderCards(items);
         renderMatrix(items);
         renderTable(items);
+        flyIn(answers);
+        flyIn(cards);
+        flyIn(matrix);
       }
 
       persist();
