@@ -1,0 +1,984 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PriceButtons from "../../../components/PriceButtons.astro";
+import AirCompareTray from "../../../components/AirCompareTray.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import { airConditioners } from "../../../data/airConditioners";
+
+const updatedLabel = "5 กรกฎาคม 2026";
+const dataRoundLabel = "2 กรกฎาคม 2026";
+
+// ข้อมูลเสริมรายรุ่นที่ไม่มีใน airConditioners.ts — ราคา/ยอดขายยึดหลักฐานรอบ 2026-07-02 (ชุดเดียวกับหน้าแอร์ต่ำกว่าหมื่น + priceLabel ใน data)
+// seerLabel = ค่า SEER ที่ร้านแจ้งและเราบันทึกไว้เท่านั้น ("–" คือเราไม่ได้บันทึก ไม่ได้แปลว่าร้านไม่แจ้ง)
+const energyExtras: Record<
+  string,
+  {
+    priceNum: number;
+    priceShort: string;
+    soldNum: number | null;
+    soldLabel: string;
+    warrantyShort: string;
+    seerLabel: string;
+    seerRecorded: boolean;
+    energyNote: string;
+    storeShort: string;
+    reviewHref: string;
+  }
+> = {
+  "daikin-ftkb-sabai-series": {
+    priceNum: 12875,
+    priceShort: "~12,875.-",
+    soldNum: 10000,
+    soldLabel: "10พัน+ เครื่อง",
+    warrantyShort: "คอม 5 ปี",
+    seerLabel: "–",
+    seerRecorded: false,
+    energyNote: "อินเวอร์เตอร์ · คะแนนประหยัดไฟ-ความสบายสูงสุดในคลังของเรา (9.0) · รีวิวระบุคอยล์ร้อนเงียบ 40dB",
+    storeShort: "King Air (ร้านระบุเป็นตัวแทนตรงสยามไดกิ้นเซลล์)",
+    reviewHref: "/th/best/air-conditioners/#daikin-ftkb-sabai-series"
+  },
+  "haier-vqec-series": {
+    priceNum: 9545,
+    priceShort: "~9,545.-",
+    soldNum: 8000,
+    soldLabel: "8พัน+ เครื่อง",
+    warrantyShort: "คอม 10 ปี",
+    seerLabel: "18.08–18.97 (แจ้งรายขนาด)",
+    seerRecorded: true,
+    energyNote: "รุ่นเดียวในคลังที่ร้านแจ้ง SEER รายขนาด (9K=18.29, 12K=18.97, 18K=18.73, 24K=18.08) + Eco Mode ที่ร้านระบุว่าลดการใช้ไฟ 20–60%",
+    storeShort: "haier.officialshop",
+    reviewHref: "/th/best/air-conditioners/#haier-vqec-series"
+  },
+  "tcl-savein-ai-series": {
+    priceNum: 8590,
+    priceShort: "~8,590.-",
+    soldNum: null,
+    soldLabel: "ไม่แสดง",
+    warrantyShort: "คอม 5 ปี",
+    seerLabel: "–",
+    seerRecorded: false,
+    energyNote: "Full DC Inverter + โหมด AI · ช่วง BTU กว้างสุดในกลุ่มถึง 24,200",
+    storeShort: "TCL Authorized Store",
+    reviewHref: "/th/reviews/tcl-savein-ai-air-conditioner/"
+  },
+  "mitsubishi-msy-ka-vf-series": {
+    priceNum: 14668,
+    priceShort: "~14,668.-",
+    soldNum: 2000,
+    soldLabel: "2พัน+ เครื่อง",
+    warrantyShort: "โรงงาน 5 ปี",
+    seerLabel: "–",
+    seerRecorded: false,
+    energyNote: "Happy Inverter · รีวิวชมว่าอินเวอร์เตอร์ประหยัดไฟและเย็นเร็ว จุดที่ชมซ้ำสุดคือความเงียบ",
+    storeShort: "ศาลา อีเล็คโทรนิคส์ พลาซ่า (Shopee Mall)",
+    reviewHref: "/th/best/air-conditioners/#mitsubishi-msy-ka-vf-series"
+  },
+  "xiaomi-mijia-air-inverter-eco": {
+    priceNum: 7924,
+    priceShort: "~7,924.-",
+    soldNum: null,
+    soldLabel: "ไม่แสดง",
+    warrantyShort: "5 ปี (ถามส่วน)",
+    seerLabel: "–",
+    seerRecorded: false,
+    energyNote: "อินเวอร์เตอร์ · ดูข้อมูลการใช้ไฟของเครื่องผ่านแอป Xiaomi Home ได้ ตามพฤติกรรมเปิดแอร์ของบ้านตัวเอง",
+    storeShort: "Xiaomi Official Store",
+    reviewHref: "/th/reviews/xiaomi-mijia-air-inverter-eco/"
+  },
+  "midea-celest-msce": {
+    priceNum: 7490,
+    priceShort: "~7,490.-",
+    soldNum: null,
+    soldLabel: "ไม่แสดง",
+    warrantyShort: "ถามร้านยืนยัน",
+    seerLabel: "มีบนหน้า (เช็กรายขนาด)",
+    seerRecorded: false,
+    energyNote: "อินเวอร์เตอร์ · หน้าสินค้ามีข้อมูล SEER หลายขนาดให้เช็กเอง (เราไม่ได้บันทึกตัวเลขไว้)",
+    storeShort: "Lucky Plaza Online (reseller)",
+    reviewHref: "/th/reviews/midea-celest-msce-air-conditioner/"
+  },
+  "candy-vpct-vpgt-series": {
+    priceNum: 7995,
+    priceShort: "~7,995.-",
+    soldNum: null,
+    soldLabel: "ไม่แสดง",
+    warrantyShort: "คอม 5 ปี",
+    seerLabel: "–",
+    seerRecorded: false,
+    energyNote: "อินเวอร์เตอร์ · รีวิวเยอะสุดในกลุ่ม (10,400+) มีเคสการใช้จริงให้ตามอ่านเรื่องความเย็นและเสียง",
+    storeShort: "haier.officialshop (CANDY เป็นแบรนด์ในเครือ Haier)",
+    reviewHref: "/th/reviews/candy-vpct-vpgt-air-conditioner/"
+  },
+  "hisense-ce-series": {
+    priceNum: 8452,
+    priceShort: "~8,452.-",
+    soldNum: 10000,
+    soldLabel: "10พัน+ เครื่อง",
+    warrantyShort: "คอม 12 ปี + onsite",
+    seerLabel: "–",
+    seerRecorded: false,
+    energyNote: "อินเวอร์เตอร์ราคาต่ำสุดในกลุ่มร้าน official · ประกันคอมเพรสเซอร์ยาวสุดในลิสต์ (12 ปี)",
+    storeShort: "Hisense Official Store (Shopee Mall)",
+    reviewHref: "/th/best/air-conditioners/#hisense-ce-series"
+  },
+  "panasonic-cs-cu-yu9zkt": {
+    priceNum: 12750,
+    priceShort: "~12,750.-",
+    soldNum: 267,
+    soldLabel: "267 เครื่อง",
+    warrantyShort: "ผู้ผลิต 5 ปี",
+    seerLabel: "–",
+    seerRecorded: false,
+    energyNote: "อินเวอร์เตอร์ + Gear Mode เลือกจำกัดการใช้ไฟเองได้ 50/75/100% — คุมเพดานค่าไฟแบบตั้งใจ",
+    storeShort: "Panasonic official store",
+    reviewHref: "/th/best/air-conditioners/#panasonic-cs-cu-yu9zkt"
+  }
+};
+
+// ร้อยแก้วจากทีมเขียน (ตรวจผูกข้อมูลจริงแล้ว) — Friendsay เขียนจากหลักฐานหน้าร้าน ไม่ได้ใช้เครื่องเอง
+const prose: Record<string, { whoFor: string; topWatch: string }> = {
+  "daikin-ftkb-sabai-series": {
+    whoFor: "คนที่เปิดแอร์ยาวทุกคืนและอยากได้ตัวคะแนนด้านประหยัดไฟ-ความสบายสูงสุดในคลังเรา พร้อมรีวิวแน่นสุด (6,200+ คะแนนเต็ม 5.0) ให้ตามอ่านก่อนจ่าย",
+    topWatch: "ค่าติดตั้ง 2,000 บาทผ่านคิวช้างไม่ใช่ราคาจบ ร้านเตือนเองว่าราว 90% ของงานมีค่าอุปกรณ์หน้างานเพิ่ม และรุ่นปี 2025 กับ 2026 ต่างกันที่ขนาดคอยล์ร้อน เช็กปีที่จะได้รับก่อนโอน"
+  },
+  "haier-vqec-series": {
+    whoFor: "คนที่อยากเห็นตัวเลข SEER จริงก่อนตัดสินใจ เพราะเป็นรุ่นเดียวในคลังที่ร้านแจ้งรายขนาดชัด และอยากได้ Eco Mode ในงบต่ำหมื่น",
+    topWatch: "ในกล่องไม่มีขาแขวนแอร์ ต้องเตรียมซื้อเพิ่มหน้างาน และถ้าจะเคลมกรณีขนส่งเสียหาย ต้องมีวิดีโอตอนแกะกล่องแบบถ่ายต่อเนื่องไม่ตัดต่อเท่านั้น"
+  },
+  "tcl-savein-ai-series": {
+    whoFor: "คนที่อยากได้ Full DC Inverter จากแบรนด์ใหญ่ ห้องใหญ่หรือแดดแรงที่ต้องการ BTU สูงถึง 24,200",
+    topWatch: "ต้องเลือก BTU ให้ตรงห้องจริง และถามให้ชัดว่าราคานี้รวมติดตั้งแบบไหน ท่อ ราง ขาแขวน สายไฟกี่เมตร ไม่งั้นราคาจบอาจไม่ใช่ที่เห็น"
+  },
+  "mitsubishi-msy-ka-vf-series": {
+    whoFor: "ห้องนอนที่อยากได้ทั้งประหยัดไฟและเงียบ — จุดที่รีวิวชมซ้ำมากที่สุดของรุ่นนี้คือความเงียบ เหมาะบ้านที่มีเด็กเล็ก",
+    topWatch: "รีวิวหลายรายเข้าใจผิดว่าราคารวมติดตั้งแล้ว จริง ๆ ติดตั้งเป็นบริการเสริมต้องกดซื้อเพิ่ม และราคาต่อ BTU สูงกว่าแบรนด์จีนราว 30-50%"
+  },
+  "xiaomi-mijia-air-inverter-eco": {
+    whoFor: "สาย smart home ที่อยากเห็นข้อมูลการใช้ไฟของแอร์ในแอปทุกวัน ในงบไม่ถึงแปดพัน จากร้าน official",
+    topWatch: "เช็กให้ชัดว่าราคานี้รวมติดตั้งหรือเป็นเครื่องเปล่า และถ้าไม่ได้ใช้แอปเลย จุดเด่นเรื่องตามดูค่าไฟก็หายไปเกือบหมด"
+  },
+  "midea-celest-msce": {
+    whoFor: "คนงบประหยัดสุดที่ยังอยากได้อินเวอร์เตอร์ และยอมเปิดหน้าสินค้าเช็กข้อมูล SEER รายขนาดด้วยตัวเอง",
+    topWatch: "หน้าสินค้าระบุไม่รวมติดตั้ง ต้องบวกค่าช่างเอง และร้านเป็น reseller ไม่ใช่ official ถามใบเสร็จกับช่องทางเคลมให้จบก่อนจ่าย"
+  },
+  "candy-vpct-vpgt-series": {
+    whoFor: "คนคุมงบที่อยากได้รีวิวผู้ซื้อเยอะที่สุดในกลุ่ม (10,400+) ไว้ตามอ่านเรื่องการใช้จริงก่อนตัดสินใจ",
+    topWatch: "VPCT/VPGT เป็นรหัสรุ่นย่อย ต้องกดเช็กช่องตัวเลือกให้ตรงสเปกที่อยากได้ และเผื่อค่าอุปกรณ์ติดตั้งหน้างานเพิ่มด้วย"
+  },
+  "hisense-ce-series": {
+    whoFor: "คนงบต่ำสุดที่อยากได้อินเวอร์เตอร์จากร้าน official พร้อมประกันคอมเพรสเซอร์ 12 ปียาวสุดในลิสต์",
+    topWatch: "คะแนนด้านประหยัดไฟ-ความสบายของเราอยู่ท้ายกลุ่มอินเวอร์เตอร์ และบานสวิงปรับได้แค่ขึ้น-ลง ถ้าเน้นค่าไฟเป็นหลักมีตัวเลือกคะแนนสูงกว่าในราคาใกล้กัน"
+  },
+  "panasonic-cs-cu-yu9zkt": {
+    whoFor: "คนที่อยากคุมเพดานการใช้ไฟเองด้วย Gear Mode 50/75/100% และอยากเห็นราคาค่าติดตั้ง-อุปกรณ์ล่วงหน้าชัด ๆ จากร้าน official",
+    topWatch: "รีวิวเชิงลบที่คนกดว่ามีประโยชน์สุดบอกว่าวัสดุงานประกอบดูลดต้นทุน และมีเคสจริงติด 2 เครื่อง ค่าติดตั้ง+อุปกรณ์หน้างานรวม 13,300 บาท"
+  }
+};
+
+// จัดอันดับ: energyComfort มาก→น้อย · เท่ากันตัดสินด้วยคะแนนรวม (score) · ตัดรุ่น Non-Inverter ออกจากอันดับ
+const NON_INVERTER_SLUG = "panasonic-cs-cu-yn9ykt";
+const bySlug = (slug: string) => airConditioners.find((p) => p.slug === slug)!;
+
+const rankedProducts = Object.keys(energyExtras)
+  .map((slug) => {
+    const p = bySlug(slug);
+    const ex = energyExtras[slug];
+    return {
+      slug,
+      name: p.name,
+      shortName: p.shortName,
+      image: p.image,
+      rating: p.rating,
+      ratingsCount: p.ratingsCount,
+      score: p.score,
+      energyComfort: p.energyComfort,
+      links: p.links,
+      whoFor: prose[slug].whoFor,
+      topWatch: prose[slug].topWatch,
+      ...ex
+    };
+  })
+  .sort((a, b) => (b.energyComfort - a.energyComfort) || (b.score - a.score));
+
+// รุ่นที่ตัดออกจากอันดับ (Non-Inverter แต่ชื่อลิสติ้งใช้คำว่า "ประหยัดไฟ") — โชว์เป็นคำเตือน ไม่ใช่อันดับ
+const nonInverter = bySlug(NON_INVERTER_SLUG);
+
+// best-in-column (คิดจากข้อมูลจริง)
+const maxEnergy = Math.max(...rankedProducts.map((p) => p.energyComfort));
+const minPrice = Math.min(...rankedProducts.map((p) => p.priceNum));
+const maxReviews = Math.max(...rankedProducts.map((p) => p.ratingsCount));
+const bestWarrantySlug = "hisense-ce-series";
+
+// quick-pick 3 ใบ
+const quickPicks = [
+  { label: "คะแนนประหยัดไฟสูงสุด", slug: "daikin-ftkb-sabai-series", reason: "คะแนนประหยัดไฟ-ความสบาย 9.0 สูงสุดในคลัง รีวิว 6,200+ คะแนนเต็ม 5.0 เห็นยอดขายจริง 10พัน+ เครื่อง" },
+  { label: "หลักฐาน SEER ชัดสุด", slug: "haier-vqec-series", reason: "รุ่นเดียวที่ร้านแจ้ง SEER รายขนาด (18.08–18.97) มี Eco Mode ประกันคอม 10 ปี ในงบต่ำหมื่น" },
+  { label: "งบต่ำหมื่น + ดูค่าไฟในแอป", slug: "xiaomi-mijia-air-inverter-eco", reason: "~7,924.- จากร้าน official ตามดูการใช้ไฟผ่านแอป Xiaomi Home ได้ทุกวัน" }
+].map((pick) => {
+  const p = rankedProducts.find((x) => x.slug === pick.slug)!;
+  return { ...pick, name: p.shortName, image: p.image, priceShort: p.priceShort, rating: p.rating };
+});
+
+const intro = {
+  heroKicker:
+    "จัดอันดับแอร์อินเวอร์เตอร์ 9 รุ่นจากคลังที่ตรวจหลักฐานจริงแล้ว เรียงตามคะแนนประหยัดไฟ-ความสบายของเรา พร้อมชี้รุ่นเดียวที่แจ้ง SEER รายขนาด และเตือนรุ่นที่ชื่อบอกว่าประหยัดไฟแต่จริง ๆ เป็น Non-Inverter",
+  introParagraphs: [
+    "คำว่า \"แอร์ประหยัดไฟ\" บน Shopee เป็นคำที่ใครก็พิมพ์ใส่ชื่อสินค้าได้ ไม่ต้องพิสูจน์อะไร ตัวอย่างจริงจากคลังของเราเอง: Panasonic YN-YKT ชื่อลิสติ้งเขียนว่าแอร์ประหยัดไฟ แต่สเปกจริงเป็น Eco Non-Inverter ซึ่งถ้าเปิดยาวทั้งคืนทุกวัน ค่าไฟจะสูงกว่ารุ่นอินเวอร์เตอร์ราคาใกล้กันชัดเจน หน้านี้เลยไม่จัดอันดับตามชื่อสินค้า แต่จัดจากหลักฐานที่เราเก็บจากหน้าร้านจริงทีละรุ่น",
+    "วิธีจัด: เอาแอร์ 10 รุ่นในคลังที่ตรวจหลักฐานแล้ว ตัดรุ่น Non-Inverter ออก 1 รุ่น เหลือ 9 รุ่นอินเวอร์เตอร์ แล้วเรียงตามคะแนนประหยัดไฟ-ความสบาย (เต็ม 10) ที่เราให้จากหลักฐาน 4 อย่าง คือชนิดระบบ ค่า SEER ที่ร้านแจ้ง โหมด/ฟีเจอร์ช่วยลดไฟ และสัญญาณจากรีวิวผู้ซื้อเรื่องค่าไฟ ต้องพูดตรง ๆ ว่าเราไม่มีเครื่องวัดไฟจริงในมือ คะแนนนี้จึงเป็นการอ่านหลักฐาน ไม่ใช่ผลวัดจากมิเตอร์ และในคลังมีรุ่นเดียวที่ร้านแจ้งค่า SEER รายขนาดชัด ๆ คือ Haier VQEC ความโปร่งใสแบบนี้เราให้น้ำหนักเป็นพิเศษ",
+    "วิธีอ่านหน้านี้: คะแนนแต่ละรุ่นห่างกันแค่หลักทศนิยม อย่าตัดสินจากอันดับอย่างเดียว ให้ดูราคาที่พบ จุดระวังรายรุ่น และประกันประกอบกัน เพราะแอร์ที่ประหยัดไฟที่สุดสำหรับบ้านคุณ คือรุ่นที่ BTU ตรงกับห้องจริงมากกว่ารุ่นที่คะแนนสูงสุดในตาราง ราคาทั้งหมดมาจากรอบเก็บหลักฐาน 2 ก.ค. 2026 ส่วนใหญ่เป็นราคาช่วงโปรที่เปลี่ยนได้ทุกวัน"
+  ],
+  methodologyNote:
+    "คะแนนประหยัดไฟ-ความสบาย (เต็ม 10) ให้จากหลักฐานที่เก็บจากหน้าร้านจริง 4 อย่าง (1) ชนิดระบบ อินเวอร์เตอร์หรือไม่ (2) ค่า SEER ที่ร้านแจ้งบนหน้าสินค้า (3) โหมด/ฟีเจอร์ช่วยลดการใช้ไฟ เช่น Eco Mode, Gear Mode (4) สัญญาณจากรีวิวผู้ซื้อเรื่องค่าไฟและการใช้จริง เราไม่ได้วัดการกินไฟด้วยมิเตอร์เอง เพราะไม่มีสินค้าจริงในมือ อันดับเรียงจากคะแนนมากไปน้อย ถ้าเท่ากันใช้คะแนนรวมของรุ่นตัดสิน ราคาที่พบคือราคาจริงบนหน้า Shopee ณ รอบเก็บข้อมูล 2 ก.ค. 2026 ใช้เป็นจุดเทียบ ไม่ใช่ราคาการันตี"
+};
+
+const scenarios = [
+  {
+    title: "เปิดทั้งคืนทุกวัน อยากลดค่าไฟระยะยาว",
+    recommendedSlugs: ["daikin-ftkb-sabai-series", "haier-vqec-series"],
+    reason: "Daikin ได้คะแนนประหยัดไฟ-ความสบายสูงสุดในคลัง (9.0) รีวิวแน่นสุด ส่วน Haier แจ้ง SEER รายขนาดชัดและมี Eco Mode ที่ร้านระบุว่าลดการใช้ไฟ 20-60% ทั้งคู่เห็นยอดขายจริงบนหน้าร้าน"
+  },
+  {
+    title: "งบไม่เกินหมื่น แต่ไม่อยากได้ตัวกินไฟ",
+    recommendedSlugs: ["haier-vqec-series", "xiaomi-mijia-air-inverter-eco"],
+    reason: "Haier (~9,545.-) เป็นตัวเดียวต่ำหมื่นที่แจ้ง SEER ชัด ส่วน Xiaomi (~7,924.-) ถูกกว่าและตามดูการใช้ไฟในแอปได้ ทั้งคู่ซื้อจากร้าน official"
+  },
+  {
+    title: "อยากเห็นตัวเลข SEER ก่อนตัดสินใจ",
+    recommendedSlugs: ["haier-vqec-series"],
+    reason: "รุ่นเดียวในคลังที่ร้านแจ้ง SEER รายขนาดครบ (9K=18.29, 12K=18.97, 18K=18.73, 24K=18.08) เทียบขนาดต่อขนาดได้เลยโดยไม่ต้องทักถามร้าน"
+  },
+  {
+    title: "ห้องนอน อยากได้ทั้งประหยัดและเงียบ",
+    recommendedSlugs: ["mitsubishi-msy-ka-vf-series", "daikin-ftkb-sabai-series"],
+    reason: "Mitsubishi คือรุ่นที่รีวิวชมเรื่องความเงียบซ้ำมากที่สุดในคลัง ส่วน Daikin มีรีวิวระบุคอยล์ร้อนเงียบ 40dB แลกกับราคาต่อ BTU ที่สูงกว่าแบรนด์จีน"
+  },
+  {
+    title: "อยากคุมเพดานค่าไฟเองแบบตั้งใจ",
+    recommendedSlugs: ["panasonic-cs-cu-yu9zkt", "xiaomi-mijia-air-inverter-eco"],
+    reason: "Panasonic YU-ZKT มี Gear Mode เลือกจำกัดการใช้ไฟเองได้ 50/75/100% ส่วน Xiaomi เห็นข้อมูลการใช้ไฟในแอปรายวัน เลือกตามว่าอยากคุมที่ตัวเครื่องหรือดูผ่านมือถือ"
+  }
+];
+
+const faqs = [
+  {
+    q: "แอร์อินเวอร์เตอร์ประหยัดไฟกว่าแบบธรรมดาจริงไหม?",
+    a: "โดยหลักการจริง เพราะอินเวอร์เตอร์ปรับรอบคอมเพรสเซอร์ตามอุณหภูมิห้อง ไม่ต้องตัด-ติดใหม่ทั้งตัวแบบเครื่องธรรมดา ยิ่งเปิดต่อเนื่องนานยิ่งเห็นผลชัด ทั้ง 9 รุ่นในอันดับนี้เป็นอินเวอร์เตอร์หมด บางรุ่นมีโหมดช่วยเพิ่ม เช่น Haier VQEC มี Eco Mode ที่ร้านระบุว่าลดการใช้ไฟ 20-60% (ตัวเลขตามที่ร้านแจ้ง เราไม่ได้วัดเอง) ข้อยกเว้นเดียวคือถ้าคุณเปิดแอร์แค่ช่วงสั้น ๆ วันละไม่กี่ชั่วโมง ส่วนต่างค่าไฟจะแคบลงจนเครื่องธรรมดาที่ถูกกว่าอาจคุ้มกว่า"
+  },
+  {
+    q: "SEER คืออะไร ต้องดูตรงไหน?",
+    a: "SEER (Seasonal Energy Efficiency Ratio) คือค่าประสิทธิภาพพลังงานตามฤดูกาล ตัวเลขยิ่งสูงยิ่งประหยัดไฟต่อความเย็นที่ได้ ดูได้จากหน้าสินค้า ฉลากประหยัดไฟเบอร์ 5 หรือสเปกของผู้ผลิต ปัญหาคือร้านบน Shopee ส่วนใหญ่ไม่แจ้งตัวเลขนี้ชัด ๆ ในคลังของเรามีรุ่นเดียวที่แจ้งครบรายขนาดคือ Haier VQEC (9K=18.29, 12K=18.97, 18K=18.73, 24K=18.08) ถ้ารุ่นที่คุณเล็งไม่แจ้ง ทักถามร้านก่อนซื้อได้เลย ร้านที่ตอบตัวเลขไม่ได้คือสัญญาณให้ระวัง"
+  },
+  {
+    q: "คะแนนประหยัดไฟของ Friendsay วัดจากการใช้จริงหรือเปล่า?",
+    a: "ไม่ใช่ และเราขอพูดตรง ๆ ตรงนี้ Friendsay ไม่มีสินค้าจริงในมือ ไม่ได้เอามิเตอร์วัดการกินไฟเอง คะแนนประหยัดไฟ-ความสบายที่ใช้เรียงอันดับ ให้จากหลักฐานที่เก็บจากหน้าร้านจริง 4 อย่าง คือชนิดระบบ (อินเวอร์เตอร์/ธรรมดา) ค่า SEER ที่ร้านแจ้ง โหมดช่วยลดไฟ และสัญญาณจากรีวิวผู้ซื้อเรื่องค่าไฟ คะแนนนี้เป็นคะแนนชุดเดียวกับที่ใช้ในหน้าเปรียบเทียบแอร์ของเรา ไม่ได้ตั้งใหม่เพื่อหน้านี้"
+  },
+  {
+    q: "อยากได้ทั้งประหยัดไฟและเสียงเงียบ เอารุ่นไหน?",
+    a: "จากรีวิวผู้ซื้อที่เราไล่อ่าน รุ่นที่ถูกชมเรื่องความเงียบซ้ำมากที่สุดคือ Mitsubishi MSY-KA (Happy Inverter) เหมาะห้องนอนและบ้านมีเด็กเล็ก ส่วน Daikin FTKB มีรีวิวระบุว่าคอยล์ร้อนเงียบราว 40dB ทั้งคู่เป็นแบรนด์ญี่ปุ่นที่ราคาต่อ BTU สูงกว่าแบรนด์จีนราว 30-50% ถ้างบจำกัดกว่านั้น Xiaomi Mijia ก็มีรีวิวชมว่าเสียงไม่กวนห้องนอนเช่นกัน"
+  },
+  {
+    q: "แอร์ประหยัดไฟต้องแพงเสมอไหม?",
+    a: "ไม่จำเป็น ในอันดับนี้มีรุ่นต่ำหมื่นหลายตัว เช่น Xiaomi Mijia Eco ~7,924.- และ Haier VQEC ~9,545.- ที่แจ้ง SEER ชัด กลับกัน ราคาแพงก็ไม่ได้การันตีว่าประหยัด ตัวอย่างจริงคือ Panasonic YN-YKT ราคาที่พบ ~12,750.- แต่เป็นเครื่องธรรมดา (Non-Inverter) สิ่งที่ควรจ่ายแพงขึ้นเพื่อความประหยัดจริง ๆ คือ BTU ที่ตรงกับขนาดห้อง เพราะแอร์เล็กเกินห้องจะทำงานหนักตลอดเวลา กินไฟกว่ารุ่นที่ขนาดถูกต้อง"
+  },
+  {
+    q: "ทำไม Panasonic YN-YKT ที่ชื่อว่า \"แอร์ประหยัดไฟ\" ถึงไม่ติดอันดับ?",
+    a: "เพราะสเปกจริงเป็น Eco Non-Inverter ไม่ใช่อินเวอร์เตอร์ ชื่อลิสติ้งบน Shopee ใช้คำว่าแอร์ประหยัดไฟก็จริง แต่ถ้าเปิดยาวทั้งคืนทุกวัน ค่าไฟจะสูงกว่ารุ่นอินเวอร์เตอร์ราคาใกล้กันชัดเจน เราเลยตัดออกจากอันดับหน้านี้เพื่อไม่ให้คนหาแอร์ประหยัดไฟหลงซื้อผิดโจทย์ ตัวเครื่องเองไม่ได้แย่ ถ้าตั้งใจซื้อเครื่องธรรมดาไว้เปิดช่วงสั้น ๆ ก็มีเหตุผลของมัน อ่านรายละเอียดได้ในหน้า 10 อันดับแอร์"
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "แอร์ประหยัดไฟที่สุด 2026: จัดอันดับ 9 รุ่นอินเวอร์เตอร์จากหลักฐานจริง",
+  description:
+    "จัดอันดับแอร์ประหยัดไฟ 9 รุ่นอินเวอร์เตอร์จากหลักฐานจริงบน Shopee เรียงตามคะแนนประหยัดไฟ-ความสบาย พร้อมค่า SEER ที่ร้านแจ้ง ราคา จุดระวัง และคำเตือนรุ่น Non-Inverter ที่ใช้ชื่อว่าประหยัดไฟ",
+  inLanguage: "th",
+  dateModified: "2026-07-05",
+  author: { "@type": "Organization", name: "Friendsay" },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: rankedProducts.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: product.name,
+      url: `https://friendsay.com/th/best/air-conditioners-energy-saving/#${product.slug}`
+    }))
+  }
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a }
+  }))
+};
+
+const scenarioCards = scenarios.map((s) => ({
+  ...s,
+  picks: s.recommendedSlugs.map((slug) => {
+    const p = rankedProducts.find((x) => x.slug === slug)!;
+    return { slug, shortName: p.shortName, priceShort: p.priceShort };
+  })
+}));
+
+// กราฟ: แท่งคะแนนประหยัดไฟ (เต็ม 10) รวมรุ่น Non-Inverter ที่ตัดออก ไว้ให้เห็นว่าทำไมไม่ติดอันดับ
+const chartRows = [
+  ...rankedProducts.map((p) => ({ name: p.shortName, value: p.energyComfort, priceShort: p.priceShort, excluded: false })),
+  { name: nonInverter.shortName, value: nonInverter.energyComfort, priceShort: "~12,750.-", excluded: true }
+];
+---
+
+<BaseLayout
+  title="แอร์ประหยัดไฟที่สุด 2026: จัดอันดับ 9 รุ่นอินเวอร์เตอร์จากหลักฐานจริง | Friendsay"
+  description="แอร์ประหยัดไฟรุ่นไหนดี 2026? จัดอันดับ 9 รุ่นอินเวอร์เตอร์จากหลักฐานจริงบน Shopee เรียงตามคะแนนประหยัดไฟ-ความสบาย พร้อมค่า SEER ที่ร้านแจ้ง ราคา จุดระวังรายรุ่น และเตือนรุ่น Non-Inverter ที่ตั้งชื่อว่าประหยัดไฟ อัปเดต 5 ก.ค. 2026"
+  canonical="https://friendsay.com/th/best/air-conditioners-energy-saving/"
+  ogImage="/images/air-conditioners/daikin-ftkb-sabai-real-product-1.jpg"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <section class="page-hero energy-hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge badge-coral">เน้นประหยัดไฟ</span>
+        <span class="badge badge-teal">อัปเดต {updatedLabel}</span>
+        <span class="badge badge-blue">9 รุ่นอินเวอร์เตอร์ตรวจหลักฐานแล้ว</span>
+      </div>
+      <h1>แอร์ประหยัดไฟที่สุด 2026: จัดอันดับ 9 รุ่นอินเวอร์เตอร์จากหลักฐานจริง</h1>
+      <p class="muted energy-hero-kicker">{intro.heroKicker}</p>
+      <div class="roundup-actions">
+        <a class="button button-primary" href="#picks">ดูอันดับทั้งหมด</a>
+        <a class="button" href="#compare">ตารางเทียบ + กราฟ</a>
+        <a class="button" href="/th/guides/btu-calculator/">คิด BTU ห้องก่อน</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="intro">
+    <div class="container">
+      <div class="energy-intro">
+        {intro.introParagraphs.map((para) => <p>{para}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="quick-pick">
+    <div class="container">
+      <p class="eyebrow">เลือกด่วนใน 15 วินาที</p>
+      <h2 class="headline">3 ตัวเด่น 3 โจทย์ประหยัดไฟ</h2>
+      <div class="scenario-grid" style="margin-top: 18px;">
+        {quickPicks.map((pick) => (
+          <article class="rainy-pick-card">
+            <div class="badge-row">
+              <span class="badge badge-coral">{pick.label}</span>
+              <span class="badge badge-blue">{pick.rating.toFixed(1)}/5</span>
+            </div>
+            <a href={`#${pick.slug}`}>
+              <img class="rainy-img" src={pick.image.url} alt={pick.image.alt} loading="lazy" />
+            </a>
+            <h3>{pick.name} · {pick.priceShort}</h3>
+            <p>{pick.reason}</p>
+            <a class="button button-primary" href={`#${pick.slug}`}>ดูรายละเอียด ↓</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="picks">
+    <div class="wide-container">
+      <p class="eyebrow">9 รุ่น · อัปเดต {updatedLabel}</p>
+      <h2 class="headline">อันดับแอร์ประหยัดไฟจากหลักฐานที่เก็บจริง</h2>
+      <p class="muted" style="max-width: 720px;">
+        ค่าเริ่มต้นเรียงตามคะแนนประหยัดไฟ-ความสบาย (เต็ม 10) — กดจัดเรียงหรือกรองเองได้ตามที่คุณให้ความสำคัญ
+      </p>
+
+      <div class="energy-toolbar" role="group" aria-label="จัดเรียงและกรองรายการ">
+        <div class="energy-sort" role="group" aria-label="จัดเรียง">
+          <span class="energy-toolbar-label">เรียงตาม</span>
+          <button class="energy-sort-btn is-active" type="button" data-sort="energy">คะแนนประหยัดไฟ</button>
+          <button class="energy-sort-btn" type="button" data-sort="price">ถูกสุดก่อน</button>
+          <button class="energy-sort-btn" type="button" data-sort="reviews">รีวิวเยอะสุด</button>
+          <button class="energy-sort-btn" type="button" data-sort="score">คะแนนรวม</button>
+        </div>
+        <label class="energy-filter">
+          <input type="checkbox" id="energy-under10k-only" />
+          <span>เฉพาะราคาที่พบต่ำกว่า 10,000 บาท</span>
+        </label>
+      </div>
+      <p class="energy-sort-note" id="energy-sort-note" aria-live="polite">เรียงตาม: คะแนนประหยัดไฟ · แสดง 9 รุ่น</p>
+
+      <div class="energy-grid" id="energy-grid">
+        {rankedProducts.map((product, index) => (
+          <article
+            class="energy-card"
+            id={product.slug}
+            data-energy={product.energyComfort}
+            data-price={product.priceNum}
+            data-reviews={product.ratingsCount}
+            data-score={product.score}
+            data-under10k={product.priceNum < 10000 ? "true" : "false"}
+          >
+            <a
+              class="energy-card-media"
+              href={product.links.shopee}
+              target="_blank"
+              rel="sponsored noopener"
+              data-affiliate-link
+              data-affiliate-store="shopee"
+              data-affiliate-context={`energy-air-photo-${product.slug}`}
+            >
+              <span class="energy-rank">อันดับ {index + 1}</span>
+              <img src={product.image.url} alt={product.image.alt} loading="lazy" />
+              <small>{product.image.note}</small>
+            </a>
+            <div class="energy-card-body">
+              <div class="badge-row">
+                <span class="badge badge-teal">ประหยัดไฟ {product.energyComfort.toFixed(1)}/10</span>
+                <span class="badge badge-blue">{product.rating.toFixed(1)}/5 · {product.ratingsCount.toLocaleString("th-TH")} รีวิว</span>
+              </div>
+              <h3>{product.name}</h3>
+              <div class="energy-facts">
+                <div><span>ราคาที่พบ</span><strong>{product.priceShort}</strong></div>
+                <div><span>SEER ที่ร้านแจ้ง</span><strong>{product.seerLabel}</strong></div>
+                <div><span>ยอดขายที่เห็น</span><strong>{product.soldLabel}</strong></div>
+                <div><span>ประกันคอมฯ</span><strong>{product.warrantyShort}</strong></div>
+              </div>
+              <p class="energy-note"><b>จุดเด่นด้านไฟ:</b> {product.energyNote}</p>
+              <p class="energy-whofor"><b>เหมาะกับ:</b> {product.whoFor}</p>
+              <p class="energy-watch"><b>ระวัง:</b> {product.topWatch}</p>
+              <p class="energy-store">ร้าน: {product.storeShort}</p>
+              <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
+              <div class="energy-actions">
+                <button class="button compare-toggle" type="button" data-air-compare-slug={product.slug}>+ เปรียบเทียบ</button>
+                <a class="button button-primary" href={product.reviewHref}>{product.reviewHref.includes("#") ? "ดูในหน้า 10 อันดับ" : "อ่านรีวิวละเอียด"}</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="non-inverter-warning">
+    <div class="container">
+      <p class="eyebrow">เตือนก่อนโดนชื่อสินค้าหลอก</p>
+      <h2 class="headline">รุ่นที่ชื่อว่า "ประหยัดไฟ" แต่ไม่ติดอันดับหน้านี้</h2>
+      <div class="energy-warning-card">
+        <img src={nonInverter.image.url} alt={nonInverter.image.alt} loading="lazy" />
+        <div>
+          <div class="badge-row">
+            <span class="badge badge-dark">Non-Inverter</span>
+            <span class="badge">ไม่จัดอันดับในหน้านี้</span>
+          </div>
+          <h3>{nonInverter.name}</h3>
+          <p>
+            ชื่อลิสติ้งบน Shopee ใช้คำว่า "แอร์ประหยัดไฟ" แต่สเปกจริงเป็น Eco Non-Inverter ราคาที่พบ ~12,750.-
+            ใกล้เคียงรุ่นอินเวอร์เตอร์ของแบรนด์อื่นในลิสต์นี้ ถ้าคุณกำลังหาแอร์เปิดยาวทั้งคืนเพื่อลดค่าไฟ รุ่นนี้ไม่ตรงโจทย์
+            แต่ถ้าตั้งใจซื้อเครื่องธรรมดาไว้เปิดช่วงสั้น ๆ โครงสร้างเรียบง่าย ซ่อมง่าย ก็เป็นตัวเลือกที่มีเหตุผลของมัน
+            (ขายจากร้าน Panasonic official เห็นยอดจริง 428 เครื่อง คะแนน 4.9 จาก 176 รีวิว)
+          </p>
+          <a class="button" href="/th/best/air-conditioners/#panasonic-cs-cu-yn9ykt">อ่านรายละเอียดรุ่นนี้ในหน้า 10 อันดับ →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="compare">
+    <div class="wide-container">
+      <p class="eyebrow">ตารางเปรียบเทียบ · อัปเดต {updatedLabel}</p>
+      <h2 class="headline">เทียบ 9 รุ่นในตาเดียว</h2>
+      <div class="compare-shell">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>อันดับ · รุ่น</th>
+              <th>คะแนนประหยัดไฟ</th>
+              <th>SEER ที่ร้านแจ้ง</th>
+              <th>ราคาที่พบ</th>
+              <th>รีวิว Shopee</th>
+              <th>ประกันคอมฯ</th>
+              <th>เช็กราคา</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rankedProducts.map((product, index) => (
+              <tr>
+                <td>
+                  <strong>{index + 1}. {product.shortName}</strong>
+                  <br />
+                  <a class="compare-detail-link" href={`#${product.slug}`}>ดูรายละเอียด ↑</a>
+                </td>
+                <td class={product.energyComfort === maxEnergy ? "is-best" : undefined}>{product.energyComfort.toFixed(1)}/10</td>
+                <td class={product.seerRecorded ? "is-best" : undefined}>{product.seerLabel}</td>
+                <td class={product.priceNum === minPrice ? "is-best" : undefined}>{product.priceShort}</td>
+                <td class={product.ratingsCount === maxReviews ? "is-best" : undefined}>{product.rating.toFixed(1)} ★ ({product.ratingsCount.toLocaleString("th-TH")})</td>
+                <td class={product.slug === bestWarrantySlug ? "is-best" : undefined}>{product.warrantyShort}</td>
+                <td>
+                  <a class="button button-primary compare-buy" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`energy-air-table-${product.slug}`}>Shopee</a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">
+        ✓ เขียว = ค่าที่ดีที่สุดของคอลัมน์ · "–" ในคอลัมน์ SEER = เราไม่ได้บันทึกค่าของรุ่นนั้นในรอบข้อมูลนี้ ไม่ได้แปลว่าร้านไม่แจ้ง ทักถามร้านก่อนซื้อได้ ·
+        ราคา ณ รอบเก็บข้อมูล {dataRoundLabel} ส่วนใหญ่เป็นราคาช่วงโปร เปลี่ยนได้ทุกวัน · "ไม่แสดง" = Shopee ไม่โชว์ยอดขายบนหน้าสินค้า เราจึงไม่อ้างตัวเลขเอง
+      </p>
+
+      <h3 class="headline" style="margin-top: 36px; font-size: 1.3rem;">คะแนนประหยัดไฟ-ความสบายแบบเห็นภาพ (เต็ม 10)</h3>
+      <div class="rainy-chart" role="img" aria-label="กราฟแท่งคะแนนประหยัดไฟ-ความสบายของแอร์ 9 รุ่นในอันดับ และรุ่น Non-Inverter ที่ตัดออก ยาวกว่าคือคะแนนสูงกว่า">
+        <svg viewBox={`0 0 900 ${chartRows.length * 46 + 10}`}>
+          {chartRows.map((row, i) => {
+            const y = i * 46 + 8;
+            const barW = Math.max(40, (row.value / 10) * 620);
+            return (
+              <g class="rainy-bar" style={`animation-delay:${i * 90}ms`}>
+                <text x="0" y={y + 19} class="rainy-bar-name">{row.name}</text>
+                <rect x="215" y={y} width={barW} height="28" rx="8" fill={row.excluded ? "#9aa5ae" : row.value === maxEnergy ? "#0ea5a0" : "#ff6b5a"} opacity="0.85" />
+                <text x={222 + barW} y={y + 19} class="rainy-bar-value">
+                  {row.value.toFixed(1)}/10 · {row.priceShort}{row.excluded ? " · Non-Inverter (ไม่จัดอันดับ)" : ""}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+        <p class="compare-note">
+          ความยาวแท่ง = คะแนนประหยัดไฟ-ความสบายที่เราให้จากหลักฐาน (เต็ม 10) · <span style="color:#0ea5a0">■</span> คะแนนสูงสุด ·
+          <span style="color:#9aa5ae">■</span> รุ่น Non-Inverter ที่ตัดออกจากอันดับ · ตัวเลขท้ายแท่งคือคะแนนและราคาที่พบ
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="which-one">
+    <div class="container">
+      <p class="eyebrow">เลือกตามโจทย์ของคุณ</p>
+      <h2 class="headline">บอกสถานการณ์มา เดี๋ยวชี้รุ่นให้</h2>
+      <div class="scenario-grid">
+        {scenarioCards.map((sc) => (
+          <article>
+            <h3>{sc.title}</h3>
+            <p>
+              เอา {sc.picks.map((pick, idx) => (
+                <>{idx > 0 ? " หรือ " : ""}<a href={`#${pick.slug}`}>{pick.shortName}</a> ({pick.priceShort})</>
+              ))} — {sc.reason}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how-we-picked">
+    <div class="container">
+      <p class="eyebrow">เกณฑ์การจัดอันดับ</p>
+      <h2 class="headline">คะแนนประหยัดไฟของเรามาจากไหน</h2>
+      <p class="muted" style="max-width: 760px;">{intro.methodologyNote}</p>
+    </div>
+  </section>
+
+  <section class="section band" id="faq">
+    <div class="container">
+      <p class="eyebrow">ก่อนกดซื้อ</p>
+      <h2 class="headline">คำถามที่คนหาแอร์ประหยัดไฟถามบ่อย</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+      <div class="roundup-actions" style="margin-top: 24px;">
+        <a class="button button-primary" href="/th/best/air-conditioners/">ดูครบ 10 อันดับแอร์ →</a>
+        <a class="button" href="/th/best/air-conditioners-under-10000/">งบไม่ถึงหมื่น? ดูเฉพาะแอร์ต่ำกว่า 10,000</a>
+        <a class="button" href="/th/compare/air-conditioners/">เปิดหน้าเปรียบเทียบ</a>
+        <a class="button" href="/th/guides/btu-calculator/">เครื่องคิด BTU</a>
+      </div>
+      <p class="compare-note" style="margin-top: 18px;">
+        ราคาและสถานะสินค้าเก็บจากหน้า Shopee จริงรอบวันที่ {dataRoundLabel} · เฉพาะรุ่นที่มีตัวเลขยอดขาย (Daikin, Hisense, Haier VQEC, Mitsubishi, Panasonic) คือตัวเลขที่แสดงบนหน้าร้านจริง ไม่ใช่การประมาณ ส่วนรุ่นที่ Shopee ไม่โชว์ยอดขาย เราไม่อ้างตัวเลขเอง ·
+        อ่านมาตรฐานรีวิวของเราได้ที่ <a href="/editorial-policy/">Editorial Policy</a> · ความโปร่งใส affiliate ที่ <a href="/affiliate-disclosure/">หน้านโยบาย</a>
+      </p>
+    </div>
+  </section>
+
+  <AirCompareTray products={airConditioners} />
+  <AffiliateClickTracker />
+
+  <script is:inline>
+    (() => {
+      const grid = document.getElementById("energy-grid");
+      const note = document.getElementById("energy-sort-note");
+      const under10kOnly = document.getElementById("energy-under10k-only");
+      if (!grid) return;
+
+      const cards = Array.from(grid.children);
+      const sortButtons = Array.from(document.querySelectorAll("[data-sort]"));
+      const num = (card, key) => Number(card.getAttribute("data-" + key) || 0);
+      const sortLabels = { energy: "คะแนนประหยัดไฟ", price: "ราคาถูกสุดก่อน", reviews: "รีวิวเยอะสุด", score: "คะแนนรวม" };
+      let currentSort = "energy";
+
+      const apply = () => {
+        const onlyUnder10k = under10kOnly && under10kOnly.checked;
+
+        const sorted = cards.slice().sort((a, b) => {
+          if (currentSort === "price") return num(a, "price") - num(b, "price");
+          if (currentSort === "reviews") return num(b, "reviews") - num(a, "reviews");
+          if (currentSort === "score") return num(b, "score") - num(a, "score");
+          // energy: คะแนนประหยัดไฟมากสุดก่อน tiebreak ด้วยคะแนนรวม
+          const d = num(b, "energy") - num(a, "energy");
+          return d !== 0 ? d : num(b, "score") - num(a, "score");
+        });
+
+        let visible = 0;
+        sorted.forEach((card) => {
+          const show = !onlyUnder10k || card.getAttribute("data-under10k") === "true";
+          card.hidden = !show;
+          if (show) {
+            visible += 1;
+            card.classList.remove("energy-pop");
+            // reflow เพื่อรีสตาร์ท animation
+            void card.offsetWidth;
+            card.classList.add("energy-pop");
+          }
+          grid.appendChild(card);
+        });
+
+        if (note) {
+          note.textContent = `เรียงตาม: ${sortLabels[currentSort]}` + (onlyUnder10k ? " · เฉพาะราคาที่พบต่ำกว่า 10,000 บาท" : "") + ` · แสดง ${visible} รุ่น`;
+        }
+      };
+
+      sortButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          currentSort = btn.getAttribute("data-sort") || "energy";
+          sortButtons.forEach((b) => b.classList.toggle("is-active", b === btn));
+          apply();
+        });
+      });
+      if (under10kOnly) under10kOnly.addEventListener("change", apply);
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .energy-hero {
+    background:
+      radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.55), transparent 70%),
+      linear-gradient(180deg, #fff8ee, #fffdf8);
+  }
+
+  .energy-hero-kicker {
+    max-width: 760px;
+    font-size: 1.06rem;
+  }
+
+  .energy-intro {
+    display: grid;
+    gap: 14px;
+    max-width: 820px;
+  }
+
+  .energy-intro p {
+    margin: 0;
+    color: #3f4e5c;
+    font-size: 1.04rem;
+    line-height: 1.75;
+  }
+
+  .energy-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 22px;
+    padding: 14px 16px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .energy-sort {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .energy-toolbar-label {
+    color: var(--muted);
+    font-size: 0.86rem;
+    font-weight: 800;
+  }
+
+  .energy-sort-btn {
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: #fff;
+    padding: 9px 15px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: transform 160ms ease, border-color 160ms ease, color 160ms ease, background 160ms ease;
+  }
+
+  .energy-sort-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 107, 90, 0.5);
+    color: var(--coral-dark);
+  }
+
+  .energy-sort-btn.is-active {
+    border-color: transparent;
+    background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+    color: #fff;
+  }
+
+  .energy-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .energy-filter input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--coral);
+    cursor: pointer;
+  }
+
+  .energy-sort-note {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .energy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .energy-card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.22s ease;
+  }
+
+  .energy-card[hidden] {
+    display: none;
+  }
+
+  .energy-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px -22px rgba(31, 24, 16, 0.32);
+  }
+
+  .energy-card-media {
+    position: relative;
+    display: block;
+    background: linear-gradient(135deg, #ffffff, #f5faf9);
+    border-bottom: 1px solid rgba(223, 208, 186, 0.6);
+  }
+
+  .energy-card-media img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3.2;
+    object-fit: contain;
+    padding: 16px;
+    transition: transform 220ms ease;
+  }
+
+  .energy-card-media:hover img {
+    transform: scale(1.04);
+  }
+
+  .energy-rank {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+    border-radius: 999px;
+    background: rgba(23, 32, 42, 0.92);
+    padding: 6px 13px;
+    color: #fff;
+    font-size: 0.98rem;
+    font-weight: 950;
+  }
+
+  .energy-card-media small {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    max-width: 62%;
+    color: rgba(31, 41, 55, 0.5);
+    font-size: 0.66rem;
+    line-height: 1.25;
+    text-align: right;
+  }
+
+  .energy-card-body {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 18px;
+  }
+
+  .energy-card-body h3 {
+    margin: 0;
+    font-size: 1.12rem;
+    line-height: 1.25;
+  }
+
+  .energy-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    border-radius: 10px;
+    background: rgba(255, 214, 186, 0.2);
+    padding: 12px;
+  }
+
+  .energy-facts span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 800;
+  }
+
+  .energy-facts strong {
+    font-size: 0.94rem;
+    line-height: 1.2;
+  }
+
+  .energy-note,
+  .energy-whofor,
+  .energy-watch {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .energy-note {
+    border-left: 3px solid #0ea5a0;
+    padding-left: 10px;
+    color: #26514e;
+  }
+
+  .energy-watch {
+    border-left: 3px solid var(--coral);
+    padding-left: 10px;
+    color: #6b4a44;
+  }
+
+  .energy-store {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .energy-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .energy-actions .button {
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .energy-warning-card {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-top: 18px;
+    padding: 20px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .energy-warning-card img {
+    width: 100%;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffffff, #f5faf9);
+    object-fit: contain;
+    aspect-ratio: 4 / 3.2;
+    padding: 10px;
+    border: 1px solid rgba(223, 208, 186, 0.6);
+  }
+
+  .energy-warning-card h3 {
+    margin: 10px 0 8px;
+    font-size: 1.15rem;
+  }
+
+  .energy-warning-card p {
+    margin: 0 0 14px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #3f4e5c;
+  }
+
+  @keyframes energy-pop {
+    from { opacity: 0; transform: translateY(12px) scale(0.99); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .energy-pop {
+    animation: energy-pop 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .energy-pop { animation: none; }
+  }
+
+  @media (max-width: 980px) {
+    .energy-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .energy-warning-card {
+      grid-template-columns: 1fr;
+    }
+
+    .energy-warning-card img {
+      max-width: 320px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .energy-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .energy-toolbar {
+      justify-content: flex-start;
+    }
+  }
+</style>
