@@ -1,0 +1,954 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PriceButtons from "../../../components/PriceButtons.astro";
+import AirCompareTray from "../../../components/AirCompareTray.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import { airConditioners } from "../../../data/airConditioners";
+
+const updatedLabel = "6 กรกฎาคม 2026";
+const dataRoundLabel = "2 กรกฎาคม 2026";
+
+// ข้อมูลเสริมรายรุ่นที่ไม่มีใน airConditioners.ts — ราคา/ยอดขายยึดหลักฐานรอบ 2026-07-02 (ชุดเดียวกับหน้าแอร์ต่ำกว่าหมื่น/แอร์ประหยัดไฟ)
+// quietQuote = สัญญาณรีวิวเรื่องเสียงตามที่บันทึกไว้จริงใน reviewSignals/pros/watch — ไม่มีการแต่งเพิ่ม
+const quietExtras: Record<
+  string,
+  {
+    priceNum: number;
+    priceShort: string;
+    soldNum: number | null;
+    soldLabel: string;
+    warrantyShort: string;
+    quietQuote: string;
+    storeShort: string;
+    reviewHref: string;
+  }
+> = {
+  "mitsubishi-msy-ka-vf-series": {
+    priceNum: 14668,
+    priceShort: "~14,668.-",
+    soldNum: 2000,
+    soldLabel: "2พัน+ เครื่อง",
+    warrantyShort: "โรงงาน 5 ปี",
+    quietQuote: "ธีมรีวิวที่ชัดที่สุดคือเสียงเงียบมาก — รีวิวย้ำซ้ำเรื่องเสียงเงียบและเหมาะห้องนอนมากที่สุดในบรรดารุ่นที่เราเก็บข้อมูล",
+    storeShort: "ศาลา อีเล็คโทรนิคส์ พลาซ่า (Shopee Mall)",
+    reviewHref: "/th/best/air-conditioners/#mitsubishi-msy-ka-vf-series"
+  },
+  "daikin-ftkb-sabai-series": {
+    priceNum: 12875,
+    priceShort: "~12,875.-",
+    soldNum: 10000,
+    soldLabel: "10พัน+ เครื่อง",
+    warrantyShort: "คอม 5 ปี",
+    quietQuote: "รีวิวย้ำซ้ำเรื่องของแท้ เย็นเร็ว และเสียงเงียบ — เป็นรุ่นเดียวที่เราเจอตัวเลขจริง คือคอยล์ร้อนเงียบ 40dB",
+    storeShort: "King Air (ร้านระบุเป็นตัวแทนตรงสยามไดกิ้นเซลล์)",
+    reviewHref: "/th/best/air-conditioners/#daikin-ftkb-sabai-series"
+  },
+  "xiaomi-mijia-air-inverter-eco": {
+    priceNum: 7924,
+    priceShort: "~7,924.-",
+    soldNum: null,
+    soldLabel: "ไม่แสดง",
+    warrantyShort: "5 ปี (ถามส่วน)",
+    quietQuote: "ผู้ซื้อชมว่าเย็นเร็วและเสียงไม่กวนห้องนอน — เป็นรุ่นถูกสุดในกลุ่มที่รีวิวพูดเรื่องเสียงตรง ๆ",
+    storeShort: "Xiaomi Official Store",
+    reviewHref: "/th/reviews/xiaomi-mijia-air-inverter-eco/"
+  },
+  "hisense-ce-series": {
+    priceNum: 8452,
+    priceShort: "~8,452.-",
+    soldNum: 10000,
+    soldLabel: "10พัน+ เครื่อง",
+    warrantyShort: "คอม 12 ปี + onsite",
+    quietQuote: "รีวิวชมความเย็นเร็วและความเงียบเทียบกับราคา — เงื่อนไขคือ \"เทียบกับราคา\" ไม่ใช่เงียบระดับแบรนด์ญี่ปุ่น",
+    storeShort: "Hisense Official Store (Shopee Mall)",
+    reviewHref: "/th/best/air-conditioners/#hisense-ce-series"
+  },
+  "candy-vpct-vpgt-series": {
+    priceNum: 7995,
+    priceShort: "~7,995.-",
+    soldNum: null,
+    soldLabel: "ไม่แสดง",
+    warrantyShort: "คอม 5 ปี",
+    quietQuote: "มีคนชมเรื่องเสียงเงียบและหน้าตาเครื่อง — ข้อดีคือรีวิวเยอะสุดในกลุ่ม (10,400+) มีรูป/วิดีโอให้ไล่ฟังเสียงจริงได้",
+    storeShort: "haier.officialshop (CANDY เป็นแบรนด์ในเครือ Haier)",
+    reviewHref: "/th/reviews/candy-vpct-vpgt-air-conditioner/"
+  },
+  "panasonic-cs-cu-yu9zkt": {
+    priceNum: 12750,
+    priceShort: "~12,750.-",
+    soldNum: 267,
+    soldLabel: "267 เครื่อง",
+    warrantyShort: "ผู้ผลิต 5 ปี",
+    quietQuote: "รีวิวชมเย็นเร็ว เสียงเงียบ ส่งไวแพ็คดี — แต่ฐานรีวิวยังเล็ก (118 รายการ) เทียบ pattern ได้จำกัดกว่ารุ่นอื่น",
+    storeShort: "Panasonic official store",
+    reviewHref: "/th/best/air-conditioners/#panasonic-cs-cu-yu9zkt"
+  }
+};
+
+// โซน "เช็กเพิ่มก่อนซื้อเข้าห้องนอน" — มีสัญญาณรีวิว/คำแนะนำเรื่องเสียงที่ควรอ่านก่อน (จาก data จริง)
+const checkFirstExtras: Record<string, { priceNum: number; priceShort: string; noiseNote: string; reviewHref: string }> = {
+  "tcl-savein-ai-series": {
+    priceNum: 8590,
+    priceShort: "~8,590.-",
+    noiseNote:
+      "ในข้อมูลที่เก็บ มีคำแนะนำตรง ๆ ว่า \"ห้องนอนควรอ่านรีวิวมีวิดีโอเรื่องเสียงลมและเสียงคอยล์ร้อน\" ก่อนตัดสินใจ — ไม่ได้แปลว่าดัง แต่ควรฟังจากวิดีโอผู้ซื้อจริงก่อน",
+    reviewHref: "/th/reviews/tcl-savein-ai-air-conditioner/"
+  },
+  "haier-vqec-series": {
+    priceNum: 9545,
+    priceShort: "~9,545.-",
+    noiseNote:
+      "มีรีวิวระบุว่าคอมเพรสเซอร์รุ่น 18,000 BTU ตัวใหญ่และเสียงดังกว่าที่คาด — ถ้าจะเอาเข้าห้องนอนขนาด 9,000/12,000 BTU ให้อ่านรีวิวของขนาดนั้นแยก เพราะเสียงต่างกันตามขนาดคอม",
+    reviewHref: "/th/best/air-conditioners/#haier-vqec-series"
+  }
+};
+
+// ร้อยแก้วจากทีมเขียน (ตรวจผูกข้อมูลจริงแล้ว) — Friendsay เขียนจากหลักฐานหน้าร้าน ไม่ได้ฟังเครื่องจริง
+const prose: Record<string, { whoFor: string; topWatch: string }> = {
+  "mitsubishi-msy-ka-vf-series": {
+    whoFor: "ห้องนอนที่เสียงคือเรื่องใหญ่สุด บ้านมีเด็กเล็กหรือคนหลับยาก — เป็นรุ่นที่ธีมรีวิวเรื่องความเงียบชัดที่สุดในคลังของเรา และมีแผ่นกรอง PM2.5 ในตัว",
+    topWatch: "รีวิวหลายรายเข้าใจผิดว่าราคารวมติดตั้งแล้ว จริง ๆ ติดตั้งเป็นบริการเสริมต้องกดซื้อเพิ่ม และราคาต่อ BTU สูงกว่าแบรนด์จีนราว 30-50% จ่ายแพงขึ้นเพื่อแบรนด์กับความเงียบ"
+  },
+  "daikin-ftkb-sabai-series": {
+    whoFor: "คนที่อยากได้ความเงียบแบบมีทั้งตัวเลข (คอยล์ร้อน 40dB) และจำนวนรีวิวยืนยันเยอะสุด (6,200+ คะแนนเต็ม 5.0 เห็นยอดขาย 10พัน+)",
+    topWatch: "ค่าติดตั้ง 2,000 บาทผ่านคิวช้างไม่ใช่ราคาจบ ร้านเตือนเองว่าราว 90% ของงานมีค่าอุปกรณ์หน้างานเพิ่ม และรุ่นปี 2025/2026 ต่างกันที่ขนาดคอยล์ร้อน เช็กปีก่อนโอน"
+  },
+  "xiaomi-mijia-air-inverter-eco": {
+    whoFor: "ห้องนอนคอนโดงบไม่ถึงแปดพัน ที่อยากได้รุ่นซึ่งรีวิวพูดเรื่องเสียงไม่กวนตรง ๆ และคุมผ่านแอปได้ เช่น ตั้งปิดตอนเช้ามืด",
+    topWatch: "เช็กให้ชัดว่าราคานี้รวมติดตั้งหรือเป็นเครื่องเปล่า และถ้าไม่ได้ใช้แอปเลย จุดเด่นของรุ่นนี้จะเหลือน้อยลงมาก"
+  },
+  "hisense-ce-series": {
+    whoFor: "คนงบจำกัดที่อยากได้ตัวเลือกจากร้าน official พร้อมประกันคอม 12 ปียาวสุดในกลุ่ม และรับได้ว่าความเงียบคือ \"เงียบเทียบกับราคา\"",
+    topWatch: "บานสวิงปรับได้แค่ขึ้น-ลง ถ้าติดมุมห้องลมอาจกระจายด้านข้างไม่เต็ม และมีรีวิว 1 ดาว 54 รายการ ควรกดอ่านก่อนตัดสินใจ"
+  },
+  "candy-vpct-vpgt-series": {
+    whoFor: "คนคุมงบที่อยากฟังเสียงจริงจากวิดีโอผู้ซื้อก่อนซื้อ — รีวิว 10,400+ รายการ มีรูป/วิดีโอกว่า 2,100 ชิ้นให้ไล่ดู",
+    topWatch: "VPCT/VPGT เป็นรหัสรุ่นย่อย ต้องกดเช็กช่องตัวเลือกให้ตรงสเปกที่อยากได้ และเผื่อค่าอุปกรณ์ติดตั้งหน้างานเพิ่มด้วย"
+  },
+  "panasonic-cs-cu-yu9zkt": {
+    whoFor: "คนที่อยากได้แบรนด์ญี่ปุ่นจากร้าน official ที่แจกแจงค่าติดตั้งล่วงหน้าชัดสุดในกลุ่ม และมี Gear Mode คุมการใช้ไฟตอนนอนได้",
+    topWatch: "รีวิวเชิงลบที่คนกดว่ามีประโยชน์สุดบอกว่าวัสดุงานประกอบดูลดต้นทุน และฐานรีวิวเล็ก (118) เทียบ pattern เรื่องเสียงได้จำกัด"
+  }
+};
+
+const bySlug = (slug: string) => airConditioners.find((p) => p.slug === slug)!;
+
+// โซนแนะนำ: เรียงตามความชัดของธีมเสียงในรีวิวที่บันทึกไว้ (ไม่ใช่คะแนนตัวเลข — เราไม่มีเครื่องวัดเสียง)
+const recommendedOrder = [
+  "mitsubishi-msy-ka-vf-series",
+  "daikin-ftkb-sabai-series",
+  "xiaomi-mijia-air-inverter-eco",
+  "hisense-ce-series",
+  "candy-vpct-vpgt-series",
+  "panasonic-cs-cu-yu9zkt"
+];
+
+const quietProducts = recommendedOrder.map((slug, index) => {
+  const p = bySlug(slug);
+  const ex = quietExtras[slug];
+  return {
+    slug,
+    rank: index + 1,
+    name: p.name,
+    shortName: p.shortName,
+    image: p.image,
+    rating: p.rating,
+    ratingsCount: p.ratingsCount,
+    score: p.score,
+    links: p.links,
+    whoFor: prose[slug].whoFor,
+    topWatch: prose[slug].topWatch,
+    ...ex
+  };
+});
+
+const checkFirstProducts = Object.keys(checkFirstExtras).map((slug) => {
+  const p = bySlug(slug);
+  return { slug, name: p.name, shortName: p.shortName, image: p.image, rating: p.rating, ratingsCount: p.ratingsCount, links: p.links, ...checkFirstExtras[slug] };
+});
+
+// best-in-column (คิดจากข้อมูลจริง)
+const minPrice = Math.min(...quietProducts.map((p) => p.priceNum));
+const maxReviews = Math.max(...quietProducts.map((p) => p.ratingsCount));
+const bestWarrantySlug = "hisense-ce-series";
+
+// quick-pick 3 ใบ
+const quickPicks = [
+  { label: "ธีมเงียบชัดสุดในคลัง", slug: "mitsubishi-msy-ka-vf-series", reason: "รุ่นที่รีวิวชมเรื่องเสียงเงียบซ้ำมากที่สุดในบรรดารุ่นที่เราเก็บข้อมูล เหมาะห้องนอนและบ้านมีเด็กเล็ก" },
+  { label: "เงียบ + รีวิวแน่นสุด", slug: "daikin-ftkb-sabai-series", reason: "รุ่นเดียวที่เจอตัวเลขจริง คอยล์ร้อน 40dB ยืนยันด้วยรีวิว 6,200+ คะแนนเต็ม 5.0 เห็นยอดขาย 10พัน+" },
+  { label: "เงียบในงบต่ำหมื่น", slug: "xiaomi-mijia-air-inverter-eco", reason: "~7,924.- จากร้าน official รีวิวชมว่าเสียงไม่กวนห้องนอน ตั้งเวลาปิดผ่านแอปได้" }
+].map((pick) => {
+  const p = quietProducts.find((x) => x.slug === pick.slug)!;
+  return { ...pick, name: p.shortName, image: p.image, priceShort: p.priceShort, rating: p.rating };
+});
+
+const intro = {
+  heroKicker:
+    "คัดแอร์ 6 รุ่นที่รีวิวผู้ซื้อพูดเรื่องเสียงเงียบตรง ๆ จากคลังที่ตรวจหลักฐานแล้ว พร้อมอีก 2 รุ่นที่ควรฟังเสียงจากวิดีโอรีวิวก่อนเอาเข้าห้องนอน — เราไม่มีเครื่องวัดเสียง เลยยึดสิ่งที่ผู้ซื้อจริงพูดเป็นหลัก",
+  introParagraphs: [
+    "เสียงแอร์เป็นเรื่องที่สเปกบนหน้าร้านช่วยได้น้อยที่สุด เพราะร้านส่วนใหญ่ไม่แจ้งค่า dB และคำว่า \"เงียบ\" ในชื่อสินค้าก็พิมพ์ใส่ได้ฟรี ๆ ในคลัง 10 รุ่นของเรา มีรุ่นเดียวที่เจอตัวเลขจริงคือ Daikin FTKB ที่รีวิวระบุคอยล์ร้อนเงียบ 40dB นอกนั้นหลักฐานที่ดีที่สุดคือสิ่งที่ผู้ซื้อจริงเขียนซ้ำ ๆ ในรีวิว หน้านี้เลยคัดจากตรงนั้น",
+    "วิธีคัด: เราไล่สัญญาณรีวิวเรื่องเสียงที่บันทึกไว้ตอนเก็บหลักฐานรอบ 2 ก.ค. 2026 แล้วแบ่งเป็น 2 โซน โซนแนะนำ 6 รุ่นคือรุ่นที่รีวิวชมเรื่องเสียงตรง ๆ เรียงตามความชัดของธีมนั้นในรีวิว (ไม่ใช่คะแนนตัวเลข เพราะเราไม่ได้วัดเอง) และโซนเช็กเพิ่ม 2 รุ่นคือรุ่นที่มีคำแนะนำหรือรีวิวเรื่องเสียงที่ควรอ่านก่อนตัดสินใจ ซึ่งไม่ได้แปลว่าเป็นรุ่นไม่ดี แค่ควรทำการบ้านเพิ่มอีกขั้น",
+    "วิธีอ่านหน้านี้: ความเงียบที่ได้จริงขึ้นกับงานติดตั้งพอ ๆ กับตัวเครื่อง ทั้งจุดวางคอยล์ร้อน ผนังที่ยึด และขนาด BTU ที่ตรงห้อง (แอร์เล็กเกินห้องจะทำงานหนักตลอดและมีเสียงต่อเนื่อง) ก่อนเลือกจากลิสต์นี้ ลองคิด BTU ห้องนอนคุณก่อน แล้วอ่านจุดระวังรายรุ่นให้จบ ราคาทั้งหมดมาจากรอบเก็บหลักฐาน 2 ก.ค. 2026 เปลี่ยนได้ทุกวัน"
+  ],
+  methodologyNote:
+    "เราไม่มีเครื่องวัดเสียงและไม่มีสินค้าจริงในมือ หน้านี้จึงไม่ให้คะแนนความเงียบเป็นตัวเลข แต่คัดจากสัญญาณรีวิวผู้ซื้อที่บันทึกไว้ตอนเก็บหลักฐานจากหน้าร้านจริงรอบ 2 ก.ค. 2026 โซนแนะนำคือรุ่นที่มีรีวิวชมเรื่องเสียงตรง ๆ เรียงตามความชัดของธีมนั้น (ชมซ้ำแค่ไหน มีตัวเลขไหม มีเงื่อนไขไหม) โซนเช็กเพิ่มคือรุ่นที่มีคำแนะนำหรือรีวิวเรื่องเสียงที่ควรอ่านก่อน ราคาที่พบใช้เป็นจุดเทียบ ไม่ใช่ราคาการันตี"
+};
+
+const scenarios = [
+  {
+    title: "ห้องนอนเด็กเล็ก หรือบ้านมีคนหลับยาก",
+    recommendedSlugs: ["mitsubishi-msy-ka-vf-series"],
+    reason: "ธีมรีวิวเรื่องความเงียบชัดที่สุดในคลัง และรีวิวระบุว่าเหมาะห้องนอนกับเด็กเล็กตรง ๆ มีแผ่นกรอง PM2.5 ในตัว แลกกับราคาต่อ BTU ที่สูงกว่าแบรนด์จีนราว 30-50%"
+  },
+  {
+    title: "อยากได้เงียบแบบมีหลักฐานยืนยันเยอะสุด",
+    recommendedSlugs: ["daikin-ftkb-sabai-series"],
+    reason: "รีวิว 6,200+ รายการย้ำซ้ำเรื่องเสียงเงียบ มีตัวเลขคอยล์ร้อน 40dB และเห็นยอดขายจริง 10พัน+ เครื่อง — จำนวนคนยืนยันมากสุดในลิสต์นี้"
+  },
+  {
+    title: "ห้องนอนคอนโด งบไม่เกินหมื่น",
+    recommendedSlugs: ["xiaomi-mijia-air-inverter-eco", "hisense-ce-series"],
+    reason: "Xiaomi (~7,924.-) รีวิวชมว่าเสียงไม่กวนห้องนอนและตั้งเวลาผ่านแอปได้ ส่วน Hisense (~8,452.-) ได้ประกันคอม 12 ปี แต่ความเงียบเป็นแบบ \"เทียบกับราคา\" ทั้งคู่ซื้อจากร้าน official"
+  },
+  {
+    title: "เปิดทั้งคืนทุกวัน อยากเงียบและประหยัดไฟด้วย",
+    recommendedSlugs: ["daikin-ftkb-sabai-series", "mitsubishi-msy-ka-vf-series"],
+    reason: "ทั้งคู่เป็นรุ่นที่รีวิวพูดทั้งเรื่องเสียงและอินเวอร์เตอร์ประหยัดไฟ ถ้าโจทย์หลักคือค่าไฟ ไปดูหน้าจัดอันดับแอร์ประหยัดไฟของเราต่อได้เลย"
+  },
+  {
+    title: "ห้องนอนใหญ่ ต้องการ BTU สูง",
+    recommendedSlugs: ["tcl-savein-ai-series"],
+    reason: "TCL มีช่วง BTU กว้างสุดถึง 24,200 แต่รุ่นนี้อยู่โซนเช็กเพิ่มของหน้านี้ — ควรเปิดรีวิวที่มีวิดีโอฟังเสียงลมและเสียงคอยล์ร้อนก่อนตัดสินใจ"
+  }
+];
+
+const faqs = [
+  {
+    q: "ร้านไม่บอกค่า dB แล้วจะรู้ได้ยังไงว่าแอร์เงียบจริง?",
+    a: "วิธีที่เราใช้เองคืออ่านรีวิวที่มีวิดีโอ เพราะได้ยินเสียงจริงทั้งเสียงลมและเสียงคอยล์ร้อน ดีกว่าเชื่อคำว่าเงียบในชื่อสินค้า ในคลังของเรามีรุ่นเดียวที่เจอตัวเลขจริงคือ Daikin FTKB ที่รีวิวระบุคอยล์ร้อน 40dB นอกนั้นใช้สัญญาณจากรีวิวผู้ซื้อ เคล็ดลับเพิ่ม: อ่านรีวิวของ BTU ขนาดที่จะซื้อจริง เพราะเสียงต่างกันตามขนาดคอมเพรสเซอร์ อย่าง Haier VQEC มีรีวิวระบุว่ารุ่น 18,000 BTU เสียงดังกว่าที่คาด ซึ่งไม่ได้บอกอะไรเกี่ยวกับรุ่น 9,000 BTU"
+  },
+  {
+    q: "ทำไมหน้านี้แบ่งเป็นโซน ไม่จัดอันดับ 1-8 ไปเลย?",
+    a: "เพราะเราไม่มีเครื่องวัดเสียงและไม่มีสินค้าจริงในมือ ถ้าเราใส่เลขอันดับละเอียด ๆ ให้ความเงียบ เท่ากับแต่งความแม่นยำที่ไม่มีจริง สิ่งที่เรามีคือสัญญาณรีวิวผู้ซื้อที่บันทึกไว้ตอนเก็บหลักฐาน เลยแบ่งได้แค่ 2 โซนอย่างซื่อสัตย์ คือรุ่นที่รีวิวชมเรื่องเสียงตรง ๆ กับรุ่นที่ควรฟังเสียงจากวิดีโอรีวิวก่อน ส่วนลำดับในโซนแนะนำเรียงตามความชัดของธีมเสียงในรีวิว เช่น Mitsubishi ที่คำชมเรื่องเงียบซ้ำมากที่สุดอยู่บนสุด"
+  },
+  {
+    q: "แอร์อินเวอร์เตอร์เกี่ยวอะไรกับความเงียบ?",
+    a: "เกี่ยวตรงจังหวะการทำงาน เครื่องอินเวอร์เตอร์ปรับรอบคอมเพรสเซอร์ขึ้นลงต่อเนื่อง ส่วนเครื่องธรรมดา (Non-Inverter) คอมจะตัดแล้วติดใหม่เป็นจังหวะ ซึ่งตอนคอมติดจะมีเสียงสะดุดที่คนหลับตื้นได้ยิน ทั้ง 6 รุ่นในโซนแนะนำเป็นอินเวอร์เตอร์หมด ในคลังเรามีเครื่องธรรมดาอยู่รุ่นเดียวคือ Panasonic YN-YKT ถ้าเสียงตอนนอนเป็นเรื่องใหญ่สำหรับคุณ รุ่นนั้นควรข้ามไป อ่านรายละเอียดได้ในหน้าแอร์ประหยัดไฟที่เราเตือนเรื่องชื่อลิสติ้งของรุ่นนี้ไว้"
+  },
+  {
+    q: "Mitsubishi แพงกว่าแบรนด์จีนเยอะ คุ้มไหมสำหรับห้องนอน?",
+    a: "ขึ้นกับว่าคุณให้ราคากับการนอนหลับแค่ไหน ตัวเลขจริงคือราคาต่อ BTU ของ Mitsubishi สูงกว่าแบรนด์จีนราว 30-50% (ราคาที่พบ ~14,668.- เทียบ Xiaomi ~7,924.- ที่รีวิวก็ชมเรื่องเสียงเหมือนกัน) สิ่งที่ได้เพิ่มคือธีมรีวิวเรื่องเงียบที่ชัดกว่า แบรนด์ และแผ่นกรอง PM2.5 ถ้างบตึง เอา Xiaomi หรือ Hisense แล้วเหลือเงินไว้จ่ายค่าติดตั้งดี ๆ อาจได้ห้องที่เงียบพอ ๆ กัน เพราะงานติดตั้งมีผลต่อเสียงมาก"
+  },
+  {
+    q: "ติดตั้งยังไงให้แอร์เงียบขึ้น?",
+    a: "สามจุดที่ควรคุยกับช่างก่อนติด (1) จุดวางคอยล์ร้อน อย่าให้แขวนบนผนังห้องนอนโดยตรงถ้าเลี่ยงได้ เพราะแรงสั่นส่งผ่านผนังเข้ามา คอนโดควรถามนิติเรื่องจุดวางที่อนุญาต (2) ขาแขวนและยางรองต้องแน่นและได้ระดับ หลายรุ่นในลิสต์นี้ไม่แถมขาแขวน เช่น Haier VQEC ต้องซื้อเพิ่มหน้างาน (3) เลือก BTU ให้ตรงห้อง แอร์ที่เล็กเกินห้องจะเร่งรอบตลอดเวลา เสียงจะดังต่อเนื่องกว่าแอร์ขนาดถูกต้องที่ได้พักรอบ ลองใช้เครื่องคิด BTU ของเราก่อนเลือกขนาด"
+  },
+  {
+    q: "ราคาในหน้านี้เชื่อได้แค่ไหน แล้ว Friendsay ได้อะไร?",
+    a: "ราคาทั้งหมดคือราคาที่เห็นจริงบนหน้า Shopee ณ รอบเก็บข้อมูล 2 ก.ค. 2026 ส่วนใหญ่เป็นราคาช่วงโปรที่เปลี่ยนได้ทุกวัน ให้ยึดราคาหน้าร้านจริงตอนคุณกดเข้าไปดู Friendsay ทำคนเดียวร่วมกับ AI ไม่มีสินค้าจริงในมือ ไม่เคยฟังเสียงเครื่องเอง ข้อมูลเรื่องเสียงทั้งหมดมาจากรีวิวผู้ซื้อที่เราบันทึกไว้ตอนเปิดหน้าสินค้าจริง ส่วน \"ไม่แสดง\" คือ Shopee ไม่โชว์ยอดขายบนหน้านั้น เราจึงไม่อ้างตัวเลขเอง และลิงก์ในเว็บเป็นลิงก์ affiliate ถ้ากดซื้อผ่านเรา เราอาจได้ค่าคอมมิชชั่นเล็กน้อยโดยคุณไม่จ่ายเพิ่ม"
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "แอร์ห้องนอนเสียงเงียบ 2026: 6 รุ่นที่รีวิวผู้ซื้อชมเรื่องเสียงจริง",
+  description:
+    "คัดแอร์ห้องนอนเสียงเงียบ 6 รุ่นจากสัญญาณรีวิวผู้ซื้อจริงบน Shopee พร้อม 2 รุ่นที่ควรฟังเสียงจากวิดีโอรีวิวก่อนซื้อ ราคา จุดระวัง ตารางเทียบ และวิธีติดตั้งให้เงียบขึ้น",
+  inLanguage: "th",
+  dateModified: "2026-07-06",
+  author: { "@type": "Organization", name: "Friendsay" },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: quietProducts.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: product.name,
+      url: `https://friendsay.com/th/best/air-conditioners-quiet-bedroom/#${product.slug}`
+    }))
+  }
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a }
+  }))
+};
+
+const allQuietPageSlugs = [...quietProducts.map((p) => p.slug), ...checkFirstProducts.map((p) => p.slug)];
+const scenarioCards = scenarios.map((s) => ({
+  ...s,
+  picks: s.recommendedSlugs.map((slug) => {
+    const inMain = quietProducts.find((x) => x.slug === slug);
+    const inCheck = checkFirstProducts.find((x) => x.slug === slug);
+    const p = inMain ?? inCheck!;
+    return { slug, shortName: p.shortName, priceShort: p.priceShort };
+  })
+}));
+
+// กราฟ: แท่งราคา (สั้น = ถูกกว่า) ของโซนแนะนำ + ป้ายรีวิว — สายเงียบงบต่างกันมาก เห็นภาพว่าจ่ายเพิ่มเพื่ออะไร
+const chartMax = Math.max(...quietProducts.map((p) => p.priceNum));
+---
+
+<BaseLayout
+  title="แอร์ห้องนอนเสียงเงียบ 2026: 6 รุ่นที่รีวิวผู้ซื้อชมเรื่องเสียงจริง | Friendsay"
+  description="แอร์ห้องนอนรุ่นไหนเงียบจริง? คัด 6 รุ่นจากสัญญาณรีวิวผู้ซื้อจริงบน Shopee เรียงตามความชัดของคำชมเรื่องเสียง พร้อม 2 รุ่นที่ควรฟังเสียงจากวิดีโอรีวิวก่อน ตารางเทียบ ราคา จุดระวัง และวิธีติดตั้งให้เงียบขึ้น อัปเดต 6 ก.ค. 2026"
+  canonical="https://friendsay.com/th/best/air-conditioners-quiet-bedroom/"
+  ogImage="/images/air-conditioners/mitsubishi-msy-ka-real-product-1.jpg"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <section class="page-hero quiet-hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge badge-coral">ห้องนอนต้องเงียบ</span>
+        <span class="badge badge-teal">อัปเดต {updatedLabel}</span>
+        <span class="badge badge-blue">คัดจากรีวิวผู้ซื้อจริง</span>
+      </div>
+      <h1>แอร์ห้องนอนเสียงเงียบ 2026: 6 รุ่นที่รีวิวผู้ซื้อชมเรื่องเสียงจริง</h1>
+      <p class="muted quiet-hero-kicker">{intro.heroKicker}</p>
+      <div class="roundup-actions">
+        <a class="button button-primary" href="#picks">ดู 6 รุ่นโซนแนะนำ</a>
+        <a class="button" href="#check-first">2 รุ่นที่ควรเช็กเพิ่ม</a>
+        <a class="button" href="/th/guides/btu-calculator/">คิด BTU ห้องนอนก่อน</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="intro">
+    <div class="container">
+      <div class="quiet-intro">
+        {intro.introParagraphs.map((para) => <p>{para}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="quick-pick">
+    <div class="container">
+      <p class="eyebrow">เลือกด่วนใน 15 วินาที</p>
+      <h2 class="headline">3 ตัวเด่น 3 โจทย์ห้องนอน</h2>
+      <div class="scenario-grid" style="margin-top: 18px;">
+        {quickPicks.map((pick) => (
+          <article class="rainy-pick-card">
+            <div class="badge-row">
+              <span class="badge badge-coral">{pick.label}</span>
+              <span class="badge badge-blue">{pick.rating.toFixed(1)}/5</span>
+            </div>
+            <a href={`#${pick.slug}`}>
+              <img class="rainy-img" src={pick.image.url} alt={pick.image.alt} loading="lazy" />
+            </a>
+            <h3>{pick.name} · {pick.priceShort}</h3>
+            <p>{pick.reason}</p>
+            <a class="button button-primary" href={`#${pick.slug}`}>ดูรายละเอียด ↓</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="picks">
+    <div class="wide-container">
+      <p class="eyebrow">โซนแนะนำ 6 รุ่น · อัปเดต {updatedLabel}</p>
+      <h2 class="headline">รุ่นที่รีวิวผู้ซื้อชมเรื่องเสียงตรง ๆ</h2>
+      <p class="muted" style="max-width: 720px;">
+        เรียงตามความชัดของธีมเสียงในรีวิวที่เราบันทึกไว้ — กดจัดเรียงใหม่หรือกรองตามงบได้
+      </p>
+
+      <div class="quiet-toolbar" role="group" aria-label="จัดเรียงและกรองรายการ">
+        <div class="quiet-sort" role="group" aria-label="จัดเรียง">
+          <span class="quiet-toolbar-label">เรียงตาม</span>
+          <button class="quiet-sort-btn is-active" type="button" data-sort="quiet">ธีมเสียงชัดสุด</button>
+          <button class="quiet-sort-btn" type="button" data-sort="price">ถูกสุดก่อน</button>
+          <button class="quiet-sort-btn" type="button" data-sort="reviews">รีวิวเยอะสุด</button>
+          <button class="quiet-sort-btn" type="button" data-sort="score">คะแนนรวม</button>
+        </div>
+        <label class="quiet-filter">
+          <input type="checkbox" id="quiet-under10k-only" />
+          <span>เฉพาะราคาที่พบต่ำกว่า 10,000 บาท</span>
+        </label>
+      </div>
+      <p class="quiet-sort-note" id="quiet-sort-note" aria-live="polite">เรียงตาม: ธีมเสียงชัดสุด · แสดง 6 รุ่น</p>
+
+      <div class="quiet-grid" id="quiet-grid">
+        {quietProducts.map((product) => (
+          <article
+            class="quiet-card"
+            id={product.slug}
+            data-rank={product.rank}
+            data-price={product.priceNum}
+            data-reviews={product.ratingsCount}
+            data-score={product.score}
+            data-under10k={product.priceNum < 10000 ? "true" : "false"}
+          >
+            <a
+              class="quiet-card-media"
+              href={product.links.shopee}
+              target="_blank"
+              rel="sponsored noopener"
+              data-affiliate-link
+              data-affiliate-store="shopee"
+              data-affiliate-context={`quiet-air-photo-${product.slug}`}
+            >
+              <span class="quiet-rank">แนะนำ #{product.rank}</span>
+              <img src={product.image.url} alt={product.image.alt} loading="lazy" />
+              <small>{product.image.note}</small>
+            </a>
+            <div class="quiet-card-body">
+              <div class="badge-row">
+                <span class="badge badge-blue">{product.rating.toFixed(1)}/5 · {product.ratingsCount.toLocaleString("th-TH")} รีวิว</span>
+                <span class="badge">{product.soldLabel === "ไม่แสดง" ? "ยอดขายไม่แสดง" : `ขายแล้ว ${product.soldLabel}`}</span>
+              </div>
+              <h3>{product.name}</h3>
+              <div class="quiet-facts">
+                <div><span>ราคาที่พบ</span><strong>{product.priceShort}</strong></div>
+                <div><span>ประกันคอมฯ</span><strong>{product.warrantyShort}</strong></div>
+              </div>
+              <p class="quiet-quote"><b>รีวิวว่าไงเรื่องเสียง:</b> {product.quietQuote}</p>
+              <p class="quiet-whofor"><b>เหมาะกับ:</b> {product.whoFor}</p>
+              <p class="quiet-watch"><b>ระวัง:</b> {product.topWatch}</p>
+              <p class="quiet-store">ร้าน: {product.storeShort}</p>
+              <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
+              <div class="quiet-actions">
+                <button class="button compare-toggle" type="button" data-air-compare-slug={product.slug}>+ เปรียบเทียบ</button>
+                <a class="button button-primary" href={product.reviewHref}>{product.reviewHref.includes("#") ? "ดูในหน้า 10 อันดับ" : "อ่านรีวิวละเอียด"}</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="check-first">
+    <div class="container">
+      <p class="eyebrow">โซนเช็กเพิ่ม</p>
+      <h2 class="headline">2 รุ่นที่ควรฟังเสียงจากวิดีโอรีวิวก่อนเอาเข้าห้องนอน</h2>
+      <p class="muted" style="max-width: 760px;">
+        ไม่ได้แปลว่าเป็นรุ่นไม่ดี — ทั้งคู่ติดอยู่ในหน้า 10 อันดับของเรา แค่มีสัญญาณรีวิวหรือคำแนะนำเรื่องเสียงที่ควรทำการบ้านก่อนตัดสินใจ
+      </p>
+      <div class="quiet-check-grid">
+        {checkFirstProducts.map((product) => (
+          <article class="quiet-check-card" id={product.slug}>
+            <img src={product.image.url} alt={product.image.alt} loading="lazy" />
+            <div>
+              <div class="badge-row">
+                <span class="badge badge-dark">เช็กเสียงก่อน</span>
+                <span class="badge badge-blue">{product.rating.toFixed(1)}/5 · {product.ratingsCount.toLocaleString("th-TH")} รีวิว</span>
+              </div>
+              <h3>{product.name} · {product.priceShort}</h3>
+              <p>{product.noiseNote}</p>
+              <div class="quiet-actions">
+                <a class="button" href={product.reviewHref}>{product.reviewHref.includes("#") ? "ดูในหน้า 10 อันดับ" : "อ่านรีวิวละเอียด"}</a>
+                <a class="button button-primary" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`quiet-air-check-${product.slug}`}>ไปฟังรีวิวมีวิดีโอบน Shopee</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="compare">
+    <div class="wide-container">
+      <p class="eyebrow">ตารางเปรียบเทียบ · อัปเดต {updatedLabel}</p>
+      <h2 class="headline">เทียบโซนแนะนำ 6 รุ่นในตาเดียว</h2>
+      <div class="compare-shell">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>แนะนำ · รุ่น</th>
+              <th>รีวิวพูดเรื่องเสียงว่า</th>
+              <th>ราคาที่พบ</th>
+              <th>รีวิว Shopee</th>
+              <th>ประกันคอมฯ</th>
+              <th>เช็กราคา</th>
+            </tr>
+          </thead>
+          <tbody>
+            {quietProducts.map((product) => (
+              <tr>
+                <td>
+                  <strong>#{product.rank} {product.shortName}</strong>
+                  <br />
+                  <a class="compare-detail-link" href={`#${product.slug}`}>ดูรายละเอียด ↑</a>
+                </td>
+                <td class={product.rank === 1 ? "is-best" : undefined}>{product.quietQuote.split("—")[0].trim()}</td>
+                <td class={product.priceNum === minPrice ? "is-best" : undefined}>{product.priceShort}</td>
+                <td class={product.ratingsCount === maxReviews ? "is-best" : undefined}>{product.rating.toFixed(1)} ★ ({product.ratingsCount.toLocaleString("th-TH")})</td>
+                <td class={product.slug === bestWarrantySlug ? "is-best" : undefined}>{product.warrantyShort}</td>
+                <td>
+                  <a class="button button-primary compare-buy" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`quiet-air-table-${product.slug}`}>Shopee</a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">
+        ✓ เขียว = ค่าที่ดีที่สุดของคอลัมน์ (คอลัมน์เสียง = ธีมรีวิวชัดสุด) · คำในคอลัมน์เสียงสรุปจากสัญญาณรีวิวที่บันทึกไว้จริง ·
+        ราคา ณ รอบเก็บข้อมูล {dataRoundLabel} ส่วนใหญ่เป็นราคาช่วงโปร เปลี่ยนได้ทุกวัน
+      </p>
+
+      <h3 class="headline" style="margin-top: 36px; font-size: 1.3rem;">สายเงียบจ่ายต่างกันแค่ไหน (ราคาที่พบ)</h3>
+      <div class="rainy-chart" role="img" aria-label="กราฟแท่งเทียบราคาที่พบของแอร์โซนแนะนำ 6 รุ่น สั้นกว่าคือถูกกว่า">
+        <svg viewBox={`0 0 900 ${quietProducts.length * 46 + 10}`}>
+          {quietProducts.map((product, i) => {
+            const y = i * 46 + 8;
+            const barW = Math.max(40, (product.priceNum / chartMax) * 470);
+            return (
+              <g class="rainy-bar" style={`animation-delay:${i * 90}ms`}>
+                <text x="0" y={y + 19} class="rainy-bar-name">{product.shortName}</text>
+                <rect x="215" y={y} width={barW} height="28" rx="8" fill={product.priceNum === minPrice ? "#0ea5a0" : "#ff6b5a"} opacity="0.85" />
+                <text x={222 + barW} y={y + 19} class="rainy-bar-value">{product.priceShort.replace("~", "")} · {product.ratingsCount.toLocaleString("th-TH")} รีวิว</text>
+              </g>
+            );
+          })}
+        </svg>
+        <p class="compare-note">
+          ความยาวแท่ง = ราคาที่พบ (สั้น = ถูกกว่า) · <span style="color:#0ea5a0">■</span> ถูกสุดในโซนแนะนำ · เรียงตามลำดับแนะนำของหน้านี้ —
+          จะเห็นว่ารุ่นที่ธีมเงียบชัดสุด 2 ตัวบนคือกลุ่มราคาสูง ส่วนงบต่ำหมื่นก็มีตัวที่รีวิวชมเรื่องเสียงเหมือนกัน
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="which-one">
+    <div class="container">
+      <p class="eyebrow">เลือกตามโจทย์ของคุณ</p>
+      <h2 class="headline">บอกสถานการณ์มา เดี๋ยวชี้รุ่นให้</h2>
+      <div class="scenario-grid">
+        {scenarioCards.map((sc) => (
+          <article>
+            <h3>{sc.title}</h3>
+            <p>
+              เอา {sc.picks.map((pick, idx) => (
+                <>{idx > 0 ? " หรือ " : ""}<a href={`#${pick.slug}`}>{pick.shortName}</a> ({pick.priceShort})</>
+              ))} — {sc.reason}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how-we-picked">
+    <div class="container">
+      <p class="eyebrow">เกณฑ์การคัด</p>
+      <h2 class="headline">ทำไมไม่ให้คะแนนความเงียบเป็นตัวเลข</h2>
+      <p class="muted" style="max-width: 760px;">{intro.methodologyNote}</p>
+    </div>
+  </section>
+
+  <section class="section band" id="faq">
+    <div class="container">
+      <p class="eyebrow">ก่อนกดซื้อ</p>
+      <h2 class="headline">คำถามที่คนหาแอร์ห้องนอนถามบ่อย</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+      <div class="roundup-actions" style="margin-top: 24px;">
+        <a class="button button-primary" href="/th/best/air-conditioners/">ดูครบ 10 อันดับแอร์ →</a>
+        <a class="button" href="/th/best/air-conditioners-energy-saving/">เปิดทั้งคืน? ดูอันดับแอร์ประหยัดไฟ</a>
+        <a class="button" href="/th/best/air-conditioners-under-10000/">งบไม่ถึงหมื่น? ดูเฉพาะแอร์ต่ำกว่า 10,000</a>
+        <a class="button" href="/th/guides/btu-calculator/">เครื่องคิด BTU</a>
+      </div>
+      <p class="compare-note" style="margin-top: 18px;">
+        ราคาและสถานะสินค้าเก็บจากหน้า Shopee จริงรอบวันที่ {dataRoundLabel} · เฉพาะรุ่นที่มีตัวเลขยอดขาย (Daikin, Hisense, Mitsubishi, Panasonic) คือตัวเลขที่แสดงบนหน้าร้านจริง ไม่ใช่การประมาณ ส่วนรุ่นที่ Shopee ไม่โชว์ยอดขาย เราไม่อ้างตัวเลขเอง ·
+        อ่านมาตรฐานรีวิวของเราได้ที่ <a href="/editorial-policy/">Editorial Policy</a> · ความโปร่งใส affiliate ที่ <a href="/affiliate-disclosure/">หน้านโยบาย</a>
+      </p>
+    </div>
+  </section>
+
+  <AirCompareTray products={airConditioners} />
+  <AffiliateClickTracker />
+
+  <script is:inline>
+    (() => {
+      const grid = document.getElementById("quiet-grid");
+      const note = document.getElementById("quiet-sort-note");
+      const under10kOnly = document.getElementById("quiet-under10k-only");
+      if (!grid) return;
+
+      const cards = Array.from(grid.children);
+      const sortButtons = Array.from(document.querySelectorAll("[data-sort]"));
+      const num = (card, key) => Number(card.getAttribute("data-" + key) || 0);
+      const sortLabels = { quiet: "ธีมเสียงชัดสุด", price: "ราคาถูกสุดก่อน", reviews: "รีวิวเยอะสุด", score: "คะแนนรวม" };
+      let currentSort = "quiet";
+
+      const apply = () => {
+        const onlyUnder10k = under10kOnly && under10kOnly.checked;
+
+        const sorted = cards.slice().sort((a, b) => {
+          if (currentSort === "price") return num(a, "price") - num(b, "price");
+          if (currentSort === "reviews") return num(b, "reviews") - num(a, "reviews");
+          if (currentSort === "score") return num(b, "score") - num(a, "score");
+          // quiet: ลำดับแนะนำของหน้า (rank น้อย = ธีมเสียงชัดกว่า)
+          return num(a, "rank") - num(b, "rank");
+        });
+
+        let visible = 0;
+        sorted.forEach((card) => {
+          const show = !onlyUnder10k || card.getAttribute("data-under10k") === "true";
+          card.hidden = !show;
+          if (show) {
+            visible += 1;
+            card.classList.remove("quiet-pop");
+            // reflow เพื่อรีสตาร์ท animation
+            void card.offsetWidth;
+            card.classList.add("quiet-pop");
+          }
+          grid.appendChild(card);
+        });
+
+        if (note) {
+          note.textContent = `เรียงตาม: ${sortLabels[currentSort]}` + (onlyUnder10k ? " · เฉพาะราคาที่พบต่ำกว่า 10,000 บาท" : "") + ` · แสดง ${visible} รุ่น`;
+        }
+      };
+
+      sortButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          currentSort = btn.getAttribute("data-sort") || "quiet";
+          sortButtons.forEach((b) => b.classList.toggle("is-active", b === btn));
+          apply();
+        });
+      });
+      if (under10kOnly) under10kOnly.addEventListener("change", apply);
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .quiet-hero {
+    background:
+      radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.55), transparent 70%),
+      linear-gradient(180deg, #fff8ee, #fffdf8);
+  }
+
+  .quiet-hero-kicker {
+    max-width: 760px;
+    font-size: 1.06rem;
+  }
+
+  .quiet-intro {
+    display: grid;
+    gap: 14px;
+    max-width: 820px;
+  }
+
+  .quiet-intro p {
+    margin: 0;
+    color: #3f4e5c;
+    font-size: 1.04rem;
+    line-height: 1.75;
+  }
+
+  .quiet-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 22px;
+    padding: 14px 16px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .quiet-sort {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .quiet-toolbar-label {
+    color: var(--muted);
+    font-size: 0.86rem;
+    font-weight: 800;
+  }
+
+  .quiet-sort-btn {
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: #fff;
+    padding: 9px 15px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: transform 160ms ease, border-color 160ms ease, color 160ms ease, background 160ms ease;
+  }
+
+  .quiet-sort-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 107, 90, 0.5);
+    color: var(--coral-dark);
+  }
+
+  .quiet-sort-btn.is-active {
+    border-color: transparent;
+    background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+    color: #fff;
+  }
+
+  .quiet-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .quiet-filter input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--coral);
+    cursor: pointer;
+  }
+
+  .quiet-sort-note {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .quiet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .quiet-card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.22s ease;
+  }
+
+  .quiet-card[hidden] {
+    display: none;
+  }
+
+  .quiet-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px -22px rgba(31, 24, 16, 0.32);
+  }
+
+  .quiet-card-media {
+    position: relative;
+    display: block;
+    background: linear-gradient(135deg, #ffffff, #f5faf9);
+    border-bottom: 1px solid rgba(223, 208, 186, 0.6);
+  }
+
+  .quiet-card-media img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3.2;
+    object-fit: contain;
+    padding: 16px;
+    transition: transform 220ms ease;
+  }
+
+  .quiet-card-media:hover img {
+    transform: scale(1.04);
+  }
+
+  .quiet-rank {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+    border-radius: 999px;
+    background: rgba(23, 32, 42, 0.92);
+    padding: 6px 13px;
+    color: #fff;
+    font-size: 0.98rem;
+    font-weight: 950;
+  }
+
+  .quiet-card-media small {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    max-width: 62%;
+    color: rgba(31, 41, 55, 0.5);
+    font-size: 0.66rem;
+    line-height: 1.25;
+    text-align: right;
+  }
+
+  .quiet-card-body {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 18px;
+  }
+
+  .quiet-card-body h3 {
+    margin: 0;
+    font-size: 1.12rem;
+    line-height: 1.25;
+  }
+
+  .quiet-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    border-radius: 10px;
+    background: rgba(255, 214, 186, 0.2);
+    padding: 12px;
+  }
+
+  .quiet-facts span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 800;
+  }
+
+  .quiet-facts strong {
+    font-size: 0.94rem;
+    line-height: 1.2;
+  }
+
+  .quiet-quote,
+  .quiet-whofor,
+  .quiet-watch {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .quiet-quote {
+    border-left: 3px solid #0ea5a0;
+    padding-left: 10px;
+    color: #26514e;
+  }
+
+  .quiet-watch {
+    border-left: 3px solid var(--coral);
+    padding-left: 10px;
+    color: #6b4a44;
+  }
+
+  .quiet-store {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .quiet-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .quiet-actions .button {
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .quiet-check-grid {
+    display: grid;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .quiet-check-card {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .quiet-check-card img {
+    width: 100%;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffffff, #f5faf9);
+    object-fit: contain;
+    aspect-ratio: 4 / 3.2;
+    padding: 10px;
+    border: 1px solid rgba(223, 208, 186, 0.6);
+  }
+
+  .quiet-check-card h3 {
+    margin: 10px 0 8px;
+    font-size: 1.15rem;
+  }
+
+  .quiet-check-card p {
+    margin: 0 0 14px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #3f4e5c;
+  }
+
+  .quiet-check-card .quiet-actions .button {
+    flex: 0 1 auto;
+  }
+
+  @keyframes quiet-pop {
+    from { opacity: 0; transform: translateY(12px) scale(0.99); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .quiet-pop {
+    animation: quiet-pop 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .quiet-pop { animation: none; }
+  }
+
+  @media (max-width: 980px) {
+    .quiet-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quiet-check-card {
+      grid-template-columns: 1fr;
+    }
+
+    .quiet-check-card img {
+      max-width: 320px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .quiet-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .quiet-toolbar {
+      justify-content: flex-start;
+    }
+  }
+</style>
