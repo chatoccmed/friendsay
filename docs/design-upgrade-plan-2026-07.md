@@ -80,6 +80,17 @@
 - [ ] 6. Refresh หม้อทอด/น้ำอุ่นให้ถึงมาตรฐานก่อนกลับขึ้นเมนูเด่น
 - [ ] 7. กติกาลิงก์: ทุกหน้าใหม่ต้องมีทางเข้า ≥3 ทาง (เมนู/หน้าแรก/footer บทความล่าสุด) — ห้ามมีหน้า orphan
 
+## Tone Unification (2026-07-05 — เจ้าของอนุมัติจาก hero หน้าแรกใหม่: "ปรับทั้งเว็บให้ออกโทนสีและแบบอักษรแบบนี้")
+
+ภาษากลางของทั้งเว็บ = โทนครีม-พีชของ hero หน้าแรก:
+- พื้นหลัง hero ทุกแบบ: `radial-gradient(1100px 480px at 50% -80px, rgba(255,214,186,.5), transparent 70%) + linear-gradient(180deg, paper-strong, paper)`
+- hero ที่มีภาพ: เปลี่ยนชั้นเงามืดเป็น "cream wash" (ครีมทึบฝั่งตัวหนังสือ → จางฝั่งภาพ) ตัวหนังสือ ink/muted
+- การ์ดบน hero: ขาวทึบ `rgba(255,255,255,.92)` + เส้นขอบ line + เงา soft (เลิกใช้ glass มืด)
+- ปุ่มทั้งเว็บ: ทรง pill (`border-radius: 999px`) รวม scoped styles ทุก template
+- ฟอนต์: Anuphan ขึ้นเป็นตัวแรกใน `--font-sans`/`--font-display` (ก่อนหน้านี้มีแค่ที่ body ทำให้โลโก้ header หลุดเป็น system font)
+- ink เข้มยังใช้ได้เป็น "จุดเน้น" เท่านั้น: แถบตัวเลขหน้าแรก, footer, การ์ด CTA กลางบทความ, ปุ่ม dark
+- แปลงแล้ว: roundup-hero (แอร์/หม้อทอด/น้ำอุ่น), air-review-hero (รีวิวเดี่ยว+คิว [slug]), review-hero+fridge-hero (ตู้เย็น), air-library-hero, legacy-hero, compare-page-hero
+
 ## กติกา Motion Language (ใช้ทุกชิ้นใหม่)
 
 - เข้าฉาก: fade + translateY 14px, 600ms, cubic-bezier(.22,.61,.36,1), stagger 70ms

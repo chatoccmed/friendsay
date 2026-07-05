@@ -469,8 +469,10 @@ const breadcrumbJsonLd = {
     position: relative;
     overflow: hidden;
     min-height: min(800px, calc(100vh - 82px));
-    background: #111d27;
-    color: #fff;
+    background:
+      radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.5), transparent 70%),
+      linear-gradient(180deg, #fff8ee, #fffdf8);
+    color: #17202a;
   }
 
   .review-hero__media,
@@ -485,14 +487,14 @@ const breadcrumbJsonLd = {
   .review-hero__media img {
     object-fit: cover;
     object-position: 64% center;
-    opacity: 0.58;
+    opacity: 0.9;
     filter: saturate(0.92) contrast(1.03);
   }
 
   .review-hero__overlay {
     background:
-      linear-gradient(90deg, rgba(17, 29, 39, 0.96), rgba(17, 29, 39, 0.76) 45%, rgba(17, 29, 39, 0.25)),
-      linear-gradient(180deg, rgba(255, 107, 90, 0.1), rgba(17, 29, 39, 0.76));
+      linear-gradient(90deg, rgba(255, 253, 248, 0.97), rgba(255, 248, 238, 0.9) 45%, rgba(255, 244, 234, 0.5)),
+      linear-gradient(180deg, rgba(255, 240, 234, 0.4), rgba(255, 253, 248, 0.92));
   }
 
   .hero-grid {
@@ -507,7 +509,7 @@ const breadcrumbJsonLd = {
   }
 
   .eyebrow {
-    color: #ff7a68;
+    color: #d64c41;
     font-size: 0.78rem;
     font-weight: 950;
     letter-spacing: 0;
@@ -534,7 +536,7 @@ const breadcrumbJsonLd = {
   .hero-copy p {
     max-width: 770px;
     margin: 0;
-    color: rgba(255, 255, 255, 0.84);
+    color: #4a5a68;
     font-size: clamp(17px, 1.75vw, 23px);
   }
 
@@ -552,7 +554,7 @@ const breadcrumbJsonLd = {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
+    border-radius: 999px;
     padding: 12px 18px;
     font-weight: 950;
     text-decoration: none;
@@ -565,16 +567,17 @@ const breadcrumbJsonLd = {
   }
 
   .secondary-link {
-    border: 1px solid rgba(255, 255, 255, 0.38);
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    border: 1px solid rgba(23, 32, 42, 0.22);
+    background: rgba(255, 255, 255, 0.85);
+    color: #17202a;
   }
 
   .hero-card {
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    border: 1px solid rgba(223, 208, 186, 0.9);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.13);
+    background: rgba(255, 255, 255, 0.92);
     padding: 16px;
+    box-shadow: 0 14px 40px rgba(23, 32, 42, 0.1);
     backdrop-filter: blur(18px);
   }
 
@@ -593,7 +596,7 @@ const breadcrumbJsonLd = {
   }
 
   .hero-card span {
-    color: #ffdfd7;
+    color: #d64c41;
     font-weight: 950;
   }
 
@@ -605,7 +608,7 @@ const breadcrumbJsonLd = {
   }
 
   .hero-card p {
-    color: rgba(255, 255, 255, 0.78);
+    color: #617080;
   }
 
   .sticky-buy {

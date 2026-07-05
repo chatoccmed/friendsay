@@ -18,8 +18,8 @@
   --shadow-soft: 0 14px 40px rgba(23, 32, 42, 0.1);
   --shadow-hairline: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
   --radius: 8px;
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Sukhumvit Set", "Segoe UI", "Noto Sans Thai", "Leelawadee UI", "Helvetica Neue", Arial, sans-serif;
-  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Sukhumvit Set", "Segoe UI", "Noto Sans Thai", "Leelawadee UI", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Anuphan", "IBM Plex Sans Thai Looped", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Sukhumvit Set", "Segoe UI", "Noto Sans Thai", "Leelawadee UI", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Anuphan", "IBM Plex Sans Thai Looped", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Sukhumvit Set", "Segoe UI", "Noto Sans Thai", "Leelawadee UI", "Helvetica Neue", Arial, sans-serif;
   color-scheme: light;
   font-family: var(--font-sans);
   background: var(--paper);
@@ -434,7 +434,7 @@ button {
   justify-content: center;
   gap: 8px;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 999px;
   background: #fff;
   color: var(--ink);
   font-weight: 700;
@@ -1671,7 +1671,9 @@ button {
   min-height: min(650px, calc(100svh - 84px));
   overflow: hidden;
   border-bottom: 1px solid rgba(223, 208, 186, 0.72);
-  background: #111820;
+  background:
+    radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.5), transparent 70%),
+    linear-gradient(180deg, var(--paper-strong), var(--paper));
 }
 
 .roundup-hero-image {
@@ -1688,14 +1690,14 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(17, 24, 32, 0.94) 0%, rgba(17, 24, 32, 0.78) 42%, rgba(17, 24, 32, 0.24) 100%),
-    linear-gradient(0deg, rgba(17, 24, 32, 0.72), rgba(17, 24, 32, 0.08) 48%, rgba(17, 24, 32, 0.24));
+    linear-gradient(90deg, rgba(255, 253, 248, 0.97) 0%, rgba(255, 248, 238, 0.9) 44%, rgba(255, 244, 234, 0.55) 72%, rgba(255, 228, 208, 0.36) 100%),
+    linear-gradient(0deg, rgba(255, 253, 248, 0.96), rgba(255, 253, 248, 0.12) 46%, rgba(255, 240, 224, 0.3));
 }
 
 .roundup-hero::after {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.052) 0 1px, transparent 1px 120px);
+  background: repeating-linear-gradient(90deg, rgba(23, 32, 42, 0.035) 0 1px, transparent 1px 120px);
   content: "";
   pointer-events: none;
 }
@@ -1713,7 +1715,7 @@ button {
 
 .roundup-hero-copy {
   max-width: 900px;
-  color: #fff;
+  color: var(--ink);
 }
 
 .roundup-hero-copy h1 {
@@ -1726,7 +1728,7 @@ button {
 
 .roundup-hero-copy p {
   max-width: 680px;
-  color: rgba(255, 255, 255, 0.78);
+  color: #4a5a68;
   font-size: clamp(1.04rem, 1.6vw, 1.2rem);
 }
 
@@ -1738,18 +1740,18 @@ button {
 }
 
 .roundup-panel {
-  border: 1px solid rgba(255, 255, 255, 0.23);
+  border: 1px solid rgba(223, 208, 186, 0.9);
   border-radius: var(--radius);
-  background: rgba(255, 253, 248, 0.12);
+  background: rgba(255, 255, 255, 0.92);
   padding: 22px;
-  color: #fff;
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.32);
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
   backdrop-filter: blur(20px);
 }
 
 .roundup-panel > span {
   display: block;
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--coral-dark);
   font-size: 0.78rem;
   font-weight: 950;
   letter-spacing: 0;
@@ -1773,7 +1775,7 @@ button {
   grid-template-columns: 58px 1fr;
   gap: 10px 12px;
   align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid var(--line);
   padding-top: 12px;
 }
 
@@ -1784,6 +1786,7 @@ button {
   place-items: center;
   border-radius: 50%;
   background: rgba(255, 107, 90, 0.95);
+  color: #fff;
   font-weight: 950;
 }
 
@@ -1794,7 +1797,7 @@ button {
 .roundup-picks small {
   grid-column: 2;
   margin-top: -10px;
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--muted);
 }
 
 .roundup-signal-band {
@@ -3716,9 +3719,8 @@ body:has(.air-sticky-buy) .compare-floating-tray {
 .compare-page-hero {
   border-bottom: 1px solid rgba(223, 208, 186, 0.78);
   background:
-    radial-gradient(circle at 12% 12%, rgba(46, 196, 182, 0.18), transparent 30%),
-    radial-gradient(circle at 90% 0%, rgba(255, 107, 90, 0.16), transparent 28%),
-    linear-gradient(135deg, #fffdf8, #f2faf7);
+    radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.5), transparent 70%),
+    linear-gradient(180deg, var(--paper-strong), var(--paper));
 }
 
 .compare-page-hero-inner {
@@ -4416,16 +4418,16 @@ body:has(.air-sticky-buy) .compare-floating-tray {
   overflow: hidden;
   border-bottom: 1px solid var(--line);
   background:
-    linear-gradient(120deg, rgba(17, 24, 32, 0.95), rgba(30, 78, 77, 0.86)),
-    #111820;
-  color: #fff;
+    radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.5), transparent 70%),
+    linear-gradient(180deg, var(--paper-strong), var(--paper));
+  color: var(--ink);
   padding: clamp(42px, 7vw, 86px) 0;
 }
 
 .legacy-hero::after {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 28px);
+  background: repeating-linear-gradient(135deg, rgba(23, 32, 42, 0.04) 0 1px, transparent 1px 28px);
   content: "";
   pointer-events: none;
 }
@@ -4442,14 +4444,14 @@ body:has(.air-sticky-buy) .compare-floating-tray {
 .legacy-copy h1 {
   max-width: 980px;
   margin: 14px 0 14px;
-  color: #fff;
+  color: var(--ink);
   font-size: clamp(2.4rem, 5.8vw, 5.6rem);
   line-height: 0.98;
 }
 
 .legacy-copy p {
   max-width: 760px;
-  color: rgba(255, 255, 255, 0.78);
+  color: #4a5a68;
   font-size: 1.08rem;
 }
 
@@ -4462,10 +4464,10 @@ body:has(.air-sticky-buy) .compare-floating-tray {
 
 .legacy-product-figure {
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(223, 208, 186, 0.9);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.24);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-soft);
   backdrop-filter: blur(16px);
 }
 
@@ -4479,7 +4481,7 @@ body:has(.air-sticky-buy) .compare-floating-tray {
 }
 
 .legacy-product-figure figcaption {
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
   font-size: 0.82rem;
   line-height: 1.45;
   padding: 12px 14px 14px;
@@ -4623,9 +4625,9 @@ body:has(.air-sticky-buy) .compare-floating-tray {
 }
 
 .legacy-dashboard div {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(223, 208, 186, 0.9);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.92);
   padding: 16px;
   backdrop-filter: blur(14px);
 }
@@ -4633,7 +4635,7 @@ body:has(.air-sticky-buy) .compare-floating-tray {
 .legacy-dashboard span,
 .legacy-dashboard small {
   display: block;
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
   font-size: 0.8rem;
   font-weight: 850;
 }
@@ -4641,7 +4643,7 @@ body:has(.air-sticky-buy) .compare-floating-tray {
 .legacy-dashboard strong {
   display: block;
   margin: 6px 0 2px;
-  color: #fff;
+  color: var(--ink);
   font-size: 2.4rem;
   line-height: 1;
 }
@@ -5835,7 +5837,9 @@ body:has(.air-sticky-buy) .compare-floating-tray {
   position: relative;
   min-height: min(640px, calc(100svh - 70px));
   overflow: hidden;
-  background: #f3eee7;
+  background:
+    radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.5), transparent 70%),
+    linear-gradient(180deg, var(--paper-strong), var(--paper));
 }
 
 .air-hero-image-link img {
@@ -5851,8 +5855,8 @@ body:has(.air-sticky-buy) .compare-floating-tray {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(12, 17, 24, 0.82) 0%, rgba(12, 17, 24, 0.66) 38%, rgba(12, 17, 24, 0.2) 72%, rgba(12, 17, 24, 0.04)),
-    linear-gradient(0deg, rgba(12, 17, 24, 0.42), rgba(12, 17, 24, 0.04) 52%);
+    linear-gradient(90deg, rgba(255, 253, 248, 0.97) 0%, rgba(255, 248, 238, 0.88) 38%, rgba(255, 244, 234, 0.5) 72%, rgba(255, 228, 208, 0.32)),
+    linear-gradient(0deg, rgba(255, 253, 248, 0.94), rgba(255, 253, 248, 0.1) 52%);
 }
 
 .air-review-hero-inner {
@@ -5868,7 +5872,7 @@ body:has(.air-sticky-buy) .compare-floating-tray {
 
 .air-review-title {
   max-width: 760px;
-  color: #fff;
+  color: var(--ink);
 }
 
 .air-review-title h1 {
@@ -5884,7 +5888,7 @@ body:has(.air-sticky-buy) .compare-floating-tray {
   display: -webkit-box;
   overflow: hidden;
   max-width: 660px;
-  color: rgba(255, 255, 255, 0.78);
+  color: #4a5a68;
   font-size: 1.06rem;
   font-weight: 430;
   line-height: 1.64;
@@ -7496,8 +7500,8 @@ body:has(.air-sticky-buy) .compare-floating-tray {
 
   .air-review-shade {
     background:
-      linear-gradient(90deg, rgba(13, 19, 27, 0.9), rgba(13, 19, 27, 0.72) 62%, rgba(13, 19, 27, 0.28)),
-      linear-gradient(0deg, rgba(13, 19, 27, 0.68), rgba(13, 19, 27, 0.08) 48%);
+      linear-gradient(90deg, rgba(255, 253, 248, 0.96), rgba(255, 248, 238, 0.88) 62%, rgba(255, 244, 234, 0.6)),
+      linear-gradient(0deg, rgba(255, 253, 248, 0.94), rgba(255, 253, 248, 0.3) 48%);
   }
 
   .air-review-hero-inner {

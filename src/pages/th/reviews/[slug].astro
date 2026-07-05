@@ -1174,7 +1174,7 @@ const jsonLd = {
     justify-content: center;
     padding: 0 18px;
     border: 1px solid #e6d5bf;
-    border-radius: 8px;
+    border-radius: 999px;
     background: rgba(255, 255, 255, 0.86);
     color: var(--ink);
     font-family: inherit;
@@ -1185,7 +1185,12 @@ const jsonLd = {
     cursor: pointer;
   }
 
-  .button-primary,
+  .button-primary {
+    border-color: transparent;
+    background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+    color: #fff;
+  }
+
   .button-dark,
   .compare-hero-button {
     border-color: transparent;
@@ -1203,7 +1208,9 @@ const jsonLd = {
     position: relative;
     min-height: calc(100vh - 94px);
     overflow: hidden;
-    background: #121d2b;
+    background:
+      radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.5), transparent 70%),
+      linear-gradient(180deg, #fff8ee, #fffdf8);
   }
 
   .air-hero-image-link {
@@ -1222,8 +1229,8 @@ const jsonLd = {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(90deg, rgba(10, 18, 28, 0.66) 0%, rgba(10, 18, 28, 0.48) 44%, rgba(10, 18, 28, 0.06) 100%),
-      linear-gradient(180deg, rgba(255, 253, 248, 0.12), rgba(10, 18, 28, 0.3));
+      linear-gradient(90deg, rgba(255, 253, 248, 0.97) 0%, rgba(255, 248, 238, 0.88) 44%, rgba(255, 244, 234, 0.5) 100%),
+      linear-gradient(180deg, rgba(255, 253, 248, 0.35), rgba(255, 253, 248, 0.92));
   }
 
   .air-review-hero-inner {
@@ -1251,16 +1258,15 @@ const jsonLd = {
   .air-review-title h1 {
     max-width: 980px;
     margin: 14px 0 20px;
-    color: #fff;
+    color: var(--ink);
     font-size: clamp(42px, 5.15vw, 82px);
     line-height: 1.04;
     letter-spacing: 0;
-    text-shadow: 0 14px 42px rgba(0, 0, 0, 0.32);
   }
 
   .air-review-title p:not(.eyebrow) {
     max-width: 850px;
-    color: rgba(255, 255, 255, 0.88);
+    color: #4a5a68;
     font-size: clamp(17px, 1.45vw, 22px);
     line-height: 1.72;
     font-weight: 680;
@@ -2032,7 +2038,7 @@ const jsonLd = {
     min-height: 48px;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
+    border-radius: 999px;
     color: #fff;
     font-weight: 950;
     text-decoration: none;

@@ -410,8 +410,10 @@ const pageDescription =
     position: relative;
     min-height: min(780px, calc(100vh - 84px));
     overflow: hidden;
-    background: #101b2a;
-    color: #fff;
+    background:
+      radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.5), transparent 70%),
+      linear-gradient(180deg, #fff8ee, #fffdf8);
+    color: #17202a;
   }
 
   .air-library-hero__media,
@@ -431,8 +433,8 @@ const pageDescription =
 
   .air-library-hero__overlay {
     background:
-      linear-gradient(90deg, rgba(10, 18, 28, 0.94), rgba(10, 18, 28, 0.74) 42%, rgba(10, 18, 28, 0.2)),
-      linear-gradient(180deg, rgba(255, 107, 90, 0.1), rgba(16, 27, 42, 0.82));
+      linear-gradient(90deg, rgba(255, 253, 248, 0.97), rgba(255, 248, 238, 0.9) 42%, rgba(255, 244, 234, 0.5)),
+      linear-gradient(180deg, rgba(255, 240, 234, 0.4), rgba(255, 253, 248, 0.92));
   }
 
   .hero-grid {
@@ -447,7 +449,7 @@ const pageDescription =
   }
 
   .eyebrow {
-    color: #ff7a68;
+    color: #d64c41;
     font-size: 0.78rem;
     font-weight: 950;
     letter-spacing: 0;
@@ -469,7 +471,7 @@ const pageDescription =
   .hero-copy p {
     max-width: 780px;
     margin: 0;
-    color: rgba(255, 255, 255, 0.82);
+    color: #4a5a68;
     font-size: clamp(17px, 1.8vw, 23px);
     line-height: 1.65;
   }
@@ -494,7 +496,7 @@ const pageDescription =
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
+    border-radius: 999px;
     padding: 12px 18px;
     font-weight: 950;
     text-decoration: none;
@@ -506,9 +508,9 @@ const pageDescription =
   }
 
   .button-ghost {
-    border: 1px solid rgba(255, 255, 255, 0.42);
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    border: 1px solid rgba(23, 32, 42, 0.22);
+    background: rgba(255, 255, 255, 0.85);
+    color: #17202a;
   }
 
   .hero-board {
@@ -517,10 +519,11 @@ const pageDescription =
   }
 
   .hero-board div {
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    border: 1px solid rgba(223, 208, 186, 0.9);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.92);
     padding: 22px;
+    box-shadow: 0 14px 40px rgba(23, 32, 42, 0.1);
     backdrop-filter: blur(16px);
   }
 
@@ -532,7 +535,7 @@ const pageDescription =
   }
 
   .hero-board strong {
-    color: rgba(255, 255, 255, 0.78);
+    color: #617080;
   }
 
   .library-strip,
