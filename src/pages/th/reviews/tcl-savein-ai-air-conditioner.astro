@@ -482,6 +482,11 @@ const jsonLd = {
             ))}
           </div>
 
+          <figure class="air-pullquote">
+            <blockquote>{realReviewSnapshots[0].quote}</blockquote>
+            <figcaption>{realReviewSnapshots[0].date} · {realReviewSnapshots[0].variation}</figcaption>
+          </figure>
+
           <div class="air-real-review-grid" aria-label="คำแนะนำจากรีวิวผู้ซื้อ 6 ข้อ">
             {realReviewSnapshots.map((item) => (
               <article>

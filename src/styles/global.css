@@ -8829,3 +8829,42 @@ a.home-roadmap-card:hover {
     stroke-dashoffset: var(--ring-offset, 0);
   }
 }
+
+/* ============================================================
+   Pull-quote รีวิวจริงบนหน้ารีวิวเดี่ยว (Audit 2 ข้อ 4 — 2026-07-06)
+   ยกคำแนะนำเด่นจาก realReviewSnapshots ขึ้นเป็น quote ใหญ่
+   ============================================================ */
+
+.air-pullquote {
+  margin: 30px 0 20px;
+  padding: 8px 0 8px 24px;
+  border-left: 4px solid var(--coral);
+}
+
+.air-pullquote blockquote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.air-pullquote blockquote::before {
+  content: "\201C";
+  margin-right: 2px;
+  color: var(--coral);
+}
+
+.air-pullquote blockquote::after {
+  content: "\201D";
+  margin-left: 2px;
+  color: var(--coral);
+}
+
+.air-pullquote figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
