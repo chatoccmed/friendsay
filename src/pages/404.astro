@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// หน้า 404 คือด่านรับ URL ยุค WordPress เก่าหลังย้ายโดเมน — ต้องพาไปต่อให้ได้เสมอ ห้ามเป็นทางตัน
+const popularLinks = [
+  { href: "/th/best/air-conditioners/", label: "แอร์ยี่ห้อไหนดี 2026", note: "10 อันดับจากหลักฐานจริง" },
+  { href: "/th/best/rainy-season-gear/", label: "ของสู้หน้าฝน 2026", note: "7 ตัวช่วยผ้าแห้ง บ้านไม่ขึ้นรา" },
+  { href: "/th/guides/btu-calculator/", label: "เครื่องคิด BTU", note: "ห้องคุณต้องใช้กี่ BTU ใน 30 วินาที" },
+  { href: "/th/compare/air-conditioners/", label: "เปรียบเทียบแอร์", note: "เทียบ 2-4 รุ่นแบบเพื่อนช่วยเลือก" }
+];
+---
+
+<BaseLayout
+  title="ไม่พบหน้านี้ (404) | Friendsay"
+  description="หน้าที่คุณหาไม่มีอยู่หรือถูกย้ายแล้ว — ค้นหาจากของที่เราตรวจหลักฐานแล้ว หรือเริ่มจากหน้ายอดนิยม"
+  noindex={true}
+>
+  <section class="home-search-hero not-found-hero">
+    <div class="container home-search-inner">
+      <p class="eyebrow">404 — ไม่พบหน้านี้</p>
+      <h1 class="not-found-title">หน้านี้ไม่อยู่แล้ว แต่ของที่คุณหาอาจยังอยู่</h1>
+      <p class="home-search-kicker">ลองพิมพ์สิ่งที่กำลังหา เดี๋ยวเพื่อนเช็กหลักฐานให้</p>
+      <form class="home-search-form" role="search" action="/th/" method="get">
+        <input name="q" type="search" placeholder="เช่น แอร์ราคาต่ำกว่า 10000" aria-label="ค้นหาสินค้าที่ตรวจหลักฐานแล้ว" />
+        <button class="button button-primary" type="submit">ค้นหา</button>
+      </form>
+      <p class="home-search-scope">
+        ถ้ามาจากลิงก์เก่าของเว็บเวอร์ชันก่อน หน้านั้นอาจถูกรวมเข้ากับรีวิวชุดใหม่ที่ตรวจหลักฐานละเอียดกว่าเดิมแล้ว
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">เริ่มจากหน้ายอดนิยม</p>
+      <h2 class="headline">หน้าที่คนเปิดบ่อยที่สุด</h2>
+      <div class="home-roadmap-grid not-found-grid">
+        {popularLinks.map((link) => (
+          <a class="home-roadmap-card" href={link.href}>
+            <strong>{link.label}</strong>
+            <p>{link.note}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found-hero {
+    padding-block: clamp(48px, 8vw, 96px);
+  }
+
+  .not-found-title {
+    margin: 0;
+    max-width: 720px;
+    font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+    line-height: 1.15;
+  }
+
+  .not-found-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media (max-width: 980px) {
+    .not-found-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .not-found-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

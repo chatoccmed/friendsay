@@ -1,20 +1,33 @@
 # Pre-Domain Migration Checklist
 
-สถานะ: ต้องทำก่อนชี้ `friendsay.com` หรือ `www.friendsay.com` มาที่ Cloudflare Pages
+สถานะ (อัปเดต 2026-07-05): **Release blockers ปลดครบแล้ว — พร้อมชี้โดเมนได้เลย** เหลือเฉพาะขั้นตอนที่ต้องทำในหน้า Cloudflare/Search Console ด้านล่าง
 
-เหตุผล: หน้า legacy ตอนนี้เก็บ URL เดิมครบแล้ว แต่รูปสินค้าเก่าหลายรูปยังอ้างจาก `https://www.friendsay.com/wp-content/uploads/...` ถ้าเราชี้โดเมนหลักมา Cloudflare ก่อนย้ายไฟล์รูป URL เหล่านี้จะวิ่งเข้าเว็บใหม่และอาจกลายเป็นรูปเสียทันที
+## Release Blockers — เสร็จครบ
 
-## Release Blockers
+- [x] Export รูปสินค้าเก่าทั้งหมด → เก็บใน `public/images/legacy/` (11 ไฟล์) — 2026-07-02
+- [x] เปลี่ยน `oldImageUrl` ใน `src/data/legacyProducts.ts` เป็น path local ครบ (ตรวจแล้วไม่มี `wp-content` เหลือใน src เลย) — 2026-07-02
+- [x] Build ผ่าน + legacy pages ทั้ง 11 หน้าโหลดรูปครบบน `friendsay.pages.dev` — 2026-07-02
+- [x] Canonical ทุกหน้าชี้ `https://friendsay.com` อยู่แล้ว (รวม `/` → canonical ไป `/th/` ไม่มี duplicate)
+- [x] `robots.txt` + sitemap ชี้ `https://friendsay.com/sitemap.xml`
+- [x] หน้า 404 มีช่องค้นหา + ลิงก์หน้าหลัก (รับ URL ยุค WordPress ที่ไม่ได้เก็บ) — 2026-07-05
+- [x] JSON-LD SearchAction ชี้ `/th/?q=` (ช่องค้นหาจริง) — 2026-07-05
 
-- [ ] Export รูปสินค้าเก่าทั้งหมดจาก WordPress Media Library หรือจากโฟลเดอร์ `/wp-content/uploads/2025/07/`
-- [ ] เก็บรูปไว้ในเว็บใหม่ที่ `public/images/legacy-products/`
-- [ ] เปลี่ยน `oldImageUrl` ใน `src/data/legacyProducts.ts` จาก URL WordPress เป็น path local เช่น `/images/legacy-products/waterheater-haier-ei35m.jpg`
-- [ ] Build และตรวจว่า legacy pages ทั้ง 11 หน้าโหลดรูปครบ
-- [ ] Push ขึ้น GitHub และรอ Cloudflare deploy สำเร็จ
-- [ ] ตรวจ URL เก่าบน Cloudflare Pages เช่น `https://friendsay.pages.dev/product/waterheater-haier-ei35m/`
-- [ ] ค่อยเพิ่ม custom domain `friendsay.com` และ `www.friendsay.com`
+## ขั้นตอน Go-Live (ทำในหน้า Cloudflare — เจ้าของทำ)
 
-## URL ที่ต้องไม่ปล่อยให้เป็น 404
+1. Cloudflare Pages → โปรเจกต์ friendsay → **Custom domains** → เพิ่ม `friendsay.com` แล้วเพิ่ม `www.friendsay.com` (เพิ่มทั้งคู่ Cloudflare จะออก SSL ให้เอง)
+2. ถ้าโดเมนยังชี้ WordPress เดิมอยู่: เปลี่ยน DNS record ตามที่ Cloudflare Pages บอก (CNAME → `friendsay.pages.dev`)
+3. ตั้ง redirect `www` → apex (Cloudflare → Rules → Redirect Rules → `www.friendsay.com/*` → `https://friendsay.com/$1`, 301) — ให้เหลือ URL แบบเดียวกับ canonical
+4. รอ SSL ออก (ปกติไม่กี่นาที) แล้วเปิด `https://friendsay.com/th/` ตรวจด้วยตา
+
+## ตรวจหลังย้าย (ภายในวันเดียวกัน)
+
+- [ ] เปิด URL legacy อย่างน้อย 3 ตัวจากลิสต์ด้านล่าง — ต้องเห็นหน้า + รูปครบ
+- [ ] เปิด URL มั่ว ๆ เช่น `friendsay.com/old-post-xyz` — ต้องเจอหน้า 404 ที่มีช่องค้นหา ไม่ใช่ error เปล่า
+- [ ] Google Search Console: เพิ่ม property `friendsay.com` → ยืนยันผ่าน DNS → submit `https://friendsay.com/sitemap.xml`
+- [ ] ติด analytics (P0 ในแผน benchmark) — โดเมนจริงคือจังหวะที่ควรเริ่มเก็บตัวเลข
+- [ ] เช็กว่า `friendsay.pages.dev` ยังเปิดได้ (เป็น URL สำรอง/preview — ไม่ต้องปิด)
+
+## URL legacy ที่ต้องไม่เป็น 404 (เก็บ slug เดิมไว้ครบแล้ว)
 
 - `/product/waterheater-haier-ei35m/`
 - `/product/waterheater-haier-ei45m/`
@@ -27,12 +40,3 @@
 - `/product/waterheater-toshiba-dsk38es5kw/`
 - `/product/waterheater-sharp-modi-wh-md135-md145/`
 - `/product/waterheater-toshibatwh-38wth/`
-
-## ทางเลือกถ้าต้องย้ายโดเมนเร็ว
-
-ถ้าจำเป็นต้องย้ายโดเมนก่อน export รูปทั้งหมด ให้ทำอย่างใดอย่างหนึ่งก่อน:
-
-- ย้าย WordPress เดิมไป subdomain เช่น `old.friendsay.com` แล้วเปลี่ยนรูปใน data ให้ชี้ไป subdomain นั้นชั่วคราว
-- หรือซ่อนรูป legacy ชั่วคราวและแสดง placeholder แทน จนกว่าจะ export รูปครบ
-
-แนวทางที่แนะนำที่สุดคือ export รูปมาไว้ใน repo ก่อน เพราะจะทำให้ Cloudflare Pages เป็นแหล่งไฟล์เดียวที่เสถียรและควบคุมได้
