@@ -696,6 +696,7 @@ const jsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <article class="pilot-review dynamic-air-review" style={`--accent:${review.accent};`}>
+    <div class="read-progress" aria-hidden="true"><i></i></div>
     <section class="air-review-hero">
       <a class="air-image-link air-hero-image-link" {...imageLinkAttrs}>
         <img src={heroImage} alt={`ภาพเปิดรีวิว ${review.name}`} loading="eager" />
@@ -726,7 +727,13 @@ const jsonLd = {
             </a>
           </div>
           <span class="badge badge-coral">{product.statusLabel}</span>
-          <strong>{product.score.toFixed(1)}/10</strong>
+          <div class="air-score-ring" role="img" aria-label={`คะแนนรวม ${product.score.toFixed(1)} จาก 10`} style={`--ring-offset:${(326.73 * (1 - product.score / 10)).toFixed(1)};`}>
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="air-ring-track" cx="60" cy="60" r="52" />
+              <circle class="air-ring-fill" cx="60" cy="60" r="52" />
+            </svg>
+            <div><strong>{product.score.toFixed(1)}</strong><small>/10</small></div>
+          </div>
           <p>{review.buyerAngle}</p>
           <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context={`${review.productKey}-hero-card`} />
         </aside>
@@ -1111,15 +1118,108 @@ const jsonLd = {
 
       const stickyBuy = document.querySelector(".air-sticky-buy");
       const hero = document.querySelector(".air-review-hero");
+      const progressBar = document.querySelector(".read-progress i");
+
       const updateStickyBuy = () => {
         if (!stickyBuy) return;
         const trigger = Math.min(520, (hero?.clientHeight || 900) * 0.45);
         stickyBuy.classList.toggle("is-visible", window.scrollY > trigger);
       };
 
-      updateStickyBuy();
-      window.addEventListener("scroll", updateStickyBuy, { passive: true });
-      window.addEventListener("resize", updateStickyBuy);
+      const updateProgress = () => {
+        if (!progressBar) return;
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - window.innerHeight;
+        progressBar.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+      };
+
+      const onScroll = () => {
+        updateStickyBuy();
+        updateProgress();
+      };
+
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+
+      // TOC scroll-spy: ไฮไลต์หัวข้อที่กำลังอ่าน
+      const tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+      const spyTargets = tocLinks
+        .map((link) => document.getElementById((link.getAttribute("href") || "").slice(1)))
+        .filter(Boolean);
+      if ("IntersectionObserver" in window && spyTargets.length) {
+        const setActiveToc = (id) => {
+          tocLinks.forEach((link) => link.classList.toggle("is-active", link.getAttribute("href") === `#${id}`));
+        };
+        const spy = new IntersectionObserver((entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          if (visible.length) setActiveToc(visible[0].target.id);
+        }, { rootMargin: "-96px 0px -58% 0px" });
+        spyTargets.forEach((el) => spy.observe(el));
+      }
+
+      // Lightbox: ปุ่มขยายบนภาพ — ตัวภาพยังกดไปหน้าร้านตามกติกาเดิม
+      const lightbox = document.createElement("div");
+      lightbox.className = "air-lightbox";
+      lightbox.setAttribute("hidden", "");
+      lightbox.innerHTML = `
+        <div class="air-lightbox-panel" role="dialog" aria-modal="true" aria-label="ดูภาพขยาย">
+          <img alt="" />
+          <p></p>
+          <div class="air-lightbox-actions">
+            <a class="button button-primary" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="review-lightbox">เปิดดูหน้าร้าน Shopee</a>
+            <button class="button" type="button" data-lightbox-close>ปิด</button>
+          </div>
+        </div>`;
+      document.body.appendChild(lightbox);
+      const lightboxImg = lightbox.querySelector("img");
+      const lightboxCaption = lightbox.querySelector("p");
+      const lightboxCta = lightbox.querySelector("a");
+
+      const closeLightbox = () => {
+        lightbox.setAttribute("hidden", "");
+        document.body.style.overflow = "";
+      };
+      const openLightbox = (src, alt, caption, href) => {
+        lightboxImg.src = src;
+        lightboxImg.alt = alt || "";
+        lightboxCaption.textContent = caption || "";
+        if (href) {
+          lightboxCta.href = href;
+          lightboxCta.removeAttribute("hidden");
+        } else {
+          lightboxCta.setAttribute("hidden", "");
+        }
+        lightbox.removeAttribute("hidden");
+        document.body.style.overflow = "hidden";
+      };
+      lightbox.addEventListener("click", (event) => {
+        const target = event.target;
+        if (target === lightbox || (target instanceof Element && target.closest("[data-lightbox-close]"))) closeLightbox();
+      });
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeLightbox();
+      });
+
+      document
+        .querySelectorAll(".air-photo-wall figure, .air-source-photo-grid figure, .air-real-review-grid article")
+        .forEach((host) => {
+          const img = host.querySelector("img");
+          const link = host.querySelector("a.air-image-link");
+          if (!img) return;
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "air-zoom-btn";
+          button.setAttribute("aria-label", "ดูภาพขยาย");
+          button.textContent = "⤢ ขยาย";
+          button.addEventListener("click", () => {
+            const caption = host.querySelector("figcaption strong, div strong");
+            openLightbox(img.currentSrc || img.src, img.alt, caption ? caption.textContent : "", link ? link.href : "");
+          });
+          host.appendChild(button);
+        });
     })();
   </script>
 </BaseLayout>
@@ -1996,6 +2096,17 @@ const jsonLd = {
   .toc a:hover {
     border-color: color-mix(in srgb, var(--accent) 42%, #e6d3bd);
     color: var(--accent);
+  }
+
+  .toc a.is-active {
+    border-color: color-mix(in srgb, var(--accent) 55%, #e6d3bd);
+    background: color-mix(in srgb, var(--accent) 8%, #fff);
+    color: var(--accent);
+  }
+
+  .toc a.is-active::before {
+    background: var(--accent);
+    color: #fff;
   }
 
   .air-sticky-buy {
