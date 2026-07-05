@@ -75,8 +75,11 @@
   - ยังคงแก้: ลิงก์วน #product-worlds, ถอดลิงก์หน้า sample, หมวด roadmap ติดป้าย "เร็ว ๆ นี้", เมนูใหม่
   - หลักการ funnel: บทความ = ซื้อคนเข้า (SEO/แชร์) · ช่องค้นหา = ใช้ซ้ำ · LINE = ดึงกลับ
 - [x] 3. (2026-07-05) หน้าเปรียบเทียบ: ภาพสินค้าบน chip เลือกรุ่น + การ์ดรุ่นที่เลือก (กดไป Shopee ได้) + หัวคอลัมน์ตาราง, fly-in ตอนเลือก (เคารพ reduced-motion), เพิ่ม tracking ลิงก์ซื้อทั้งหน้า (เดิมไม่มี data-affiliate-link เลย)
-- [~] 4. รีวิวเดี่ยว (2026-07-05 ทำแล้วบน template คิวรีวิว `[slug].astro` 24 หน้า): reading progress bar + TOC scroll-spy (ไฮไลต์หัวข้อที่กำลังอ่าน) + score ring animate ใน verdict card + lightbox ปุ่ม "⤢ ขยาย" บนภาพทุกใบ (ตัวภาพยังกดไปหน้าร้านตามกติกา, ใน lightbox มีปุ่ม Shopee) — sticky บาร์เดียว+slide-in มีอยู่แล้ว
-  - เหลือ: ขยายชุดเดียวกันไปหน้า pilot 4 หน้า (candy/tcl/midea/xiaomi ซึ่งมีโครง style ของตัวเอง) + pull-quote รีวิวจริง (มีข้อมูล quote ใน reviewTakeaways พร้อมใช้แล้ว)
+- [x] 4. (2026-07-05) รีวิวเดี่ยว: reading progress bar + TOC scroll-spy + score ring animate + lightbox "⤢ ขยาย" ครบ **ทุกหน้ารีวิว** แล้ว
+  - template คิวรีวิว `[slug].astro` (24 หน้า): ทำ inline
+  - หน้า pilot 4 หน้า (candy/tcl/midea/xiaomi): แยกเป็น component กลาง `src/components/ReadingAids.astro` (progress+spy+lightbox, selector-agnostic) + เติม score ring ใน `.air-verdict-card` ทั้ง 4 (ตัวภาพยังกดไปหน้าร้านตามกติกา, ใน lightbox มีปุ่ม Shopee)
+  - หมายเหตุ: queue template ยังใช้สคริปต์ inline เดิม (ไม่ refactor เพื่อกัน regression 24 หน้า) — ยอมรับ dup เล็กน้อยแลกความปลอดภัย
+  - ยังเหลือ (optional): pull-quote รีวิวจริง (ข้อมูล quote อยู่ใน reviewTakeaways/real-review-grid พร้อมใช้)
 - [x] 5. (2026-07-05) BTU: gauge เข็มกวาด SVG (โค้ง 0-36,000 + เข็ม + แถบ coral, animate 700ms) + ปุ่มแชร์ (Web Share / คัดลอกลิงก์) + จำค่าใน URL ?sqm=&sun=&top=&ceil= เปิดลิงก์แชร์แล้วได้ค่าเดิม
 - [ ] 6. Refresh หม้อทอด/น้ำอุ่นให้ถึงมาตรฐานก่อนกลับขึ้นเมนูเด่น
 - [x] 7. (2026-07-05) กติกาลิงก์: footer เพิ่มคอลัมน์ 'รีวิวและเครื่องมือ' 5 ลิงก์ (จัดอันดับแอร์/หน้าฝน/รีวิวละเอียด/เทียบ/BTU) — content หลักทุกหน้ามีทางเข้า ≥3 ทางแล้ว (เมนู + หน้าแรก + footer)

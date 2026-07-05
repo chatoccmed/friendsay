@@ -1,0 +1,102 @@
+---
+// เครื่องช่วยอ่านหน้ารีวิว: แถบความคืบหน้า + TOC scroll-spy + lightbox ขยายภาพ
+// ใช้ selector กลาง จึงทำงานได้ทุกหน้ารีวิว (โครง .air-review-* และ pilot) — CSS อยู่ใน global.css แล้ว
+// ตัวภาพยังกดไปหน้าร้านตามกติกา ปุ่ม "⤢ ขยาย" เปิด lightbox ที่มีปุ่มไป Shopee ต่อ
+---
+
+<div class="read-progress" aria-hidden="true"><i></i></div>
+
+<script is:inline>
+  (() => {
+    // ---- reading progress ----
+    let bar = document.querySelector(".read-progress i");
+    const updateProgress = () => {
+      if (!bar) return;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+    };
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+
+    // ---- TOC scroll-spy ----
+    const tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+    const spyTargets = tocLinks
+      .map((link) => document.getElementById((link.getAttribute("href") || "").slice(1)))
+      .filter(Boolean);
+    if ("IntersectionObserver" in window && spyTargets.length) {
+      const setActiveToc = (id) => {
+        tocLinks.forEach((link) => link.classList.toggle("is-active", link.getAttribute("href") === `#${id}`));
+      };
+      const spy = new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length) setActiveToc(visible[0].target.id);
+      }, { rootMargin: "-96px 0px -58% 0px" });
+      spyTargets.forEach((el) => spy.observe(el));
+    }
+
+    // ---- lightbox ----
+    const lightbox = document.createElement("div");
+    lightbox.className = "air-lightbox";
+    lightbox.setAttribute("hidden", "");
+    lightbox.innerHTML = `
+      <div class="air-lightbox-panel" role="dialog" aria-modal="true" aria-label="ดูภาพขยาย">
+        <img alt="" />
+        <p></p>
+        <div class="air-lightbox-actions">
+          <a class="button button-primary" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="review-lightbox">เปิดดูหน้าร้าน Shopee</a>
+          <button class="button" type="button" data-lightbox-close>ปิด</button>
+        </div>
+      </div>`;
+    document.body.appendChild(lightbox);
+    const lightboxImg = lightbox.querySelector("img");
+    const lightboxCaption = lightbox.querySelector("p");
+    const lightboxCta = lightbox.querySelector("a");
+
+    const closeLightbox = () => {
+      lightbox.setAttribute("hidden", "");
+      document.body.style.overflow = "";
+    };
+    const openLightbox = (src, alt, caption, href) => {
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || "";
+      lightboxCaption.textContent = caption || "";
+      if (href) {
+        lightboxCta.href = href;
+        lightboxCta.removeAttribute("hidden");
+      } else {
+        lightboxCta.setAttribute("hidden", "");
+      }
+      lightbox.removeAttribute("hidden");
+      document.body.style.overflow = "hidden";
+    };
+    lightbox.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target === lightbox || (target instanceof Element && target.closest("[data-lightbox-close]"))) closeLightbox();
+    });
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeLightbox();
+    });
+
+    document
+      .querySelectorAll(".air-photo-wall figure, .air-source-photo-grid figure, .air-real-review-grid article")
+      .forEach((host) => {
+        const img = host.querySelector("img");
+        const link = host.querySelector("a.air-image-link");
+        if (!img || host.querySelector(".air-zoom-btn")) return;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "air-zoom-btn";
+        button.setAttribute("aria-label", "ดูภาพขยาย");
+        button.textContent = "⤢ ขยาย";
+        button.addEventListener("click", () => {
+          const caption = host.querySelector("figcaption strong, div strong");
+          openLightbox(img.currentSrc || img.src, img.alt, caption ? caption.textContent : "", link ? link.href : "");
+        });
+        host.appendChild(button);
+      });
+  })();
+</script>

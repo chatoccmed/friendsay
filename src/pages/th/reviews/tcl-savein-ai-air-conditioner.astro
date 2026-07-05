@@ -4,6 +4,7 @@ import PriceButtons from "../../../components/PriceButtons.astro";
 import ScoreBars from "../../../components/ScoreBars.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import ReadingAids from "../../../components/ReadingAids.astro";
 import { airConditioners } from "../../../data/airConditioners";
 
 const product =
@@ -354,7 +355,13 @@ const jsonLd = {
             </a>
           </div>
           <span class="badge badge-coral">{product.statusLabel}</span>
-          <strong>{product.score.toFixed(1)}/10</strong>
+          <div class="air-score-ring" role="img" aria-label={`คะแนนรวม ${product.score.toFixed(1)} จาก 10`} style={`--ring-offset:${(326.73 * (1 - product.score / 10)).toFixed(1)};`}>
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="air-ring-track" cx="60" cy="60" r="52" />
+              <circle class="air-ring-fill" cx="60" cy="60" r="52" />
+            </svg>
+            <div><strong>{product.score.toFixed(1)}</strong><small>/10</small></div>
+          </div>
           <p>น่าเก็บไว้เทียบเป็นรุ่นต้น ๆ ถ้าร้านตอบเรื่อง BTU ติดตั้ง และประกันได้ชัด</p>
           <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} context="tcl-hero-card" />
         </aside>
@@ -716,6 +723,7 @@ const jsonLd = {
   </nav>
 
   <AirCompareTray products={airConditioners.map((item) => ({ slug: item.slug, name: item.name, shortName: item.shortName }))} />
+  <ReadingAids />
   <AffiliateClickTracker />
 
   <script is:inline>

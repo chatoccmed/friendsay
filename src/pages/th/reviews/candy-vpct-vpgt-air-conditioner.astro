@@ -4,6 +4,7 @@ import PriceButtons from "../../../components/PriceButtons.astro";
 import ScoreBars from "../../../components/ScoreBars.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import ReadingAids from "../../../components/ReadingAids.astro";
 import { airConditioners, candyAirConditioner as product } from "../../../data/airConditioners";
 
 const premiumHeroImage = "/images/air-conditioners/candy-vpct-reference-lifestyle-gen.jpg";
@@ -329,7 +330,13 @@ const faqJsonLd = {
           </a>
         </div>
         <span class="badge badge-coral">{product.statusLabel}</span>
-        <strong>{product.score.toFixed(1)}/10</strong>
+        <div class="air-score-ring" role="img" aria-label={`คะแนนรวม ${product.score.toFixed(1)} จาก 10`} style={`--ring-offset:${(326.73 * (1 - product.score / 10)).toFixed(1)};`}>
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="air-ring-track" cx="60" cy="60" r="52" />
+            <circle class="air-ring-fill" cx="60" cy="60" r="52" />
+          </svg>
+          <div><strong>{product.score.toFixed(1)}</strong><small>/10</small></div>
+        </div>
         <p>
           คำตอบเร็ว: น่าเก็บไว้เทียบ แต่ควรไล่ดูรีวิวจริงกับ checklist ก่อนจ่าย
         </p>
@@ -731,6 +738,7 @@ const faqJsonLd = {
     <a class="tiktok" href={product.links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context="sticky-buy">TikTok</a>
   </nav>
 
+  <ReadingAids />
   <AffiliateClickTracker />
   <AirCompareTray products={airConditioners} />
 </BaseLayout>
