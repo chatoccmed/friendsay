@@ -1,0 +1,724 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PriceButtons from "../../../components/PriceButtons.astro";
+import AirCompareTray from "../../../components/AirCompareTray.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import { airConditioners } from "../../../data/airConditioners";
+
+const updatedLabel = "2 กรกฎาคม 2026";
+
+// ข้อมูลราคา/ยอดขาย/ประกัน/ร้าน ที่ไม่มีใน airConditioners.ts — ยึดหลักฐานรอบ 2026-07-02 (เห็นจริงบนหน้า Shopee)
+// storeStatus = สถานะร้านตามจริง (official / authorized / official-like=แบรนด์ในเครือขายผ่านร้าน official ของบริษัทแม่ / reseller)
+// notReseller = ผ่านตัวกรอง "ซื้อจากร้านทางการ" (ทุกแบบที่ไม่ใช่ reseller) · reviewHref = หน้ารีวิวเดี่ยว หรือ anchor ในหน้า 10 อันดับ
+const budgetExtras: Record<string, { priceNum: number; priceShort: string; soldNum: number | null; soldLabel: string; warrantyShort: string; notReseller: boolean; storeStatus: "official" | "authorized" | "official-like" | "reseller"; storeShort: string; storeNote?: string; reviewHref: string }> = {
+  "midea-celest-msce": { priceNum: 7490, priceShort: "~7,490.-", soldNum: null, soldLabel: "ไม่แสดง", warrantyShort: "ถามร้านยืนยัน", notReseller: false, storeStatus: "reseller", storeShort: "Lucky Plaza Online", reviewHref: "/th/reviews/midea-celest-msce-air-conditioner/" },
+  "xiaomi-mijia-air-inverter-eco": { priceNum: 7924, priceShort: "~7,924.-", soldNum: null, soldLabel: "ไม่แสดง", warrantyShort: "5 ปี (ถามส่วน)", notReseller: true, storeStatus: "official", storeShort: "Xiaomi Official Store", reviewHref: "/th/reviews/xiaomi-mijia-air-inverter-eco/" },
+  "candy-vpct-vpgt-series": { priceNum: 7995, priceShort: "~7,995.-", soldNum: null, soldLabel: "ไม่แสดง", warrantyShort: "คอม 5 ปี", notReseller: true, storeStatus: "official-like", storeShort: "haier.officialshop", storeNote: "CANDY เป็นแบรนด์ในเครือ Haier ขายผ่านร้าน Haier official ไม่ใช่ร้านทางการเฉพาะแบรนด์ CANDY", reviewHref: "/th/reviews/candy-vpct-vpgt-air-conditioner/" },
+  "hisense-ce-series": { priceNum: 8452, priceShort: "~8,452.-", soldNum: 10000, soldLabel: "10พัน+ เครื่อง", warrantyShort: "คอม 12 ปี + onsite", notReseller: true, storeStatus: "official", storeShort: "Hisense Official (Shopee Mall)", reviewHref: "/th/best/air-conditioners/#hisense-ce-series" },
+  "tcl-savein-ai-series": { priceNum: 8590, priceShort: "~8,590.-", soldNum: null, soldLabel: "ไม่แสดง", warrantyShort: "คอม 5 ปี", notReseller: true, storeStatus: "authorized", storeShort: "TCL Authorized Store", reviewHref: "/th/reviews/tcl-savein-ai-air-conditioner/" },
+  "haier-vqec-series": { priceNum: 9545, priceShort: "~9,545.-", soldNum: 8000, soldLabel: "8พัน+ เครื่อง", warrantyShort: "คอม 10 ปี", notReseller: true, storeStatus: "official", storeShort: "haier.officialshop", reviewHref: "/th/best/air-conditioners/#haier-vqec-series" }
+};
+
+// ป้ายสถานะร้านตามจริง (ไม่รวบ authorized/เครือ เป็น "official" ลอย ๆ)
+const storeBadgeLabel: Record<string, string> = {
+  official: "ร้าน official",
+  authorized: "ร้าน authorized",
+  "official-like": "ร้าน Haier official (เครือ)",
+  reseller: "reseller"
+};
+const storeColLabel: Record<string, string> = {
+  official: "official",
+  authorized: "authorized",
+  "official-like": "official (เครือ Haier)",
+  reseller: "reseller"
+};
+
+// ร้อยแก้วจากทีมเขียน (ตรวจผูกข้อมูลจริงแล้ว) — Friendsay เขียน ไม่ได้ใช้เครื่องเอง
+const prose: Record<string, { whoFor: string; topWatch: string }> = {
+  "midea-celest-msce": { whoFor: "คนงบประหยัดสุด ที่ยอมถามร้านให้จบเรื่องติดตั้งกับประกันก่อนจ่ายเงิน", topWatch: "หน้าสินค้าเขียนว่า \"ไม่รวมติดตั้ง\" ต้องบวกค่าช่างเอง แล้วร้านนี้เป็น reseller ไม่ใช่ official store ถามใบเสร็จกับช่องทางเคลมให้ชัดก่อนตัดสินใจ" },
+  "xiaomi-mijia-air-inverter-eco": { whoFor: "สาย Smart Home หรือคนที่ใช้ ecosystem Xiaomi อยู่แล้ว อยากดูค่าไฟผ่านแอป", topWatch: "เช็กให้ชัดว่าราคานี้รวมติดตั้งหรือเป็นเครื่องเปล่า และถ้าไม่ได้ใช้แอปเลย จุดเด่นเรื่อง smart home ก็หายไปเกือบหมด" },
+  "candy-vpct-vpgt-series": { whoFor: "คอนโดหรือห้องนอนคุมงบ ที่อยากมีรีวิวเยอะ ๆ ให้ตามอ่านก่อนตัดสินใจ", topWatch: "VPCT/VPGT เป็นรหัสรุ่นย่อย ต้องกดเช็กช่องตัวเลือกให้ตรงสเปกที่อยากได้ และเผื่อค่าอุปกรณ์ติดตั้งหน้างานเพิ่มด้วย" },
+  "hisense-ce-series": { whoFor: "คนงบต่ำสุดที่อยากได้ inverter จากร้าน official พร้อมประกันคอมเพรสเซอร์ยาว", topWatch: "บานสวิงปรับได้แค่ขึ้น-ลง ไม่ส่ายซ้าย-ขวาอัตโนมัติ ถ้าติดมุมห้องลมอาจกระจายด้านข้างไม่เต็ม แล้วมีรีวิว 1 ดาวอยู่ 54 รายการ กดอ่านก่อน" },
+  "tcl-savein-ai-series": { whoFor: "คนอยากได้ฟีเจอร์แน่นจากแบรนด์ใหญ่ และห้องใหญ่ที่ต้องการ BTU สูง", topWatch: "ต้องเลือก BTU ให้ตรงห้องจริง โดยเฉพาะห้องแดดแรงหรือเปิดโล่ง แล้วถามให้ชัดว่าราคานี้รวมท่อ ราง ขาแขวน สายไฟกี่เมตร" },
+  "haier-vqec-series": { whoFor: "คนเน้นประหยัดไฟ อยากเห็นค่า SEER ชัด ๆ และซื้อจากร้าน official ใหญ่", topWatch: "ในกล่องไม่มีขาแขวนแอร์ ต้องเตรียมซื้อเพิ่มหน้างาน และถ้าจะเคลมกรณีขนส่งเสียหาย ต้องมีวิดีโอตอนแกะกล่องแบบถ่ายต่อเนื่องเท่านั้น" }
+};
+
+const intro = {
+  heroKicker: "รวมแอร์อินเวอร์เตอร์ที่เจอราคาต่ำกว่า 10,000 บาทบน Shopee ณ 2 ก.ค. 2026 คัดเหลือ 6 รุ่นที่ผ่านการตรวจหลักฐานจริง เรียงจากถูกไปแพง",
+  introParagraphs: [
+    "งบต่ำกว่าหมื่นซื้อแอร์อินเวอร์เตอร์ได้จริงไหม ตอบเลยว่าได้ เราไปส่องหน้า Shopee จริงมาแล้ว รุ่นถูกสุดในลิสต์เจอที่ราว 7,490 บาท ส่วนรุ่นแพงสุดก็ยังไม่ถึงเพดานหมื่นที่ราว 9,545 บาท แต่ต้องพูดกันตรง ๆ ว่าเกือบทุกราคาที่เห็นเป็นราคาช่วงโปร/Flash Sale ที่ขยับได้ทุกวัน และค่าติดตั้งที่กดตอนสั่งก็มักไม่ใช่ราคาจบ ราว 90% ของงานยังมีค่าอุปกรณ์หน้างานเพิ่ม เช่น รางครอบท่อ ขาแขวน หรือท่อส่วนเกิน เราเลยเขียนหมายเหตุพวกนี้ไว้ในทุกรุ่น ไม่ได้โชว์แค่ตัวเลขสวย ๆ",
+    "6 รุ่นนี้ไม่ได้เลือกจากอันดับขายดีหรือรุ่นที่โฆษณาหนัก แต่เลือกจากรุ่นที่ราคาที่พบต่ำกว่าหมื่น และมีหลักฐานพอให้เชื่อได้ ทั้งจำนวนรีวิวที่มากพอและร้านที่ดูน่าเชื่อถือ ในลิสต์มีตั้งแต่รุ่นที่รีวิวเยอะที่สุด (CANDY กว่า 10,400 รีวิว) รุ่นที่เห็นยอดขายจริงบนหน้าร้าน (Hisense 10,000+ เครื่อง, Haier VQEC 8,000+ เครื่อง) ไปจนถึงรุ่นที่แจ้งค่า SEER รายขนาดชัด ๆ",
+    "วิธีอ่านหน้านี้ ดูราคาเป็นแค่จุดเริ่ม แล้วอ่าน \"จุดระวังสำคัญสุด\" ของแต่ละรุ่นให้จบก่อนกดซื้อ เพราะจุดที่ทำให้จ่ายเพิ่มหรือเคลมยากมักซ่อนอยู่ตรงนั้น ไม่ใช่ที่ตัวเลขราคา"
+  ],
+  methodologyNote: "เกณฑ์คัดมี 2 ข้อ (1) ราคาที่พบต้องต่ำกว่า 10,000 บาท และ (2) ต้องผ่านเกณฑ์หลักฐาน คือมีรีวิวมากพอและร้านดูน่าเชื่อถือ ผ่านทั้งสองข้อได้ 6 รุ่น เรียงตามราคาถูกไปแพง ราคาทั้งหมดคือราคาที่เห็นจริงบนหน้า Shopee ณ 2 ก.ค. 2026 ส่วนใหญ่เป็นราคาช่วงโปร/Flash Sale จึงเปลี่ยนได้ทุกวัน เลขในหน้านี้ใช้เป็นจุดเทียบ ไม่ใช่ราคาที่การันตีว่าจะเจอเท่าเดิมตอนคุณกดเข้าไปดู"
+};
+
+const scenarios = [
+  { title: "งบน้อยสุด ยอมถามร้านให้จบก่อนจ่าย", recommendedSlugs: ["midea-celest-msce"], reason: "ราคาเริ่มถูกสุดในกลุ่ม (พบ ~7,490.-) คะแนน 5.0 จาก 193 รีวิว แต่ร้าน Lucky Plaza เป็น reseller ไม่ใช่ official และหน้าสินค้าระบุไม่รวมติดตั้ง ก่อนจ่ายควรถามให้จบว่าเคลมผ่านช่องทางไหน ออกใบเสร็จให้ไหม และค่าช่างเท่าไหร่" },
+  { title: "อยากได้ official + ประกันคอมยาวสุด", recommendedSlugs: ["hisense-ce-series"], reason: "ซื้อตรงจากร้าน official ได้ในราคาต่ำกว่า 9,000 ประกันคอมเพรสเซอร์ 12 ปียาวสุดในกลุ่ม มี onsite ศูนย์ไทย และเป็นรุ่นเดียวที่เห็นยอดขายจริง 10,000+ เครื่อง ข้อควรรู้ก่อนซื้อ บานสวิงปรับได้แค่ขึ้น-ลง ส่ายซ้าย-ขวาอัตโนมัติไม่ได้" },
+  { title: "สาย Smart Home ใช้ Xiaomi อยู่แล้ว", recommendedSlugs: ["xiaomi-mijia-air-inverter-eco"], reason: "คุมผ่านแอป Mi Home / Xiaomi Home ดูค่าไฟในแอปได้ ซื้อจากร้าน official รีวิวชมเย็นเร็วเสียงไม่กวน เหมาะคนที่มี ecosystem Xiaomi อยู่แล้ว แต่ถ้าไม่ได้ใช้แอปเลย จุดเด่นเรื่อง smart home จะหายไปเกือบหมด และควรเช็กว่าราคารวมติดตั้งหรือเป็นเครื่องเปล่า" },
+  { title: "ห้องใหญ่ แดดแรง ต้องการ BTU สูง", recommendedSlugs: ["tcl-savein-ai-series"], reason: "Full DC Inverter ช่วง BTU กว้างสุดในกลุ่มถึง 24,200 เหมาะห้องใหญ่ มีฟีเจอร์ AI และล้างตัวเอง แค่ต้องเลือก BTU ให้ตรงกับห้องจริงโดยเฉพาะห้องแดดแรงหรือเปิดโล่ง และถามให้ชัดว่าราคานี้รวมติดตั้งแบบไหน ท่อ/ราง/ขาแขวน/สายไฟกี่เมตร" },
+  { title: "เน้นประหยัดไฟ อยากเห็นค่า SEER ชัด", recommendedSlugs: ["haier-vqec-series"], reason: "แจ้งค่า SEER รายขนาดชัดบนหน้าสินค้า (9K=18.29 ถึง 24K=18.08) มี Eco Mode และ Self-Cleaning ประกันคอม 10 ปี จากร้าน official ใหญ่ ข้อควรรู้ ในกล่องไม่มีขาแขวน ต้องเตรียมเพิ่มหน้างาน และถ้าจะเคลมกรณีขนส่งต้องมีวิดีโอตอนแกะกล่องแบบถ่ายต่อเนื่อง" }
+];
+
+const faqs = [
+  { q: "แอร์ต่ำกว่าหมื่นเป็น inverter จริงไหม แล้วทนพอใช้ยาว ๆ ไหม?", a: "จริง ทั้ง 6 รุ่นที่คัดมาเป็น inverter หมด เช่น TCL SaveIN เป็น Full DC Inverter ส่วน Xiaomi Mijia Air Inverter Eco ที่ราคาราว 7,924.- ก็เป็น inverter จากร้าน official ตัวชี้เรื่องความทนที่ดูง่ายสุดคือประกันคอมเพรสเซอร์ ในกลุ่มนี้ Hisense CE ให้ 12 ปียาวสุด รองมาคือ Haier VQEC 10 ปี ส่วน Xiaomi/Candy/TCL อยู่ที่ 5 ปี (Xiaomi หน้าสินค้าเขียนรวม 5 ปี ควรถามร้านว่าเป็นส่วนไหน) ส่วน Midea Celest หน้าสินค้าพูดถึงประกันหลายช่วง เรายังไม่ฟันธงตัวเลข ต้องให้ร้านยืนยันเป็นข้อความก่อนซื้อ ประกันยาวไม่ได้แปลว่าไม่พังเลย แต่ช่วยลดค่าใช้จ่ายถ้าคอมมีปัญหาในช่วงนั้น" },
+  { q: "ถูกขนาดนี้ ต่างจากแอร์แพงตรงไหน ต้องยอมตัดอะไรบ้าง?", a: "ส่วนใหญ่ที่ต่างคือฟีเจอร์ปลีกย่อยกับสเปกบางจุด ไม่ใช่ว่าไม่เย็น ที่เห็นชัดในกลุ่มนี้ เช่น Hisense CE บานสวิงปรับได้เฉพาะขึ้น-ลง ไม่ส่ายซ้าย-ขวาอัตโนมัติ ถ้าติดมุมห้องลมอาจกระจายด้านข้างไม่เต็มที่ ของแถมในกล่องก็ต่างกัน อย่าง Haier VQEC ไม่มีขาแขวนแอร์มาให้ ต้องซื้อเพิ่มหน้างาน และถ้าอยากได้ smart home ต้องเลือกให้ตรง เช่น Xiaomi Mijia ต่อแอป Mi Home ดูค่าไฟได้ แต่ถ้าไม่ใช้แอปเลย จุดเด่นนี้ก็หายไป" },
+  { q: "ค่าติดตั้งจริงเท่าไหร่ ราคาที่เห็นคือราคาจบเลยไหม?", a: "เกือบทุกกรณีราคาที่เห็นยังไม่ใช่ราคาจบ Midea Celest หน้าสินค้าระบุ \"ไม่รวมติดตั้ง\" ตรง ๆ ต้องบวกค่าช่างเอง ส่วนรุ่นที่มีตัวเลือกติดตั้งตอนสั่ง (เช่น Candy ติดผ่าน Q-CHANG) ก็มักไม่จบที่ตัวเลขนั้น เพราะราว 90% ของงานมีค่าอุปกรณ์หน้างานเพิ่ม ทั้งรางครอบท่อ ขาแขวน ท่อส่วนที่เกินระยะแถม ทางที่ปลอดภัยคือถามร้านให้ชัดก่อนจ่ายว่าราคานี้รวมท่อ/ราง/ขาแขวน/สายไฟกี่เมตร โดยเฉพาะ TCL กับ Xiaomi ที่ต้องเช็กว่าเป็นราคาเครื่องเปล่าหรือรวมติดตั้งแล้ว" },
+  { q: "ยี่ห้อจีนเคลมยากไหม ถ้าเครื่องมีปัญหาจะติดต่อใคร?", a: "ขึ้นกับว่าซื้อจากร้านแบบไหน มากกว่าดูแค่สัญชาติแบรนด์ รุ่นที่มีช่องทางศูนย์ชัดในกลุ่มนี้คือ Hisense CE มี onsite service ศูนย์ไทย โทร 02-017-0077 และ Haier VQEC ระบุศูนย์ทั่วประเทศ โทร 1789 จุดที่ต้องระวังคือเงื่อนไขเคลมขนส่ง อย่าง Haier VQEC ระบุว่ากรณีเคลมจากการขนส่งต้องมีวิดีโอตอนแกะกล่องแบบถ่ายต่อเนื่องเท่านั้น ฉะนั้นถ่ายคลิปตอนแกะกล่องไว้ทุกครั้งจะปลอดภัยกว่า และควรเก็บใบเสร็จกับช่องทางเคลมเป็นข้อความไว้ตั้งแต่วันซื้อ" },
+  { q: "ควรซื้อจากร้าน official หรือ reseller ที่ราคาถูกกว่า?", a: "ในกลุ่มนี้สถานะร้านมี 3 แบบ ไม่เท่ากันหมด official แท้คือ Xiaomi Official Store, Hisense Official Store (Shopee Mall) และ haier.officialshop (ที่ขาย Haier VQEC) ส่วน TCL SaveIN ขายจาก TCL Authorized Store ซึ่งเป็นร้านตัวแทนที่ได้รับอนุญาต ไม่ใช่ official store เต็มตัว และ CANDY VPCT/VPGT เป็นแบรนด์ในเครือ Haier จำหน่ายผ่าน haier.officialshop ซึ่งเป็นร้าน official ของ Haier ไม่ใช่ร้านทางการเฉพาะแบรนด์ CANDY โดยตรง ทั้งสามแบบยังถือว่าซื้อจากร้านที่มีที่มา ต่างจาก Midea Celest ที่ขายโดย Lucky Plaza Online ซึ่งเป็น reseller แม้ราคาจะเริ่มถูกสุดราว 7,490.- ซื้อกับ reseller ได้ แต่ควรถามให้ชัดเรื่องใบเสร็จและช่องทางเคลมก่อนจ่าย และเช็กว่า Wi-Fi เป็นฟีเจอร์มาตรฐานของรุ่นที่สั่งจริงไหม เพราะประกันหน้าสินค้าพูดถึงหลายช่วง ต้องขอให้ร้านยืนยันเป็นข้อความ" },
+  { q: "ราคาที่ Friendsay บอกเชื่อได้แค่ไหน แล้วเว็บได้อะไรจากการแนะนำ?", a: "ราคาทั้งหมดคือราคาที่เห็นจริงบนหน้า Shopee ณ 2 ก.ค. 2026 ส่วนใหญ่เป็นราคาช่วงโปร/Flash Sale จึงเปลี่ยนได้ทุกวัน ตัวเลขที่เห็นตอนคุณกดอาจไม่ตรงกับที่เขียนไว้ ให้ยึดราคาหน้าจริงเป็นหลัก Friendsay ทำคนเดียวร่วมกับ AI ไม่มีสินค้าจริงในมือ ไม่เคยใช้เครื่องเอง ข้อมูลทั้งหมดมาจากการส่องหน้าสินค้าจริง ส่วน \"ยอดขายไม่แสดง\" หมายถึง Shopee ไม่โชว์ตัวเลขบนหน้านั้น เราจึงไม่อ้างยอดขายเอง ใช้จำนวนรีวิวแทน (มีเพียง Hisense ที่เห็นยอดจริง 10,000+ และ Haier VQEC 8,000+) และลิงก์ในเว็บเป็นลิงก์ affiliate ถ้าคุณกดซื้อผ่าน Friendsay เราอาจได้ค่าคอมมิชชั่นเล็กน้อยโดยคุณไม่จ่ายเพิ่ม" }
+];
+
+// ประกอบข้อมูลรายรุ่น (ล็อกตัวเลข/ภาพ/ลิงก์จาก airConditioners.ts + budgetExtras) เรียงราคาถูก→แพง
+const bySlug = (slug: string) => airConditioners.find((p) => p.slug === slug);
+const budgetProducts = Object.keys(budgetExtras)
+  .map((slug) => {
+    const p = bySlug(slug)!;
+    const ex = budgetExtras[slug];
+    const btuFirst = p.btuOptions[0].replace(" BTU", "");
+    const btuLast = p.btuOptions[p.btuOptions.length - 1].replace(" BTU", "");
+    return {
+      slug,
+      name: p.name,
+      shortName: p.shortName,
+      image: p.image,
+      rating: p.rating,
+      ratingsCount: p.ratingsCount,
+      score: p.score,
+      energyComfort: p.energyComfort,
+      value: p.value,
+      btuRange: btuFirst === btuLast ? btuFirst : `${btuFirst}–${btuLast}`,
+      btuOptions: p.btuOptions,
+      links: p.links,
+      whoFor: prose[slug].whoFor,
+      topWatch: prose[slug].topWatch,
+      ...ex
+    };
+  })
+  .sort((a, b) => a.priceNum - b.priceNum);
+
+// best-in-column (คิดจากข้อมูลจริง)
+const minPrice = Math.min(...budgetProducts.map((p) => p.priceNum));
+const maxReviews = Math.max(...budgetProducts.map((p) => p.ratingsCount));
+const maxSold = Math.max(...budgetProducts.map((p) => p.soldNum ?? 0));
+const bestWarrantySlug = "hisense-ce-series";
+
+// quick-pick 3 ใบ
+const quickPicks = [
+  { label: "ถูกสุดในลิสต์", slug: "midea-celest-msce", reason: "ราคาเริ่มต้นต่ำสุด ~7,490.- คะแนน 5.0 — แต่เป็น reseller ต้องถามร้านให้จบ" },
+  { label: "รีวิวเยอะสุด", slug: "candy-vpct-vpgt-series", reason: "รีวิวผู้ซื้อกว่า 10,400 รายการ มากสุดในกลุ่ม มีรูปให้ตามอ่านเยอะ" },
+  { label: "official + ประกันยาว", slug: "hisense-ce-series", reason: "inverter จากร้าน official ประกันคอม 12 ปี เห็นยอดขายจริง 10พัน+" }
+].map((pick) => {
+  const p = budgetProducts.find((x) => x.slug === pick.slug)!;
+  return { ...pick, name: p.shortName, image: p.image, priceShort: p.priceShort, rating: p.rating };
+});
+
+// กราฟ: แท่งราคา (สั้น = ถูกกว่า) + ป้ายรีวิว
+const chartMax = Math.max(...budgetProducts.map((p) => p.priceNum));
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "แอร์ต่ำกว่า 10,000 บาท 2026: 6 รุ่นอินเวอร์เตอร์ที่ตรวจหลักฐานจริง",
+  description: "รวมแอร์อินเวอร์เตอร์ราคาต่ำกว่าหมื่นบน Shopee 6 รุ่นที่ตรวจหลักฐานจริง เรียงจากถูกไปแพง พร้อมราคา BTU ประกัน จุดระวัง และตารางเทียบ",
+  inLanguage: "th",
+  dateModified: "2026-07-02",
+  author: { "@type": "Organization", name: "Friendsay" },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: budgetProducts.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: product.name,
+      url: `https://friendsay.com/th/best/air-conditioners-under-10000/#${product.slug}`
+    }))
+  }
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a }
+  }))
+};
+
+const scenarioCards = scenarios.map((s) => ({
+  ...s,
+  picks: s.recommendedSlugs.map((slug) => {
+    const p = budgetProducts.find((x) => x.slug === slug)!;
+    return { slug, shortName: p.shortName, priceShort: p.priceShort };
+  })
+}));
+---
+
+<BaseLayout
+  title="แอร์ต่ำกว่า 10,000 บาท 2026: 6 รุ่นอินเวอร์เตอร์ที่ตรวจหลักฐานจริง | Friendsay"
+  description="อยากได้แอร์อินเวอร์เตอร์งบไม่ถึงหมื่น? รวม 6 รุ่นที่เจอราคาต่ำกว่า 10,000 บาทบน Shopee ตรวจหลักฐานจริงรายรุ่น เรียงถูกไปแพง จัดเรียง/กรองเองได้ พร้อมราคา BTU ประกัน จุดระวัง และตารางเทียบ อัปเดต 2 ก.ค. 2026"
+  canonical="https://friendsay.com/th/best/air-conditioners-under-10000/"
+  ogImage="/images/air-conditioners/candy-vpct-real-product-plain-1.jpg"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <section class="page-hero budget-hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge badge-coral">งบต่ำกว่าหมื่น</span>
+        <span class="badge badge-teal">อัปเดต {updatedLabel}</span>
+        <span class="badge badge-blue">6 รุ่นตรวจหลักฐานแล้ว</span>
+      </div>
+      <h1>แอร์ต่ำกว่า 10,000 บาท 2026: 6 รุ่นอินเวอร์เตอร์ที่ตรวจหลักฐานจริงมาแล้ว</h1>
+      <p class="muted budget-hero-kicker">{intro.heroKicker}</p>
+      <div class="roundup-actions">
+        <a class="button button-primary" href="#picks">ดู 6 รุ่นเรียงถูกไปแพง</a>
+        <a class="button" href="#compare">ตารางเทียบ</a>
+        <a class="button" href="/th/guides/btu-calculator/">คิด BTU ห้องก่อน</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="intro">
+    <div class="container">
+      <div class="budget-intro">
+        {intro.introParagraphs.map((para) => <p>{para}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="quick-pick">
+    <div class="container">
+      <p class="eyebrow">เลือกด่วนใน 15 วินาที</p>
+      <h2 class="headline">3 ตัวเด่น 3 โจทย์</h2>
+      <div class="scenario-grid" style="margin-top: 18px;">
+        {quickPicks.map((pick) => (
+          <article class="rainy-pick-card">
+            <div class="badge-row">
+              <span class="badge badge-coral">{pick.label}</span>
+              <span class="badge badge-blue">{pick.rating.toFixed(1)}/5</span>
+            </div>
+            <a href={`#${pick.slug}`}>
+              <img class="rainy-img" src={pick.image.url} alt={pick.image.alt} loading="lazy" />
+            </a>
+            <h3>{pick.name} · {pick.priceShort}</h3>
+            <p>{pick.reason}</p>
+            <a class="button button-primary" href={`#${pick.slug}`}>ดูรายละเอียด ↓</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="picks">
+    <div class="wide-container">
+      <p class="eyebrow">6 รุ่น · อัปเดต {updatedLabel}</p>
+      <h2 class="headline">แอร์ต่ำกว่าหมื่นที่ตรวจหลักฐานแล้ว</h2>
+      <p class="muted" style="max-width: 720px;">กดจัดเรียงหรือกรองเองได้ตามที่คุณให้ความสำคัญ — ค่าเริ่มต้นเรียงจากราคาถูกไปแพง</p>
+
+      <div class="budget-toolbar" role="group" aria-label="จัดเรียงและกรองรายการ">
+        <div class="budget-sort" role="group" aria-label="จัดเรียง">
+          <span class="budget-toolbar-label">เรียงตาม</span>
+          <button class="budget-sort-btn is-active" type="button" data-sort="price">ถูกสุดก่อน</button>
+          <button class="budget-sort-btn" type="button" data-sort="reviews">รีวิวเยอะสุด</button>
+          <button class="budget-sort-btn" type="button" data-sort="sold">ยอดขายสูงสุด</button>
+          <button class="budget-sort-btn" type="button" data-sort="score">คะแนนรวม</button>
+        </div>
+        <label class="budget-filter">
+          <input type="checkbox" id="budget-official-only" />
+          <span>ซื้อจากร้านทางการ (ไม่รวม reseller)</span>
+        </label>
+      </div>
+      <p class="budget-sort-note" id="budget-sort-note" aria-live="polite">เรียงตาม: ราคาถูกสุดก่อน · แสดง 6 รุ่น</p>
+
+      <div class="budget-grid" id="budget-grid">
+        {budgetProducts.map((product, index) => (
+          <article
+            class="budget-card"
+            id={product.slug}
+            data-price={product.priceNum}
+            data-reviews={product.ratingsCount}
+            data-sold={product.soldNum ?? 0}
+            data-score={product.score}
+            data-official={product.notReseller ? "true" : "false"}
+          >
+            <a
+              class="budget-card-media"
+              href={product.links.shopee}
+              target="_blank"
+              rel="sponsored noopener"
+              data-affiliate-link
+              data-affiliate-store="shopee"
+              data-affiliate-context={`budget-air-photo-${product.slug}`}
+            >
+              <span class="budget-rank">฿{product.priceShort.replace("~", "").replace(".-", "")}</span>
+              <img src={product.image.url} alt={product.image.alt} loading="lazy" />
+              <small>{product.image.note}</small>
+            </a>
+            <div class="budget-card-body">
+              <div class="badge-row">
+                <span class="badge badge-dark">{storeBadgeLabel[product.storeStatus]}</span>
+                <span class="badge badge-blue">{product.rating.toFixed(1)}/5 · {product.ratingsCount.toLocaleString("th-TH")} รีวิว</span>
+              </div>
+              <h3>{product.name}</h3>
+              <div class="budget-facts">
+                <div><span>ราคาที่พบ</span><strong>{product.priceShort}</strong></div>
+                <div><span>BTU</span><strong>{product.btuRange}</strong></div>
+                <div><span>ประกันคอมฯ</span><strong>{product.warrantyShort}</strong></div>
+                <div><span>ยอดขายที่เห็น</span><strong>{product.soldLabel}</strong></div>
+              </div>
+              <p class="budget-whofor"><b>เหมาะกับ:</b> {product.whoFor}</p>
+              <p class="budget-watch"><b>ระวัง:</b> {product.topWatch}</p>
+              <p class="budget-store">ร้าน: {product.storeShort}{product.storeNote ? ` — ${product.storeNote}` : ""}</p>
+              <PriceButtons links={product.links} label={`เช็กราคา ${product.name}`} />
+              <div class="budget-actions">
+                <button class="button compare-toggle" type="button" data-air-compare-slug={product.slug}>+ เปรียบเทียบ</button>
+                <a class="button button-primary" href={product.reviewHref}>{product.reviewHref.includes("#") ? "ดูในหน้า 10 อันดับ" : "อ่านรีวิวละเอียด"}</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="compare">
+    <div class="wide-container">
+      <p class="eyebrow">ตารางเปรียบเทียบ · อัปเดต {updatedLabel}</p>
+      <h2 class="headline">เทียบ 6 รุ่นต่ำกว่าหมื่นในตาเดียว</h2>
+      <div class="compare-shell">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>รุ่น</th>
+              <th>ราคาที่พบ</th>
+              <th>BTU</th>
+              <th>รีวิว Shopee</th>
+              <th>ยอดขายที่เห็น</th>
+              <th>ประกันคอมฯ</th>
+              <th>ร้าน</th>
+              <th>เช็กราคา</th>
+            </tr>
+          </thead>
+          <tbody>
+            {budgetProducts.map((product) => (
+              <tr>
+                <td>
+                  <strong>{product.shortName}</strong>
+                  <br />
+                  <a class="compare-detail-link" href={`#${product.slug}`}>ดูรายละเอียด ↑</a>
+                </td>
+                <td class={product.priceNum === minPrice ? "is-best" : undefined}>{product.priceShort}</td>
+                <td>{product.btuRange}</td>
+                <td class={product.ratingsCount === maxReviews ? "is-best" : undefined}>{product.rating.toFixed(1)} ★ ({product.ratingsCount.toLocaleString("th-TH")})</td>
+                <td class={(product.soldNum ?? 0) === maxSold && maxSold > 0 ? "is-best" : undefined}>{product.soldLabel}</td>
+                <td class={product.slug === bestWarrantySlug ? "is-best" : undefined}>{product.warrantyShort}</td>
+                <td>{storeColLabel[product.storeStatus]}</td>
+                <td>
+                  <a class="button button-primary compare-buy" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`budget-air-table-${product.slug}`}>Shopee</a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">✓ เขียว = ค่าที่ดีที่สุดของคอลัมน์ · ราคา ณ วันที่ {updatedLabel} ส่วนใหญ่เป็นราคาช่วงโปร เปลี่ยนได้ทุกวัน · "ไม่แสดง" = Shopee ไม่โชว์ยอดขายบนหน้าสินค้า เราจึงไม่อ้างตัวเลขเอง</p>
+
+      <h3 class="headline" style="margin-top: 36px; font-size: 1.3rem;">เทียบราคาที่พบแบบเห็นภาพ</h3>
+      <div class="rainy-chart" role="img" aria-label="กราฟแท่งเทียบราคาที่พบของทั้ง 6 รุ่น สั้นกว่าคือถูกกว่า">
+        <svg viewBox={`0 0 900 ${budgetProducts.length * 46 + 10}`}>
+          {budgetProducts.map((product, i) => {
+            const y = i * 46 + 8;
+            const barW = Math.max(40, (product.priceNum / chartMax) * 470);
+            return (
+              <g class="rainy-bar" style={`animation-delay:${i * 90}ms`}>
+                <text x="0" y={y + 19} class="rainy-bar-name">{product.shortName}</text>
+                <rect x="215" y={y} width={barW} height="28" rx="8" fill={product.priceNum === minPrice ? "#0ea5a0" : "#ff6b5a"} opacity="0.85" />
+                <text x={222 + barW} y={y + 19} class="rainy-bar-value">{product.priceShort.replace("~", "")} · {product.ratingsCount.toLocaleString("th-TH")} รีวิว</text>
+              </g>
+            );
+          })}
+        </svg>
+        <p class="compare-note">ความยาวแท่ง = ราคาที่พบ (สั้น = ถูกกว่า) · <span style="color:#0ea5a0">■</span> ถูกสุดในลิสต์ · ตัวเลขท้ายแท่งคือราคาและจำนวนรีวิว</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="which-one">
+    <div class="container">
+      <p class="eyebrow">เลือกตามโจทย์ของคุณ</p>
+      <h2 class="headline">บอกสถานการณ์มา เดี๋ยวชี้รุ่นให้</h2>
+      <div class="scenario-grid">
+        {scenarioCards.map((sc) => (
+          <article>
+            <h3>{sc.title}</h3>
+            <p>
+              เอา {sc.picks.map((pick, idx) => (
+                <>{idx > 0 ? " หรือ " : ""}<a href={`#${pick.slug}`}>{pick.shortName}</a> ({pick.priceShort})</>
+              ))} — {sc.reason}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="how-we-picked">
+    <div class="container">
+      <p class="eyebrow">เกณฑ์คัดเลือก</p>
+      <h2 class="headline">ทำไมเหลือแค่ 6 รุ่นนี้</h2>
+      <p class="muted" style="max-width: 760px;">{intro.methodologyNote}</p>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container">
+      <p class="eyebrow">ก่อนกดซื้อ</p>
+      <h2 class="headline">คำถามที่คนงบต่ำกว่าหมื่นถามบ่อย</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+      <div class="roundup-actions" style="margin-top: 24px;">
+        <a class="button button-primary" href="/th/best/air-conditioners/">ดูครบ 10 อันดับแอร์ (รวมเกินหมื่น) →</a>
+        <a class="button" href="/th/compare/air-conditioners/">เปิดหน้าเปรียบเทียบ</a>
+        <a class="button" href="/th/guides/btu-calculator/">เครื่องคิด BTU</a>
+      </div>
+      <p class="compare-note" style="margin-top: 18px;">
+        ราคาและสถานะสินค้าเก็บจากหน้า Shopee จริงวันที่ {updatedLabel} · เฉพาะรุ่นที่มีตัวเลขยอดขาย (Hisense, Haier VQEC) คือตัวเลขที่แสดงบนหน้าร้านจริง ไม่ใช่การประมาณ ส่วนรุ่นที่ Shopee ไม่โชว์ยอดขาย เราไม่อ้างตัวเลขเอง ·
+        อ่านมาตรฐานรีวิวของเราได้ที่ <a href="/editorial-policy/">Editorial Policy</a> · ความโปร่งใส affiliate ที่ <a href="/affiliate-disclosure/">หน้านโยบาย</a>
+      </p>
+    </div>
+  </section>
+
+  <AirCompareTray products={airConditioners} />
+  <AffiliateClickTracker />
+
+  <script is:inline>
+    (() => {
+      const grid = document.getElementById("budget-grid");
+      const note = document.getElementById("budget-sort-note");
+      const officialOnly = document.getElementById("budget-official-only");
+      if (!grid) return;
+
+      const cards = Array.from(grid.children);
+      const sortButtons = Array.from(document.querySelectorAll("[data-sort]"));
+      const num = (card, key) => Number(card.getAttribute("data-" + key) || 0);
+      const sortLabels = { price: "ราคาถูกสุดก่อน", reviews: "รีวิวเยอะสุด", sold: "ยอดขายสูงสุด", score: "คะแนนรวม" };
+      let currentSort = "price";
+
+      const apply = () => {
+        const onlyOfficial = officialOnly && officialOnly.checked;
+
+        const sorted = cards.slice().sort((a, b) => {
+          if (currentSort === "price") return num(a, "price") - num(b, "price");
+          if (currentSort === "reviews") return num(b, "reviews") - num(a, "reviews");
+          if (currentSort === "score") return num(b, "score") - num(a, "score");
+          // sold: ยอดขายสูงสุด (null=0 ไปท้าย) tiebreak ด้วยรีวิว
+          const d = num(b, "sold") - num(a, "sold");
+          return d !== 0 ? d : num(b, "reviews") - num(a, "reviews");
+        });
+
+        let visible = 0;
+        sorted.forEach((card) => {
+          const show = !onlyOfficial || card.getAttribute("data-official") === "true";
+          card.hidden = !show;
+          if (show) {
+            visible += 1;
+            card.classList.remove("budget-pop");
+            // reflow เพื่อรีสตาร์ท animation
+            void card.offsetWidth;
+            card.classList.add("budget-pop");
+          }
+          grid.appendChild(card);
+        });
+
+        if (note) {
+          note.textContent = `เรียงตาม: ${sortLabels[currentSort]}` + (onlyOfficial ? " · เฉพาะร้านทางการ (ไม่รวม reseller)" : "") + ` · แสดง ${visible} รุ่น`;
+        }
+      };
+
+      sortButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          currentSort = btn.getAttribute("data-sort") || "price";
+          sortButtons.forEach((b) => b.classList.toggle("is-active", b === btn));
+          apply();
+        });
+      });
+      if (officialOnly) officialOnly.addEventListener("change", apply);
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .budget-hero {
+    background:
+      radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.55), transparent 70%),
+      linear-gradient(180deg, #fff8ee, #fffdf8);
+  }
+
+  .budget-hero-kicker {
+    max-width: 760px;
+    font-size: 1.06rem;
+  }
+
+  .budget-intro {
+    display: grid;
+    gap: 14px;
+    max-width: 820px;
+  }
+
+  .budget-intro p {
+    margin: 0;
+    color: #3f4e5c;
+    font-size: 1.04rem;
+    line-height: 1.75;
+  }
+
+  .budget-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 22px;
+    padding: 14px 16px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .budget-sort {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .budget-toolbar-label {
+    color: var(--muted);
+    font-size: 0.86rem;
+    font-weight: 800;
+  }
+
+  .budget-sort-btn {
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: #fff;
+    padding: 9px 15px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: transform 160ms ease, border-color 160ms ease, color 160ms ease, background 160ms ease;
+  }
+
+  .budget-sort-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 107, 90, 0.5);
+    color: var(--coral-dark);
+  }
+
+  .budget-sort-btn.is-active {
+    border-color: transparent;
+    background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+    color: #fff;
+  }
+
+  .budget-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .budget-filter input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--coral);
+    cursor: pointer;
+  }
+
+  .budget-sort-note {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .budget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .budget-card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.22s ease;
+  }
+
+  .budget-card[hidden] {
+    display: none;
+  }
+
+  .budget-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px -22px rgba(31, 24, 16, 0.32);
+  }
+
+  .budget-card-media {
+    position: relative;
+    display: block;
+    background: linear-gradient(135deg, #ffffff, #f5faf9);
+    border-bottom: 1px solid rgba(223, 208, 186, 0.6);
+  }
+
+  .budget-card-media img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3.2;
+    object-fit: contain;
+    padding: 16px;
+    transition: transform 220ms ease;
+  }
+
+  .budget-card-media:hover img {
+    transform: scale(1.04);
+  }
+
+  .budget-rank {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+    border-radius: 999px;
+    background: rgba(23, 32, 42, 0.92);
+    padding: 6px 13px;
+    color: #fff;
+    font-size: 0.98rem;
+    font-weight: 950;
+  }
+
+  .budget-card-media small {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    max-width: 62%;
+    color: rgba(31, 41, 55, 0.5);
+    font-size: 0.66rem;
+    line-height: 1.25;
+    text-align: right;
+  }
+
+  .budget-card-body {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 18px;
+  }
+
+  .budget-card-body h3 {
+    margin: 0;
+    font-size: 1.12rem;
+    line-height: 1.25;
+  }
+
+  .budget-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    border-radius: 10px;
+    background: rgba(255, 214, 186, 0.2);
+    padding: 12px;
+  }
+
+  .budget-facts span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 800;
+  }
+
+  .budget-facts strong {
+    font-size: 0.94rem;
+    line-height: 1.2;
+  }
+
+  .budget-whofor,
+  .budget-watch {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .budget-watch {
+    border-left: 3px solid var(--coral);
+    padding-left: 10px;
+    color: #6b4a44;
+  }
+
+  .budget-store {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .budget-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .budget-actions .button {
+    flex: 1;
+    min-width: 130px;
+  }
+
+  @keyframes budget-pop {
+    from { opacity: 0; transform: translateY(12px) scale(0.99); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .budget-pop {
+    animation: budget-pop 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .budget-pop { animation: none; }
+  }
+
+  @media (max-width: 980px) {
+    .budget-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .budget-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .budget-toolbar {
+      justify-content: flex-start;
+    }
+  }
+</style>
