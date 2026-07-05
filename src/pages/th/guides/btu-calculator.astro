@@ -214,7 +214,10 @@ const jsonLd = {
   <AffiliateClickTracker />
 
   <script>
+    // module script รันครั้งเดียว — ผูก init กับ astro:page-load ให้เครื่องคิดกลับมาทำงานทุกครั้งที่ ClientRouter เข้าหน้านี้
+    const initBtuCalculator = () => {
     const area = document.getElementById("btu-area") as HTMLInputElement;
+    if (!area) return; // ไม่ใช่หน้าเครื่องคิด BTU
     const sun = document.getElementById("btu-sun") as HTMLSelectElement;
     const top = document.getElementById("btu-top") as HTMLSelectElement;
     const ceiling = document.getElementById("btu-ceiling") as HTMLSelectElement;
@@ -294,5 +297,7 @@ ${location.href}`);
       el?.addEventListener("change", update);
     });
     update();
+    };
+    document.addEventListener("astro:page-load", initBtuCalculator);
   </script>
 </BaseLayout>

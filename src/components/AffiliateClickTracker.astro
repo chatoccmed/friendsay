@@ -1,5 +1,9 @@
 <script is:inline>
   (() => {
+    // delegation ระดับ document — ผูกครั้งเดียวพอ ใช้ได้กับทุกหน้า/ทุกครั้งที่ ClientRouter สลับ DOM
+    if (window.__friendsayAffiliateTrackerBound) return;
+    window.__friendsayAffiliateTrackerBound = true;
+
     const storageKey = "friendsay:affiliate-clicks";
 
     const saveLocalClick = (eventData) => {

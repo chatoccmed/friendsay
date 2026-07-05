@@ -20,7 +20,8 @@ const { products } = Astro.props;
 </div>
 
 <script id="air-compare-options" type="application/json" set:html={JSON.stringify(products)}></script>
-<script is:inline>
+{/* data-astro-rerun: ผูกกับ element ในหน้า ต้องรันใหม่ทุกครั้งที่ ClientRouter สลับหน้า */}
+<script is:inline data-astro-rerun>
   (() => {
     const key = "friendsay:compare:air-conditioners";
     const dataEl = document.getElementById("air-compare-options");

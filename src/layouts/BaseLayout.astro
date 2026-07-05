@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import "../styles/global.css";
@@ -53,7 +54,12 @@ const siteJsonLd = {
         window.dataLayer = window.dataLayer || [];
         function gtag() { window.dataLayer.push(arguments); }
         gtag("js", new Date());
-        gtag("config", GA_MEASUREMENT_ID);
+        // ปิด page_view อัตโนมัติ แล้วยิงเองทุกครั้งที่ ClientRouter เปลี่ยนหน้า (astro:page-load ยิงตอนโหลดแรกด้วย)
+        gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });
+        document.addEventListener("astro:page-load", () => {
+          if (location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
+          gtag("event", "page_view", { page_location: location.href, page_title: document.title });
+        });
       </script>
     )}
     <link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -77,6 +83,7 @@ const siteJsonLd = {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImageUrl} />
     {noindex && <meta name="robots" content="noindex, follow" />}
+    <ClientRouter />
     <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} />
   </head>
   <body>
@@ -87,6 +94,8 @@ const siteJsonLd = {
     <SiteFooter />
     <script>
       // Motion pass: scroll reveal + count-up + score-bar fill (ปิดเองเมื่อ prefers-reduced-motion)
+      // ผูกกับ astro:page-load ให้ทำงานซ้ำทุกครั้งที่ ClientRouter สลับหน้า (ยิงตอนโหลดแรกด้วย)
+      const initFriendsayMotion = () => {
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (!prefersReduced) {
         document.documentElement.classList.add("js-motion");
@@ -168,6 +177,8 @@ const siteJsonLd = {
           cio.observe(el);
         });
       }
+      };
+      document.addEventListener("astro:page-load", initFriendsayMotion);
     </script>
   </body>
 </html>

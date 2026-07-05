@@ -1093,18 +1093,14 @@ const jsonLd = {
   <AirCompareTray products={compareProducts} />
   <AffiliateClickTracker />
 
-  <script is:inline>
+  <script is:inline data-astro-rerun>
     (() => {
-      // sticky buy bar slide-in เมื่อเลื่อนพ้น hero (เฟส 2 motion — คลาส/สไตล์อยู่ใน global.css)
-      const stickyBuy = document.querySelector(".air-sticky-buy");
-      const heroSection = document.querySelector("section");
-      if (stickyBuy && heroSection && "IntersectionObserver" in window) {
-        stickyBuy.classList.add("is-offstage");
-        const buyBarIo = new IntersectionObserver(([entry]) => {
-          stickyBuy.classList.toggle("is-offstage", entry.isIntersecting);
-        }, { rootMargin: "-80px 0px 0px 0px" });
-        buyBarIo.observe(heroSection);
-      }
+      // รันใหม่ทุกครั้งที่ ClientRouter สลับหน้า — ยกเลิก listener ระดับ window ของรอบก่อนกันซ้อน
+      if (window.__friendsayReviewAbort) window.__friendsayReviewAbort.abort();
+      const reviewAbort = new AbortController();
+      window.__friendsayReviewAbort = reviewAbort;
+      const signal = reviewAbort.signal;
+      document.querySelector(".air-lightbox")?.remove();
 
       const offsetHashTarget = () => {
         if (!window.location.hash) return;
@@ -1118,11 +1114,11 @@ const jsonLd = {
         });
       };
 
-      window.addEventListener("hashchange", () => window.setTimeout(offsetHashTarget, 80));
+      window.addEventListener("hashchange", () => window.setTimeout(offsetHashTarget, 80), { signal });
       window.addEventListener("load", () => {
         window.setTimeout(offsetHashTarget, 120);
         window.setTimeout(offsetHashTarget, 700);
-      });
+      }, { signal });
       window.setTimeout(offsetHashTarget, 0);
       window.setTimeout(offsetHashTarget, 300);
       window.setTimeout(offsetHashTarget, 1100);
@@ -1134,7 +1130,8 @@ const jsonLd = {
       const updateStickyBuy = () => {
         if (!stickyBuy) return;
         const trigger = Math.min(520, (hero?.clientHeight || 900) * 0.45);
-        stickyBuy.classList.toggle("is-visible", window.scrollY > trigger);
+        // เฟส 2 motion: ยังไม่พ้น hero = หลบลงล่าง (.is-offstage สไตล์อยู่ใน global.css)
+        stickyBuy.classList.toggle("is-offstage", window.scrollY <= trigger);
       };
 
       const updateProgress = () => {
@@ -1150,8 +1147,8 @@ const jsonLd = {
       };
 
       onScroll();
-      window.addEventListener("scroll", onScroll, { passive: true });
-      window.addEventListener("resize", onScroll);
+      window.addEventListener("scroll", onScroll, { passive: true, signal });
+      window.addEventListener("resize", onScroll, { signal });
 
       // TOC scroll-spy: ไฮไลต์หัวข้อที่กำลังอ่าน
       const tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
@@ -1212,7 +1209,7 @@ const jsonLd = {
       });
       window.addEventListener("keydown", (event) => {
         if (event.key === "Escape") closeLightbox();
-      });
+      }, { signal });
 
       document
         .querySelectorAll(".air-photo-wall figure, .air-source-photo-grid figure, .air-real-review-grid article")

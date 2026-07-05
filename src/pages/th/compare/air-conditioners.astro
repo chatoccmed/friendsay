@@ -197,7 +197,7 @@ const jsonLd = {
   </main>
 
   <script id="air-compare-page-data" type="application/json" set:html={JSON.stringify(compareProducts)}></script>
-  <script is:inline>
+  <script is:inline data-astro-rerun>
     (() => {
       const key = "friendsay:compare:air-conditioners";
       const dataEl = document.getElementById("air-compare-page-data");

@@ -372,7 +372,10 @@ const visualNotes = [
 
   <script id="compare-products" type="application/json" set:html={JSON.stringify(compareData)}></script>
   <script>
+    // module script รันครั้งเดียว — ผูก init กับ astro:page-load ให้ตัวเทียบกลับมาทำงานทุกครั้งที่ ClientRouter เข้าหน้านี้
+    const initAirFryerCompare = () => {
     const compareDataEl = document.getElementById("compare-products");
+    if (!compareDataEl) return; // ไม่ใช่หน้าหม้อทอด
     const compareProducts = compareDataEl ? JSON.parse(compareDataEl.textContent || "[]") : [];
     const selectedCompare = new Set();
     const compareOutput = document.querySelector("[data-compare-output]");
@@ -474,5 +477,7 @@ const visualNotes = [
 
       [budget, household, priority].forEach((control) => control.addEventListener("change", update));
     }
+    };
+    document.addEventListener("astro:page-load", initAirFryerCompare);
   </script>
 </BaseLayout>

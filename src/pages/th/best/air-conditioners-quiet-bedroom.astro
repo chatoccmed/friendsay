@@ -573,7 +573,7 @@ const chartMax = Math.max(...quietProducts.map((p) => p.priceNum));
   <AirCompareTray products={airConditioners} />
   <AffiliateClickTracker />
 
-  <script is:inline>
+  <script is:inline data-astro-rerun>
     (() => {
       const grid = document.getElementById("quiet-grid");
       const note = document.getElementById("quiet-sort-note");

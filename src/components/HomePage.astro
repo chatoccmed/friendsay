@@ -226,8 +226,14 @@ const latestArticles = [
 
 <script id="search-data" type="application/json" set:html={JSON.stringify(searchIndex)} />
 
-<script is:inline>
+<script is:inline data-astro-rerun>
   (() => {
+    // รันใหม่ทุกครั้งที่ ClientRouter เข้าหน้านี้ — ยกเลิก listener ระดับ document/window ของรอบก่อนกันซ้อน
+    if (window.__friendsayHomeAbort) window.__friendsayHomeAbort.abort();
+    const homeAbort = new AbortController();
+    window.__friendsayHomeAbort = homeAbort;
+    const homeSignal = homeAbort.signal;
+
     const dataEl = document.getElementById("search-data");
     const form = document.getElementById("home-search-form");
     const input = document.getElementById("home-search-input");
@@ -380,7 +386,7 @@ const latestArticles = [
       const url = new URL(location.href);
       url.searchParams.set("q", value);
       history.replaceState(null, "", url);
-    });
+    }, { signal: homeSignal });
 
     // parallax เบา ๆ บน glow ของ hero (transform อย่างเดียว + เคารพ reduced-motion)
     const heroGlow = document.querySelector(".home-hero-glow");
@@ -396,7 +402,7 @@ const latestArticles = [
             glowTicking = false;
           });
         },
-        { passive: true }
+        { passive: true, signal: homeSignal }
       );
     }
 
