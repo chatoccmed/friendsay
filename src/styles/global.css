@@ -9710,3 +9710,199 @@ a.home-roadmap-card:hover {
     transition: none;
   }
 }
+
+/* ============================================================
+   PREMIUM CRAFT PASS ทั้งเว็บ (2026-07-07)
+   รายละเอียดระดับประกวด: rendering, micro-interaction,
+   focus states, texture, selection, scrollbar, view transition
+   ============================================================ */
+
+/* --- rendering ตัวอักษรให้คมทั้งเว็บ --- */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, .headline {
+  letter-spacing: -0.4px;
+}
+
+/* --- selection สีแบรนด์ (ดีเทลที่กรรมการชอบจับ) --- */
+::selection {
+  background: rgba(255, 107, 90, 0.28);
+  color: #1f2937;
+}
+
+/* --- focus ring สวยและเห็นชัด (Usability score) --- */
+:focus-visible {
+  outline: 3px solid rgba(255, 107, 90, 0.65);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.button:focus-visible,
+.price-button:focus-visible,
+a[class*="buy"]:focus-visible {
+  outline-offset: 3px;
+}
+
+/* --- scrollbar บาง โทนเดียวกับเว็บ --- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(223, 208, 186, 0.9) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(223, 208, 186, 0.9);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* --- micro-interaction ปุ่มทั้งเว็บ: กดแล้วรู้สึก --- */
+.button,
+.price-button,
+.compare-slot-buy,
+.vs-chip-buy,
+.compare-duel-buy,
+.cat-buy {
+  will-change: transform;
+}
+
+.button:active,
+.price-button:active,
+.compare-slot-buy:active,
+.vs-chip-buy:active,
+.compare-duel-buy:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 80ms;
+}
+
+/* --- ลิงก์ในเนื้อหา: เส้นใต้วิ่งเข้า --- */
+.faq-item p a,
+.compare-note a,
+.muted a {
+  position: relative;
+  color: var(--coral-dark, #d84c3c);
+  text-decoration: none;
+  background-image: linear-gradient(90deg, currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px;
+  background-position: 0 100%;
+  transition: background-size 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  padding-bottom: 1px;
+}
+
+.faq-item p a:hover,
+.compare-note a:hover,
+.muted a:hover {
+  background-size: 100% 1.5px;
+}
+
+/* --- texture กระดาษบาง ๆ บน hero ทุกแบบ (ฆ่าความเรียบแบน "AI-made") --- */
+.page-hero,
+.home-search-hero,
+.compare-page-hero,
+.roundup-hero,
+.air-review-hero,
+.review-hero,
+.fridge-hero,
+.air-library-hero,
+.legacy-hero {
+  position: relative;
+}
+
+.page-hero::after,
+.home-search-hero::after,
+.compare-page-hero::after,
+.roundup-hero::after,
+.air-review-hero::after,
+.review-hero::after,
+.fridge-hero::after,
+.air-library-hero::after,
+.legacy-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+.page-hero > *,
+.home-search-hero > *,
+.compare-page-hero > *,
+.roundup-hero > *,
+.air-review-hero > *,
+.review-hero > *,
+.fridge-hero > *,
+.air-library-hero > *,
+.legacy-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- เส้นขีดใต้ลายมือ: ลายเซ็นของแบรนด์ ใช้ได้ทุกหน้า --- */
+.accent-underline {
+  font-style: normal;
+  color: var(--coral-dark, #d84c3c);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 30 3, 62 2.5, 117 6.5' fill='none' stroke='%23ff6b5a' stroke-width='4' stroke-linecap='round' opacity='0.85'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 0.32em;
+  padding-bottom: 0.18em;
+}
+
+/* --- view transition ให้ลื่นแบบตั้งใจ ไม่ใช่ค่า default --- */
+::view-transition-old(root) {
+  animation-duration: 220ms;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* --- skip link (a11y ที่เว็บประกวดต้องมี) --- */
+.skip-link {
+  position: fixed;
+  top: -60px;
+  left: 16px;
+  z-index: 200;
+  background: #1f2937;
+  color: #fff;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: top 200ms ease;
+}
+
+.skip-link:focus-visible {
+  top: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-item p a,
+  .compare-note a,
+  .muted a,
+  .skip-link {
+    transition: none;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.01ms;
+  }
+}

@@ -90,8 +90,9 @@ const siteJsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} />
   </head>
   <body>
+    <a class="skip-link" href="#friendsay-content">ข้ามไปเนื้อหาหลัก</a>
     <SiteHeader />
-    <main>
+    <main id="friendsay-content">
       <slot />
     </main>
     <SiteFooter />
@@ -114,7 +115,19 @@ const siteJsonLd = {
           ".score-bar",
           ".home-proof-strip a",
           ".btu-calc",
-          ".compare-table tbody tr"
+          ".compare-table tbody tr",
+          ".rainy-pick-card",
+          ".cat-card",
+          ".energy-card",
+          ".quiet-card",
+          ".jp-card",
+          ".vs-product-card",
+          ".compare-verdict-card",
+          ".ph-lesson-card",
+          ".home-latest-row",
+          ".quiet-check-card",
+          ".home-work-card",
+          ".cat-stat"
         ].join(", ");
 
         const targets = Array.from(document.querySelectorAll<HTMLElement>(selector));
