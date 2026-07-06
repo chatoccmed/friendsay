@@ -1,8 +1,10 @@
-// ฐานค้นหาหน้าแรก — รวมทุกสินค้าที่ตรวจหลักฐานแล้ว (แอร์ 10 + ของสู้หน้าฝน 7)
+// ฐานค้นหาหน้าแรก — รวมทุกรายการที่เก็บจากหน้าร้านจริง (แอร์ 10 + ของสู้หน้าฝน 7 + catalog ยอดฮิตรายคีย์เวิร์ด)
 // ตัวเลขราคา/ยอดขายมาจากที่เห็นจริงบนหน้าร้าน ณ วันเก็บข้อมูล (กติกา B+D: ยอดขายไม่แสดง = null ห้ามเดา)
+// catalog = tier-2: เก็บจากหน้าค้นหา Shopee เรียงยอดขาย (ราคาโดยประมาณ) — ดู src/data/catalog/*.json
 
 import { airConditioners } from "./airConditioners";
 import { rainySections } from "./rainyGear";
+import fanCatalog from "./catalog/fan.json";
 
 export type SearchItem = {
   id: string;
@@ -231,6 +233,25 @@ const rainyItems: SearchItem[] = rainySections.flatMap((section) =>
   })
 );
 
-export const searchIndex: SearchItem[] = [...acItems, ...rainyItems];
+// catalog tier-2: พัดลมยอดฮิตจากหน้าค้นหา Shopee (เรียงยอดขาย) — ราคาโดยประมาณ ณ วันเก็บ
+const catalogFanItems: SearchItem[] = fanCatalog.items.map((item) => ({
+  id: `catalog-fan-${item.rank}`,
+  name: item.name,
+  shortName: `${item.brand} (อันดับ ${item.rank} พัดลมขายดี)`,
+  category: "พัดลม",
+  keywords: ["พัดลม", "fan", item.brand.toLowerCase()],
+  priceNum: item.priceApprox,
+  priceLabel: `~฿${item.priceApprox.toLocaleString("th-TH")} (โดยประมาณ)`,
+  soldNum: item.soldPerMonthNum,
+  soldLabel: `ขายได้ ${item.soldPerMonth} ชิ้น/เดือน`,
+  rating: item.rating,
+  ratingsCount: 0,
+  image: item.image,
+  href: "/th/c/fan/",
+  affiliateUrl: item.link,
+  blurb: `อันดับ ${item.rank} พัดลมขายดีบน Shopee เรียงตามยอดขายจริง (เก็บ ${fanCatalog.collectedAt})`
+}));
+
+export const searchIndex: SearchItem[] = [...acItems, ...rainyItems, ...catalogFanItems];
 
 export const searchIndexCount = searchIndex.length;

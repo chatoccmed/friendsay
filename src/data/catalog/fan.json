@@ -1,0 +1,169 @@
+{
+  "slug": "fan",
+  "keyword": "พัดลม",
+  "title": "พัดลม",
+  "collectedAt": "2026-07-07",
+  "method": "เก็บจากหน้าค้นหา Shopee คำว่า \"พัดลม\" เรียงตามยอดขาย (เฉพาะรายการ organic ที่แสดงยอดขายต่อเดือน) วันที่ 7 ก.ค. 2026",
+  "categoryWatch": [
+    "ประกันมอเตอร์สำคัญกว่าราคา — รุ่นดังหลายตัวในลิสต์ระบุประกันมอเตอร์ 3 ปีบนชื่อสินค้าเลย ตัวที่ไม่ระบุให้ถามร้านก่อน",
+    "ขนาดใบพัด 14/16/18 นิ้ว เลือกตามขนาดห้อง — ใหญ่กว่าไม่ได้ดีกว่าเสมอ เปลืองที่และบางรุ่นเสียงแรงขึ้น",
+    "ราคาในลิสต์เป็นราคาโปรที่เห็น ณ วันเก็บข้อมูล เปลี่ยนได้ทุกวัน กดเช็กราคาจริงก่อนตัดสินใจ",
+    "ยอดขายสูงไม่ได้แปลว่าเป็นร้านทางการของแบรนด์ — เช็กชื่อร้าน/ป้าย Mall บนหน้าสินค้าอีกครั้ง"
+  ],
+  "faqs": [
+    {
+      "q": "พัดลมยี่ห้อไหนขายดีสุดบน Shopee ตอนนี้?",
+      "a": "จากหน้าค้นหาเรียงตามยอดขาย (7 ก.ค. 2026) กลุ่มที่ขายดีสุดคือ Hatari (ครอง 6 ใน 10 อันดับ) ตามด้วย Mitsubishi Electric, Kashiwa และ GOOJODOQ โดยสองอันดับแรก (Hatari Slide Smart 18\" และ Mitsubishi R16A-GC) เห็นยอดขายระดับ 10พัน+ ชิ้นต่อเดือน"
+    },
+    {
+      "q": "ราคาในหน้านี้เชื่อได้แค่ไหน?",
+      "a": "เป็นราคาโดยประมาณที่เห็นจริงบนหน้าค้นหา Shopee ณ วันที่เก็บข้อมูล (7 ก.ค. 2026) ส่วนใหญ่เป็นราคาช่วงโปรที่เปลี่ยนได้ทุกวัน ให้ใช้เป็นจุดเทียบระหว่างรุ่น แล้วกดปุ่มเช็กราคาเพื่อดูราคาสดก่อนซื้อเสมอ"
+    },
+    {
+      "q": "เลือกขนาดใบพัดยังไง?",
+      "a": "หลักคร่าว ๆ: 14 นิ้วพอสำหรับโต๊ะทำงาน/ห้องเล็ก, 16 นิ้วคือมาตรฐานห้องนอน-ห้องนั่งเล่นทั่วไป (สังเกตว่ารุ่นขายดีส่วนใหญ่คือ 16-18 นิ้ว), 18 นิ้วขึ้นไปเหมาะห้องใหญ่หรือพื้นที่เปิด ถ้าเสียงเป็นเรื่องสำคัญ อ่านรีวิวที่มีวิดีโอของขนาดที่จะซื้อจริง"
+    }
+  ],
+  "items": [
+    {
+      "rank": 1,
+      "name": "พัดลม Hatari Slide Smart 18 นิ้ว พร้อมรีโมทคอนโทรล รับประกัน 3 ปี (S18R1)",
+      "brand": "Hatari",
+      "priceApprox": 1948,
+      "discountPct": null,
+      "soldPerMonth": "10พัน+",
+      "soldPerMonthNum": 10000,
+      "rating": 4.9,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/fan/01.jpg",
+      "link": "https://s.shopee.co.th/2qSlLrdDz6",
+      "productUrl": "https://shopee.co.th/product/1226237536/42780682389"
+    },
+    {
+      "rank": 2,
+      "name": "MITSUBISHI ELECTRIC ตั้งพื้นกึ่งตั้งโต๊ะ R16A-GC แบบปุ่มกด ขนาดใบพัด 16 นิ้ว",
+      "brand": "Mitsubishi Electric",
+      "priceApprox": 1400,
+      "discountPct": null,
+      "soldPerMonth": "10พัน+",
+      "soldPerMonthNum": 10000,
+      "rating": 4.9,
+      "province": "สมุทรปราการ",
+      "image": "/images/catalog/fan/02.jpg",
+      "link": "https://s.shopee.co.th/2g9L9YdrK5",
+      "productUrl": "https://shopee.co.th/product/136034347/29326182105"
+    },
+    {
+      "rank": 3,
+      "name": "Kashiwa พัดลมตั้งพื้น พัดลมสไลด์ ปรับแรงลมได้ 3 ระดับ ขนาด 18 นิ้ว และ 16 นิ้ว, 8 นิ้ว",
+      "brand": "Kashiwa",
+      "priceApprox": 759,
+      "discountPct": 45,
+      "soldPerMonth": "6พัน+",
+      "soldPerMonthNum": 6000,
+      "rating": 4.9,
+      "province": "นครปฐม",
+      "image": "/images/catalog/fan/03.jpg",
+      "link": "https://s.shopee.co.th/3B5bkTbxJC",
+      "productUrl": "https://shopee.co.th/product/936508340/26134998461"
+    },
+    {
+      "rank": 4,
+      "name": "Kashiwa พัดลมตั้งพื้น พัดลมสไลด์ ปรับแรงลมได้ 3 ระดับ ขนาด 20 นิ้ว 18 นิ้ว และ 16 นิ้ว",
+      "brand": "Kashiwa",
+      "priceApprox": 714,
+      "discountPct": 60,
+      "soldPerMonth": "5พัน+",
+      "soldPerMonthNum": 5000,
+      "rating": 4.9,
+      "province": "นครปฐม",
+      "image": "/images/catalog/fan/04.jpg",
+      "link": "https://s.shopee.co.th/30mBYAcaeB",
+      "productUrl": "https://shopee.co.th/product/18631943/51555996443"
+    },
+    {
+      "rank": 5,
+      "name": "KASHIWA พัดลมตั้งพื้น 18 นิ้ว รุ่น FS-1812 พัดลมอุตสาหกรรม",
+      "brand": "Kashiwa",
+      "priceApprox": 940,
+      "discountPct": 55,
+      "soldPerMonth": "4พัน+",
+      "soldPerMonthNum": 4000,
+      "rating": 4.9,
+      "province": "นครปฐม",
+      "image": "/images/catalog/fan/05.jpg",
+      "link": "https://s.shopee.co.th/3ViS95agdI",
+      "productUrl": "https://shopee.co.th/product/18631943/29070491150"
+    },
+    {
+      "rank": 6,
+      "name": "GOOJODOQ Gfs008 พัดลมไร้เสียงความเร็วสูง 2in1 ติดผนังและตั้งโต๊ะ จอแสดงผล LED 100 สปีด มุมปรับ 90°",
+      "brand": "GOOJODOQ",
+      "priceApprox": 489,
+      "discountPct": 55,
+      "soldPerMonth": "4พัน+",
+      "soldPerMonthNum": 4000,
+      "rating": 4.9,
+      "province": "พระนครศรีอยุธยา",
+      "image": "/images/catalog/fan/06.jpg",
+      "link": "https://s.shopee.co.th/W4qZe1kLS",
+      "productUrl": "https://shopee.co.th/product/1505570169/25496050008"
+    },
+    {
+      "rank": 7,
+      "name": "พัดลม Hatari พัดลมปรับระดับ 16 นิ้ว รับประกันมอเตอร์ 3 ปี (S16M1)",
+      "brand": "Hatari",
+      "priceApprox": 948,
+      "discountPct": 5,
+      "soldPerMonth": "4พัน+",
+      "soldPerMonthNum": 4000,
+      "rating": 4.9,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/fan/07.jpg",
+      "link": "https://s.shopee.co.th/LlQNL2NgR",
+      "productUrl": "https://shopee.co.th/product/1226237536/28703143024"
+    },
+    {
+      "rank": 8,
+      "name": "Hatari พัดลมปรับระดับ 18 นิ้ว รับประกันมอเตอร์ 3 ปี (S18C1)",
+      "brand": "Hatari",
+      "priceApprox": 1148,
+      "discountPct": null,
+      "soldPerMonth": "3พัน+",
+      "soldPerMonthNum": 3000,
+      "rating": 4.9,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/fan/08.jpg",
+      "link": "https://s.shopee.co.th/qhgyG0TfY",
+      "productUrl": "https://shopee.co.th/product/1226237536/48160395039"
+    },
+    {
+      "rank": 9,
+      "name": "พัดลม Hatari พัดลมสไลด์ ปรับระดับ 14 นิ้ว รับประกันมอเตอร์ 3 ปี (S14M1)",
+      "brand": "Hatari",
+      "priceApprox": 848,
+      "discountPct": 6,
+      "soldPerMonth": "3พัน+",
+      "soldPerMonthNum": 3000,
+      "rating": 4.9,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/fan/09.jpg",
+      "link": "https://s.shopee.co.th/gOGlx170X",
+      "productUrl": "https://shopee.co.th/product/1226237536/26003372695"
+    },
+    {
+      "rank": 10,
+      "name": "พัดลม Hatari พัดลมปรับระดับ 16 นิ้ว รับประกันมอเตอร์ 3 ปี (S16C1)",
+      "brand": "Hatari",
+      "priceApprox": 898,
+      "discountPct": 10,
+      "soldPerMonth": "2พัน+",
+      "soldPerMonthNum": 2000,
+      "rating": 4.9,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/fan/10.jpg",
+      "link": "https://s.shopee.co.th/1BKXMrzCze",
+      "productUrl": "https://shopee.co.th/product/1226237536/41155830794"
+    }
+  ]
+}

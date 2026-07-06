@@ -5,6 +5,13 @@ import { airConditionerShopeeProofByKey } from "../data/airConditionerShopeeProo
 
 const site = "https://friendsay.com";
 
+// หน้า catalog ยอดฮิต (/th/c/<slug>/) — เพิ่มอัตโนมัติตามไฟล์ใน src/data/catalog/
+const catalogModules = import.meta.glob("../data/catalog/*.json", { eager: true });
+const catalogPaths = Object.values(catalogModules).map((mod) => {
+  const catalog = (mod as { default?: { slug: string } }).default ?? (mod as { slug: string });
+  return `/th/c/${(catalog as { slug: string }).slug}/`;
+});
+
 const staticPaths = [
   "/",
   "/th/",
@@ -41,6 +48,7 @@ const refrigeratorReviewPaths = queuedRefrigeratorReviews.map((review) => `/th/r
 
 const paths = [
   ...staticPaths,
+  ...catalogPaths,
   ...airConditionerReviewPaths,
   ...refrigeratorReviewPaths,
   ...legacyProducts.map((product) => product.preservedPath)
