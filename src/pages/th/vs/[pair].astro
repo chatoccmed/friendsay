@@ -163,6 +163,25 @@ const updatedMax = a.updated > b.updated ? a.updated : b.updated;
 // รายชื่อรุ่นทั้งคลังสำหรับตัวสลับรุ่นบน hero (ลำดับ = ลำดับ canonical ของ URL คู่)
 const switcherModels = airConditioners.map((p) => ({ slug: p.slug, name: p.shortName }));
 
+// กราฟเรดาร์ 8 แกน ซ้อนสองรุ่น (render ฝั่ง build — สีตามฝั่ง: a=coral, b=teal)
+const RADAR_SIZE = 460;
+const RADAR_R = 150;
+const radarAngle = (i: number) => (Math.PI * 2 * i) / AXES.length - Math.PI / 2;
+const radarX = (i: number, r: number) => RADAR_SIZE / 2 + Math.cos(radarAngle(i)) * r;
+const radarY = (i: number, r: number) => RADAR_SIZE / 2 + Math.sin(radarAngle(i)) * r;
+const radarPt = (i: number, r: number) => `${radarX(i, r).toFixed(1)},${radarY(i, r).toFixed(1)}`;
+const radarRings = [0.25, 0.5, 0.75, 1].map((f) => AXES.map((_, i) => radarPt(i, RADAR_R * f)).join(" "));
+const radarShape = (p: any) => AXES.map((axis, i) => radarPt(i, (RADAR_R * Math.max(0, Math.min(10, num(p, axis.key)))) / 10)).join(" ");
+const radarLabels = AXES.map((axis, i) => {
+  const lx = radarX(i, RADAR_R + 26);
+  const ly = radarY(i, RADAR_R + 26);
+  const anchor = Math.abs(lx - RADAR_SIZE / 2) < 14 ? "middle" : lx > RADAR_SIZE / 2 ? "start" : "end";
+  return { label: axis.label, lx: lx.toFixed(1), ly: ly.toFixed(1), anchor };
+});
+
+// กราฟแท่งราคาชนกัน (เฉพาะคู่ที่มีราคาใน ledger ทั้งคู่)
+const priceChartMax = priceA && priceB ? Math.max(priceA.price, priceB.price) : 0;
+
 // สรุปคำแนะนำจาก Friendsay — สังเคราะห์จากมุมมองรายรุ่น + ตัวชี้ขาดจากตัวเลขจริงของคู่นี้
 const biggestAxisGap = AXES
   .map((axis) => ({ axis, diff: num(a, axis.key) - num(b, axis.key) }))
@@ -252,7 +271,7 @@ const faqJsonLd = {
         <span class="badge badge-teal">เทียบจาก {factsCount} จุดข้อมูลจริง</span>
         <span class="badge badge-blue">อัปเดตข้อมูล {thaiDate(updatedMax)}</span>
       </div>
-      <h1>{a.shortName} vs {b.shortName} ตัวไหนดี?</h1>
+      <h1>{a.shortName} vs {b.shortName} <em class="vs-h1-accent">ตัวไหนดี?</em></h1>
       <div class="vs-duel" aria-label="สองรุ่นที่กำลังเทียบ พร้อมตัวเปลี่ยนรุ่น">
         {[{ p: a, side: "a", other: b }, { p: b, side: "b", other: a }].map(({ p, side, other }, i) => (
           <>
@@ -340,6 +359,25 @@ const faqJsonLd = {
         </table>
       </div>
       <p class="compare-note">✓ เขียว = ค่าที่ดีกว่าของแถว · ราคาเป็นราคาช่วงโปร ณ วันเก็บข้อมูล เปลี่ยนได้ทุกวัน · "ไม่แสดง" = Shopee ไม่โชว์ยอดขาย เราไม่เดาตัวเลข</p>
+
+      {priceA && priceB ? (
+        <div class="rainy-chart vs-price-chart" role="img" aria-label={`กราฟแท่งเทียบราคาที่เคยเห็นของ ${a.shortName} กับ ${b.shortName}`}>
+          <svg viewBox="0 0 900 102">
+            {[{ p: a, price: priceA, color: "#ff6b5a" }, { p: b, price: priceB, color: "#0ea5a0" }].map((row, i) => {
+              const y = i * 46 + 8;
+              const barW = Math.max(40, (row.price.price / priceChartMax) * 480);
+              return (
+                <g class="rainy-bar" style={`animation-delay:${i * 120}ms`}>
+                  <text x="0" y={y + 19} class="rainy-bar-name">{row.p.shortName}</text>
+                  <rect x="215" y={y} width={barW} height="28" rx="8" fill={row.color} opacity="0.85" />
+                  <text x={222 + barW} y={y + 19} class="rainy-bar-value">~{baht(row.price.price)} ({thaiDate(row.price.date)})</text>
+                </g>
+              );
+            })}
+          </svg>
+          <p class="compare-note">ความยาวแท่ง = ราคาที่เคยเห็นจริง (สั้น = ถูกกว่า) · <span style="color:#ff6b5a">■</span> {a.shortName} · <span style="color:#0ea5a0">■</span> {b.shortName}</p>
+        </div>
+      ) : null}
     </div>
   </section>
 
@@ -389,10 +427,30 @@ const faqJsonLd = {
   </section>
 
   <section class="section band" id="scores">
-    <div class="container">
+    <div class="wide-container">
       <p class="eyebrow">คะแนน 8 ด้าน · พร้อมเหตุผลว่าทำไมด้านนั้นสำคัญ</p>
-      <h2 class="headline">แกนต่อแกน ใครแข็งด้านไหน</h2>
-      <div class="compare-score-matrix vs-matrix">
+      <h2 class="headline">บุคลิกของสองตัวนี้ในภาพเดียว</h2>
+      <div class="vs-overview-layout">
+        <div class="vs-radar-panel">
+          <svg viewBox={`0 0 ${RADAR_SIZE} ${RADAR_SIZE}`} role="img" aria-label={`เรดาร์เทียบคะแนน 8 ด้านของ ${a.shortName} กับ ${b.shortName}`}>
+            {radarRings.map((points) => (
+              <polygon points={points} fill="none" stroke="rgba(31,41,55,0.1)" />
+            ))}
+            {AXES.map((_, i) => (
+              <line x1={RADAR_SIZE / 2} y1={RADAR_SIZE / 2} x2={radarX(i, RADAR_R).toFixed(1)} y2={radarY(i, RADAR_R).toFixed(1)} stroke="rgba(31,41,55,0.1)" />
+            ))}
+            {radarLabels.map((l) => (
+              <text x={l.lx} y={l.ly} text-anchor={l.anchor} dominant-baseline="middle" class="vs-radar-label">{l.label}</text>
+            ))}
+            <polygon class="radar-shape" style="animation-delay:80ms" points={radarShape(a)} fill="#ff6b5a24" stroke="#ff6b5a" stroke-width="2.5" stroke-linejoin="round" />
+            <polygon class="radar-shape" style="animation-delay:220ms" points={radarShape(b)} fill="#0ea5a024" stroke="#0ea5a0" stroke-width="2.5" stroke-linejoin="round" />
+          </svg>
+          <div class="vs-radar-legend">
+            <span><i style="background:#ff6b5a"></i>{a.shortName} <em>{a.score.toFixed(1)}/10</em></span>
+            <span><i style="background:#0ea5a0"></i>{b.shortName} <em>{b.score.toFixed(1)}/10</em></span>
+          </div>
+        </div>
+        <div class="compare-score-matrix vs-matrix">
         {AXES.map((axis) => {
           const va = num(a, axis.key);
           const vb = num(b, axis.key);
@@ -417,6 +475,7 @@ const faqJsonLd = {
             </article>
           );
         })}
+        </div>
       </div>
     </div>
   </section>
@@ -511,6 +570,161 @@ const faqJsonLd = {
     background:
       radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.55), transparent 70%),
       linear-gradient(180deg, #fff8ee, #fffdf8);
+  }
+
+  /* ---- ลูกเล่นพรีเมียม: ขีดเส้นใต้แบบลายมือ + การ์ดเข้าฉาก + เหรียญลอย ---- */
+  .vs-h1-accent {
+    font-style: normal;
+    color: var(--coral-dark, #d84c3c);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 30 3, 62 2.5, 117 6.5' fill='none' stroke='%23ff6b5a' stroke-width='4' stroke-linecap='round' opacity='0.85'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 0.32em;
+    padding-bottom: 0.18em;
+  }
+
+  @keyframes vs-duel-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes vs-medal-pop {
+    0% { opacity: 0; transform: scale(0.4); }
+    70% { transform: scale(1.12); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes vs-medal-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .vs-duel-card:first-of-type {
+    animation: vs-duel-in 620ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation-delay: 60ms;
+  }
+
+  .vs-duel-card:last-of-type {
+    animation: vs-duel-in 620ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation-delay: 180ms;
+  }
+
+  .vs-medal {
+    animation: vs-medal-pop 520ms cubic-bezier(0.22, 0.61, 0.36, 1) 340ms both, vs-medal-float 3.2s ease-in-out 900ms infinite;
+  }
+
+  .vs-winner-line {
+    display: inline-block;
+    border-left: 4px solid var(--coral);
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 0 12px 12px 0;
+    padding: 12px 18px;
+    box-shadow: var(--shadow-soft);
+    color: #3f4e5c !important;
+  }
+
+  /* ---- เรดาร์ + แถบคะแนนวิ่ง ---- */
+  .vs-overview-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+    margin-top: 18px;
+  }
+
+  .vs-radar-panel {
+    position: sticky;
+    top: 140px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--shadow-soft);
+    padding: 18px;
+  }
+
+  .vs-radar-panel svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .vs-radar-label {
+    font-size: 15px;
+    font-weight: 700;
+    fill: rgba(31, 41, 55, 0.72);
+    font-family: inherit;
+  }
+
+  .vs-radar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    margin-top: 10px;
+    justify-content: center;
+  }
+
+  .vs-radar-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+
+  .vs-radar-legend i {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+  }
+
+  .vs-radar-legend em {
+    font-style: normal;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  @keyframes vs-bar-grow {
+    from { transform: scaleX(0.04); }
+    to { transform: scaleX(1); }
+  }
+
+  .vs-matrix :global(i)::before {
+    transform-origin: left center;
+    animation: vs-bar-grow 750ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  .vs-matrix article:nth-of-type(1) :global(i)::before { animation-delay: 60ms; }
+  .vs-matrix article:nth-of-type(2) :global(i)::before { animation-delay: 130ms; }
+  .vs-matrix article:nth-of-type(3) :global(i)::before { animation-delay: 200ms; }
+  .vs-matrix article:nth-of-type(4) :global(i)::before { animation-delay: 270ms; }
+  .vs-matrix article:nth-of-type(5) :global(i)::before { animation-delay: 340ms; }
+  .vs-matrix article:nth-of-type(6) :global(i)::before { animation-delay: 410ms; }
+  .vs-matrix article:nth-of-type(7) :global(i)::before { animation-delay: 480ms; }
+  .vs-matrix article:nth-of-type(8) :global(i)::before { animation-delay: 550ms; }
+
+  .vs-price-chart {
+    margin-top: 26px;
+  }
+
+  @media (max-width: 1080px) {
+    .vs-overview-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .vs-radar-panel {
+      position: static;
+      max-width: 520px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vs-duel-card:first-of-type,
+    .vs-duel-card:last-of-type,
+    .vs-medal,
+    .vs-matrix :global(i)::before {
+      animation: none;
+    }
   }
 
   .visually-hidden {
