@@ -3,7 +3,11 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { queuedAirConditionerReviews } from "../../../data/airConditionerReviewQueue";
+import { searchIndex } from "../../../data/searchIndex";
 import acPriceCsvRaw from "../../../data/price-history/air-conditioners.csv?raw";
+
+// ยอดขายที่เห็นจริงรายรุ่น (กติกา B+D: Shopee ไม่โชว์ = null ห้ามเดา) — searchIndex เก็บไว้ครบแล้ว
+const soldById = new Map(searchIndex.map((item) => [item.id, { soldNum: item.soldNum, soldLabel: item.soldLabel }]));
 
 // ราคาที่เคยเห็นจริงล่าสุดรายรุ่น จาก ledger (append-only) — ใช้เทียบตัวเลขในผลตัดสินรายคู่
 // เลือกแถวล่าสุดของแต่ละรุ่น (ถ้าวันเดียวกันมีทั้ง list/promo ใช้ promo เพราะคือราคาที่จ่ายจริง)
@@ -25,6 +29,12 @@ const thaiDate = (iso: string) => {
 
 const mainCompareProducts = airConditioners.map((product) => ({
   tier: "main",
+  soldNum: soldById.get(product.slug)?.soldNum ?? null,
+  soldShort: (() => {
+    const s = soldById.get(product.slug);
+    if (!s) return "ไม่แสดง";
+    return s.soldNum ? `${s.soldNum >= 10000 ? "10พัน+" : s.soldNum >= 1000 ? Math.floor(s.soldNum / 1000) + "พัน+" : s.soldNum.toLocaleString("th-TH")} เครื่อง` : "ไม่แสดง";
+  })(),
   priceNum: latestSeenPrice[product.slug]?.price ?? null,
   priceSeenLabel: latestSeenPrice[product.slug]
     ? `฿${latestSeenPrice[product.slug].price.toLocaleString("th-TH")} (${latestSeenPrice[product.slug].priceType === "promo" ? "ราคาโปร" : "ราคาตั้ง"} · ${thaiDate(latestSeenPrice[product.slug].date)})`
@@ -66,6 +76,8 @@ const mainCompareProducts = airConditioners.map((product) => ({
 
 const queueCompareProducts = queuedAirConditionerReviews.map((review) => ({
   tier: "queue",
+  soldNum: null,
+  soldShort: "ยังไม่บันทึก",
   priceNum: null,
   priceSeenLabel: null,
   slug: review.productKey,
@@ -480,6 +492,9 @@ const jsonLd = {
           const less = more === a ? b : a;
           facts.push(`${more.shortName} รีวิวเยอะกว่า (${more.ratingsCount.toLocaleString("th-TH")} ต่อ ${less.ratingsCount.toLocaleString("th-TH")})`);
         }
+        if (a.soldNum || b.soldNum) {
+          facts.push(`ยอดขายที่เห็นบนหน้าร้าน: ${a.shortName} ${a.soldShort} · ${b.shortName} ${b.soldShort}`);
+        }
         facts.push(`คะแนนรวมของเรา: ${a.shortName} ${a.score.toFixed(1)} · ${b.shortName} ${b.score.toFixed(1)}`);
         return facts;
       };
@@ -532,12 +547,19 @@ const jsonLd = {
             <div class="compare-card-facts">
               <span>ราคา: ${escapeHtml(moneyText(product))}</span>
               ${product.priceSeenLabel ? `<span>เคยเห็นจริง: ${escapeHtml(product.priceSeenLabel)} · <a href="/th/guides/price-history/">ดูประวัติราคา</a></span>` : ""}
+              <span>ยอดขายที่เห็น: ${escapeHtml(product.soldShort)}</span>
               <span>BTU: ${escapeHtml(product.btuOptions.join(" / "))}</span>
               <span>รีวิว: ${escapeHtml(product.ratingsCount.toLocaleString("th-TH"))}+ คะแนน</span>
             </div>
-            <div class="compare-card-warning">
-              <strong>ระวัง</strong>
-              <span>${escapeHtml(product.watch[0])}</span>
+            <div class="compare-card-reviews">
+              <div class="compare-reviews-good">
+                <strong>รีวิวดีที่พูดซ้ำ</strong>
+                <ul>${(product.reviewSignals || []).slice(0, 2).map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ul>
+              </div>
+              <div class="compare-reviews-bad">
+                <strong>เสียงบ่น/จุดระวัง</strong>
+                <ul>${(product.watch || []).slice(0, 2).map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ul>
+              </div>
             </div>
             <div class="compare-buy-grid">
               <a class="price-button shopee" href="${escapeHtml(product.links.shopee)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-page">Shopee</a>
@@ -577,11 +599,12 @@ const jsonLd = {
         if (!table) return;
         const rows = [
           ["ราคา", (product) => moneyText(product)],
+          ["ยอดขายที่เห็น", (product) => product.soldShort],
           ["BTU ที่มี", (product) => product.btuOptions.join(" / ")],
           ["เหมาะกับใคร", (product) => product.bestFor],
           ["ไม่เหมาะถ้า", (product) => product.notFor],
-          ["รีวิวจริงบอกอะไร", (product) => listText(product.reviewSignals)],
-          ["จุดต้องระวัง", (product) => listText(product.watch)],
+          ["รีวิวดีที่พูดซ้ำ", (product) => listText(product.reviewSignals)],
+          ["รีวิวเสีย/จุดระวัง", (product) => listText(product.watch)],
           ["เรื่องติดตั้ง", (product) => listText(product.installNotes)],
           ["ประกัน", (product) => listText(product.warrantyNotes)],
           ["อัปเดตข้อมูล", (product) => product.updated]

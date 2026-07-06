@@ -106,6 +106,7 @@ const latestArticles = [
     <h2 class="headline" id="search-results-title">ผลการค้นหา</h2>
     <p class="muted" id="search-results-note"></p>
     <div class="scenario-grid" id="search-results-grid" style="margin-top: 18px;"></div>
+    <div class="roundup-actions" id="search-compare-cta" hidden style="margin-top: 16px;"></div>
     <div class="home-search-empty" id="search-results-empty" hidden>
       <p>
         ยังไม่เจอในฐานที่ตรวจแล้ว — ตอนนี้เราตรวจลึกทีละหมวดเพื่อไม่ให้มีตัวเลขมั่ว
@@ -333,6 +334,7 @@ const latestArticles = [
         <div class="search-result-actions">
           <a class="button button-primary" href="${esc(item.affiliateUrl)}" target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="home-search">เช็กราคา Shopee</a>
           <a class="button" href="${esc(item.href)}">อ่านรีวิวของเรา</a>
+          ${item.category === "แอร์" ? `<a class="button" href="/th/compare/air-conditioners/?items=${encodeURIComponent(item.id)}">⚖ เทียบรุ่นนี้</a>` : ""}
         </div>
       </article>`;
 
@@ -346,10 +348,22 @@ const latestArticles = [
       resultsSection.hidden = false;
       resultsTitle.textContent = `ผลการค้นหา “${query}”`;
 
+      const compareCta = document.getElementById("search-compare-cta");
+
       if (top.length) {
         resultsGrid.innerHTML = top.map((item, index) => renderCard(item, index)).join("");
         resultsGrid.hidden = false;
         resultsEmpty.hidden = true;
+        // ผลค้นหาเป็นแอร์ ≥2 รุ่น → เสนอเทียบทั้งชุดในคลิกเดียว (พาเข้าระบบเปรียบเทียบ)
+        if (compareCta) {
+          const acIds = top.filter((item) => item.category === "แอร์").map((item) => item.id).slice(0, 4);
+          if (acIds.length >= 2) {
+            compareCta.innerHTML = `<a class="button button-primary" href="/th/compare/air-conditioners/?items=${encodeURIComponent(acIds.join(","))}">⚖ เทียบ ${acIds.length} รุ่นนี้พร้อมกัน ดูคำตัดสินรายคู่</a>`;
+            compareCta.hidden = false;
+          } else {
+            compareCta.hidden = true;
+          }
+        }
         resultsNote.textContent =
           (matches.length > 5
             ? `เจอ ${matches.length} รุ่นที่ตรวจแล้ว โชว์ 5 อันดับแรก`
@@ -360,6 +374,7 @@ const latestArticles = [
         resultsGrid.hidden = true;
         resultsEmpty.hidden = false;
         resultsNote.textContent = "";
+        if (compareCta) compareCta.hidden = true;
       }
 
       window.dataLayer = window.dataLayer || [];
