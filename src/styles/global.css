@@ -9502,3 +9502,211 @@ a.home-roadmap-card:hover {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   Compare: เวทีชน 2 รุ่นบนสุดของเครื่องมือเทียบ (2026-07-07)
+   ดีไซน์ชุดเดียวกับ hero หน้า /th/vs/ — ภาพใหญ่ + สลับรุ่นอิสระ
+   ============================================================ */
+
+.compare-duel-panel {
+  margin-bottom: 8px;
+}
+
+.compare-duel {
+  display: flex;
+  align-items: stretch;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.compare-duel-card {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  flex: 1 1 300px;
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 60px -28px rgba(31, 24, 16, 0.35);
+  padding: 14px 14px 16px;
+  overflow: hidden;
+  transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.22s ease;
+}
+
+.compare-duel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 70px -28px rgba(31, 24, 16, 0.42);
+}
+
+.compare-duel-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+  background: linear-gradient(90deg, #ff7b6b, #ff6b5a);
+}
+
+.compare-duel-card:last-of-type::before {
+  background: linear-gradient(90deg, #14b8a6, #0ea5a0);
+}
+
+.compare-duel-img {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff, #f5faf9);
+  border: 1px solid rgba(223, 208, 186, 0.55);
+}
+
+.compare-duel-img img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  transition: transform 220ms ease;
+}
+
+.compare-duel-card:hover .compare-duel-img img {
+  transform: scale(1.04);
+}
+
+.compare-duel-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+  padding: 0 4px;
+}
+
+.compare-duel-meta strong {
+  font-size: 2rem;
+  color: var(--coral-dark, #d84c3c);
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.compare-duel-card:last-of-type .compare-duel-meta strong {
+  color: #0b7f7a;
+}
+
+.compare-duel-meta strong small {
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.compare-duel-meta span {
+  flex: 1;
+  min-width: 0;
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compare-duel-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  aspect-ratio: 4 / 2.4;
+  border: 1.5px dashed rgba(223, 208, 186, 0.9);
+  border-radius: 14px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.compare-duel-switch {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px dashed rgba(255, 107, 90, 0.5);
+  border-radius: 999px;
+  background: rgba(255, 214, 186, 0.12);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.compare-duel-switch:hover,
+.compare-duel-switch:focus {
+  border-color: var(--coral);
+  background: rgba(255, 214, 186, 0.28);
+  outline: none;
+}
+
+.compare-duel-card:last-of-type .compare-duel-switch {
+  border-color: rgba(14, 165, 160, 0.45);
+  background: rgba(14, 165, 160, 0.06);
+}
+
+.compare-duel-card:last-of-type .compare-duel-switch:hover,
+.compare-duel-card:last-of-type .compare-duel-switch:focus {
+  border-color: #0ea5a0;
+  background: rgba(14, 165, 160, 0.12);
+}
+
+.compare-duel-medal {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+  color: #fff;
+  font-weight: 950;
+  font-size: 1.05rem;
+  box-shadow: 0 12px 30px -10px rgba(255, 107, 90, 0.7), 0 0 0 6px rgba(255, 255, 255, 0.85);
+}
+
+.compare-duel-buy {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 44px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.compare-duel-buy:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px -10px rgba(255, 107, 90, 0.75);
+}
+
+.compare-duel-note {
+  margin-top: 12px;
+}
+
+@media (max-width: 720px) {
+  .compare-duel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .compare-duel-medal {
+    align-self: center;
+    margin: -6px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compare-duel-card,
+  .compare-duel-buy,
+  .compare-duel-img img {
+    transition: none;
+  }
+}

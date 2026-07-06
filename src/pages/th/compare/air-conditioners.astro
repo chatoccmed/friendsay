@@ -178,6 +178,13 @@ const jsonLd = {
 
   <main class="section compare-page-section">
     <div class="wide-container">
+      <section class="compare-duel-panel" aria-label="จับคู่ชนกันตัวต่อตัว">
+        <div class="compare-duel" data-compare-duel></div>
+        <p class="compare-note compare-duel-note">
+          สลับรุ่นในช่องไหนก็ได้ ผลเทียบทั้งหน้าอัปเดตตามทันที — ถ้าเลือกไว้มากกว่า 2 รุ่น ตัวที่เหลือยังถูกเทียบอยู่ในผลด้านล่างครบ
+        </p>
+      </section>
+
       <details class="compare-picker-drawer" data-compare-drawer>
         <summary>
           <span class="compare-drawer-title">เลือก/เปลี่ยนรุ่นที่เทียบ</span>
@@ -399,6 +406,53 @@ const jsonLd = {
             <strong>${escapeHtml(product.shortName)}</strong>
           </span>
         `).join("");
+      };
+
+      // ---- เวทีชน 2 รุ่น (ช่องบนสุด): ภาพใหญ่ + dropdown สลับรุ่นได้อิสระ ----
+      const duelHost = document.querySelector("[data-compare-duel]");
+      const renderDuel = (items) => {
+        if (!duelHost) return;
+        const slots = [items[0] || null, items[1] || null];
+        duelHost.innerHTML = slots.map((p, i) => `
+          ${i === 1 ? '<div class="compare-duel-medal" aria-hidden="true">VS</div>' : ""}
+          <div class="compare-duel-card">
+            ${p ? `
+              <a class="compare-duel-img" href="${escapeHtml(p.links.shopee)}" target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-duel-${escapeHtml(p.slug)}">
+                <img src="${escapeHtml(p.image.url)}" alt="ภาพสินค้าจริง ${escapeHtml(p.name)}" loading="eager" />
+              </a>
+              <div class="compare-duel-meta">
+                <strong>${escapeHtml(p.score.toFixed(1))}<small>/10</small></strong>
+                <span>${escapeHtml(p.shortName)}</span>
+              </div>`
+            : '<div class="compare-duel-empty">ยังไม่ได้เลือกรุ่นช่องนี้<br/>เลือกจากเมนูด้านล่างได้เลย</div>'}
+            <select class="compare-duel-switch" data-duel-slot="${i}" aria-label="เลือกรุ่นช่องที่ ${i + 1}">
+              ${!p ? '<option value="" selected disabled>เลือกรุ่น…</option>' : ""}
+              ${products.map((m) => {
+                const takenElsewhere = selected.includes(m.slug) && (!p || m.slug !== p.slug);
+                return `<option value="${escapeHtml(m.slug)}" ${p && m.slug === p.slug ? "selected" : ""} ${takenElsewhere ? "disabled" : ""}>${escapeHtml(m.shortName)}${takenElsewhere ? " (เลือกอยู่แล้ว)" : ""}</option>`;
+              }).join("")}
+            </select>
+            ${p ? `<a class="compare-duel-buy" href="${escapeHtml(p.links.shopee)}" target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-duel-buy-${escapeHtml(p.slug)}">เช็กราคา Shopee</a>` : ""}
+          </div>
+        `).join("");
+
+        duelHost.querySelectorAll("[data-duel-slot]").forEach((sel) => {
+          sel.addEventListener("change", () => {
+            const slot = Number(sel.dataset.duelSlot);
+            const chosen = sel.value;
+            if (!chosen || selected[slot] === chosen || selected.includes(chosen)) {
+              renderAll();
+              return;
+            }
+            if (selected[slot]) {
+              selected = selected.map((s, idx2) => (idx2 === slot ? chosen : s));
+            } else {
+              selected = [...selected, chosen];
+            }
+            persist();
+            renderAll();
+          });
+        });
       };
 
       // ---- cockpit: รุ่นที่เลือกลอยติดจอ พร้อมปุ่มซื้อ/เอาออก/เพิ่มรุ่น ----
@@ -712,6 +766,7 @@ const jsonLd = {
 
       function renderAll() {
         const items = selectedProducts();
+        renderDuel(items);
         renderCockpit(items);
         renderPicker();
         renderAnswers(items);
