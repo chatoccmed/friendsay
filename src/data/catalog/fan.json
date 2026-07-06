@@ -13,7 +13,7 @@
   "faqs": [
     {
       "q": "พัดลมยี่ห้อไหนขายดีสุดบน Shopee ตอนนี้?",
-      "a": "จากหน้าค้นหาเรียงตามยอดขาย (7 ก.ค. 2026) กลุ่มที่ขายดีสุดคือ Hatari (ครอง 6 ใน 10 อันดับ) ตามด้วย Mitsubishi Electric, Kashiwa และ GOOJODOQ โดยสองอันดับแรก (Hatari Slide Smart 18\" และ Mitsubishi R16A-GC) เห็นยอดขายระดับ 10พัน+ ชิ้นต่อเดือน"
+      "a": "จากหน้าค้นหาเรียงตามยอดขาย (7 ก.ค. 2026) กลุ่มที่ขายดีสุดคือ Hatari (ครอง 5 ใน 10 อันดับ) ตามด้วย Kashiwa (3 อันดับ), Mitsubishi Electric และ GOOJODOQ โดยสองอันดับแรก (Hatari Slide Smart 18\" และ Mitsubishi R16A-GC) เห็นยอดขายระดับ 10พัน+ ชิ้นต่อเดือน"
     },
     {
       "q": "ราคาในหน้านี้เชื่อได้แค่ไหน?",
@@ -37,7 +37,8 @@
       "province": "กรุงเทพมหานคร",
       "image": "/images/catalog/fan/01.jpg",
       "link": "https://s.shopee.co.th/2qSlLrdDz6",
-      "productUrl": "https://shopee.co.th/product/1226237536/42780682389"
+      "productUrl": "https://shopee.co.th/product/1226237536/42780682389",
+      "insight": "แพงสุดในลิสต์แต่ขายดีสุด — สิ่งที่ได้เพิ่มตามชื่อรุ่นคือรีโมทคอนโทรลกับประกันมอเตอร์ 3 ปี ใบพัด 18 นิ้วเหมาะห้องกลาง-ใหญ่"
     },
     {
       "rank": 2,
@@ -51,7 +52,8 @@
       "province": "สมุทรปราการ",
       "image": "/images/catalog/fan/02.jpg",
       "link": "https://s.shopee.co.th/2g9L9YdrK5",
-      "productUrl": "https://shopee.co.th/product/136034347/29326182105"
+      "productUrl": "https://shopee.co.th/product/136034347/29326182105",
+      "insight": "แบรนด์ญี่ปุ่นตัวเดียวในลิสต์ ยอดขายระดับเดียวกับแชมป์แต่ถูกกว่าราว 548 บาท — เป็นรุ่นปุ่มกดธรรมดา 16 นิ้ว ไม่มีรีโมท"
     },
     {
       "rank": 3,
@@ -65,7 +67,8 @@
       "province": "นครปฐม",
       "image": "/images/catalog/fan/03.jpg",
       "link": "https://s.shopee.co.th/3B5bkTbxJC",
-      "productUrl": "https://shopee.co.th/product/936508340/26134998461"
+      "productUrl": "https://shopee.co.th/product/936508340/26134998461",
+      "insight": "ตัวเลือกคุมงบแบบหลายขนาดในลิสติ้งเดียว (8-18 นิ้ว) — ก่อนจ่ายเช็กให้ชัวร์ว่าตัวเลือกที่กดคือขนาดและราคาที่ตั้งใจ"
     },
     {
       "rank": 4,
@@ -79,7 +82,8 @@
       "province": "นครปฐม",
       "image": "/images/catalog/fan/04.jpg",
       "link": "https://s.shopee.co.th/30mBYAcaeB",
-      "productUrl": "https://shopee.co.th/product/18631943/51555996443"
+      "productUrl": "https://shopee.co.th/product/18631943/51555996443",
+      "insight": "ส่วนลดแรงสุดในลิสต์ (-60%) — ป้ายลดใหญ่แบบนี้ให้เทียบราคาจ่ายจริงกับรุ่นอื่นในตาราง ไม่ใช่เทียบกับราคาก่อนลด"
     },
     {
       "rank": 5,
@@ -93,7 +97,8 @@
       "province": "นครปฐม",
       "image": "/images/catalog/fan/05.jpg",
       "link": "https://s.shopee.co.th/3ViS95agdI",
-      "productUrl": "https://shopee.co.th/product/18631943/29070491150"
+      "productUrl": "https://shopee.co.th/product/18631943/29070491150",
+      "insight": "เป็นรุ่นอุตสาหกรรมตามชื่อ ลมแรงแบบพื้นที่โล่ง ร้านค้า หรือโกดัง — อาจเสียงแรงเกินไปสำหรับห้องนอน"
     },
     {
       "rank": 6,
@@ -107,7 +112,8 @@
       "province": "พระนครศรีอยุธยา",
       "image": "/images/catalog/fan/06.jpg",
       "link": "https://s.shopee.co.th/W4qZe1kLS",
-      "productUrl": "https://shopee.co.th/product/1505570169/25496050008"
+      "productUrl": "https://shopee.co.th/product/1505570169/25496050008",
+      "insight": "ถูกสุดในลิสต์ (฿489) แบบ 2in1 ติดผนังและตั้งโต๊ะ — ขนาดเล็กกว่ากลุ่มพัดลมตั้งพื้น ใช้แทนกันไม่ได้ทุกกรณี"
     },
     {
       "rank": 7,
@@ -121,7 +127,8 @@
       "province": "กรุงเทพมหานคร",
       "image": "/images/catalog/fan/07.jpg",
       "link": "https://s.shopee.co.th/LlQNL2NgR",
-      "productUrl": "https://shopee.co.th/product/1226237536/28703143024"
+      "productUrl": "https://shopee.co.th/product/1226237536/28703143024",
+      "insight": "ตัวมาตรฐาน 16 นิ้วราคากลางของ Hatari พร้อมประกันมอเตอร์ 3 ปีตามชื่อ — ตัวเซฟสำหรับห้องทั่วไป"
     },
     {
       "rank": 8,
@@ -135,7 +142,8 @@
       "province": "กรุงเทพมหานคร",
       "image": "/images/catalog/fan/08.jpg",
       "link": "https://s.shopee.co.th/qhgyG0TfY",
-      "productUrl": "https://shopee.co.th/product/1226237536/48160395039"
+      "productUrl": "https://shopee.co.th/product/1226237536/48160395039",
+      "insight": "18 นิ้วแบบไม่มีรีโมท ถูกกว่ารุ่นท็อป (S18R1) ราว 800 บาท — จ่ายเพิ่มเฉพาะเมื่อต้องการรีโมทจริง ๆ"
     },
     {
       "rank": 9,
@@ -149,7 +157,8 @@
       "province": "กรุงเทพมหานคร",
       "image": "/images/catalog/fan/09.jpg",
       "link": "https://s.shopee.co.th/gOGlx170X",
-      "productUrl": "https://shopee.co.th/product/1226237536/26003372695"
+      "productUrl": "https://shopee.co.th/product/1226237536/26003372695",
+      "insight": "เล็กสุดของ Hatari ในลิสต์ (14 นิ้ว) เหมาะห้องเล็ก โต๊ะทำงาน หรือจุดที่พื้นที่จำกัด"
     },
     {
       "rank": 10,
@@ -163,7 +172,8 @@
       "province": "กรุงเทพมหานคร",
       "image": "/images/catalog/fan/10.jpg",
       "link": "https://s.shopee.co.th/1BKXMrzCze",
-      "productUrl": "https://shopee.co.th/product/1226237536/41155830794"
+      "productUrl": "https://shopee.co.th/product/1226237536/41155830794",
+      "insight": "16 นิ้วอีกซีรีส์ของ Hatari ราคาใกล้ S16M1 มาก — ต่างที่ดีไซน์/ซีรีส์ เลือกจากหน้าตาและราคาวันที่ซื้อได้เลย"
     }
   ]
 }

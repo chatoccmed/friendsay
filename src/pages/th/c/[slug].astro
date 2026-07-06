@@ -35,6 +35,21 @@ const quickPicks = [
 
 const chartMax = Math.max(...items.map((p: any) => p.priceApprox));
 
+// ภาพรวมหมวด — คำนวณจากข้อมูลที่เก็บล้วน ๆ
+const sortedPrices = items.map((p: any) => p.priceApprox).sort((a: number, b: number) => a - b);
+const medianPrice = sortedPrices[Math.floor(sortedPrices.length / 2)];
+const brandCounts = items.reduce((acc: Record<string, number>, p: any) => {
+  acc[p.brand] = (acc[p.brand] || 0) + 1;
+  return acc;
+}, {});
+const topBrand = Object.entries(brandCounts).sort((a: any, b: any) => b[1] - a[1])[0] as [string, number];
+const overviewStats = [
+  { value: `${baht(minPrice)}–${baht(chartMax)}`, label: "ช่วงราคาที่เห็นในลิสต์" },
+  { value: `~${baht(medianPrice)}`, label: "ราคากลางของลิสต์ (มัธยฐาน)" },
+  { value: `${topBrand[0]}`, label: `แบรนด์ที่ครองลิสต์ (${topBrand[1]}/${items.length} อันดับ)` },
+  { value: items[0].soldPerMonth, label: `ยอดขาย/เดือนของแชมป์ (${items[0].brand})` }
+];
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -117,6 +132,21 @@ const faqJsonLd = {
     </div>
   </section>
 
+  <section class="section" id="overview">
+    <div class="container">
+      <p class="eyebrow">อ่านตลาดใน 10 วินาที</p>
+      <h2 class="headline">ภาพรวมหมวด{catalog.title}จากลิสต์นี้</h2>
+      <div class="cat-stats">
+        {overviewStats.map((s) => (
+          <div class="cat-stat">
+            <strong>{s.value}</strong>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="list">
     <div class="wide-container">
       <p class="eyebrow">{items.length} อันดับ · เรียงตามยอดขาย/เดือนที่เห็นจริง</p>
@@ -148,6 +178,7 @@ const faqJsonLd = {
                 <div><span>ส่งจาก</span><strong>{p.province ?? "—"}</strong></div>
                 <div><span>แบรนด์</span><strong>{p.brand}</strong></div>
               </div>
+              {p.insight ? <p class="cat-insight"><b>อ่านเกมให้:</b> {p.insight}</p> : null}
               <a class="button button-primary cat-buy" href={p.link} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`catalog-${catalog.slug}-${p.rank}`}>
                 เช็กราคาจริงวันนี้ →
               </a>
@@ -365,6 +396,50 @@ const faqJsonLd = {
 
   .cat-buy {
     margin-top: 2px;
+  }
+
+  .cat-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .cat-stat {
+    display: grid;
+    gap: 6px;
+    padding: 18px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .cat-stat strong {
+    font-size: 1.3rem;
+    color: var(--coral-dark, #d84c3c);
+    line-height: 1.2;
+  }
+
+  .cat-stat span {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .cat-insight {
+    margin: 0;
+    border-left: 3px solid #0ea5a0;
+    padding-left: 10px;
+    color: #26514e;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 860px) {
+    .cat-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .cat-watch-list {
