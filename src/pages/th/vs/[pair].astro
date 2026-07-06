@@ -214,14 +214,20 @@ const faqJsonLd = {
       <div class="vs-score-strip" aria-label="คะแนนรวมของทั้งคู่">
         <div class="vs-score-chip">
           <img src={a.image.url} alt={a.image.alt} loading="eager" />
-          <strong>{a.score.toFixed(1)}</strong>
-          <span>{a.shortName}</span>
+          <div class="vs-chip-info">
+            <strong>{a.score.toFixed(1)}<small>/10</small></strong>
+            <span>{a.shortName}</span>
+          </div>
+          <a class="vs-chip-buy" href={a.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-hero-${a.slug}`}>เช็กราคา Shopee</a>
         </div>
         <em class="vs-mark">VS</em>
         <div class="vs-score-chip">
           <img src={b.image.url} alt={b.image.alt} loading="eager" />
-          <strong>{b.score.toFixed(1)}</strong>
-          <span>{b.shortName}</span>
+          <div class="vs-chip-info">
+            <strong>{b.score.toFixed(1)}<small>/10</small></strong>
+            <span>{b.shortName}</span>
+          </div>
+          <a class="vs-chip-buy" href={b.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-hero-${b.slug}`}>เช็กราคา Shopee</a>
         </div>
       </div>
       <p class="muted vs-winner-line">{winnerLine}</p>
@@ -269,11 +275,35 @@ const faqJsonLd = {
       <div class="vs-verdict">
         <p><strong>เอา {a.shortName}</strong> ถ้า{verdictReason(a, b, priceA, priceB)}</p>
         <p><strong>เอา {b.shortName}</strong> ถ้า{verdictReason(b, a, priceB, priceA)}</p>
+        <div class="vs-verdict-buy">
+          <a class="button button-primary" href={a.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-verdict-${a.slug}`}>เช็กราคา {a.shortName}</a>
+          <a class="button button-primary" href={b.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-verdict-${b.slug}`}>เช็กราคา {b.shortName}</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="scores">
+  <section class="section" id="products">
+    <div class="container">
+      <p class="eyebrow">ดูใกล้ ๆ ทีละตัว · ครบทุกช่องทางซื้อ</p>
+      <h2 class="headline">สองตัวนี้คือใคร ซื้อที่ไหนได้บ้าง</h2>
+      <div class="vs-product-grid">
+        {[a, b].map((p) => (
+          <article class="vs-product-card">
+            <a href={p.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-photo-${p.slug}`}>
+              <img src={p.image.url} alt={p.image.alt} loading="lazy" />
+            </a>
+            <h3>{p.name}</h3>
+            <p class="vs-bestfor"><b>เหมาะกับ:</b> {p.bestFor}</p>
+            <p class="vs-watch"><b>ระวัง:</b> {p.watch[0]}</p>
+            <PriceButtons links={p.links} label={`เช็กราคา ${p.name}`} />
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="scores">
     <div class="container">
       <p class="eyebrow">คะแนน 8 ด้าน · พร้อมเหตุผลว่าทำไมด้านนั้นสำคัญ</p>
       <h2 class="headline">แกนต่อแกน ใครแข็งด้านไหน</h2>
@@ -302,26 +332,6 @@ const faqJsonLd = {
             </article>
           );
         })}
-      </div>
-    </div>
-  </section>
-
-  <section class="section band" id="products">
-    <div class="container">
-      <p class="eyebrow">ดูใกล้ ๆ ทีละตัว</p>
-      <h2 class="headline">สองตัวนี้คือใคร</h2>
-      <div class="vs-product-grid">
-        {[a, b].map((p) => (
-          <article class="vs-product-card">
-            <a href={p.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-photo-${p.slug}`}>
-              <img src={p.image.url} alt={p.image.alt} loading="lazy" />
-            </a>
-            <h3>{p.name}</h3>
-            <p class="vs-bestfor"><b>เหมาะกับ:</b> {p.bestFor}</p>
-            <p class="vs-watch"><b>ระวัง:</b> {p.watch[0]}</p>
-            <PriceButtons links={p.links} label={`เช็กราคา ${p.name}`} />
-          </article>
-        ))}
       </div>
     </div>
   </section>
@@ -360,6 +370,34 @@ const faqJsonLd = {
     </div>
   </section>
 
+  <nav class="vs-sticky" aria-label="เช็กราคาทั้งสองรุ่น">
+    <a class="vs-sticky-side" href={a.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-sticky-${a.slug}`}>
+      <img src={a.image.url} alt="" loading="lazy" />
+      <span>{a.shortName}</span>
+      <b>เช็กราคา →</b>
+    </a>
+    <em aria-hidden="true">vs</em>
+    <a class="vs-sticky-side" href={b.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-sticky-${b.slug}`}>
+      <img src={b.image.url} alt="" loading="lazy" />
+      <span>{b.shortName}</span>
+      <b>เช็กราคา →</b>
+    </a>
+  </nav>
+
+  <script is:inline data-astro-rerun>
+    (() => {
+      // แถบซื้อลอยล่าง โผล่เมื่อเลื่อนพ้น hero (transform/opacity เท่านั้น — สไตล์อยู่ใน scoped CSS)
+      const bar = document.querySelector(".vs-sticky");
+      const hero = document.querySelector(".vs-hero");
+      if (!bar || !hero || !("IntersectionObserver" in window)) return;
+      bar.classList.add("is-offstage");
+      const io = new IntersectionObserver(([entry]) => {
+        bar.classList.toggle("is-offstage", entry.isIntersecting);
+      }, { rootMargin: "-60px 0px 0px 0px" });
+      io.observe(hero);
+    })();
+  </script>
+
   <AffiliateClickTracker />
 </BaseLayout>
 
@@ -380,36 +418,175 @@ const faqJsonLd = {
 
   .vs-score-chip {
     display: grid;
-    grid-template-columns: 64px auto;
-    grid-template-rows: auto auto;
-    column-gap: 12px;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 8px 14px;
     align-items: center;
+    flex: 1 1 260px;
+    max-width: 360px;
     border: 1px solid rgba(223, 208, 186, 0.9);
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.94);
     box-shadow: var(--shadow-soft);
-    padding: 10px 16px 10px 10px;
+    padding: 12px;
   }
 
   .vs-score-chip img {
-    grid-row: 1 / span 2;
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     border-radius: 12px;
     object-fit: cover;
     background: #f5faf9;
+    border: 1px solid rgba(223, 208, 186, 0.6);
   }
 
-  .vs-score-chip strong {
-    font-size: 1.5rem;
+  .vs-chip-info {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .vs-chip-info strong {
+    font-size: 1.55rem;
     color: var(--coral-dark, #d84c3c);
     line-height: 1.1;
   }
 
-  .vs-score-chip span {
-    color: var(--muted);
+  .vs-chip-info strong small {
     font-size: 0.85rem;
+    color: var(--muted);
     font-weight: 700;
+  }
+
+  .vs-chip-info span {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vs-chip-buy {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .vs-chip-buy:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px -10px rgba(255, 107, 90, 0.75);
+  }
+
+  .vs-verdict-buy {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .vs-verdict-buy .button {
+    flex: 1;
+    min-width: 170px;
+  }
+
+  .vs-sticky {
+    position: fixed;
+    left: 50%;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 72;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: min(720px, calc(100vw - 32px));
+    transform: translateX(-50%);
+    border: 1px solid rgba(223, 208, 186, 0.78);
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(255, 253, 248, 0.98), rgba(247, 252, 249, 0.96));
+    box-shadow: 0 22px 78px rgba(23, 32, 42, 0.22);
+    backdrop-filter: blur(18px);
+    padding: 8px 14px;
+    transition: transform 320ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 320ms ease;
+  }
+
+  .vs-sticky.is-offstage {
+    transform: translateX(-50%) translateY(calc(100% + 60px));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .vs-sticky em {
+    font-style: normal;
+    font-weight: 950;
+    color: var(--coral);
+    font-size: 0.9rem;
+  }
+
+  .vs-sticky-side {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 4px 6px;
+    transition: background 160ms ease;
+  }
+
+  .vs-sticky-side:hover {
+    background: rgba(255, 214, 186, 0.25);
+  }
+
+  .vs-sticky-side img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f5faf9;
+    border: 1px solid rgba(223, 208, 186, 0.6);
+  }
+
+  .vs-sticky-side span {
+    flex: 1;
+    min-width: 0;
+    color: var(--ink);
+    font-size: 0.86rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vs-sticky-side b {
+    color: #fff;
+    background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+    border-radius: 999px;
+    padding: 9px 14px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    .vs-sticky-side span {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vs-sticky,
+    .vs-chip-buy {
+      transition: none;
+    }
   }
 
   .vs-mark {
