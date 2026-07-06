@@ -160,6 +160,9 @@ const popularPairs = [
 
 const updatedMax = a.updated > b.updated ? a.updated : b.updated;
 
+// รายชื่อรุ่นทั้งคลังสำหรับตัวสลับรุ่นบน hero (ลำดับ = ลำดับ canonical ของ URL คู่)
+const switcherModels = airConditioners.map((p) => ({ slug: p.slug, name: p.shortName }));
+
 // สรุปคำแนะนำจาก Friendsay — สังเคราะห์จากมุมมองรายรุ่น + ตัวชี้ขาดจากตัวเลขจริงของคู่นี้
 const biggestAxisGap = AXES
   .map((axis) => ({ axis, diff: num(a, axis.key) - num(b, axis.key) }))
@@ -250,24 +253,32 @@ const faqJsonLd = {
         <span class="badge badge-blue">อัปเดตข้อมูล {thaiDate(updatedMax)}</span>
       </div>
       <h1>{a.shortName} vs {b.shortName} ตัวไหนดี?</h1>
-      <div class="vs-score-strip" aria-label="คะแนนรวมของทั้งคู่">
-        <div class="vs-score-chip">
-          <img src={a.image.url} alt={a.image.alt} loading="eager" />
-          <div class="vs-chip-info">
-            <strong>{a.score.toFixed(1)}<small>/10</small></strong>
-            <span>{a.shortName}</span>
-          </div>
-          <a class="vs-chip-buy" href={a.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-hero-${a.slug}`}>เช็กราคา Shopee</a>
-        </div>
-        <em class="vs-mark">VS</em>
-        <div class="vs-score-chip">
-          <img src={b.image.url} alt={b.image.alt} loading="eager" />
-          <div class="vs-chip-info">
-            <strong>{b.score.toFixed(1)}<small>/10</small></strong>
-            <span>{b.shortName}</span>
-          </div>
-          <a class="vs-chip-buy" href={b.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-hero-${b.slug}`}>เช็กราคา Shopee</a>
-        </div>
+      <div class="vs-duel" aria-label="สองรุ่นที่กำลังเทียบ พร้อมตัวเปลี่ยนรุ่น">
+        {[{ p: a, side: "a", other: b }, { p: b, side: "b", other: a }].map(({ p, side, other }, i) => (
+          <>
+            {i === 1 ? <div class="vs-medal" aria-hidden="true">VS</div> : null}
+            <div class="vs-duel-card">
+              <div class="vs-duel-img">
+                <img src={p.image.url} alt={p.image.alt} loading="eager" />
+              </div>
+              <div class="vs-duel-meta">
+                <strong class="vs-duel-score">{p.score.toFixed(1)}<small>/10</small></strong>
+                <span class="vs-duel-name">{p.shortName}</span>
+              </div>
+              <label class="vs-switch-wrap">
+                <span class="visually-hidden">เปลี่ยนรุ่นฝั่งนี้</span>
+                <select class="vs-switch" data-vs-switch={side} data-current={p.slug} data-other={other.slug} aria-label={`เปลี่ยนรุ่นแทน ${p.shortName}`}>
+                  {switcherModels.map((m) => (
+                    <option value={m.slug} selected={m.slug === p.slug} disabled={m.slug === other.slug}>
+                      {m.name}{m.slug === other.slug ? " (อีกฝั่งแล้ว)" : ""}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <a class="vs-chip-buy" href={p.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-hero-${p.slug}`}>เช็กราคา Shopee</a>
+            </div>
+          </>
+        ))}
       </div>
       <p class="muted vs-winner-line">{winnerLine}</p>
     </div>
@@ -458,6 +469,26 @@ const faqJsonLd = {
     </a>
   </nav>
 
+  <script id="vs-models-order" type="application/json" set:html={JSON.stringify(switcherModels.map((m) => m.slug))}></script>
+  <script is:inline data-astro-rerun>
+    (() => {
+      // ตัวสลับรุ่นบน hero — เลือกรุ่นใหม่ฝั่งไหนก็ได้ แล้วพาไปหน้าคู่ที่ถูกต้อง (URL เรียงตามลำดับ canonical)
+      const orderEl = document.getElementById("vs-models-order");
+      const order = orderEl ? JSON.parse(orderEl.textContent || "[]") : [];
+      document.querySelectorAll("[data-vs-switch]").forEach((sel) => {
+        sel.addEventListener("change", () => {
+          const chosen = sel.value;
+          const other = sel.getAttribute("data-other");
+          if (!chosen || chosen === other) {
+            sel.value = sel.getAttribute("data-current");
+            return;
+          }
+          const [x, y] = order.indexOf(chosen) < order.indexOf(other) ? [chosen, other] : [other, chosen];
+          window.location.href = `/th/vs/${x}-vs-${y}/`;
+        });
+      });
+    })();
+  </script>
   <script is:inline data-astro-rerun>
     (() => {
       // แถบซื้อลอยล่าง โผล่เมื่อเลื่อนพ้น hero (transform/opacity เท่านั้น — สไตล์อยู่ใน scoped CSS)
@@ -482,74 +513,172 @@ const faqJsonLd = {
       linear-gradient(180deg, #fff8ee, #fffdf8);
   }
 
-  .vs-score-strip {
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .vs-duel {
     display: flex;
-    align-items: center;
+    align-items: stretch;
+    justify-content: flex-start;
     gap: 18px;
-    margin: 22px 0 14px;
+    margin: 26px 0 16px;
     flex-wrap: wrap;
   }
 
-  .vs-score-chip {
+  .vs-duel-card {
+    position: relative;
     display: grid;
-    grid-template-columns: 72px minmax(0, 1fr);
-    gap: 8px 14px;
-    align-items: center;
-    flex: 1 1 260px;
-    max-width: 360px;
+    gap: 12px;
+    flex: 1 1 300px;
+    max-width: 430px;
     border: 1px solid rgba(223, 208, 186, 0.9);
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: var(--shadow-soft);
-    padding: 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 24px 60px -28px rgba(31, 24, 16, 0.35);
+    padding: 14px 14px 16px;
+    overflow: hidden;
+    transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.22s ease;
   }
 
-  .vs-score-chip img {
-    width: 72px;
-    height: 72px;
-    border-radius: 12px;
-    object-fit: cover;
-    background: #f5faf9;
-    border: 1px solid rgba(223, 208, 186, 0.6);
+  .vs-duel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 70px -28px rgba(31, 24, 16, 0.42);
   }
 
-  .vs-chip-info {
-    display: grid;
-    gap: 2px;
+  .vs-duel-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 5px;
+    background: linear-gradient(90deg, #ff7b6b, #ff6b5a);
+  }
+
+  .vs-duel-card:last-of-type::before {
+    background: linear-gradient(90deg, #14b8a6, #0ea5a0);
+  }
+
+  .vs-duel-img {
+    border-radius: 14px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffffff, #f5faf9);
+    border: 1px solid rgba(223, 208, 186, 0.55);
+  }
+
+  .vs-duel-img img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    transition: transform 220ms ease;
+  }
+
+  .vs-duel-card:hover .vs-duel-img img {
+    transform: scale(1.04);
+  }
+
+  .vs-duel-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
     min-width: 0;
+    padding: 0 4px;
   }
 
-  .vs-chip-info strong {
-    font-size: 1.55rem;
+  .vs-duel-score {
+    font-size: 2rem;
     color: var(--coral-dark, #d84c3c);
-    line-height: 1.1;
+    line-height: 1;
+    letter-spacing: -0.5px;
   }
 
-  .vs-chip-info strong small {
-    font-size: 0.85rem;
+  .vs-duel-card:last-of-type .vs-duel-score {
+    color: #0b7f7a;
+  }
+
+  .vs-duel-score small {
+    font-size: 0.9rem;
     color: var(--muted);
     font-weight: 700;
   }
 
-  .vs-chip-info span {
-    color: var(--muted);
-    font-size: 0.88rem;
-    font-weight: 700;
+  .vs-duel-name {
+    flex: 1;
+    min-width: 0;
+    color: var(--ink);
+    font-size: 1.05rem;
+    font-weight: 800;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
+  .vs-switch-wrap {
+    display: block;
+  }
+
+  .vs-switch {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px dashed rgba(255, 107, 90, 0.5);
+    border-radius: 999px;
+    background: rgba(255, 214, 186, 0.12);
+    color: var(--ink-soft);
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 160ms ease, background 160ms ease;
+  }
+
+  .vs-switch:hover,
+  .vs-switch:focus {
+    border-color: var(--coral);
+    background: rgba(255, 214, 186, 0.28);
+    outline: none;
+  }
+
+  .vs-duel-card:last-of-type .vs-switch {
+    border-color: rgba(14, 165, 160, 0.45);
+    background: rgba(14, 165, 160, 0.06);
+  }
+
+  .vs-duel-card:last-of-type .vs-switch:hover,
+  .vs-duel-card:last-of-type .vs-switch:focus {
+    border-color: #0ea5a0;
+    background: rgba(14, 165, 160, 0.12);
+  }
+
+  .vs-medal {
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+    color: #fff;
+    font-weight: 950;
+    font-size: 1.05rem;
+    box-shadow: 0 12px 30px -10px rgba(255, 107, 90, 0.7), 0 0 0 6px rgba(255, 255, 255, 0.85);
+  }
+
   .vs-chip-buy {
-    grid-column: 1 / -1;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    min-height: 40px;
+    min-height: 44px;
     border-radius: 999px;
     background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 800;
     text-decoration: none;
     transition: transform 160ms ease, box-shadow 160ms ease;
@@ -558,6 +687,22 @@ const faqJsonLd = {
   .vs-chip-buy:hover {
     transform: translateY(-1px);
     box-shadow: 0 10px 22px -10px rgba(255, 107, 90, 0.75);
+  }
+
+  @media (max-width: 720px) {
+    .vs-duel {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .vs-duel-card {
+      max-width: none;
+    }
+
+    .vs-medal {
+      align-self: center;
+      margin: -6px 0;
+    }
   }
 
   .vs-verdict-buy {
@@ -661,13 +806,6 @@ const faqJsonLd = {
     .vs-chip-buy {
       transition: none;
     }
-  }
-
-  .vs-mark {
-    font-style: normal;
-    font-weight: 950;
-    font-size: 1.2rem;
-    color: var(--coral);
   }
 
   .vs-winner-line {
