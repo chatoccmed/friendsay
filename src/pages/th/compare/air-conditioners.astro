@@ -3,8 +3,32 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { queuedAirConditionerReviews } from "../../../data/airConditionerReviewQueue";
+import acPriceCsvRaw from "../../../data/price-history/air-conditioners.csv?raw";
+
+// ราคาที่เคยเห็นจริงล่าสุดรายรุ่น จาก ledger (append-only) — ใช้เทียบตัวเลขในผลตัดสินรายคู่
+// เลือกแถวล่าสุดของแต่ละรุ่น (ถ้าวันเดียวกันมีทั้ง list/promo ใช้ promo เพราะคือราคาที่จ่ายจริง)
+const latestSeenPrice: Record<string, { price: number; date: string; priceType: string }> = {};
+for (const line of acPriceCsvRaw.trim().split(/\r?\n/).slice(1)) {
+  const [productKey, date, price, priceType] = line.split(",");
+  if (!productKey) continue;
+  const current = latestSeenPrice[productKey];
+  if (!current || date > current.date || (date === current.date && priceType === "promo")) {
+    latestSeenPrice[productKey] = { price: Number(price), date, priceType };
+  }
+}
+
+const THAI_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+const thaiDate = (iso: string) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} ${THAI_MONTHS[m - 1]} ${y}`;
+};
 
 const mainCompareProducts = airConditioners.map((product) => ({
+  tier: "main",
+  priceNum: latestSeenPrice[product.slug]?.price ?? null,
+  priceSeenLabel: latestSeenPrice[product.slug]
+    ? `฿${latestSeenPrice[product.slug].price.toLocaleString("th-TH")} (${latestSeenPrice[product.slug].priceType === "promo" ? "ราคาโปร" : "ราคาตั้ง"} · ${thaiDate(latestSeenPrice[product.slug].date)})`
+    : null,
   slug: product.slug,
   name: product.name,
   shortName: product.shortName,
@@ -41,6 +65,9 @@ const mainCompareProducts = airConditioners.map((product) => ({
 }));
 
 const queueCompareProducts = queuedAirConditionerReviews.map((review) => ({
+  tier: "queue",
+  priceNum: null,
+  priceSeenLabel: null,
   slug: review.productKey,
   name: review.name,
   shortName: review.shortName,
@@ -132,8 +159,28 @@ const jsonLd = {
         <div>
           <p class="eyebrow">เลือกได้ 2-4 รุ่น</p>
           <h2>เลือกรุ่นที่อยากเทียบ</h2>
+          <label class="compare-picker-filter">
+            <input type="search" data-compare-filter placeholder="พิมพ์ชื่อรุ่น/แบรนด์ เช่น daikin, haier" aria-label="กรองรายชื่อรุ่นที่เลือกได้" autocomplete="off" />
+          </label>
         </div>
         <div class="compare-picker-chips" data-compare-picker></div>
+      </section>
+
+      <section class="compare-verdict-panel" aria-label="ผลตัดสินรายคู่">
+        <div class="section-heading home-section-split">
+          <div>
+            <p class="eyebrow">Head-to-head</p>
+            <h2 class="headline">ระหว่างคู่นี้ เอาตัวไหน</h2>
+          </div>
+          <p>
+            เทียบจากหลักฐานที่เก็บจริงทีละคู่ — ราคาที่เคยเห็น จำนวนรีวิว และคะแนนรายด้านของเรา
+            แล้วสรุปให้แบบเพื่อน: เอาตัวไหนถ้าโจทย์คุณเป็นแบบไหน
+          </p>
+        </div>
+        <div class="compare-verdict-grid" data-compare-verdicts></div>
+        <p class="compare-note" style="margin-top: 12px;">
+          ราคาคือ "ราคาที่เคยเห็นจริง" จาก<a href="/th/guides/price-history/">บันทึกราคาย้อนหลังของเรา</a> ณ รอบเก็บข้อมูล ไม่ใช่ราคาปัจจุบัน — กดปุ่มเช็กราคาเพื่อดูราคาสดก่อนตัดสินใจ
+        </p>
       </section>
 
       <section class="compare-answer-panel" aria-label="เลือกรุ่นไหนดีแบบเร็ว">
@@ -167,7 +214,10 @@ const jsonLd = {
             <p class="eyebrow">Selected models</p>
             <h2 class="headline">รุ่นที่กำลังเทียบ</h2>
           </div>
-          <p data-compare-summary>กำลังโหลดข้อมูลเปรียบเทียบ</p>
+          <div class="compare-summary-row">
+            <p data-compare-summary>กำลังโหลดข้อมูลเปรียบเทียบ</p>
+            <button class="button" type="button" data-compare-share>🔗 คัดลอกลิงก์ผลเทียบนี้</button>
+          </div>
         </div>
         <div class="compare-product-cards" data-compare-product-cards></div>
       </section>
@@ -264,19 +314,45 @@ const jsonLd = {
         history.replaceState(null, "", url);
       };
 
+      const chipHtml = (product) => {
+        const isSelected = selected.includes(product.slug);
+        return `
+          <button class="compare-picker-chip ${isSelected ? "is-selected" : ""}" type="button" data-compare-page-slug="${escapeHtml(product.slug)}" data-chip-text="${escapeHtml((product.shortName + " " + product.name + " " + product.brand).toLowerCase())}" aria-pressed="${isSelected}">
+            <img class="compare-chip-thumb" src="${escapeHtml(product.image.url)}" alt="" loading="lazy" />
+            <span>${escapeHtml(product.score.toFixed(1))}</span>
+            <strong>${escapeHtml(product.shortName)}</strong>
+            <small>${escapeHtml(product.statusLabel)}</small>
+          </button>
+        `;
+      };
+
+      const applyChipFilter = () => {
+        const filterInput = document.querySelector("[data-compare-filter]");
+        const query = (filterInput?.value || "").trim().toLowerCase();
+        picker?.querySelectorAll("[data-compare-page-slug]").forEach((chip) => {
+          chip.hidden = Boolean(query) && !(chip.dataset.chipText || "").includes(query);
+        });
+        picker?.querySelectorAll("[data-picker-group]").forEach((group) => {
+          const anyVisible = [...group.querySelectorAll("[data-compare-page-slug]")].some((chip) => !chip.hidden);
+          group.hidden = !anyVisible;
+        });
+      };
+
       const renderPicker = () => {
         if (!picker) return;
-        picker.innerHTML = products.map((product) => {
-          const isSelected = selected.includes(product.slug);
-          return `
-            <button class="compare-picker-chip ${isSelected ? "is-selected" : ""}" type="button" data-compare-page-slug="${escapeHtml(product.slug)}" aria-pressed="${isSelected}">
-              <img class="compare-chip-thumb" src="${escapeHtml(product.image.url)}" alt="" loading="lazy" />
-              <span>${escapeHtml(product.score.toFixed(1))}</span>
-              <strong>${escapeHtml(product.shortName)}</strong>
-              <small>${escapeHtml(product.statusLabel)}</small>
-            </button>
-          `;
-        }).join("");
+        const mains = products.filter((product) => product.tier === "main");
+        const queue = products.filter((product) => product.tier !== "main");
+        picker.innerHTML = `
+          <div class="compare-picker-group" data-picker-group>
+            <p class="compare-picker-group-label">คลังหลัก — ตรวจหลักฐานเต็มรูปแบบแล้ว (${mains.length} รุ่น)</p>
+            <div class="compare-picker-group-chips">${mains.map(chipHtml).join("")}</div>
+          </div>
+          <div class="compare-picker-group" data-picker-group>
+            <p class="compare-picker-group-label">คิวรีวิว — มีข้อมูลให้เทียบ กำลังทยอยตรวจเต็มรูปแบบ (${queue.length} รุ่น)</p>
+            <div class="compare-picker-group-chips">${queue.map(chipHtml).join("")}</div>
+          </div>
+        `;
+        applyChipFilter();
 
         picker.querySelectorAll("[data-compare-page-slug]").forEach((button) => {
           button.addEventListener("click", () => {
@@ -318,6 +394,88 @@ const jsonLd = {
         `).join("");
       };
 
+      // ---- ผลตัดสินรายคู่: เทียบจากหลักฐานจริง (ราคาที่เคยเห็น/รีวิว/คะแนนรายด้าน) ไม่แต่งตัวเลข ----
+      const axisPhrases = {
+        value: "เน้นความคุ้มราคา",
+        popularity: "อยากได้ตัวที่คนซื้อเยอะ",
+        buyerConfidence: "อยากได้รีวิวแน่น ๆ ไว้ตามอ่านก่อนจ่าย",
+        roomFit: "อยากได้ตัวเลือก BTU กว้าง เลือกตรงห้องง่าย",
+        energyComfort: "เปิดยาวทุกคืน เน้นเรื่องค่าไฟ",
+        installRisk: "อยากให้เรื่องติดตั้งวุ่นน้อยที่สุด",
+        warrantySafety: "เน้นประกันและความสบายใจหลังซื้อ",
+        complaintRisk: "อยากได้ตัวที่เสียงบ่นจากผู้ซื้อน้อย"
+      };
+
+      const biggestEdge = (a, b) => {
+        let bestKey = null;
+        let bestDiff = 0.25; // ต่างน้อยกว่านี้ถือว่าสูสี ไม่เคลมเป็นจุดต่าง
+        for (const keyName of Object.keys(axisPhrases)) {
+          const diff = Number(a[keyName] || 0) - Number(b[keyName] || 0);
+          if (diff > bestDiff) {
+            bestDiff = diff;
+            bestKey = keyName;
+          }
+        }
+        return bestKey;
+      };
+
+      const verdictReason = (product, rival) => {
+        if (product.priceNum && rival.priceNum && rival.priceNum - product.priceNum >= 500) {
+          return `คุมงบเป็นหลัก — ราคาที่เคยเห็นถูกกว่าราว ${(rival.priceNum - product.priceNum).toLocaleString("th-TH")} บาท`;
+        }
+        const edge = biggestEdge(product, rival);
+        if (edge) return axisPhrases[edge] + ` (คะแนนด้านนี้ ${Number(product[edge]).toFixed(1)} ต่อ ${Number(rival[edge]).toFixed(1)})`;
+        if (product.ratingsCount > rival.ratingsCount * 1.5) {
+          return `อยากได้ฐานรีวิวใหญ่กว่า (${product.ratingsCount.toLocaleString("th-TH")} เทียบ ${rival.ratingsCount.toLocaleString("th-TH")} รายการ)`;
+        }
+        return "สองตัวนี้สูสีมากในข้อมูลที่เรามี — ตัดสินจาก BTU ที่ตรงห้องและดีลติดตั้งวันที่คุณกดซื้อ";
+      };
+
+      const verdictFacts = (a, b) => {
+        const facts = [];
+        if (a.priceNum && b.priceNum && a.priceNum !== b.priceNum) {
+          const cheap = a.priceNum < b.priceNum ? a : b;
+          const diff = Math.abs(a.priceNum - b.priceNum);
+          facts.push(`${cheap.shortName} ราคาที่เคยเห็นถูกกว่าราว ${diff.toLocaleString("th-TH")} บาท`);
+        }
+        if (a.ratingsCount !== b.ratingsCount) {
+          const more = a.ratingsCount > b.ratingsCount ? a : b;
+          const less = more === a ? b : a;
+          facts.push(`${more.shortName} รีวิวเยอะกว่า (${more.ratingsCount.toLocaleString("th-TH")} ต่อ ${less.ratingsCount.toLocaleString("th-TH")})`);
+        }
+        facts.push(`คะแนนรวมของเรา: ${a.shortName} ${a.score.toFixed(1)} · ${b.shortName} ${b.score.toFixed(1)}`);
+        return facts;
+      };
+
+      const renderVerdicts = (items) => {
+        const host = document.querySelector("[data-compare-verdicts]");
+        if (!host) return;
+        if (items.length < 2) {
+          host.innerHTML = '<p class="muted">เลือกอย่างน้อย 2 รุ่นจากด้านบน แล้วเราจะตัดสินให้ทีละคู่</p>';
+          return;
+        }
+        const pairs = [];
+        for (let i = 0; i < items.length; i += 1) {
+          for (let j = i + 1; j < items.length; j += 1) pairs.push([items[i], items[j]]);
+        }
+        host.innerHTML = pairs.map(([a, b]) => `
+          <article class="compare-verdict-card">
+            <p class="compare-verdict-title">${escapeHtml(a.shortName)} <em>vs</em> ${escapeHtml(b.shortName)}</p>
+            <ul class="compare-verdict-facts">
+              ${verdictFacts(a, b).map((fact) => `<li>${escapeHtml(fact)}</li>`).join("")}
+            </ul>
+            <div class="compare-verdict-take">
+              <p><strong>เอา ${escapeHtml(a.shortName)}</strong> ถ้า${escapeHtml(verdictReason(a, b))}</p>
+              <p><strong>เอา ${escapeHtml(b.shortName)}</strong> ถ้า${escapeHtml(verdictReason(b, a))}</p>
+            </div>
+            <div class="compare-verdict-buy">
+              <a class="button button-primary" href="${escapeHtml(a.links.shopee)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-verdict-${escapeHtml(a.slug)}">เช็กราคา ${escapeHtml(a.shortName)}</a>
+              <a class="button button-primary" href="${escapeHtml(b.links.shopee)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-verdict-${escapeHtml(b.slug)}">เช็กราคา ${escapeHtml(b.shortName)}</a>
+            </div>
+          </article>
+        `).join("");
+      };
+
       const renderCards = (items) => {
         if (!cards) return;
         if (summary) {
@@ -336,6 +494,7 @@ const jsonLd = {
             <p>${escapeHtml(product.bestFor)}</p>
             <div class="compare-card-facts">
               <span>ราคา: ${escapeHtml(moneyText(product))}</span>
+              ${product.priceSeenLabel ? `<span>เคยเห็นจริง: ${escapeHtml(product.priceSeenLabel)} · <a href="/th/guides/price-history/">ดูประวัติราคา</a></span>` : ""}
               <span>BTU: ${escapeHtml(product.btuOptions.join(" / "))}</span>
               <span>รีวิว: ${escapeHtml(product.ratingsCount.toLocaleString("th-TH"))}+ คะแนน</span>
             </div>
@@ -354,15 +513,18 @@ const jsonLd = {
 
       const renderMatrix = (items) => {
         if (!matrix) return;
-        matrix.innerHTML = scoreRows.map(([keyName, label]) => `
+        matrix.innerHTML = scoreRows.map(([keyName, label]) => {
+          const rowMax = Math.max(...items.map((product) => Number(product[keyName] || 0)));
+          return `
           <article>
             <strong>${escapeHtml(label)}</strong>
             <div>
               ${items.map((product) => {
                 const value = Number(product[keyName] || 0);
+                const isBest = items.length > 1 && value === rowMax;
                 return `
-                  <span>
-                    <b>${escapeHtml(product.shortName)}</b>
+                  <span class="${isBest ? "is-row-best" : ""}">
+                    <b>${escapeHtml(product.shortName)}${isBest ? " ✓" : ""}</b>
                     <i style="--score:${Math.max(0, Math.min(10, value)) * 10}%"></i>
                     <em>${escapeHtml(value.toFixed(1))}</em>
                   </span>
@@ -370,7 +532,8 @@ const jsonLd = {
               }).join("")}
             </div>
           </article>
-        `).join("");
+        `;
+        }).join("");
       };
 
       const renderTable = (items) => {
@@ -487,14 +650,38 @@ const jsonLd = {
         const items = selectedProducts();
         renderPicker();
         renderAnswers(items);
+        renderVerdicts(items);
         renderRadar(items);
         renderCards(items);
         renderMatrix(items);
         renderTable(items);
         flyIn(answers);
+        flyIn(document.querySelector("[data-compare-verdicts]"));
         flyIn(cards);
         flyIn(matrix);
       }
+
+      // ช่องกรองรายชื่อรุ่นใน picker (34 รุ่นไล่หายาก)
+      const filterInput = document.querySelector("[data-compare-filter]");
+      filterInput?.addEventListener("input", applyChipFilter);
+
+      // ปุ่มคัดลอกลิงก์ผลเทียบ — URL มี ?items= ของรุ่นที่เลือกอยู่แล้ว
+      const shareButton = document.querySelector("[data-compare-share]");
+      shareButton?.addEventListener("click", async () => {
+        const original = shareButton.textContent;
+        try {
+          await navigator.clipboard.writeText(location.href);
+          shareButton.textContent = "คัดลอกแล้ว ✓ ส่งให้เพื่อนช่วยเลือกได้เลย";
+        } catch {
+          window.prompt("คัดลอกลิงก์นี้ส่งให้เพื่อน", location.href);
+          shareButton.textContent = original;
+          return;
+        }
+        if (typeof window.gtag === "function") {
+          window.gtag("event", "friendsay_compare_share", { items: selected.join(",") });
+        }
+        setTimeout(() => { shareButton.textContent = original; }, 2600);
+      });
 
       persist();
       renderAll();

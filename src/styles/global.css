@@ -8974,3 +8974,145 @@ a.home-roadmap-card:hover {
     display: none;
   }
 }
+
+/* ============================================================
+   Compare 2.0: ผลตัดสินรายคู่ + picker กลุ่ม/กรอง + ไฮไลต์ผู้ชนะ
+   (2026-07-07)
+   ============================================================ */
+
+.compare-picker-filter {
+  display: block;
+  margin-top: 10px;
+}
+
+.compare-picker-filter input {
+  width: min(340px, 100%);
+  padding: 10px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.92rem;
+}
+
+.compare-picker-filter input:focus {
+  outline: 2px solid rgba(255, 107, 90, 0.45);
+  outline-offset: 1px;
+}
+
+.compare-picker-group {
+  margin-bottom: 14px;
+}
+
+.compare-picker-group-label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.compare-picker-group-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.compare-picker-chip[hidden] {
+  display: none;
+}
+
+.compare-verdict-panel {
+  margin-top: 34px;
+}
+
+.compare-verdict-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.compare-verdict-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-soft);
+}
+
+.compare-verdict-title {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.compare-verdict-title em {
+  margin: 0 6px;
+  color: var(--coral);
+  font-style: normal;
+  font-weight: 950;
+}
+
+.compare-verdict-facts {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 4px;
+  color: #3f4e5c;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.compare-verdict-take {
+  display: grid;
+  gap: 6px;
+  border-left: 3px solid #0ea5a0;
+  padding-left: 12px;
+}
+
+.compare-verdict-take p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #26514e;
+}
+
+.compare-verdict-buy {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.compare-verdict-buy .button {
+  flex: 1;
+  min-width: 150px;
+}
+
+.compare-score-matrix span.is-row-best b {
+  color: #0b7f7a;
+}
+
+.compare-score-matrix span.is-row-best i::before {
+  background: linear-gradient(90deg, #0ea5a0, #14b8a6);
+}
+
+.compare-summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.compare-summary-row p {
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .compare-verdict-grid {
+    grid-template-columns: 1fr;
+  }
+}
