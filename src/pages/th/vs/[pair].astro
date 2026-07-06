@@ -6,7 +6,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PriceButtons from "../../../components/PriceButtons.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
-import { latestSeenPrice, soldBySlug, warrantyShortBySlug, reviewProsBySlug, reviewConsBySlug, thaiDate } from "../../../data/airCompareExtras";
+import { latestSeenPrice, soldBySlug, warrantyShortBySlug, reviewProsBySlug, reviewConsBySlug, expertTakeBySlug, thaiDate } from "../../../data/airCompareExtras";
 
 export async function getStaticPaths() {
   const paths = [];
@@ -159,6 +159,45 @@ const popularPairs = [
 ];
 
 const updatedMax = a.updated > b.updated ? a.updated : b.updated;
+
+// สรุปคำแนะนำจาก Friendsay — สังเคราะห์จากมุมมองรายรุ่น + ตัวชี้ขาดจากตัวเลขจริงของคู่นี้
+const biggestAxisGap = AXES
+  .map((axis) => ({ axis, diff: num(a, axis.key) - num(b, axis.key) }))
+  .sort((x, y) => Math.abs(y.diff) - Math.abs(x.diff))[0];
+
+const expertParagraphs = (() => {
+  const paras: string[] = [];
+  paras.push(
+    `มองจากหลักฐานทั้งหมดที่เรามี: ${a.shortName} คือ${expertTakeBySlug[a.slug]} ส่วน ${b.shortName} คือ${expertTakeBySlug[b.slug]}`
+  );
+
+  if (priceA && priceB && Math.abs(priceA.price - priceB.price) >= 500) {
+    const cheap = priceA.price < priceB.price ? a : b;
+    const exp = cheap === a ? b : a;
+    const diff = Math.abs(priceA.price - priceB.price);
+    paras.push(
+      `ถ้าให้ชี้ขาด: ส่วนต่างราคาที่เคยเห็น (~${baht(diff)}) คือตัวแปรใหญ่ที่สุดของคู่นี้ — ${cheap.shortName} ได้เปรียบเรื่องความคุ้มทันที และส่วนต่างนั้นเอาไปเผื่อค่าติดตั้ง/อุปกรณ์หน้างานได้สบาย เว้นแต่คุณให้น้ำหนักกับจุดแข็งของ ${exp.shortName} (${AXIS_PHRASES[biggestAxisGap.diff !== 0 && ((biggestAxisGap.diff > 0 && exp === a) || (biggestAxisGap.diff < 0 && exp === b)) ? biggestAxisGap.axis.key : "warrantySafety"]}) มากพอที่จะจ่ายเพิ่ม`
+    );
+  } else if (Math.abs(biggestAxisGap.diff) >= 0.3) {
+    const better = biggestAxisGap.diff > 0 ? a : b;
+    paras.push(
+      `ถ้าให้ชี้ขาด: ราคาของคู่นี้ใกล้กันจนไม่ใช่ตัวตัดสิน จุดที่ต่างจริงคือ${biggestAxisGap.axis.label} ซึ่ง ${better.shortName} ทำได้ดีกว่าชัด (${Math.max(num(a, biggestAxisGap.axis.key), num(b, biggestAxisGap.axis.key)).toFixed(1)} ต่อ ${Math.min(num(a, biggestAxisGap.axis.key), num(b, biggestAxisGap.axis.key)).toFixed(1)}) — ถ้าโจทย์คุณคือ${AXIS_PHRASES[biggestAxisGap.axis.key]} คู่นี้มีคำตอบแล้ว`
+    );
+  } else {
+    paras.push(
+      `ถ้าให้ชี้ขาด: คู่นี้สูสีจริง ๆ ในทุกมิติที่เราวัดได้ — อย่าเสียเวลาลังเลระหว่างสองตัวนี้นาน ให้ตัดสินจากราคาสดวันที่ซื้อและเงื่อนไขติดตั้งที่ได้แทน`
+    );
+  }
+
+  const finalWarnings: string[] = [];
+  if (a.slug === "panasonic-cs-cu-yn9ykt" || b.slug === "panasonic-cs-cu-yn9ykt") {
+    finalWarnings.push("ย้ำอีกครั้ง: YN-YKT เป็นเครื่องระบบธรรมดา ถ้าคุณเปิดแอร์ยาวทุกคืน ตัดตัวเลือกนี้ออกได้เลย");
+  }
+  paras.push(
+    `${finalWarnings.length ? finalWarnings.join(" ") + " " : ""}คำแนะนำปิดท้ายที่จริงเสมอไม่ว่าคู่ไหน: เลือก BTU ให้ตรงห้องก่อนเลือกแบรนด์ (แอร์ผิดขนาดกินไฟกว่าทุกส่วนต่างในหน้านี้) เช็กราคาสดวันซื้อเพราะราคาช่วงโปรแกว่งทุกวัน และถามเงื่อนไขติดตั้งให้จบก่อนโอน`
+  );
+  return paras;
+})();
 
 const faqs = [
   {
@@ -318,6 +357,25 @@ const faqJsonLd = {
     </div>
   </section>
 
+
+  <section class="section" id="expert">
+    <div class="container">
+      <div class="vs-expert">
+        <div class="vs-expert-head">
+          <span class="vs-expert-mark">F</span>
+          <div>
+            <strong>สรุปคำแนะนำจาก Friendsay</strong>
+            <span>จากการไล่หลักฐานและรีวิวจริงของทุกรุ่นในคลัง — เราไม่มีสินค้าจริงในมือ แต่เราอ่านหลักฐานแทนคุณทั้งหมดแล้ว</span>
+          </div>
+        </div>
+        {expertParagraphs.map((para) => <p>{para}</p>)}
+        <div class="vs-expert-actions">
+          <a class="button button-primary" href={a.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-expert-${a.slug}`}>เช็กราคา {a.shortName}</a>
+          <a class="button button-primary" href={b.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-expert-${b.slug}`}>เช็กราคา {b.shortName}</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="section band" id="scores">
     <div class="container">
@@ -663,6 +721,69 @@ const faqJsonLd = {
     font-size: 1rem;
     line-height: 1.65;
     color: #3f4e5c;
+  }
+
+  .vs-expert {
+    border-radius: 20px;
+    background: linear-gradient(160deg, #1f2937, #17202a);
+    color: #f4ede2;
+    padding: 28px;
+    box-shadow: 0 30px 70px -30px rgba(23, 32, 42, 0.55);
+    display: grid;
+    gap: 14px;
+  }
+
+  .vs-expert-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .vs-expert-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff7b6b, #ff6b5a);
+    color: #fff;
+    font-weight: 950;
+    font-size: 1.2rem;
+  }
+
+  .vs-expert-head strong {
+    display: block;
+    font-size: 1.2rem;
+    color: #fff;
+  }
+
+  .vs-expert-head span {
+    display: block;
+    margin-top: 2px;
+    color: rgba(244, 237, 226, 0.66);
+    font-size: 0.84rem;
+    line-height: 1.5;
+  }
+
+  .vs-expert p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(244, 237, 226, 0.92);
+  }
+
+  .vs-expert-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .vs-expert-actions .button {
+    flex: 1;
+    min-width: 170px;
   }
 
   .vs-matrix {
