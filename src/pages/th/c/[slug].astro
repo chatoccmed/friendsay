@@ -170,6 +170,7 @@ const faqJsonLd = {
               <div class="badge-row">
                 <span class="badge badge-teal">ขายได้ {p.soldPerMonth} ชิ้น/เดือน</span>
                 <span class="badge badge-blue">{p.rating.toFixed(1)} ★</span>
+                {p.ratingsCount ? <span class="badge">รีวิว {p.ratingsCount.toLocaleString("th-TH")} รายการ</span> : null}
               </div>
               <h3>{p.name}</h3>
               <div class="cat-facts">
@@ -179,6 +180,22 @@ const faqJsonLd = {
                 <div><span>แบรนด์</span><strong>{p.brand}</strong></div>
               </div>
               {p.insight ? <p class="cat-insight"><b>อ่านเกมให้:</b> {p.insight}</p> : null}
+              {(p.reviewGood?.length || p.reviewWatch?.length) ? (
+                <div class="compare-card-reviews">
+                  {p.reviewGood?.length ? (
+                    <div class="compare-reviews-good">
+                      <strong>ข้อดีที่รีวิวพูดซ้ำ</strong>
+                      <ul>{p.reviewGood.map((s: string) => <li>{s}</li>)}</ul>
+                    </div>
+                  ) : null}
+                  {p.reviewWatch?.length ? (
+                    <div class="compare-reviews-bad">
+                      <strong>จุดสังเกตจากรีวิว</strong>
+                      <ul>{p.reviewWatch.map((s: string) => <li>{s}</li>)}</ul>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
               <a class="button button-primary cat-buy" href={p.link} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`catalog-${catalog.slug}-${p.rank}`}>
                 เช็กราคาจริงวันนี้ →
               </a>
