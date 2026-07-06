@@ -1,9 +1,18 @@
 import { legacyProducts } from "../data/legacyProducts";
+import { airConditioners } from "../data/airConditioners";
 import { queuedAirConditionerReviews } from "../data/airConditionerReviewQueue";
 import { queuedRefrigeratorReviews } from "../data/refrigeratorReviewQueue";
 import { airConditionerShopeeProofByKey } from "../data/airConditionerShopeeProof";
 
 const site = "https://friendsay.com";
+
+// หน้าเทียบรายคู่ X vs Y (/th/vs/) — ทุกคู่จากคลังแอร์
+const vsPaths: string[] = [];
+for (let i = 0; i < airConditioners.length; i += 1) {
+  for (let j = i + 1; j < airConditioners.length; j += 1) {
+    vsPaths.push(`/th/vs/${airConditioners[i].slug}-vs-${airConditioners[j].slug}/`);
+  }
+}
 
 // หน้า catalog ยอดฮิต (/th/c/<slug>/) — เพิ่มอัตโนมัติตามไฟล์ใน src/data/catalog/
 const catalogModules = import.meta.glob("../data/catalog/*.json", { eager: true });
@@ -49,6 +58,7 @@ const refrigeratorReviewPaths = queuedRefrigeratorReviews.map((review) => `/th/r
 const paths = [
   ...staticPaths,
   ...catalogPaths,
+  ...vsPaths,
   ...airConditionerReviewPaths,
   ...refrigeratorReviewPaths,
   ...legacyProducts.map((product) => product.preservedPath)

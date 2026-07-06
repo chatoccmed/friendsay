@@ -1,0 +1,544 @@
+---
+// หน้าเทียบรายคู่ X vs Y (adapt จาก versus.com — ดู docs/world-class-ux-teardown-2026-07.md)
+// สร้างอัตโนมัติทุกคู่จากคลังแอร์ 10 รุ่น (45 คู่) — ตัวเลขทุกตัวจาก data ที่ตรวจแล้ว
+// กติกา: แกนที่ต่างกัน < 0.3 ไม่เคลมเป็นข้อได้เปรียบ · ไม่ประกาศผู้ชนะเด็ดขาด ใช้ท่า "ใครนำ + เอาตัวไหนถ้าโจทย์คืออะไร"
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PriceButtons from "../../../components/PriceButtons.astro";
+import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import { airConditioners } from "../../../data/airConditioners";
+import { latestSeenPrice, soldBySlug, warrantyShortBySlug, thaiDate } from "../../../data/airCompareExtras";
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (let i = 0; i < airConditioners.length; i += 1) {
+    for (let j = i + 1; j < airConditioners.length; j += 1) {
+      paths.push({
+        params: { pair: `${airConditioners[i].slug}-vs-${airConditioners[j].slug}` },
+        props: { a: airConditioners[i], b: airConditioners[j] }
+      });
+    }
+  }
+  return paths;
+}
+
+const { a, b } = Astro.props;
+
+const AXES: { key: string; label: string; note: string }[] = [
+  { key: "popularity", label: "ความนิยม", note: "วัดจากยอดขาย/ผู้ติดตามร้าน/ความหนาแน่นของรีวิวที่เห็นจริงบนหน้าร้าน" },
+  { key: "buyerConfidence", label: "ความมั่นใจผู้ซื้อ", note: "ฐานรีวิวใหญ่และคะแนนสม่ำเสมอแค่ไหน — ฐานเล็กเทียบ pattern ได้จำกัด" },
+  { key: "value", label: "ความคุ้มค่า", note: "ราคาที่พบเทียบกับสเปก/ฟีเจอร์/ประกันที่ได้" },
+  { key: "roomFit", label: "เลือกขนาดง่าย", note: "ช่วง BTU ที่มีให้เลือก ครอบคลุมตั้งแต่ห้องเล็กถึงห้องใหญ่แค่ไหน" },
+  { key: "energyComfort", label: "ประหยัดไฟ/สบาย", note: "ชนิดระบบ, ค่า SEER ที่ร้านแจ้ง, โหมดประหยัดไฟ และสัญญาณรีวิวเรื่องค่าไฟ" },
+  { key: "installRisk", label: "ติดตั้งสบายใจ", note: "ความชัดเจนของค่าติดตั้ง/อุปกรณ์เพิ่ม — คะแนนสูง = เสี่ยงบานปลายน้อย" },
+  { key: "warrantySafety", label: "ประกัน/ความปลอดภัย", note: "ระยะประกัน ช่องทางเคลม และมาตรฐาน มอก. ที่ตรวจได้" },
+  { key: "complaintRisk", label: "เสียงบ่นน้อย", note: "สัดส่วนรีวิวเชิงลบที่เจอระหว่างเก็บข้อมูล — คะแนนสูง = เสียงบ่นน้อย" }
+];
+
+const AXIS_PHRASES: Record<string, string> = {
+  popularity: "อยากได้ตัวที่คนซื้อเยอะ",
+  buyerConfidence: "อยากได้รีวิวแน่น ๆ ไว้ตามอ่านก่อนจ่าย",
+  value: "เน้นความคุ้มราคา",
+  roomFit: "อยากได้ตัวเลือก BTU กว้าง เลือกตรงห้องง่าย",
+  energyComfort: "เปิดยาวทุกคืน เน้นเรื่องค่าไฟ",
+  installRisk: "อยากให้เรื่องติดตั้งวุ่นน้อยที่สุด",
+  warrantySafety: "เน้นประกันและความสบายใจหลังซื้อ",
+  complaintRisk: "อยากได้ตัวที่เสียงบ่นจากผู้ซื้อน้อย"
+};
+
+const num = (p: any, k: string) => Number(p[k] || 0);
+const priceA = latestSeenPrice[a.slug] ?? null;
+const priceB = latestSeenPrice[b.slug] ?? null;
+const soldA = soldBySlug.get(a.slug) ?? { soldNum: null, soldLabel: "ไม่แสดง" };
+const soldB = soldBySlug.get(b.slug) ?? { soldNum: null, soldLabel: "ไม่แสดง" };
+const baht = (n: number) => `฿${n.toLocaleString("th-TH")}`;
+
+// ข้อได้เปรียบแบบระบุตัวเลข (pattern versus.com) — เคลมเฉพาะที่ต่างจริง
+const advantagesOf = (x: any, y: any, priceX: any, priceY: any, soldX: any, soldY: any) => {
+  const out: string[] = [];
+  if (priceX && priceY && priceY.price - priceX.price >= 300) {
+    const diff = priceY.price - priceX.price;
+    out.push(`ราคาที่เคยเห็นถูกกว่าราว ${baht(diff)} (ต่ำกว่า ${Math.round((diff / priceY.price) * 100)}%)`);
+  }
+  if (x.ratingsCount >= y.ratingsCount * 1.5) {
+    out.push(`ฐานรีวิวใหญ่กว่า (${x.ratingsCount.toLocaleString("th-TH")} ต่อ ${y.ratingsCount.toLocaleString("th-TH")} รายการ)`);
+  }
+  if (soldX.soldNum && (!soldY.soldNum || soldX.soldNum > soldY.soldNum)) {
+    out.push(soldY.soldNum
+      ? `ยอดขายที่เห็นบนหน้าร้านสูงกว่า (${soldX.soldLabel.replace("ยอดขายไม่แสดง · ", "")})`
+      : `เห็นยอดขายจริงบนหน้าร้าน (${soldX.soldLabel.replace("ยอดขายไม่แสดง · ", "")}) ขณะที่อีกตัว Shopee ไม่โชว์ตัวเลข`);
+  }
+  for (const axis of AXES) {
+    const diff = num(x, axis.key) - num(y, axis.key);
+    if (diff >= 0.3) out.push(`${axis.label}ดีกว่า (${num(x, axis.key).toFixed(1)} ต่อ ${num(y, axis.key).toFixed(1)})`);
+  }
+  return out;
+};
+
+const advA = advantagesOf(a, b, priceA, priceB, soldA, soldB);
+const advB = advantagesOf(b, a, priceB, priceA, soldB, soldA);
+
+// สรุปแบบเพื่อน: จุดต่างที่เด่นสุดของแต่ละฝั่ง
+const verdictReason = (x: any, y: any, priceX: any, priceY: any) => {
+  if (priceX && priceY && priceY.price - priceX.price >= 500) {
+    return `คุมงบเป็นหลัก — ราคาที่เคยเห็นถูกกว่าราว ${baht(priceY.price - priceX.price)}`;
+  }
+  let bestKey: string | null = null;
+  let bestDiff = 0.25;
+  for (const axis of AXES) {
+    const diff = num(x, axis.key) - num(y, axis.key);
+    if (diff > bestDiff) { bestDiff = diff; bestKey = axis.key; }
+  }
+  if (bestKey) return `${AXIS_PHRASES[bestKey]} (คะแนนด้านนี้ ${num(x, bestKey).toFixed(1)} ต่อ ${num(y, bestKey).toFixed(1)})`;
+  if (x.ratingsCount > y.ratingsCount * 1.5) {
+    return `อยากได้ฐานรีวิวใหญ่กว่า (${x.ratingsCount.toLocaleString("th-TH")} เทียบ ${y.ratingsCount.toLocaleString("th-TH")})`;
+  }
+  return "สองตัวนี้สูสีมากในข้อมูลที่เรามี — ตัดสินจาก BTU ที่ตรงห้องและดีลติดตั้งวันที่คุณกดซื้อ";
+};
+
+const scoreDiff = Math.abs(a.score - b.score);
+const leader = a.score >= b.score ? a : b;
+const winnerLine = scoreDiff < 0.15
+  ? `คะแนนรวมสูสีกันมาก (${a.score.toFixed(1)} ต่อ ${b.score.toFixed(1)}) — คำตอบขึ้นกับโจทย์ของคุณล้วน ๆ`
+  : `คะแนนรวมของเรา ${leader.shortName} นำอยู่ (${a.score.toFixed(1)} ต่อ ${b.score.toFixed(1)}) แต่คำตอบจริงขึ้นกับโจทย์ของคุณ`;
+
+const factsCount = 2 * (AXES.length + 5); // 8 แกน + ราคา/ยอดขาย/รีวิว/คะแนนดาว/ประกัน ต่อรุ่น
+
+// facts table rows พร้อม best-in-row
+const factRows = [
+  {
+    label: "ราคาที่เคยเห็นจริง",
+    va: priceA ? `~${baht(priceA.price)} (${thaiDate(priceA.date)})` : "ยังไม่บันทึก",
+    vb: priceB ? `~${baht(priceB.price)} (${thaiDate(priceB.date)})` : "ยังไม่บันทึก",
+    best: priceA && priceB ? (priceA.price < priceB.price ? "a" : priceB.price < priceA.price ? "b" : null) : null
+  },
+  {
+    label: "ยอดขายที่เห็น",
+    va: soldA.soldNum ? soldA.soldLabel.replace("ยอดขายไม่แสดง · ", "") : "ไม่แสดง",
+    vb: soldB.soldNum ? soldB.soldLabel.replace("ยอดขายไม่แสดง · ", "") : "ไม่แสดง",
+    best: (soldA.soldNum ?? 0) > (soldB.soldNum ?? 0) ? "a" : (soldB.soldNum ?? 0) > (soldA.soldNum ?? 0) ? "b" : null
+  },
+  {
+    label: "รีวิว Shopee",
+    va: `${a.rating.toFixed(1)} ★ (${a.ratingsCount.toLocaleString("th-TH")} รายการ)`,
+    vb: `${b.rating.toFixed(1)} ★ (${b.ratingsCount.toLocaleString("th-TH")} รายการ)`,
+    best: a.ratingsCount > b.ratingsCount ? "a" : b.ratingsCount > a.ratingsCount ? "b" : null
+  },
+  {
+    label: "คะแนนรวมของเรา",
+    va: `${a.score.toFixed(1)}/10`,
+    vb: `${b.score.toFixed(1)}/10`,
+    best: scoreDiff < 0.15 ? null : a.score > b.score ? "a" : "b"
+  },
+  {
+    label: "ประกัน (ฉบับย่อ)",
+    va: warrantyShortBySlug[a.slug] ?? "ถามร้าน",
+    vb: warrantyShortBySlug[b.slug] ?? "ถามร้าน",
+    best: null
+  },
+  {
+    label: "BTU ที่มีให้เลือก",
+    va: a.btuOptions.join(" / "),
+    vb: b.btuOptions.join(" / "),
+    best: null
+  }
+];
+
+// คู่เทียบยอดนิยมอื่น (ตาข่ายลิงก์แบบ versus) — คู่ของ a และ b กับรุ่นคะแนนสูงตัวอื่น
+const idxOf = (slug: string) => airConditioners.findIndex((p) => p.slug === slug);
+const pairHref = (x: string, y: string) => {
+  const [first, second] = idxOf(x) < idxOf(y) ? [x, y] : [y, x];
+  return `/th/vs/${first}-vs-${second}/`;
+};
+const others = airConditioners
+  .filter((p) => p.slug !== a.slug && p.slug !== b.slug)
+  .sort((x, y) => y.score - x.score)
+  .slice(0, 4);
+const popularPairs = [
+  ...others.map((o) => ({ href: pairHref(a.slug, o.slug), label: `${a.shortName} vs ${o.shortName}` })),
+  ...others.map((o) => ({ href: pairHref(b.slug, o.slug), label: `${b.shortName} vs ${o.shortName}` }))
+];
+
+const updatedMax = a.updated > b.updated ? a.updated : b.updated;
+
+const faqs = [
+  {
+    q: `${a.shortName} กับ ${b.shortName} ตัวไหนดีกว่ากัน?`,
+    a: `${winnerLine} สรุปแบบเพื่อน: เอา ${a.shortName} ถ้า${verdictReason(a, b, priceA, priceB)} และเอา ${b.shortName} ถ้า${verdictReason(b, a, priceB, priceA)}`
+  },
+  {
+    q: `ตัวไหนถูกกว่า?`,
+    a: priceA && priceB
+      ? `จากราคาที่เราเห็นจริง ${priceA.price < priceB.price ? a.shortName : b.shortName} ถูกกว่า (~${baht(Math.min(priceA.price, priceB.price))} เทียบ ~${baht(Math.max(priceA.price, priceB.price))}) — เป็นราคาช่วงโปร ณ วันเก็บข้อมูล เปลี่ยนได้ทุกวัน กดเช็กราคาสดก่อนตัดสินใจ`
+      : "เรายังบันทึกราคาไม่ครบทั้งคู่ กดปุ่มเช็กราคาเพื่อดูราคาสดจากหน้าร้านได้เลย"
+  },
+  {
+    q: `ประกันของใครน่าสบายใจกว่า?`,
+    a: `ฉบับย่อ: ${a.shortName} ${warrantyShortBySlug[a.slug] ?? "ถามร้าน"} ส่วน ${b.shortName} ${warrantyShortBySlug[b.slug] ?? "ถามร้าน"} — เงื่อนไขเต็มอ่านในหน้ารีวิวรายรุ่น และควรขอให้ร้านยืนยันเป็นข้อความก่อนโอนเสมอ`
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: `${a.shortName} vs ${b.shortName} ตัวไหนดี (2026)`,
+  description: `เทียบ ${a.name} กับ ${b.name} จาก ${factsCount} จุดข้อมูลจริง: ราคาที่เคยเห็น ยอดขาย รีวิว คะแนน 8 ด้าน และประกัน พร้อมคำตัดสินแบบเพื่อน`,
+  inLanguage: "th",
+  dateModified: updatedMax,
+  author: { "@type": "Organization", name: "Friendsay" }
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } }))
+};
+---
+
+<BaseLayout
+  title={`${a.shortName} vs ${b.shortName} ตัวไหนดี (2026)? เทียบจากหลักฐานจริง | Friendsay`}
+  description={`เทียบ ${a.shortName} กับ ${b.shortName} จาก ${factsCount} จุดข้อมูลจริง — ราคาที่เคยเห็น ยอดขายบนหน้าร้าน รีวิว คะแนน 8 ด้าน ประกัน พร้อมสรุปว่าเอาตัวไหนถ้าโจทย์คุณคืออะไร`}
+  canonical={`https://friendsay.com/th/vs/${a.slug}-vs-${b.slug}/`}
+  ogImage={a.image.url}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <section class="page-hero vs-hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge badge-coral">เทียบรายคู่</span>
+        <span class="badge badge-teal">เทียบจาก {factsCount} จุดข้อมูลจริง</span>
+        <span class="badge badge-blue">อัปเดตข้อมูล {thaiDate(updatedMax)}</span>
+      </div>
+      <h1>{a.shortName} vs {b.shortName} ตัวไหนดี?</h1>
+      <div class="vs-score-strip" aria-label="คะแนนรวมของทั้งคู่">
+        <div class="vs-score-chip">
+          <img src={a.image.url} alt={a.image.alt} loading="eager" />
+          <strong>{a.score.toFixed(1)}</strong>
+          <span>{a.shortName}</span>
+        </div>
+        <em class="vs-mark">VS</em>
+        <div class="vs-score-chip">
+          <img src={b.image.url} alt={b.image.alt} loading="eager" />
+          <strong>{b.score.toFixed(1)}</strong>
+          <span>{b.shortName}</span>
+        </div>
+      </div>
+      <p class="muted vs-winner-line">{winnerLine}</p>
+    </div>
+  </section>
+
+  <section class="section" id="facts">
+    <div class="container">
+      <p class="eyebrow">ข้อเท็จจริงชนกัน</p>
+      <h2 class="headline">ตัวเลขที่เห็นจริงจากหน้าร้าน</h2>
+      <div class="compare-shell">
+        <table class="compare-table">
+          <thead>
+            <tr><th>หัวข้อ</th><th>{a.shortName}</th><th>{b.shortName}</th></tr>
+          </thead>
+          <tbody>
+            {factRows.map((row) => (
+              <tr>
+                <th>{row.label}</th>
+                <td class={row.best === "a" ? "is-best" : undefined}>{row.va}</td>
+                <td class={row.best === "b" ? "is-best" : undefined}>{row.vb}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">✓ เขียว = ค่าที่ดีกว่าของแถว · ราคาเป็นราคาช่วงโปร ณ วันเก็บข้อมูล เปลี่ยนได้ทุกวัน · "ไม่แสดง" = Shopee ไม่โชว์ยอดขาย เราไม่เดาตัวเลข</p>
+    </div>
+  </section>
+
+  <section class="section band" id="advantages">
+    <div class="container">
+      <p class="eyebrow">แบบ versus — แต่ตัวเลขจริง</p>
+      <h2 class="headline">จุดที่แต่ละตัวเหนือกว่า</h2>
+      <div class="vs-adv-grid">
+        <div class="vs-adv-col">
+          <h3>ทำไม {a.shortName} น่าสนใจกว่า</h3>
+          {advA.length ? <ul>{advA.map((s) => <li>{s}</li>)}</ul> : <p class="muted">ไม่มีด้านที่ต่างชัดพอให้เคลม (ต่างน้อยกว่าเกณฑ์ 0.3 คะแนน)</p>}
+        </div>
+        <div class="vs-adv-col">
+          <h3>ทำไม {b.shortName} น่าสนใจกว่า</h3>
+          {advB.length ? <ul>{advB.map((s) => <li>{s}</li>)}</ul> : <p class="muted">ไม่มีด้านที่ต่างชัดพอให้เคลม (ต่างน้อยกว่าเกณฑ์ 0.3 คะแนน)</p>}
+        </div>
+      </div>
+      <div class="vs-verdict">
+        <p><strong>เอา {a.shortName}</strong> ถ้า{verdictReason(a, b, priceA, priceB)}</p>
+        <p><strong>เอา {b.shortName}</strong> ถ้า{verdictReason(b, a, priceB, priceA)}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="scores">
+    <div class="container">
+      <p class="eyebrow">คะแนน 8 ด้าน · พร้อมเหตุผลว่าทำไมด้านนั้นสำคัญ</p>
+      <h2 class="headline">แกนต่อแกน ใครแข็งด้านไหน</h2>
+      <div class="compare-score-matrix vs-matrix">
+        {AXES.map((axis) => {
+          const va = num(a, axis.key);
+          const vb = num(b, axis.key);
+          const bestA = va - vb >= 0.15;
+          const bestB = vb - va >= 0.15;
+          return (
+            <article>
+              <strong>{axis.label}</strong>
+              <div>
+                <span class={bestA ? "is-row-best" : ""}>
+                  <b>{a.shortName}{bestA ? " ✓" : ""}</b>
+                  <i style={`--score:${Math.max(0, Math.min(10, va)) * 10}%`}></i>
+                  <em>{va.toFixed(1)}</em>
+                </span>
+                <span class={bestB ? "is-row-best" : ""}>
+                  <b>{b.shortName}{bestB ? " ✓" : ""}</b>
+                  <i style={`--score:${Math.max(0, Math.min(10, vb)) * 10}%`}></i>
+                  <em>{vb.toFixed(1)}</em>
+                </span>
+              </div>
+              <p class="vs-axis-note">{axis.note}</p>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="products">
+    <div class="container">
+      <p class="eyebrow">ดูใกล้ ๆ ทีละตัว</p>
+      <h2 class="headline">สองตัวนี้คือใคร</h2>
+      <div class="vs-product-grid">
+        {[a, b].map((p) => (
+          <article class="vs-product-card">
+            <a href={p.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-photo-${p.slug}`}>
+              <img src={p.image.url} alt={p.image.alt} loading="lazy" />
+            </a>
+            <h3>{p.name}</h3>
+            <p class="vs-bestfor"><b>เหมาะกับ:</b> {p.bestFor}</p>
+            <p class="vs-watch"><b>ระวัง:</b> {p.watch[0]}</p>
+            <PriceButtons links={p.links} label={`เช็กราคา ${p.name}`} />
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container">
+      <p class="eyebrow">คำถามยอดฮิตของคู่นี้</p>
+      <h2 class="headline">ถาม-ตอบสั้น ๆ</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="more-pairs">
+    <div class="container">
+      <p class="eyebrow">คู่เทียบยอดนิยมอื่น</p>
+      <h2 class="headline">ยังลังเลกับตัวอื่นอยู่ไหม</h2>
+      <div class="vs-pair-links">
+        {popularPairs.map((pp) => <a class="button" href={pp.href}>{pp.label}</a>)}
+      </div>
+      <div class="roundup-actions" style="margin-top: 20px;">
+        <a class="button button-primary" href={`/th/compare/air-conditioners/?items=${a.slug},${b.slug}`}>เปิดเครื่องมือเทียบแบบเพิ่มรุ่นได้ →</a>
+        <a class="button" href="/th/best/air-conditioners/">ดู 10 อันดับแอร์</a>
+        <a class="button" href="/th/guides/btu-calculator/">คิด BTU ห้องก่อน</a>
+      </div>
+      <p class="compare-note" style="margin-top: 18px;">
+        คะแนน 8 ด้านให้จากหลักฐานที่เก็บจากหน้าร้านจริง (ชุดเดียวกับทั้งเว็บ) เราไม่มีสินค้าจริงในมือและไม่รับเงินจัดอันดับ ·
+        ลิงก์เป็นลิงก์ affiliate — กดซื้อผ่านเราคุณไม่จ่ายเพิ่ม (<a href="/affiliate-disclosure/">รายละเอียด</a>) · มาตรฐานรีวิว: <a href="/editorial-policy/">Editorial Policy</a>
+      </p>
+    </div>
+  </section>
+
+  <AffiliateClickTracker />
+</BaseLayout>
+
+<style>
+  .vs-hero {
+    background:
+      radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.55), transparent 70%),
+      linear-gradient(180deg, #fff8ee, #fffdf8);
+  }
+
+  .vs-score-strip {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 22px 0 14px;
+    flex-wrap: wrap;
+  }
+
+  .vs-score-chip {
+    display: grid;
+    grid-template-columns: 64px auto;
+    grid-template-rows: auto auto;
+    column-gap: 12px;
+    align-items: center;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--shadow-soft);
+    padding: 10px 16px 10px 10px;
+  }
+
+  .vs-score-chip img {
+    grid-row: 1 / span 2;
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: #f5faf9;
+  }
+
+  .vs-score-chip strong {
+    font-size: 1.5rem;
+    color: var(--coral-dark, #d84c3c);
+    line-height: 1.1;
+  }
+
+  .vs-score-chip span {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .vs-mark {
+    font-style: normal;
+    font-weight: 950;
+    font-size: 1.2rem;
+    color: var(--coral);
+  }
+
+  .vs-winner-line {
+    max-width: 720px;
+    font-size: 1.04rem;
+  }
+
+  .vs-adv-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .vs-adv-col {
+    border: 1px solid rgba(14, 165, 160, 0.25);
+    border-radius: 16px;
+    background: rgba(14, 165, 160, 0.06);
+    padding: 20px;
+  }
+
+  .vs-adv-col h3 {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    color: #0b7f7a;
+  }
+
+  .vs-adv-col ul {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+    color: #26514e;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .vs-verdict {
+    margin-top: 18px;
+    border-left: 4px solid var(--coral);
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 0 14px 14px 0;
+    padding: 16px 20px;
+    display: grid;
+    gap: 8px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .vs-verdict p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: #3f4e5c;
+  }
+
+  .vs-matrix {
+    margin-top: 18px;
+  }
+
+  .vs-axis-note {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .vs-product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .vs-product-card {
+    display: grid;
+    gap: 10px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-soft);
+    padding: 18px;
+  }
+
+  .vs-product-card img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffffff, #f5faf9);
+    border: 1px solid rgba(223, 208, 186, 0.6);
+  }
+
+  .vs-product-card h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+
+  .vs-bestfor,
+  .vs-watch {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .vs-watch {
+    border-left: 3px solid var(--coral);
+    padding-left: 10px;
+    color: #6b4a44;
+  }
+
+  .vs-pair-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 780px) {
+    .vs-adv-grid,
+    .vs-product-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

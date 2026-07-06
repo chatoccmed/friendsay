@@ -27,8 +27,9 @@ const thaiDate = (iso: string) => {
   return `${d} ${THAI_MONTHS[m - 1]} ${y}`;
 };
 
-const mainCompareProducts = airConditioners.map((product) => ({
+const mainCompareProducts = airConditioners.map((product, productIndex) => ({
   tier: "main",
+  orderIdx: productIndex,
   soldNum: soldById.get(product.slug)?.soldNum ?? null,
   soldShort: (() => {
     const s = soldById.get(product.slug);
@@ -524,6 +525,9 @@ const jsonLd = {
               <a class="button button-primary" href="${escapeHtml(a.links.shopee)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-verdict-${escapeHtml(a.slug)}">เช็กราคา ${escapeHtml(a.shortName)}</a>
               <a class="button button-primary" href="${escapeHtml(b.links.shopee)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-verdict-${escapeHtml(b.slug)}">เช็กราคา ${escapeHtml(b.shortName)}</a>
             </div>
+            ${Number.isInteger(a.orderIdx) && Number.isInteger(b.orderIdx)
+              ? `<a class="compare-detail-link" href="/th/vs/${a.orderIdx < b.orderIdx ? escapeHtml(a.slug) + "-vs-" + escapeHtml(b.slug) : escapeHtml(b.slug) + "-vs-" + escapeHtml(a.slug)}/">เปิดหน้าเทียบเต็มของคู่นี้ (แชร์ได้) →</a>`
+              : ""}
           </article>
         `).join("");
       };
