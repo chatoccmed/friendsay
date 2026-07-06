@@ -364,6 +364,10 @@ const latestArticles = [
 
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: "friendsay_home_search", query, results: matches.length });
+      // gtag.js ไม่แปลง object push เป็น event — ต้องยิงผ่าน gtag() ตรง ๆ ถึงจะถึง GA4
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "friendsay_home_search", { search_term: query, results: matches.length });
+      }
 
       if (scroll) resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
     };

@@ -31,6 +31,15 @@
 
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push(eventData);
+      // gtag.js ไม่แปลง object push เป็น event — ต้องยิงผ่าน gtag() ตรง ๆ ถึงจะถึง GA4
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "friendsay_affiliate_click", {
+          store: eventData.store,
+          context: eventData.context,
+          path: eventData.path,
+          link_url: eventData.href
+        });
+      }
       window.dispatchEvent(new CustomEvent("friendsay:affiliate-click", { detail: eventData }));
       saveLocalClick(eventData);
     }, { passive: true });

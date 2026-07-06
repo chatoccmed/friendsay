@@ -52,7 +52,10 @@ const siteJsonLd = {
     {import.meta.env.PROD && (
       <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { window.dataLayer.push(arguments); }
+        // ต้องเป็น window.gtag (global) — Astro ห่อสคริปต์ define:vars ใน closure ทำให้ function ธรรมดาไม่ global
+        // และสคริปต์อื่น (affiliate tracker / search / BTU share) ต้องเรียกใช้ยิง event ได้
+        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+        const gtag = window.gtag;
         gtag("js", new Date());
         // ปิด page_view อัตโนมัติ แล้วยิงเองทุกครั้งที่ ClientRouter เปลี่ยนหน้า (astro:page-load ยิงตอนโหลดแรกด้วย)
         gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });

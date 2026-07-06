@@ -287,6 +287,10 @@ ${location.href}`);
         }
         (window as any).dataLayer = (window as any).dataLayer || [];
         (window as any).dataLayer.push({ event: "friendsay_btu_share", btu: lastRounded });
+        // gtag.js ไม่แปลง object push เป็น event — ต้องยิงผ่าน gtag() ตรง ๆ ถึงจะถึง GA4
+        if (typeof (window as any).gtag === "function") {
+          (window as any).gtag("event", "friendsay_btu_share", { btu: lastRounded });
+        }
       } catch {
         // ผู้ใช้กดยกเลิก share sheet — ไม่ต้องทำอะไร
       }
