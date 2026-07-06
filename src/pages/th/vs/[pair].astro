@@ -6,7 +6,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PriceButtons from "../../../components/PriceButtons.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
-import { latestSeenPrice, soldBySlug, warrantyShortBySlug, thaiDate } from "../../../data/airCompareExtras";
+import { latestSeenPrice, soldBySlug, warrantyShortBySlug, reviewProsBySlug, reviewConsBySlug, thaiDate } from "../../../data/airCompareExtras";
 
 export async function getStaticPaths() {
   const paths = [];
@@ -234,7 +234,42 @@ const faqJsonLd = {
     </div>
   </section>
 
-  <section class="section" id="facts">
+  <section class="section" id="products">
+    <div class="wide-container">
+      <p class="eyebrow">ภาพชนภาพ · เสียงรีวิวเฉพาะตัวสินค้า</p>
+      <h2 class="headline">สองตัวนี้หน้าตาเป็นยังไง รีวิวว่าไง</h2>
+      <p class="muted" style="max-width: 760px;">
+        สรุปจากรีวิวผู้ซื้อที่เราไล่อ่านตอนเก็บข้อมูล — <b>คัดเฉพาะที่พูดถึงตัวสินค้า</b> (ความเย็น เสียง วัสดุ ฟีเจอร์ ค่าไฟ)
+        ตัดเรื่องบริการร้าน การจัดส่ง และคิวช่างออกทั้งหมด
+      </p>
+      <div class="vs-product-grid">
+        {[a, b].map((p) => (
+          <article class="vs-product-card">
+            <a class="vs-product-photo" href={p.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-photo-${p.slug}`}>
+              <img src={p.image.url} alt={p.image.alt} loading="eager" />
+              <small>{p.image.note}</small>
+            </a>
+            <h3>{p.name}</h3>
+            <div class="badge-row">
+              {latestSeenPrice[p.slug] ? <span class="badge badge-coral">เคยเห็น ~฿{latestSeenPrice[p.slug].price.toLocaleString("th-TH")}</span> : null}
+              <span class="badge badge-blue">{p.rating.toFixed(1)} ★ · {p.ratingsCount.toLocaleString("th-TH")} รีวิว</span>
+            </div>
+            <div class="compare-reviews-good">
+              <strong>รวมรีวิวข้อดี (เฉพาะตัวสินค้า)</strong>
+              <ul>{(reviewProsBySlug[p.slug] || []).map((s) => <li>{s}</li>)}</ul>
+            </div>
+            <div class="compare-reviews-bad">
+              <strong>รวมรีวิวข้อสังเกต/ข้อเสีย</strong>
+              <ul>{(reviewConsBySlug[p.slug] || []).map((s) => <li>{s}</li>)}</ul>
+            </div>
+            <PriceButtons links={p.links} label={`เช็กราคา ${p.name}`} />
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="facts">
     <div class="container">
       <p class="eyebrow">ข้อเท็จจริงชนกัน</p>
       <h2 class="headline">ตัวเลขที่เห็นจริงจากหน้าร้าน</h2>
@@ -258,7 +293,7 @@ const faqJsonLd = {
     </div>
   </section>
 
-  <section class="section band" id="advantages">
+  <section class="section" id="advantages">
     <div class="container">
       <p class="eyebrow">แบบ versus — แต่ตัวเลขจริง</p>
       <h2 class="headline">จุดที่แต่ละตัวเหนือกว่า</h2>
@@ -283,25 +318,6 @@ const faqJsonLd = {
     </div>
   </section>
 
-  <section class="section" id="products">
-    <div class="container">
-      <p class="eyebrow">ดูใกล้ ๆ ทีละตัว · ครบทุกช่องทางซื้อ</p>
-      <h2 class="headline">สองตัวนี้คือใคร ซื้อที่ไหนได้บ้าง</h2>
-      <div class="vs-product-grid">
-        {[a, b].map((p) => (
-          <article class="vs-product-card">
-            <a href={p.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`vs-photo-${p.slug}`}>
-              <img src={p.image.url} alt={p.image.alt} loading="lazy" />
-            </a>
-            <h3>{p.name}</h3>
-            <p class="vs-bestfor"><b>เหมาะกับ:</b> {p.bestFor}</p>
-            <p class="vs-watch"><b>ระวัง:</b> {p.watch[0]}</p>
-            <PriceButtons links={p.links} label={`เช็กราคา ${p.name}`} />
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
 
   <section class="section band" id="scores">
     <div class="container">
@@ -677,32 +693,42 @@ const faqJsonLd = {
     padding: 18px;
   }
 
-  .vs-product-card img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: contain;
-    border-radius: 12px;
+  .vs-product-photo {
+    position: relative;
+    display: block;
+    border-radius: 14px;
+    overflow: hidden;
     background: linear-gradient(135deg, #ffffff, #f5faf9);
     border: 1px solid rgba(223, 208, 186, 0.6);
   }
 
+  .vs-product-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    transition: transform 220ms ease;
+  }
+
+  .vs-product-photo:hover img {
+    transform: scale(1.03);
+  }
+
+  .vs-product-photo small {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    max-width: 70%;
+    color: rgba(31, 41, 55, 0.5);
+    font-size: 0.66rem;
+    line-height: 1.25;
+    text-align: right;
+  }
+
   .vs-product-card h3 {
     margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.4;
-  }
-
-  .vs-bestfor,
-  .vs-watch {
-    margin: 0;
-    font-size: 0.92rem;
-    line-height: 1.6;
-  }
-
-  .vs-watch {
-    border-left: 3px solid var(--coral);
-    padding-left: 10px;
-    color: #6b4a44;
+    font-size: 1.08rem;
+    line-height: 1.45;
   }
 
   .vs-pair-links {
