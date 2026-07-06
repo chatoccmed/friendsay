@@ -135,35 +135,53 @@ const jsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <AffiliateClickTracker />
 
-  <section class="compare-page-hero">
+  <section class="compare-page-hero compare-hero-v3">
     <div class="wide-container compare-page-hero-inner">
       <div>
         <p class="eyebrow">Friendsay Compare</p>
         <h1>เทียบแอร์แบบเพื่อนช่วยเลือก</h1>
         <p>
-          เลือก 2-4 รุ่นที่กำลังลังเล แล้วดูคำตอบเร็วว่าแต่ละรุ่นเหมาะกับใคร
-          ก่อนลงตารางสเปก ราคา รีวิวจริง งานติดตั้ง และปุ่มเช็กราคาครบทั้ง Shopee, Lazada, TikTok
+          เลือก 2-4 รุ่นที่ลังเล เราตัดสินให้ทีละคู่จากหลักฐานจริง —
+          ราคาที่เคยเห็น รีวิวผู้ซื้อ และคะแนน 8 ด้าน
         </p>
       </div>
       <aside>
-        <span>เป้าหมายหน้านี้</span>
-        <strong>ช่วยตัดสิน ไม่ใช่แค่กางตาราง</strong>
-        <p>ถ้าคุณยังไม่รู้จะเลือกตัวไหน ให้เริ่มจากการ์ด “เลือกรุ่นไหนดีแบบเร็ว” ก่อนครับ</p>
+        <span>ใช้ยังไงให้เร็วสุด</span>
+        <strong>อ่านคำตัดสินก่อน แล้วค่อยไล่รายละเอียด</strong>
+        <p>รุ่นที่เลือกจะลอยติดจอพร้อมปุ่มเช็กราคา เปลี่ยนรุ่นได้ตลอดโดยไม่ต้องเลื่อนกลับ</p>
       </aside>
     </div>
   </section>
 
+  <div class="compare-cockpit" data-compare-cockpit-bar>
+    <div class="wide-container compare-cockpit-inner">
+      <div class="compare-cockpit-slots" data-compare-cockpit></div>
+      <div class="compare-cockpit-actions">
+        <button class="button compare-cockpit-btn" type="button" data-compare-drawer-open>⇄ เปลี่ยนรุ่น</button>
+        <button class="button compare-cockpit-btn" type="button" data-compare-share>🔗 แชร์</button>
+      </div>
+    </div>
+  </div>
+
   <main class="section compare-page-section">
     <div class="wide-container">
-      <section class="compare-picker-panel" aria-label="เลือกรุ่นแอร์เพื่อเปรียบเทียบ">
-        <div>
-          <p class="eyebrow">เลือกได้ 2-4 รุ่น</p>
-          <h2>เลือกรุ่นที่อยากเทียบ</h2>
+      <details class="compare-picker-drawer" data-compare-drawer>
+        <summary>
+          <span class="compare-drawer-title">เลือก/เปลี่ยนรุ่นที่เทียบ</span>
+          <span class="compare-drawer-count" data-compare-drawer-count>เลือกแล้ว 0/4 รุ่น</span>
+          <span class="compare-drawer-caret" aria-hidden="true">▾</span>
+        </summary>
+        <div class="compare-picker-panel" aria-label="เลือกรุ่นแอร์เพื่อเปรียบเทียบ">
           <label class="compare-picker-filter">
             <input type="search" data-compare-filter placeholder="พิมพ์ชื่อรุ่น/แบรนด์ เช่น daikin, haier" aria-label="กรองรายชื่อรุ่นที่เลือกได้" autocomplete="off" />
           </label>
+          <div class="compare-picker-chips" data-compare-picker></div>
         </div>
-        <div class="compare-picker-chips" data-compare-picker></div>
+      </details>
+
+      <section class="compare-flags-panel" aria-label="คำตอบเร็วรายโจทย์">
+        <p class="compare-flags-label">คำตอบใน 10 วินาที —</p>
+        <div class="compare-flags" data-compare-answers></div>
       </section>
 
       <section class="compare-verdict-panel" aria-label="ผลตัดสินรายคู่">
@@ -183,28 +201,21 @@ const jsonLd = {
         </p>
       </section>
 
-      <section class="compare-answer-panel" aria-label="เลือกรุ่นไหนดีแบบเร็ว">
-        <div class="section-heading home-section-split">
-          <div>
-            <p class="eyebrow">Quick answer</p>
-            <h2 class="headline">เลือกรุ่นไหนดีแบบเร็ว</h2>
-          </div>
-          <p>ส่วนนี้ตั้งใจให้เข้าใจใน 10 วินาที เหมาะกับคนที่ยังไม่อยากอ่านตารางยาว ๆ</p>
-        </div>
-        <div class="compare-answer-grid" data-compare-answers></div>
-      </section>
 
-      <section class="compare-radar-panel" aria-label="เรดาร์เทียบคะแนน 8 ด้าน">
+      <section class="compare-overview-panel" aria-label="จุดแข็งแต่ละรุ่นเทียบ 8 ด้าน">
         <div class="section-heading home-section-split">
           <div>
-            <p class="eyebrow">Radar view</p>
-            <h2 class="headline">บุคลิกของแต่ละรุ่นในภาพเดียว</h2>
+            <p class="eyebrow">ภาพรวม 8 ด้าน</p>
+            <h2 class="headline">จุดแข็งของแต่ละรุ่นในภาพเดียว</h2>
           </div>
-          <p>ยิ่งกางเต็มด้านไหน แปลว่ารุ่นนั้นแข็งด้านนั้น — เห็นจุดแข็งจุดอ่อนของทุกรุ่นพร้อมกันโดยไม่ต้องไล่อ่านตัวเลข</p>
+          <p>เรดาร์กางเต็มด้านไหน แปลว่ารุ่นนั้นแข็งด้านนั้น — แถบขวาคือคะแนนละเอียดพร้อม ✓ ผู้ชนะรายด้าน</p>
         </div>
-        <div class="compare-radar-layout">
-          <div class="compare-radar-chart" data-compare-radar></div>
-          <div class="compare-radar-legend" data-compare-radar-legend></div>
+        <div class="compare-overview-layout">
+          <div class="compare-overview-radar">
+            <div class="compare-radar-chart" data-compare-radar></div>
+            <div class="compare-radar-legend" data-compare-radar-legend></div>
+          </div>
+          <div class="compare-score-matrix" data-compare-score-matrix></div>
         </div>
       </section>
 
@@ -214,35 +225,19 @@ const jsonLd = {
             <p class="eyebrow">Selected models</p>
             <h2 class="headline">รุ่นที่กำลังเทียบ</h2>
           </div>
-          <div class="compare-summary-row">
-            <p data-compare-summary>กำลังโหลดข้อมูลเปรียบเทียบ</p>
-            <button class="button" type="button" data-compare-share>🔗 คัดลอกลิงก์ผลเทียบนี้</button>
-          </div>
+          <p data-compare-summary>กำลังโหลดข้อมูลเปรียบเทียบ</p>
         </div>
         <div class="compare-product-cards" data-compare-product-cards></div>
       </section>
 
-      <section class="compare-score-panel" aria-label="คะแนนเปรียบเทียบ">
-        <div class="section-heading home-section-split">
-          <div>
-            <p class="eyebrow">Score matrix</p>
-            <h2 class="headline">คะแนนแต่ละด้าน</h2>
-          </div>
-          <p>ดูเป็นแถบพลังเพื่อจับภาพรวมก่อน แล้วค่อยอ่านเหตุผลในตารางด้านล่าง</p>
-        </div>
-        <div class="compare-score-matrix" data-compare-score-matrix></div>
-      </section>
-
-      <section class="compare-table-panel" aria-label="ตารางเปรียบเทียบละเอียด">
-        <div class="section-heading home-section-split">
-          <div>
-            <p class="eyebrow">Deep compare</p>
-            <h2 class="headline">ตารางเทียบแบบคนจะซื้อจริง</h2>
-          </div>
-          <p>เน้นเรื่องที่มีผลกับการจ่ายเงินจริง: BTU ราคา รีวิว ติดตั้ง ประกัน และจุดที่ควรถามร้าน</p>
-        </div>
+      <details class="compare-deep-drawer">
+        <summary>
+          <span class="compare-drawer-title">ตารางเทียบเต็มสำหรับสายละเอียด</span>
+          <span class="compare-drawer-note">BTU · ราคา · รีวิวจริง · ติดตั้ง · ประกัน · จุดที่ควรถามร้าน</span>
+          <span class="compare-drawer-caret" aria-hidden="true">▾</span>
+        </summary>
         <div class="compare-responsive-table" data-compare-table></div>
-      </section>
+      </details>
     </div>
   </main>
 
@@ -385,13 +380,55 @@ const jsonLd = {
           ["ประกันน่าสบายใจ", warranty, "เหมาะถ้ากังวลเรื่องบริการหลังซื้อและอยากถามประกันให้ชัด"]
         ];
 
-        answers.innerHTML = answerCards.map(([label, product, note]) => `
-          <article>
-            <span>${escapeHtml(label)}</span>
+        answers.innerHTML = answerCards.map(([label, product]) => `
+          <span class="compare-flag">
+            <em>${escapeHtml(label)}</em>
             <strong>${escapeHtml(product.shortName)}</strong>
-            <p>${escapeHtml(note)}</p>
-          </article>
+          </span>
         `).join("");
+      };
+
+      // ---- cockpit: รุ่นที่เลือกลอยติดจอ พร้อมปุ่มซื้อ/เอาออก/เพิ่มรุ่น ----
+      const drawer = document.querySelector("[data-compare-drawer]");
+      const drawerCount = document.querySelector("[data-compare-drawer-count]");
+      const cockpit = document.querySelector("[data-compare-cockpit]");
+
+      const openDrawer = () => {
+        if (!drawer) return;
+        drawer.open = true;
+        drawer.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.querySelector("[data-compare-filter]")?.focus({ preventScroll: true });
+      };
+
+      const renderCockpit = (items) => {
+        if (!cockpit) return;
+        const slots = items.map((product) => `
+          <div class="compare-slot">
+            <img src="${escapeHtml(product.image.url)}" alt="" loading="lazy" />
+            <div class="compare-slot-info">
+              <strong>${escapeHtml(product.shortName)}</strong>
+              <span>${product.priceNum ? `เคยเห็น ฿${product.priceNum.toLocaleString("th-TH")}` : escapeHtml(product.statusLabel)}</span>
+            </div>
+            <a class="compare-slot-buy" href="${escapeHtml(product.links.shopee)}" rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="compare-cockpit-${escapeHtml(product.slug)}">เช็กราคา</a>
+            <button class="compare-slot-remove" type="button" data-slot-remove="${escapeHtml(product.slug)}" aria-label="เอา ${escapeHtml(product.shortName)} ออกจากการเทียบ">✕</button>
+          </div>
+        `).join("");
+        const addSlot = items.length < 4
+          ? '<button class="compare-slot-add" type="button" data-cockpit-add>＋ เพิ่มรุ่น</button>'
+          : "";
+        cockpit.innerHTML = slots + addSlot;
+
+        cockpit.querySelectorAll("[data-slot-remove]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (selected.length <= 1) return;
+            selected = selected.filter((slug) => slug !== btn.dataset.slotRemove);
+            persist();
+            renderAll();
+          });
+        });
+        cockpit.querySelector("[data-cockpit-add]")?.addEventListener("click", openDrawer);
+
+        if (drawerCount) drawerCount.textContent = `เลือกแล้ว ${items.length}/4 รุ่น`;
       };
 
       // ---- ผลตัดสินรายคู่: เทียบจากหลักฐานจริง (ราคาที่เคยเห็น/รีวิว/คะแนนรายด้าน) ไม่แต่งตัวเลข ----
@@ -648,6 +685,7 @@ const jsonLd = {
 
       function renderAll() {
         const items = selectedProducts();
+        renderCockpit(items);
         renderPicker();
         renderAnswers(items);
         renderVerdicts(items);
@@ -660,6 +698,12 @@ const jsonLd = {
         flyIn(cards);
         flyIn(matrix);
       }
+
+      // ปุ่ม "เปลี่ยนรุ่น" บน cockpit + เปิดลิ้นชักอัตโนมัติถ้ายังเลือกไม่ถึง 2 รุ่น
+      document.querySelectorAll("[data-compare-drawer-open]").forEach((btn) => {
+        btn.addEventListener("click", openDrawer);
+      });
+      if (drawer && selected.length < 2) drawer.open = true;
 
       // ช่องกรองรายชื่อรุ่นใน picker (34 รุ่นไล่หายาก)
       const filterInput = document.querySelector("[data-compare-filter]");
