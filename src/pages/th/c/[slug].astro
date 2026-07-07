@@ -127,7 +127,7 @@ const faqJsonLd = {
               <span class="badge badge-blue">{pick.item.rating.toFixed(1)} ★</span>
             </div>
             <a href={`#rank-${pick.item.rank}`}>
-              <img class="rainy-img" src={pick.item.image} alt={`ภาพสินค้า ${pick.item.name}`} loading="lazy" />
+              <img class="rainy-img" src={pick.item.image} alt={`ภาพสินค้า ${pick.item.name}`} loading="lazy" width="800" height="800" />
             </a>
             <h3>{pick.item.brand} · ~{baht(pick.item.priceApprox)}</h3>
             <p>{pick.item.name.slice(0, 90)}</p>
@@ -170,7 +170,7 @@ const faqJsonLd = {
               data-affiliate-context={`catalog-${catalog.slug}-photo-${p.rank}`}
             >
               <span class="cat-rank">อันดับ {p.rank}</span>
-              <img src={p.image} alt={`ภาพสินค้า ${p.name}`} loading="lazy" />
+              <img src={p.image} alt={`ภาพสินค้า ${p.name}`} loading="lazy" width="800" height="800" />
             </a>
             <div class="cat-card-body">
               <div class="badge-row">
@@ -374,6 +374,7 @@ const faqJsonLd = {
   .cat-card-media img {
     display: block;
     width: 100%;
+    height: auto; /* กัน height attribute (ใส่ไว้กัน CLS) ชนะ aspect-ratio แล้วภาพยืด */
     aspect-ratio: 1 / 1;
     object-fit: cover;
     transition: transform 220ms ease;
