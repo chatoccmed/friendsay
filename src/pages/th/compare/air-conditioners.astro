@@ -261,6 +261,7 @@ const jsonLd = {
     </div>
   </main>
 
+  {/* SECURITY: set:html ไม่ escape — compareProducts ต้องเป็น build-time data เท่านั้น ห้ามรับจากผู้ใช้ */}
   <script id="air-compare-page-data" type="application/json" set:html={JSON.stringify(compareProducts)}></script>
   <script is:inline data-astro-rerun>
     (() => {

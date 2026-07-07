@@ -528,6 +528,7 @@ const faqJsonLd = {
     </a>
   </nav>
 
+  {/* SECURITY: set:html ไม่ escape — slug list ต้องเป็น build-time data เท่านั้น ห้ามรับจากผู้ใช้ */}
   <script id="vs-models-order" type="application/json" set:html={JSON.stringify(switcherModels.map((m) => m.slug))}></script>
   <script is:inline data-astro-rerun>
     (() => {

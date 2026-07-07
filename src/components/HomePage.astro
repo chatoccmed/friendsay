@@ -231,6 +231,7 @@ const latestArticles = [
   </div>
 </section>
 
+{/* SECURITY: set:html ไม่ escape — ห้ามให้ข้อมูลจากผู้ใช้/URL ไหลเข้า searchIndex เด็ดขาด (build-time data เท่านั้น) */}
 <script id="search-data" type="application/json" set:html={JSON.stringify(searchIndex)} />
 
 <script is:inline data-astro-rerun>

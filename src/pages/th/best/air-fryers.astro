@@ -370,6 +370,7 @@ const visualNotes = [
     </div>
   </section>
 
+  {/* SECURITY: set:html ไม่ escape — compareData ต้องเป็น build-time data เท่านั้น ห้ามรับจากผู้ใช้ */}
   <script id="compare-products" type="application/json" set:html={JSON.stringify(compareData)}></script>
   <script>
     // module script รันครั้งเดียว — ผูก init กับ astro:page-load ให้ตัวเทียบกลับมาทำงานทุกครั้งที่ ClientRouter เข้าหน้านี้
