@@ -5,8 +5,14 @@ import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { faqSchema } from "../../../utils/jsonLd";
+import acPriceCsvRaw from "../../../data/price-history/air-conditioners.csv?raw";
 
 const updatedLabel = "2 กรกฎาคม 2026";
+
+// trust strip (แบบ rtings): ตัวเลขคำนวณจากข้อมูลจริงล้วน — ห้าม hardcode
+const trustModelCount = airConditioners.length;
+const trustRatingsTotal = airConditioners.reduce((sum, p) => sum + p.ratingsCount, 0);
+const trustPricePoints = acPriceCsvRaw.trim().split(/\r?\n/).length - 1;
 
 const rankedAirConditioners = airConditioners
   .slice()
@@ -159,6 +165,27 @@ const faqJsonLd = faqSchema(faqs);
           ))}
         </div>
       </aside>
+    </div>
+  </section>
+
+  <section class="trust-strip" aria-label="หลักฐานเบื้องหลังการจัดอันดับ">
+    <div class="wide-container trust-strip-inner">
+      <div class="trust-stat">
+        <strong>{trustModelCount}</strong>
+        <span>รุ่นที่เปิดหน้าร้านตรวจจริงทีละรุ่น</span>
+      </div>
+      <div class="trust-stat">
+        <strong>{trustRatingsTotal.toLocaleString("th-TH")}</strong>
+        <span>รีวิวผู้ซื้อที่อยู่เบื้องหลังคะแนน</span>
+      </div>
+      <div class="trust-stat">
+        <strong>{trustPricePoints}</strong>
+        <span>จุดราคาที่บันทึกไว้ ตรวจย้อนได้ทุกจุด</span>
+      </div>
+      <a class="trust-stat trust-link" href="/editorial-policy/">
+        <strong>เกณฑ์ของเรา</strong>
+        <span>อ่านมาตรฐานรีวิวฉบับเต็ม →</span>
+      </a>
     </div>
   </section>
 

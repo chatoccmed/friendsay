@@ -136,6 +136,17 @@ const modelRows = airConditionerShopeeProofs
 const verifiedRows = modelRows.filter((row) => row.status === "detail_verified");
 const candidateRows = modelRows.filter((row) => row.status === "search_candidate_only");
 const pendingRows = modelRows.filter((row) => row.status === "needs_shopee_capture");
+
+// Review Pipeline (โชว์กระบวนการต่อสาธารณะ) — ทุกตัวเลขนับจากสถานะจริงใน proof ledger
+// "เผยแพร่แล้ว" นับเฉพาะรุ่นที่หลักฐานครบและหน้ารีวิวเข้า index จริง (หน้าคิวที่ noindex ไม่นับ)
+const publishedCount = modelRows.filter(
+  (row) => row.status === "detail_verified" && generatedReviewSlugs.has(row.reviewSlug)
+).length;
+const pipelineStages = [
+  { label: "เจอสินค้าเข้าเกณฑ์", count: modelRows.length, note: "จากการไล่เปิดหน้าร้านจริง" },
+  { label: "เก็บหลักฐาน Shopee ครบ", count: verifiedRows.length, note: "ราคา/รีวิว/ประกัน ยืนยันแล้ว" },
+  { label: "รีวิวเต็มเผยแพร่แล้ว", count: publishedCount, note: "อ่านได้เลยวันนี้" }
+];
 const topRows = modelRows.slice(0, 6);
 
 const brandGroups = Array.from(
@@ -179,19 +190,13 @@ const pageDescription =
           <a href="#verified" class="button-ghost">ดูรุ่นที่มีข้อมูล Shopee</a>
         </div>
       </div>
-      <div class="hero-board" aria-label="สรุปสถานะคิวรีวิวแอร์">
-        <div>
-          <span>{modelRows.length}</span>
-          <strong>รุ่นในคิว</strong>
-        </div>
-        <div>
-          <span>{airConditionerShopeeProofSummary.detailVerified}</span>
-          <strong>ยืนยันจาก Shopee</strong>
-        </div>
-        <div>
-          <span>{candidateRows.length + pendingRows.length}</span>
-          <strong>รอจับคู่ลิงก์ซื้อ</strong>
-        </div>
+      <div class="hero-board" aria-label="Review Pipeline — กระบวนการรีวิวของเราแบบเปิดเผย">
+        {pipelineStages.map((stage) => (
+          <div>
+            <span>{stage.count}</span>
+            <strong>{stage.label}</strong>
+          </div>
+        ))}
       </div>
     </div>
   </section>

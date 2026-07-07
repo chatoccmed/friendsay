@@ -9987,3 +9987,54 @@ a[class*="buy"]:focus-visible {
     transition: none;
   }
 }
+
+/* Trust strip (แบบ rtings) — แถบหลักฐานใต้ hero ของหน้า hub: ตัวเลขทุกตัวคำนวณจาก src/data */
+.trust-strip {
+  border-block: 1px solid rgba(223, 208, 186, 0.7);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.trust-strip-inner {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  padding-block: 18px;
+}
+
+.trust-stat {
+  display: grid;
+  gap: 2px;
+  text-align: center;
+}
+
+.trust-stat strong {
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: var(--coral-dark, #d84c3c);
+}
+
+.trust-stat span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+a.trust-link {
+  text-decoration: none;
+  border-radius: 12px;
+  transition: background 160ms ease;
+}
+
+a.trust-link:hover {
+  background: rgba(255, 214, 186, 0.25);
+}
+
+a.trust-link strong {
+  color: var(--ink, #1f2937);
+}
+
+@media (max-width: 760px) {
+  .trust-strip-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
