@@ -4,6 +4,7 @@ import AffiliateClickTracker from "../../../components/AffiliateClickTracker.ast
 import { searchIndex } from "../../../data/searchIndex";
 import acCsvRaw from "../../../data/price-history/air-conditioners.csv?raw";
 import rainyCsvRaw from "../../../data/price-history/rainy-gear.csv?raw";
+import { faqSchema } from "../../../utils/jsonLd";
 
 const updatedLabel = "6 กรกฎาคม 2026";
 
@@ -98,11 +99,7 @@ const jsonLd = {
   author: { "@type": "Organization", name: "Friendsay" }
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } }))
-};
+const faqJsonLd = faqSchema(faqs);
 ---
 
 <BaseLayout

@@ -4,6 +4,7 @@ import PriceButtons from "../../../components/PriceButtons.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
+import { faqSchema } from "../../../utils/jsonLd";
 
 const updatedLabel = "5 กรกฎาคม 2026";
 const dataRoundLabel = "2 กรกฎาคม 2026";
@@ -306,15 +307,7 @@ const jsonLd = {
   }
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a }
-  }))
-};
+const faqJsonLd = faqSchema(faqs);
 
 const scenarioCards = scenarios.map((s) => ({
   ...s,

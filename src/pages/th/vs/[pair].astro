@@ -7,6 +7,7 @@ import PriceButtons from "../../../components/PriceButtons.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { latestSeenPrice, soldBySlug, warrantyShortBySlug, reviewProsBySlug, reviewConsBySlug, expertTakeBySlug, thaiDate } from "../../../data/airCompareExtras";
+import { faqSchema } from "../../../utils/jsonLd";
 
 export async function getStaticPaths() {
   const paths = [];
@@ -248,11 +249,7 @@ const jsonLd = {
   author: { "@type": "Organization", name: "Friendsay" }
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } }))
-};
+const faqJsonLd = faqSchema(faqs);
 ---
 
 <BaseLayout

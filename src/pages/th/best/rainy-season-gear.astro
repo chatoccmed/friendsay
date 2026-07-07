@@ -5,6 +5,7 @@ import AffiliateClickTracker from "../../../components/AffiliateClickTracker.ast
 const updatedLabel = "2 กรกฎาคม 2026";
 
 import { rainySections, type RainyPick, type RainySection } from "../../../data/rainyGear";
+import { faqSchema } from "../../../utils/jsonLd";
 
 const sections: RainySection[] = rainySections;
 
@@ -50,15 +51,7 @@ const jsonLd = {
   }
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a }
-  }))
-};
+const faqJsonLd = faqSchema(faqs);
 ---
 
 <BaseLayout

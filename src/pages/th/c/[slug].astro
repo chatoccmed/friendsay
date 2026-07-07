@@ -4,6 +4,7 @@
 // ราคาเป็นราคาโดยประมาณ ณ วันเก็บ — ปุ่มซื้อคือ short link affiliate ที่สร้างจริงต่อรายการ
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
 
 export async function getStaticPaths() {
   const modules = import.meta.glob("../../../data/catalog/*.json", { eager: true });
@@ -79,25 +80,13 @@ const jsonLd = {
   }
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: (catalog.faqs || []).map((f: any) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a }
-  }))
-};
+const faqJsonLd = faqSchema((catalog.faqs || []));
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "หน้าแรก", item: "https://friendsay.com/th/" },
-    { "@type": "ListItem", position: 2, name: "สินค้ายอดฮิต", item: "https://friendsay.com/th/c/" },
-    { "@type": "ListItem", position: 3, name: catalog.title, item: `https://friendsay.com/th/c/${catalog.slug}/` }
-  ]
-};
+const breadcrumbJsonLd = breadcrumbSchema([
+  { name: "หน้าแรก", item: "https://friendsay.com/th/" },
+  { name: "สินค้ายอดฮิต", item: "https://friendsay.com/th/c/" },
+  { name: catalog.title, item: `https://friendsay.com/th/c/${catalog.slug}/` }
+]);
 ---
 
 <BaseLayout
