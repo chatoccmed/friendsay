@@ -4,7 +4,6 @@
 
 import { airConditioners } from "./airConditioners";
 import { rainySections } from "./rainyGear";
-import fanCatalog from "./catalog/fan.json";
 
 export type SearchItem = {
   id: string;
@@ -233,25 +232,52 @@ const rainyItems: SearchItem[] = rainySections.flatMap((section) =>
   })
 );
 
-// catalog tier-2: พัดลมยอดฮิตจากหน้าค้นหา Shopee (เรียงยอดขาย) — ราคาโดยประมาณ ณ วันเก็บ
-const catalogFanItems: SearchItem[] = fanCatalog.items.map((item) => ({
-  id: `catalog-fan-${item.rank}`,
-  name: item.name,
-  shortName: `${item.brand} (อันดับ ${item.rank} พัดลมขายดี)`,
-  category: "พัดลม",
-  keywords: ["พัดลม", "fan", item.brand.toLowerCase()],
-  priceNum: item.priceApprox,
-  priceLabel: `~฿${item.priceApprox.toLocaleString("th-TH")} (โดยประมาณ)`,
-  soldNum: item.soldPerMonthNum,
-  soldLabel: `ขายได้ ${item.soldPerMonth} ชิ้น/เดือน`,
-  rating: item.rating,
-  ratingsCount: 0,
-  image: item.image,
-  href: "/th/c/fan/",
-  affiliateUrl: item.link,
-  blurb: `อันดับ ${item.rank} พัดลมขายดีบน Shopee เรียงตามยอดขายจริง (เก็บ ${fanCatalog.collectedAt})`
-}));
+// catalog tier-2: สินค้ายอดฮิตรายคีย์เวิร์ดจากหน้าค้นหา Shopee (เรียงยอดขาย) — ราคาโดยประมาณ ณ วันเก็บ
+// glob อัตโนมัติ: เพิ่มไฟล์ src/data/catalog/*.json แล้วเข้าดัชนีค้นหาเองทันที (โครงไฟล์ดู fan.json)
+type CatalogItem = {
+  rank: number;
+  name: string;
+  brand: string;
+  priceApprox: number;
+  soldPerMonth: string;
+  soldPerMonthNum: number;
+  rating: number;
+  image: string;
+  link: string;
+};
+type CatalogFile = {
+  slug: string;
+  keyword: string;
+  extraKeywords?: string[];
+  collectedAt: string;
+  items: CatalogItem[];
+};
 
-export const searchIndex: SearchItem[] = [...acItems, ...rainyItems, ...catalogFanItems];
+const catalogModules = import.meta.glob<{ default: CatalogFile }>("./catalog/*.json", { eager: true });
+
+const catalogItems: SearchItem[] = Object.values(catalogModules)
+  .map((mod) => mod.default ?? (mod as unknown as CatalogFile))
+  .sort((a, b) => a.slug.localeCompare(b.slug))
+  .flatMap((catalog) =>
+    catalog.items.map((item) => ({
+      id: `catalog-${catalog.slug}-${item.rank}`,
+      name: item.name,
+      shortName: `${item.brand} (อันดับ ${item.rank} ${catalog.keyword}ขายดี)`,
+      category: catalog.keyword,
+      keywords: [catalog.keyword, ...(catalog.extraKeywords ?? []), item.brand.toLowerCase()],
+      priceNum: item.priceApprox,
+      priceLabel: `~฿${item.priceApprox.toLocaleString("th-TH")} (โดยประมาณ)`,
+      soldNum: item.soldPerMonthNum,
+      soldLabel: `ขายได้ ${item.soldPerMonth} ชิ้น/เดือน`,
+      rating: item.rating,
+      ratingsCount: 0,
+      image: item.image,
+      href: `/th/c/${catalog.slug}/`,
+      affiliateUrl: item.link,
+      blurb: `อันดับ ${item.rank} ${catalog.keyword}ขายดีบน Shopee เรียงตามยอดขายจริง (เก็บ ${catalog.collectedAt})`
+    }))
+  );
+
+export const searchIndex: SearchItem[] = [...acItems, ...rainyItems, ...catalogItems];
 
 export const searchIndexCount = searchIndex.length;

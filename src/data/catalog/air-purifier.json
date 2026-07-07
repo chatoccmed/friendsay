@@ -1,0 +1,180 @@
+{
+  "slug": "air-purifier",
+  "keyword": "เครื่องฟอกอากาศ",
+  "title": "เครื่องฟอกอากาศ",
+  "extraKeywords": ["ฟอกอากาศ", "air purifier", "pm2.5", "ฝุ่น"],
+  "collectedAt": "2026-07-07",
+  "method": "เก็บจากหน้าค้นหา Shopee คำว่า \"เครื่องฟอกอากาศ\" เรียงตามยอดขาย (เฉพาะรายการ organic ที่แสดงยอดขายต่อเดือน) วันที่ 7 ก.ค. 2026",
+  "categoryWatch": [
+    "Xiaomi ครองลิสต์ขายดีเกือบทั้งหมด และหลายลิสติ้งเป็นแบบ \"รวมหลายรุ่นย่อย\" — ราคาที่โชว์คือตัวเริ่มต้นของรุ่นเล็กสุด เช็กตัวเลือกที่กดให้ตรงรุ่นก่อนจ่ายเสมอ",
+    "ค่าใช้จ่ายจริงไม่จบที่ตัวเครื่อง: ไส้กรอง HEPA ต้องเปลี่ยนเป็นระยะ เช็กราคาไส้กรองของรุ่นที่จะซื้อก่อนตัดสินใจ",
+    "เลือกตามพื้นที่ห้อง (ตร.ม.) ที่สเปกระบุ ไม่ใช่ตามราคา — เครื่องเล็กเกินห้องจะฟอกไม่ทันฝุ่น",
+    "ป้ายลดในหมวดนี้แรงมาก (-56% ถึง -69% หลายตัว) — เทียบราคาจ่ายจริงระหว่างร้าน อย่าเทียบกับราคาก่อนลด"
+  ],
+  "faqs": [
+    {
+      "q": "เครื่องฟอกอากาศยี่ห้อไหนขายดีสุดบน Shopee ตอนนี้?",
+      "a": "จากหน้าค้นหาเรียงตามยอดขาย (7 ก.ค. 2026) Xiaomi ครองลิสต์ชัดเจน (7 ใน 10 อันดับ) แชมป์คือลิสติ้งรวมรุ่น Smart Air Purifier 4 Lite/4 Compact/6/4 Pro ที่เห็นยอดขาย 9พัน+ ชิ้นต่อเดือน แบรนด์อื่นที่แทรกเข้ามาได้คือ Levoit (อันดับ 2), SHARP และ Smarthome"
+    },
+    {
+      "q": "ราคาในหน้านี้เชื่อได้แค่ไหน?",
+      "a": "เป็นราคาโดยประมาณที่เห็นจริงบนหน้าค้นหา Shopee ณ วันที่เก็บข้อมูล (7 ก.ค. 2026) ส่วนใหญ่เป็นราคาช่วงโปร และหลายลิสติ้งเป็นแบบรวมหลายรุ่น ราคาที่เห็นจึงเป็นราคาเริ่มต้นของรุ่นเล็กสุด กดเข้าไปเลือกรุ่นจริงแล้วดูราคาสดก่อนตัดสินใจเสมอ"
+    },
+    {
+      "q": "ซื้อเครื่องฟอกอากาศต้องดูอะไรนอกจากราคา?",
+      "a": "สามอย่างหลัก: (1) พื้นที่ห้องที่รองรับ (ตร.ม./CADR) ต้องไม่เล็กกว่าห้องจริง (2) ราคาและความหาง่ายของไส้กรองทดแทน เพราะเป็นค่าใช้จ่ายต่อเนื่องทุก 6-12 เดือน (3) การรับประกันศูนย์ไทย — บางลิสติ้งระบุชัดบนชื่อ บางลิสติ้งต้องถามร้านก่อน"
+    }
+  ],
+  "items": [
+    {
+      "rank": 1,
+      "name": "(รับประกันศูนย์ไทย 1 ปี) Xiaomi Smart Air Purifier 4 Lite/4 Compact/6/4Pro/Elite เครื่องฟอกอากาศ",
+      "brand": "Xiaomi",
+      "priceApprox": 4455,
+      "discountPct": 11,
+      "soldPerMonth": "9พัน+",
+      "soldPerMonthNum": 9000,
+      "rating": 4.9,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/air-purifier/01.jpg",
+      "link": "https://s.shopee.co.th/4fuQSncL3h",
+      "productUrl": "https://shopee.co.th/product/1401942951/26979987266",
+      "insight": "แชมป์ยอดขายของหมวด (9พัน+/เดือน) — เป็นลิสติ้งรวมหลายรุ่นย่อยตั้งแต่ 4 Lite ถึง Elite ราคาที่เห็นคือจุดเริ่ม เลือกตัวเลือกให้ตรงรุ่นที่ต้องการ ชื่อระบุประกันศูนย์ไทย 1 ปีชัดเจน"
+    },
+    {
+      "rank": 2,
+      "name": "[สินค้าพรีออเดอร์] Levoit Vital 100S/200S Core Mini 200S/300S/400S/600S Air Purifier PM2.5 เครื่องฟอกอากาศ",
+      "brand": "Levoit",
+      "priceApprox": 3358,
+      "discountPct": 58,
+      "soldPerMonth": "5พัน+",
+      "soldPerMonthNum": 5000,
+      "rating": 5.0,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/air-purifier/02.jpg",
+      "link": "https://s.shopee.co.th/5Aqh3iaR2o",
+      "productUrl": "https://shopee.co.th/product/383825222/28625833175",
+      "insight": "แบรนด์นอกค่าย Xiaomi ที่ขายดีสุดในลิสต์ — แต่ชื่อระบุ [สินค้าพรีออเดอร์] ต้องเช็กระยะเวลารอของก่อนจ่าย ถ้ารีบใช้รับฝุ่นให้ข้ามไปตัวพร้อมส่ง"
+    },
+    {
+      "rank": 3,
+      "name": "[พร้อมส่ง] Xiaomi Air Purifier 6 ระบบเซ็นเซอร์ 5 ตัวที่อัปเกรดแล้ว ระบบฟอกอากาศแบบคอมโพสิต 5 ชั้น จอ LCD สี",
+      "brand": "Xiaomi",
+      "priceApprox": 5999,
+      "discountPct": 40,
+      "soldPerMonth": "3พัน+",
+      "soldPerMonthNum": 3000,
+      "rating": 5.0,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/air-purifier/03.jpg",
+      "link": "https://s.shopee.co.th/50XGrPb4Nn",
+      "productUrl": "https://shopee.co.th/product/426143063/41221387478",
+      "insight": "รุ่นใหม่สุดและแพงสุดในลิสต์ (~฿5,999) — ชื่อชูเซ็นเซอร์ 5 ตัวกับจอ LCD สี จ่ายเพิ่มจากรุ่น 4 series เพื่อฟีเจอร์ ไม่ใช่เพื่อพื้นที่ฟอกอย่างเดียว เทียบสเปกกับห้องจริงก่อน"
+    },
+    {
+      "rank": 4,
+      "name": "ชาร์ป เครื่องฟอกอากาศ 23 ตรม. รุ่น FP-J30TA-A SHARP AIR PURIFIER",
+      "brand": "SHARP",
+      "priceApprox": 2690,
+      "discountPct": 33,
+      "soldPerMonth": "2พัน+",
+      "soldPerMonthNum": 2000,
+      "rating": 4.9,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/air-purifier/04.jpg",
+      "link": "https://s.shopee.co.th/4Ay9rseF4e",
+      "productUrl": "https://shopee.co.th/product/144046792/2885648777",
+      "insight": "แบรนด์ญี่ปุ่นตัวเดียวในลิสต์ — ระบุพื้นที่ 23 ตร.ม. ชัดบนชื่อ (ขนาดห้องนอนพอดี) ราคากลาง ๆ เหมาะคนที่อยากได้แบรนด์เครื่องใช้ไฟฟ้าดั้งเดิมมากกว่าสาย smart home"
+    },
+    {
+      "rank": 5,
+      "name": "XIAOMI เครื่องฟอกอากาศ MI SMART 4 COMPACT",
+      "brand": "Xiaomi",
+      "priceApprox": 2290,
+      "discountPct": 18,
+      "soldPerMonth": "2พัน+",
+      "soldPerMonthNum": 2000,
+      "rating": 4.9,
+      "province": "กรุงเทพมหานคร",
+      "image": "/images/catalog/air-purifier/05.jpg",
+      "link": "https://s.shopee.co.th/40ejfZesPd",
+      "productUrl": "https://shopee.co.th/product/137978586/20260938886",
+      "insight": "4 Compact แบบลิสติ้งเดี่ยว ๆ ราคา ~฿2,290 — ทางเลือกสำหรับคนไม่อยากเสี่ยงกดผิดตัวเลือกในลิสติ้งรวมหลายรุ่น ได้รุ่นเดียวชัด ๆ จบ"
+    },
+    {
+      "rank": 6,
+      "name": "Xiaomi Smart Air Purifier 4 Compact / 4 Lite / 4 Pro / 6 / Pet Care เครื่องฟอกอากาศ กรอง PM2.5",
+      "brand": "Xiaomi",
+      "priceApprox": 1890,
+      "discountPct": 58,
+      "soldPerMonth": "1พัน+",
+      "soldPerMonthNum": 1000,
+      "rating": 4.9,
+      "province": "สมุทรปราการ",
+      "image": "/images/catalog/air-purifier/06.jpg",
+      "link": "https://s.shopee.co.th/9zvwodH1MB",
+      "productUrl": "https://shopee.co.th/product/389528981/28425500822",
+      "insight": "ราคาเริ่ม ~฿1,890 ดูถูกที่สุดของค่าย Xiaomi ในลิสต์ — แต่เป็นราคาของรุ่นเล็กสุดในลิสติ้งรวม อย่าคาดหวังได้ 4 Pro ในราคานี้ เช็กตัวเลือกก่อนกดเสมอ"
+    },
+    {
+      "rank": 7,
+      "name": "Xiaomi Mijia Air Purifier 4 Pro Smart Air Purifier เครื่องฟอกอากาศ กรองฝุ่นอย่างมีประสิทธิภาพ",
+      "brand": "Xiaomi",
+      "priceApprox": 5940,
+      "discountPct": 69,
+      "soldPerMonth": "1พัน+",
+      "soldPerMonthNum": 1000,
+      "rating": 4.9,
+      "province": "นนทบุรี",
+      "image": "/images/catalog/air-purifier/07.jpg",
+      "link": "https://s.shopee.co.th/9pcWcKHehA",
+      "productUrl": "https://shopee.co.th/product/844215641/23125498844",
+      "insight": "4 Pro ร้านแรก ~฿5,940 ป้ายลด -69% แรงสุดในลิสต์ — รุ่นเดียวกันมีอีกร้านที่อันดับ 8 ราคา ~฿5,740 เทียบราคาจ่ายจริงสองร้านนี้ก่อนกด"
+    },
+    {
+      "rank": 8,
+      "name": "Xiaomi Mijia Air Purifier 4 Pro Smart Air Purifier เครื่องฟอกอากาศ (อีกร้าน)",
+      "brand": "Xiaomi",
+      "priceApprox": 5740,
+      "discountPct": 56,
+      "soldPerMonth": "1พัน+",
+      "soldPerMonthNum": 1000,
+      "rating": 5.0,
+      "province": "นนทบุรี",
+      "image": "/images/catalog/air-purifier/08.jpg",
+      "link": "https://s.shopee.co.th/9fJ6Q1II29",
+      "productUrl": "https://shopee.co.th/product/284586148/28524332240",
+      "insight": "4 Pro ร้านที่สอง ถูกกว่าร้านแรกราว ฿200 ทั้งที่ป้ายลดเบากว่า — ตัวอย่างชัดว่าป้ายเปอร์เซ็นต์ลดเชื่อไม่ได้ ให้ดูราคาจ่ายจริงเท่านั้น"
+    },
+    {
+      "rank": 9,
+      "name": "Smarthome เครื่องกรองอากาศ กรองและบอกระดับ PM2.5 รุ่น AP-180",
+      "brand": "Smarthome",
+      "priceApprox": 1650,
+      "discountPct": 67,
+      "soldPerMonth": "714",
+      "soldPerMonthNum": 714,
+      "rating": 4.9,
+      "province": "นครปฐม",
+      "image": "/images/catalog/air-purifier/09.jpg",
+      "link": "https://s.shopee.co.th/9UzgDiIvN8",
+      "productUrl": "https://shopee.co.th/product/59894103/7306335530",
+      "insight": "ถูกสุดในลิสต์ (~฿1,650) แบบมีจอบอกค่า PM2.5 — เป็นแบรนด์เล็ก ควรอ่านรีวิวจริงและถามเรื่องประกัน/ไส้กรองทดแทนให้ชัดก่อนซื้อ"
+    },
+    {
+      "rank": 10,
+      "name": "Xiaomi Smart Air Purifier Pet Care เครื่องฟอกอากาศอัจฉริยะ กรอง PM2.5 ควบคุมผ่านแอป",
+      "brand": "Xiaomi",
+      "priceApprox": 1890,
+      "discountPct": 58,
+      "soldPerMonth": "493",
+      "soldPerMonthNum": 493,
+      "rating": 4.9,
+      "province": "สมุทรปราการ",
+      "image": "/images/catalog/air-purifier/10.jpg",
+      "link": "https://s.shopee.co.th/9KgG1PJYi7",
+      "productUrl": "https://shopee.co.th/product/389528981/40777158566",
+      "insight": "รุ่นเฉพาะทางสำหรับบ้านมีสัตว์เลี้ยงตามชื่อ (เน้นดักขน) — ยอดขายต่อเดือนต่ำสุดในลิสต์ ถ้าไม่ได้เลี้ยงสัตว์ รุ่นปกติในลิสต์คุ้มกว่า"
+    }
+  ]
+}

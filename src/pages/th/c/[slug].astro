@@ -16,6 +16,12 @@ export async function getStaticPaths() {
 const { catalog } = Astro.props;
 const items = catalog.items;
 
+// หมวดยอดฮิตอื่น — glob เดียวกับ getStaticPaths ลิงก์หากันอัตโนมัติเมื่อเพิ่มไฟล์ catalog ใหม่
+const allCatalogs = Object.values(import.meta.glob("../../../data/catalog/*.json", { eager: true }))
+  .map((mod: any) => mod.default ?? mod)
+  .filter((c: any) => c.slug !== catalog.slug)
+  .sort((a: any, b: any) => a.slug.localeCompare(b.slug));
+
 const THAI_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 const [cy, cm, cd] = catalog.collectedAt.split("-").map(Number);
 const collectedLabel = `${cd} ${THAI_MONTHS[cm - 1]} ${cy}`;
@@ -305,6 +311,20 @@ const faqJsonLd = {
       </div>
     </div>
   </section>
+
+  {allCatalogs.length ? (
+    <section class="section band" id="more-catalogs">
+      <div class="container">
+        <p class="eyebrow">หมวดยอดฮิตอื่น</p>
+        <h2 class="headline">ดูอันดับขายดีหมวดอื่นต่อ</h2>
+        <div class="roundup-actions" style="margin-top: 18px;">
+          {allCatalogs.map((c: any) => (
+            <a class="button" href={`/th/c/${c.slug}/`}>{c.title}ขายดี {c.items.length} อันดับ</a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ) : null}
 
   <AffiliateClickTracker />
 </BaseLayout>
