@@ -1,0 +1,159 @@
+---
+// หน้ารวมหมวดยอดฮิต — glob catalog/*.json อัตโนมัติ เพิ่มไฟล์ใหม่แล้วขึ้นหน้านี้เอง
+// ทางเข้าหลักจาก header nav สู่ระบบเทียบสินค้ายอดฮิตรายคีย์เวิร์ด
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const catalogs = Object.values(import.meta.glob("../../../data/catalog/*.json", { eager: true }))
+  .map((mod: any) => mod.default ?? mod)
+  .sort((a: any, b: any) => b.items[0].soldPerMonthNum - a.items[0].soldPerMonthNum);
+
+const THAI_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+const thaiDate = (iso: string) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} ${THAI_MONTHS[m - 1]} ${y}`;
+};
+
+const baht = (n: number) => `฿${n.toLocaleString("th-TH")}`;
+const totalItems = catalogs.reduce((sum: number, c: any) => sum + c.items.length, 0);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "สินค้ายอดฮิต: อันดับขายดีจริงบน Shopee รายหมวด",
+  description: `รวม ${catalogs.length} หมวดสินค้ายอดฮิต ${totalItems} รายการ จากหน้าค้นหา Shopee เรียงตามยอดขายจริงต่อเดือน`,
+  inLanguage: "th",
+  hasPart: catalogs.map((c: any) => ({
+    "@type": "ItemList",
+    name: `${c.title}ขายดี ${c.items.length} อันดับ`,
+    url: `https://friendsay.com/th/c/${c.slug}/`
+  }))
+};
+---
+
+<BaseLayout
+  title={`สินค้ายอดฮิต ${catalogs.length} หมวด: อันดับขายดีจริงบน Shopee | Friendsay`}
+  description={`รวมสินค้ายอดฮิต ${catalogs.length} หมวด ${totalItems} รายการ จากหน้าค้นหา Shopee เรียงตามยอดขายจริงต่อเดือน พร้อมราคาโดยประมาณ จุดสังเกตก่อนซื้อ และปุ่มเช็กราคาสด`}
+  canonical="https://friendsay.com/th/c/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="page-hero cat-index-hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge badge-coral">สินค้ายอดฮิต</span>
+        <span class="badge badge-teal">{catalogs.length} หมวด · {totalItems} รายการ</span>
+      </div>
+      <h1>อันดับขายดีจริงบน Shopee รายหมวด</h1>
+      <p class="muted" style="max-width: 760px;">
+        ทุกหมวดเก็บจากหน้าค้นหา Shopee เรียงตามยอดขายต่อเดือนจริง — ไม่ใช่อันดับที่เราแต่งเอง
+        ราคาเป็นราคาโดยประมาณ ณ วันเก็บข้อมูล กดเข้าไปดูจุดสังเกตก่อนซื้อของแต่ละหมวดได้เลย
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wide-container">
+      <div class="cat-index-grid">
+        {catalogs.map((c: any) => {
+          const minPrice = Math.min(...c.items.map((p: any) => p.priceApprox));
+          const maxPrice = Math.max(...c.items.map((p: any) => p.priceApprox));
+          return (
+            <a class="cat-index-card" href={`/th/c/${c.slug}/`}>
+              <img src={c.items[0].image} alt={`ภาพสินค้าอันดับ 1 หมวด${c.title}`} loading="lazy" width="800" height="800" />
+              <div class="cat-index-body">
+                <h2>{c.title}</h2>
+                <p class="cat-index-meta">
+                  {c.items.length} อันดับ · แชมป์ขาย {c.items[0].soldPerMonth} ชิ้น/เดือน ({c.items[0].brand})
+                </p>
+                <p class="cat-index-meta">ช่วงราคา {baht(minPrice)}–{baht(maxPrice)} · เก็บ {thaiDate(c.collectedAt)}</p>
+                <span class="button button-primary cat-index-cta">ดูทั้ง {c.items.length} อันดับ →</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+      <p class="compare-note" style="margin-top: 18px;">
+        หมวดใหม่เพิ่มต่อเนื่อง — อันดับสะท้อน "คนซื้ออะไรมากที่สุดตอนนี้" จากตัวเลขที่ Shopee แสดงจริง
+        ลิงก์ในหน้าเป็นลิงก์ affiliate (<a href="/affiliate-disclosure/">รายละเอียด</a>)
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cat-index-hero {
+    background:
+      radial-gradient(1100px 480px at 50% -80px, rgba(255, 214, 186, 0.55), transparent 70%),
+      linear-gradient(180deg, #fff8ee, #fffdf8);
+  }
+
+  .cat-index-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .cat-index-card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-soft);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.22s ease;
+  }
+
+  .cat-index-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px -22px rgba(31, 24, 16, 0.32);
+  }
+
+  .cat-index-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(223, 208, 186, 0.6);
+  }
+
+  .cat-index-body {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    padding: 18px;
+  }
+
+  .cat-index-body h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .cat-index-meta {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .cat-index-cta {
+    margin-top: 6px;
+    justify-self: start;
+  }
+
+  @media (max-width: 980px) {
+    .cat-index-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .cat-index-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

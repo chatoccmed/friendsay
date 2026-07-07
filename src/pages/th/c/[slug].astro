@@ -44,15 +44,19 @@ const chartMax = Math.max(...items.map((p: any) => p.priceApprox));
 // ภาพรวมหมวด — คำนวณจากข้อมูลที่เก็บล้วน ๆ
 const sortedPrices = items.map((p: any) => p.priceApprox).sort((a: number, b: number) => a - b);
 const medianPrice = sortedPrices[Math.floor(sortedPrices.length / 2)];
+// นับเฉพาะแบรนด์จริง — "ไม่ระบุแบรนด์" ขึ้นเป็นสถิติ "แบรนด์ครองลิสต์" แล้วชวนงง
 const brandCounts = items.reduce((acc: Record<string, number>, p: any) => {
-  acc[p.brand] = (acc[p.brand] || 0) + 1;
+  if (p.brand && p.brand !== "ไม่ระบุแบรนด์") acc[p.brand] = (acc[p.brand] || 0) + 1;
   return acc;
 }, {});
-const topBrand = Object.entries(brandCounts).sort((a: any, b: any) => b[1] - a[1])[0] as [string, number];
+const topBrandEntry = Object.entries(brandCounts).sort((a: any, b: any) => b[1] - a[1])[0] as [string, number] | undefined;
+const topBrandStat = topBrandEntry
+  ? { value: `${topBrandEntry[0]}`, label: `แบรนด์ที่ครองลิสต์ (${topBrandEntry[1]}/${items.length} อันดับ)` }
+  : { value: "หลากแบรนด์", label: "ลิสต์นี้ไม่มีแบรนด์ไหนครองชัด" };
 const overviewStats = [
   { value: `${baht(minPrice)}–${baht(chartMax)}`, label: "ช่วงราคาที่เห็นในลิสต์" },
   { value: `~${baht(medianPrice)}`, label: "ราคากลางของลิสต์ (มัธยฐาน)" },
-  { value: `${topBrand[0]}`, label: `แบรนด์ที่ครองลิสต์ (${topBrand[1]}/${items.length} อันดับ)` },
+  topBrandStat,
   { value: items[0].soldPerMonth, label: `ยอดขาย/เดือนของแชมป์ (${items[0].brand})` }
 ];
 
@@ -84,6 +88,16 @@ const faqJsonLd = {
     acceptedAnswer: { "@type": "Answer", text: f.a }
   }))
 };
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "หน้าแรก", item: "https://friendsay.com/th/" },
+    { "@type": "ListItem", position: 2, name: "สินค้ายอดฮิต", item: "https://friendsay.com/th/c/" },
+    { "@type": "ListItem", position: 3, name: catalog.title, item: `https://friendsay.com/th/c/${catalog.slug}/` }
+  ]
+};
 ---
 
 <BaseLayout
@@ -94,9 +108,17 @@ const faqJsonLd = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   {catalog.faqs?.length ? <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} /> : null}
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
   <section class="page-hero cat-hero">
     <div class="container">
+      <nav class="cat-breadcrumb" aria-label="ตำแหน่งหน้านี้">
+        <a href="/th/">หน้าแรก</a>
+        <span aria-hidden="true">›</span>
+        <a href="/th/c/">สินค้ายอดฮิต</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">{catalog.title}</span>
+      </nav>
       <div class="badge-row">
         <span class="badge badge-coral">สินค้ายอดฮิต</span>
         <span class="badge badge-teal">เก็บข้อมูล {collectedLabel}</span>
@@ -219,6 +241,7 @@ const faqJsonLd = {
     <div class="wide-container">
       <p class="eyebrow">ตารางเปรียบเทียบ</p>
       <h2 class="headline">เทียบทั้ง {items.length} อันดับในตาเดียว</h2>
+      <p class="cat-table-scroll-hint" aria-hidden="true">เลื่อนตารางไปทางขวาได้ →</p>
       <div class="compare-shell">
         <table class="compare-table">
           <thead>
@@ -339,6 +362,38 @@ const faqJsonLd = {
   .cat-hero-kicker {
     max-width: 760px;
     font-size: 1.06rem;
+  }
+
+  .cat-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+
+  .cat-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cat-breadcrumb a:hover {
+    color: var(--coral);
+    text-decoration: underline;
+  }
+
+  .cat-table-scroll-hint {
+    display: none;
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+  }
+
+  @media (max-width: 760px) {
+    .cat-table-scroll-hint {
+      display: block;
+    }
   }
 
   .cat-grid {

@@ -35,6 +35,7 @@ const staticPaths = [
   "/th/compare/air-conditioners/",
   "/th/best/air-fryers/",
   "/th/best/water-heaters/",
+  "/th/c/",
   "/th/reviews/air-conditioners/",
   "/th/reviews/refrigerators/",
   "/th/reviews/candy-vpct-vpgt-air-conditioner/",

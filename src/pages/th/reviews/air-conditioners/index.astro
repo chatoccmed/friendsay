@@ -18,6 +18,17 @@ const queuedByKey = new Map(
   queuedAirConditionerReviews.map((review) => [review.productKey, review])
 );
 
+// หน้ารีวิวที่ถูก generate จริง: จากคิว batch template + หน้ารีวิวเดี่ยวที่เป็นไฟล์แยก
+// proof ledger บางรุ่น (เช่น daikin-ftkb-sabai-series) verified แล้วแต่ยังไม่มีหน้ารีวิว
+// — ห้ามลิงก์ไป 404 ให้พาไปโปรไฟล์รุ่นบนหน้า hub แทน
+const generatedReviewSlugs = new Set([
+  ...queuedAirConditionerReviews.map((review) => review.reviewSlug),
+  "candy-vpct-vpgt-air-conditioner",
+  "tcl-savein-ai-air-conditioner",
+  "xiaomi-mijia-air-inverter-eco",
+  "midea-celest-msce-air-conditioner"
+]);
+
 const readyByKey = new Map(
   airConditioners.map((product) => [
     product.slug,
@@ -115,7 +126,9 @@ const modelRows = airConditionerShopeeProofs
       statusMeta: statusCopy[proof.status],
       strengths: strengths.slice(0, 3),
       watchouts: watchouts.slice(0, 3),
-      reviewHref: `/th/reviews/${proof.reviewSlug}/`
+      reviewHref: generatedReviewSlugs.has(proof.reviewSlug)
+        ? `/th/reviews/${proof.reviewSlug}/`
+        : `/th/best/air-conditioners/#${proof.productKey}`
     };
   })
   .sort((a, b) => a.queueRank - b.queueRank);
