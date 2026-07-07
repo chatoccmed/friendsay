@@ -7,17 +7,23 @@ const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
 
-const ROOT = path.join(__dirname, "..", "public", "images", "catalog");
+// รับ path เป็น argument ได้ (relative จาก repo root) — default = catalog
+// เช่น node scripts/compress-catalog-images.cjs public/images/refrigerators/models
+const ROOT = process.argv[2]
+  ? path.join(__dirname, "..", process.argv[2])
+  : path.join(__dirname, "..", "public", "images", "catalog");
+
+function collect(dir, files) {
+  for (const f of fs.readdirSync(dir)) {
+    const full = path.join(dir, f);
+    if (fs.statSync(full).isDirectory()) collect(full, files);
+    else if (/\.jpe?g$/i.test(f)) files.push(full);
+  }
+}
 
 async function run() {
   const files = [];
-  for (const dir of fs.readdirSync(ROOT)) {
-    const full = path.join(ROOT, dir);
-    if (!fs.statSync(full).isDirectory()) continue;
-    for (const f of fs.readdirSync(full)) {
-      if (/\.jpe?g$/i.test(f)) files.push(path.join(full, f));
-    }
-  }
+  collect(ROOT, files);
   let before = 0, after = 0, webpTotal = 0;
   for (const file of files) {
     const buf = fs.readFileSync(file);

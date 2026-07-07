@@ -39,9 +39,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "AirChef Compact 3.5L",
     shortName: "Compact 3.5L",
     image: {
-      url: "/images/air-fryers/air-fryer-compact-photo.png",
+      url: "/images/air-fryers/air-fryer-compact-photo.jpg",
       alt: "ภาพหม้อทอดไร้น้ำมันสีขาวแบบตะกร้าดึงออก",
-      source: "/images/air-fryers/air-fryer-compact-photo.png"
+      source: "/images/air-fryers/air-fryer-compact-photo.jpg"
     },
     award: "เหมาะกับคอนโด",
     price: 1890,
@@ -69,9 +69,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "AirChef Family 6.2L",
     shortName: "Family 6.2L",
     image: {
-      url: "/images/air-fryers/air-fryer-family-photo.png",
+      url: "/images/air-fryers/air-fryer-family-photo.jpg",
       alt: "ภาพหม้อทอดไร้น้ำมันในครัวพร้อมตะกร้าด้านหน้า",
-      source: "/images/air-fryers/air-fryer-family-photo.png"
+      source: "/images/air-fryers/air-fryer-family-photo.jpg"
     },
     award: "คุ้มสำหรับครอบครัว",
     price: 3290,
@@ -99,9 +99,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "Miro Smart Fry 4.5L",
     shortName: "Smart 4.5L",
     image: {
-      url: "/images/air-fryers/air-fryer-compact-photo.png",
+      url: "/images/air-fryers/air-fryer-compact-photo.jpg",
       alt: "ภาพหม้อทอดไร้น้ำมันสีดำทรงสูง",
-      source: "/images/air-fryers/air-fryer-compact-photo.png"
+      source: "/images/air-fryers/air-fryer-compact-photo.jpg"
     },
     award: "ใช้ง่ายที่สุด",
     price: 2590,
@@ -129,9 +129,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "Ovo Crisp 5.0L",
     shortName: "Crisp 5.0L",
     image: {
-      url: "/images/air-fryers/air-fryer-cleaning-photo.png",
+      url: "/images/air-fryers/air-fryer-cleaning-photo.jpg",
       alt: "ภาพตะกร้าหม้อทอดไร้น้ำมันแบบใกล้",
-      source: "/images/air-fryers/air-fryer-cleaning-photo.png"
+      source: "/images/air-fryers/air-fryer-cleaning-photo.jpg"
     },
     award: "สมดุลที่สุด",
     price: 2990,
@@ -159,9 +159,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "Nori Lite 2.8L",
     shortName: "Lite 2.8L",
     image: {
-      url: "/images/air-fryers/air-fryer-cleaning-photo.png",
+      url: "/images/air-fryers/air-fryer-cleaning-photo.jpg",
       alt: "ภาพภายในหม้อทอดไร้น้ำมัน",
-      source: "/images/air-fryers/air-fryer-cleaning-photo.png"
+      source: "/images/air-fryers/air-fryer-cleaning-photo.jpg"
     },
     award: "ประหยัดพื้นที่",
     price: 1490,
@@ -189,9 +189,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "Terra Dual Zone 8.0L",
     shortName: "Dual Zone 8.0L",
     image: {
-      url: "/images/air-fryers/air-fryer-family-photo.png",
+      url: "/images/air-fryers/air-fryer-family-photo.jpg",
       alt: "ภาพภายในหม้อทอดไร้น้ำมันขณะเปิดดูอาหาร",
-      source: "/images/air-fryers/air-fryer-family-photo.png"
+      source: "/images/air-fryers/air-fryer-family-photo.jpg"
     },
     award: "ทำสองเมนูพร้อมกัน",
     price: 5990,
@@ -219,9 +219,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "Kumo Glass View 4.2L",
     shortName: "Glass View 4.2L",
     image: {
-      url: "/images/air-fryers/air-fryer-food-photo.png",
+      url: "/images/air-fryers/air-fryer-food-photo.jpg",
       alt: "ภาพมันฝรั่งอบจากหม้อทอดไร้น้ำมัน",
-      source: "/images/air-fryers/air-fryer-food-photo.png"
+      source: "/images/air-fryers/air-fryer-food-photo.jpg"
     },
     award: "ดูอาหารง่าย",
     price: 2790,
@@ -249,9 +249,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "Sena Oven Air 12L",
     shortName: "Oven Air 12L",
     image: {
-      url: "/images/air-fryers/air-fryer-food-photo.png",
+      url: "/images/air-fryers/air-fryer-food-photo.jpg",
       alt: "ภาพฟาลาเฟลจากหม้อทอดไร้น้ำมัน",
-      source: "/images/air-fryers/air-fryer-food-photo.png"
+      source: "/images/air-fryers/air-fryer-food-photo.jpg"
     },
     award: "แทนเตาอบเล็ก",
     price: 4890,
@@ -279,9 +279,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "Mala Silent Fry 4.0L",
     shortName: "Silent 4.0L",
     image: {
-      url: "/images/air-fryers/air-fryer-food-photo.png",
+      url: "/images/air-fryers/air-fryer-food-photo.jpg",
       alt: "ภาพไก่เทอริยากิที่ทำด้วยหม้อทอดไร้น้ำมัน",
-      source: "/images/air-fryers/air-fryer-food-photo.png"
+      source: "/images/air-fryers/air-fryer-food-photo.jpg"
     },
     award: "เสียงเบา",
     price: 2490,
@@ -309,9 +309,9 @@ export const airFryers: AirFryerProduct[] = [
     name: "Pana Crisp Pro 5.5L",
     shortName: "Crisp Pro 5.5L",
     image: {
-      url: "/images/air-fryers/air-fryer-family-photo.png",
+      url: "/images/air-fryers/air-fryer-family-photo.jpg",
       alt: "ภาพหม้อทอดไร้น้ำมัน Power Air Fryer XL",
-      source: "/images/air-fryers/air-fryer-family-photo.png"
+      source: "/images/air-fryers/air-fryer-family-photo.jpg"
     },
     award: "ตัวเลือกพรีเมี่ยม",
     price: 6990,

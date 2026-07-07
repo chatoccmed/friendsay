@@ -167,7 +167,7 @@ const breadcrumbJsonLd = {
 
   <section class="review-hero">
     <a class="review-hero__media" {...imageLinkAttrs}>
-      <img src={review.heroImage} alt={`ภาพประกอบรีวิว ${review.name}`} />
+      <picture><source srcset={review.heroImage.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.heroImage} alt={`ภาพประกอบรีวิว ${review.name}`} /></picture>
     </a>
     <div class="review-hero__overlay"></div>
     <div class="container hero-grid">
@@ -182,7 +182,7 @@ const breadcrumbJsonLd = {
       </div>
       <aside class="hero-card">
         <a {...imageLinkAttrs} class="hero-card__image">
-          <img src={review.secondaryImage} alt={`ภาพช่วยตัดสินใจ ${review.name}`} />
+          <picture><source srcset={review.secondaryImage.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.secondaryImage} alt={`ภาพช่วยตัดสินใจ ${review.name}`} /></picture>
         </a>
         <span>คะแนน Friendsay</span>
         <strong>{review.score.toFixed(1)}/10</strong>
@@ -201,7 +201,7 @@ const breadcrumbJsonLd = {
   <section class="decision-section" id="quick">
     <div class="container decision-grid">
       <a class="decision-image" {...imageLinkAttrs}>
-        <img src={review.imageSet.capacityScene} alt="ภาพตัวอย่างการจัดของในตู้เย็น" loading="lazy" />
+        <picture><source srcset={review.imageSet.capacityScene.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.imageSet.capacityScene} alt="ภาพตัวอย่างการจัดของในตู้เย็น" loading="lazy" /></picture>
       </a>
       <div class="decision-card">
         <span class="pill">คำตอบเร็ว</span>
@@ -234,7 +234,7 @@ const breadcrumbJsonLd = {
         return (
           <article class="advice-card">
             <a class="advice-card__image" {...imageLinkAttrs}>
-              <img src={visual.src} alt={visual.alt} loading={index < 2 ? "eager" : "lazy"} />
+              <picture><source srcset={visual.src.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={visual.src} alt={visual.alt} loading={index < 2 ? "eager" : "lazy"} /></picture>
             </a>
             <div class="advice-card__body">
               <span>{(index + 1).toString().padStart(2, "0")}</span>
@@ -250,19 +250,19 @@ const breadcrumbJsonLd = {
   <section class="photo-wall">
     <div class="container photo-grid">
       <a {...imageLinkAttrs} class="photo-large">
-        <img src={review.imageSet.productDetail} alt={`ภาพรวม ${review.name}`} loading="lazy" />
+        <picture><source srcset={review.imageSet.productDetail.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.imageSet.productDetail} alt={`ภาพรวม ${review.name}`} loading="lazy" /></picture>
         <span><strong>ตัวเลือกในตลาด</strong> ดูชื่อรุ่น ความจุ และประเภทตู้ให้ตรงก่อน</span>
       </a>
       <a {...imageLinkAttrs}>
-        <img src={review.imageSet.spaceScene} alt="ภาพวัดพื้นที่วางตู้เย็น" loading="lazy" />
+        <picture><source srcset={review.imageSet.spaceScene.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.imageSet.spaceScene} alt="ภาพวัดพื้นที่วางตู้เย็น" loading="lazy" /></picture>
         <span><strong>พื้นที่วาง</strong> วัดช่องตู้และระยะเปิดประตู</span>
       </a>
       <a {...imageLinkAttrs}>
-        <img src={review.imageSet.warrantyScene} alt="ภาพเช็กค่าไฟและประกันตู้เย็น" loading="lazy" />
+        <picture><source srcset={review.imageSet.warrantyScene.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.imageSet.warrantyScene} alt="ภาพเช็กค่าไฟและประกันตู้เย็น" loading="lazy" /></picture>
         <span><strong>ค่าไฟ/ประกัน</strong> ถามให้ชัดก่อนจ่ายเงิน</span>
       </a>
       <a {...imageLinkAttrs}>
-        <img src={review.imageSet.deliveryScene} alt="ภาพตรวจรับตู้เย็นหลังขนส่ง" loading="lazy" />
+        <picture><source srcset={review.imageSet.deliveryScene.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.imageSet.deliveryScene} alt="ภาพตรวจรับตู้เย็นหลังขนส่ง" loading="lazy" /></picture>
         <span><strong>ขนส่ง</strong> ถ่ายคลิปตอนรับของไว้เสมอ</span>
       </a>
     </div>
@@ -299,7 +299,7 @@ const breadcrumbJsonLd = {
             </p>
           </div>
           <a {...imageLinkAttrs}>
-            <img src={review.imageSet.capacityScene} alt="ภาพช่วยเลือกความจุตู้เย็น" loading="lazy" />
+            <picture><source srcset={review.imageSet.capacityScene.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.imageSet.capacityScene} alt="ภาพช่วยเลือกความจุตู้เย็น" loading="lazy" /></picture>
           </a>
         </section>
 
@@ -356,7 +356,7 @@ const breadcrumbJsonLd = {
             </p>
           </div>
           <a {...imageLinkAttrs}>
-            <img src={review.imageSet.spaceScene} alt="ภาพวัดช่องวางตู้เย็น" loading="lazy" />
+            <picture><source srcset={review.imageSet.spaceScene.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.imageSet.spaceScene} alt="ภาพวัดช่องวางตู้เย็น" loading="lazy" /></picture>
           </a>
         </section>
 
@@ -370,7 +370,7 @@ const breadcrumbJsonLd = {
             </p>
           </div>
           <a {...imageLinkAttrs}>
-            <img src={review.imageSet.warrantyScene} alt="ภาพเอกสารประกันและค่าไฟตู้เย็น" loading="lazy" />
+            <picture><source srcset={review.imageSet.warrantyScene.replace(/\.jpe?g$/i, ".webp")} type="image/webp" /><img src={review.imageSet.warrantyScene} alt="ภาพเอกสารประกันและค่าไฟตู้เย็น" loading="lazy" /></picture>
           </a>
         </section>
 
