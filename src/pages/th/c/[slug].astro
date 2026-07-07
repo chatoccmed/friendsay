@@ -149,7 +149,10 @@ const breadcrumbJsonLd = {
               <span class="badge badge-blue">{pick.item.rating.toFixed(1)} ★</span>
             </div>
             <a href={`#rank-${pick.item.rank}`}>
-              <img class="rainy-img" src={pick.item.image} alt={`ภาพสินค้า ${pick.item.name}`} loading="lazy" width="800" height="800" />
+              <picture>
+                <source srcset={pick.item.image.replace(/\.jpg$/, ".webp")} type="image/webp" />
+                <img class="rainy-img" src={pick.item.image} alt={`ภาพสินค้า ${pick.item.name}`} loading="lazy" width="800" height="800" />
+              </picture>
             </a>
             <h3>{pick.item.brand} · ~{baht(pick.item.priceApprox)}</h3>
             <p>{pick.item.name.slice(0, 90)}</p>
@@ -192,7 +195,10 @@ const breadcrumbJsonLd = {
               data-affiliate-context={`catalog-${catalog.slug}-photo-${p.rank}`}
             >
               <span class="cat-rank">อันดับ {p.rank}</span>
-              <img src={p.image} alt={`ภาพสินค้า ${p.name}`} loading="lazy" width="800" height="800" />
+              <picture>
+                <source srcset={p.image.replace(/\.jpg$/, ".webp")} type="image/webp" />
+                <img src={p.image} alt={`ภาพสินค้า ${p.name}`} loading="lazy" width="800" height="800" />
+              </picture>
             </a>
             <div class="cat-card-body">
               <div class="badge-row">

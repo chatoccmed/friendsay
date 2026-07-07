@@ -59,7 +59,10 @@ const jsonLd = {
           const maxPrice = Math.max(...c.items.map((p: any) => p.priceApprox));
           return (
             <a class="cat-index-card" href={`/th/c/${c.slug}/`}>
-              <img src={c.items[0].image} alt={`ภาพสินค้าอันดับ 1 หมวด${c.title}`} loading="lazy" width="800" height="800" />
+              <picture>
+                <source srcset={c.items[0].image.replace(/\.jpg$/, ".webp")} type="image/webp" />
+                <img src={c.items[0].image} alt={`ภาพสินค้าอันดับ 1 หมวด${c.title}`} loading="lazy" width="800" height="800" />
+              </picture>
               <div class="cat-index-body">
                 <h2>{c.title}</h2>
                 <p class="cat-index-meta">
