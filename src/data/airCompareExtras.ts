@@ -2,18 +2,10 @@
 // รวมค่าที่เคยกระจายอยู่ใน frontmatter หลายหน้าให้เป็นแหล่งเดียว — ทุกค่าคือของที่ตรวจแล้วจากหน้าร้านจริง
 
 import { searchIndex } from "./searchIndex";
-import acPriceCsvRaw from "./price-history/air-conditioners.csv?raw";
+import { latestSeenPrice } from "./acPriceLedger";
 
-// ราคาที่เคยเห็นจริงล่าสุดรายรุ่น จาก ledger (วันเดียวกันมีทั้ง list/promo ใช้ promo เพราะคือราคาจ่ายจริง)
-export const latestSeenPrice: Record<string, { price: number; date: string; priceType: string }> = {};
-for (const line of acPriceCsvRaw.trim().split(/\r?\n/).slice(1)) {
-  const [productKey, date, price, priceType] = line.split(",");
-  if (!productKey) continue;
-  const current = latestSeenPrice[productKey];
-  if (!current || date > current.date || (date === current.date && priceType === "promo")) {
-    latestSeenPrice[productKey] = { price: Number(price), date, priceType };
-  }
-}
+// ราคาที่เคยเห็นจริงล่าสุดรายรุ่น — ย้ายไป ./acPriceLedger (โมดูลกลาง กัน circular import) re-export เพื่อให้หน้าเดิมใช้ได้ต่อ
+export { latestSeenPrice };
 
 // ยอดขายที่เห็นจริง (กติกา B+D: Shopee ไม่โชว์ = null ห้ามเดา) — จาก searchIndex
 export const soldBySlug = new Map(

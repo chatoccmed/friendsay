@@ -4,6 +4,7 @@
 
 import { airConditioners } from "./airConditioners";
 import { rainySections } from "./rainyGear";
+import { latestSeenPrice } from "./acPriceLedger";
 
 export type SearchItem = {
   id: string;
@@ -27,14 +28,15 @@ export type SearchItem = {
 const AC_KEYWORDS = ["แอร์", "เครื่องปรับอากาศ", "แอร์ติดผนัง", "air"];
 const INVERTER_KEYWORDS = ["อินเวอร์เตอร์", "inverter", "ประหยัดไฟ"];
 
-// ข้อมูลเสริมรายรุ่นที่ไม่มีใน airConditioners.ts: ราคาเป็นตัวเลข, ยอดขายที่เห็นจริง, ปลายทางรีวิว
+// ข้อมูลเสริมรายรุ่นที่ไม่มีใน airConditioners.ts: ยอดขายที่เห็นจริง, ปลายทางรีวิว
+// ราคา: ตัวเลขดึงจาก ledger CSV (แหล่งเดียว — แก้ CSV แล้วอัปเดตทุกที่เอง) ส่วน priceNote
+// คือบริบทของราคานั้น ("หลังคูปอง"/"ช่วง Flash Sale") — priceLabelOverride ใช้เฉพาะเคสพิเศษ เช่น ราคาเป็นช่วง
 const acExtras: Record<
   string,
-  { priceNum: number; priceLabel: string; soldNum: number | null; soldLabel: string; href: string; inverter: boolean; extraKeywords: string[]; blurb: string }
+  { priceNote: string; priceLabelOverride?: string; soldNum: number | null; soldLabel: string; href: string; inverter: boolean; extraKeywords: string[]; blurb: string }
 > = {
   "candy-vpct-vpgt-series": {
-    priceNum: 7995,
-    priceLabel: "~7,995.- หลังคูปอง",
+    priceNote: "หลังคูปอง",
     soldNum: null,
     soldLabel: "ยอดขายไม่แสดง · รีวิว 10.4พัน รายการ",
     href: "/th/reviews/candy-vpct-vpgt-air-conditioner/",
@@ -43,8 +45,7 @@ const acExtras: Record<
     blurb: "อินเวอร์เตอร์ราคาไม่แรงที่รีวิวแน่นสุดในกลุ่ม (10.4พัน รายการ)"
   },
   "tcl-savein-ai-series": {
-    priceNum: 8590,
-    priceLabel: "~8,590.- หลังคูปอง",
+    priceNote: "หลังคูปอง",
     soldNum: null,
     soldLabel: "ยอดขายไม่แสดง · รีวิว 9.2พัน รายการ",
     href: "/th/reviews/tcl-savein-ai-air-conditioner/",
@@ -53,8 +54,7 @@ const acExtras: Record<
     blurb: "Full DC Inverter แบรนด์ใหญ่ BTU ให้เลือกกว้าง 9,200-24,200"
   },
   "xiaomi-mijia-air-inverter-eco": {
-    priceNum: 7924,
-    priceLabel: "~7,924.-",
+    priceNote: "",
     soldNum: null,
     soldLabel: "ยอดขายไม่แสดง · รีวิว 4.3พัน รายการ",
     href: "/th/reviews/xiaomi-mijia-air-inverter-eco/",
@@ -63,8 +63,8 @@ const acExtras: Record<
     blurb: "คุมผ่านแอป Mi Home ได้ เหมาะสาย Xiaomi ecosystem"
   },
   "midea-celest-msce": {
-    priceNum: 7490,
-    priceLabel: "~7,490-8,490.-",
+    priceNote: "",
+    priceLabelOverride: "~7,490-8,490.-",
     soldNum: null,
     soldLabel: "ยอดขายไม่แสดง · รีวิว 193 รายการ",
     href: "/th/reviews/midea-celest-msce-air-conditioner/",
@@ -73,8 +73,7 @@ const acExtras: Record<
     blurb: "ราคาเริ่มถูกสุดในกลุ่ม จุดขายเรื่องประกัน — แต่ไม่รวมติดตั้ง"
   },
   "daikin-ftkb-sabai-series": {
-    priceNum: 12875,
-    priceLabel: "~12,875.- ช่วง Flash Sale",
+    priceNote: "ช่วง Flash Sale",
     soldNum: 10000,
     soldLabel: "ขายแล้ว 10พัน+ เครื่อง",
     href: "/th/best/air-conditioners/#daikin-ftkb-sabai-series",
@@ -83,8 +82,7 @@ const acExtras: Record<
     blurb: "แบรนด์ญี่ปุ่นรีวิวแน่นสุด 6.2พัน รายการ คะแนนเต็ม 5.0"
   },
   "hisense-ce-series": {
-    priceNum: 8452,
-    priceLabel: "~8,452.- ช่วง Flash Sale",
+    priceNote: "ช่วง Flash Sale",
     soldNum: 10000,
     soldLabel: "ขายแล้ว 10พัน+ เครื่อง",
     href: "/th/best/air-conditioners/#hisense-ce-series",
@@ -93,8 +91,7 @@ const acExtras: Record<
     blurb: "อินเวอร์เตอร์ถูกสุดจากร้าน official + ประกันคอม 12 ปี"
   },
   "haier-vqec-series": {
-    priceNum: 9545,
-    priceLabel: "~9,545.- หลังโค้ดร้าน",
+    priceNote: "หลังโค้ดร้าน",
     soldNum: 8000,
     soldLabel: "ขายแล้ว 8พัน+ เครื่อง",
     href: "/th/best/air-conditioners/#haier-vqec-series",
@@ -103,8 +100,7 @@ const acExtras: Record<
     blurb: "ต่ำหมื่นจากร้าน official แจ้งค่า SEER ชัดทุกขนาด ประกันคอม 10 ปี"
   },
   "mitsubishi-msy-ka-vf-series": {
-    priceNum: 14668,
-    priceLabel: "~14,668.- ช่วง Flash Sale",
+    priceNote: "ช่วง Flash Sale",
     soldNum: 2000,
     soldLabel: "ขายแล้ว 2พัน+ เครื่อง",
     href: "/th/best/air-conditioners/#mitsubishi-msy-ka-vf-series",
@@ -113,8 +109,7 @@ const acExtras: Record<
     blurb: "แบรนด์ญี่ปุ่นที่รีวิวชมเรื่องความเงียบมากที่สุด เหมาะห้องนอน"
   },
   "panasonic-cs-cu-yu9zkt": {
-    priceNum: 12750,
-    priceLabel: "~12,750.- ช่วง Flash Sale",
+    priceNote: "ช่วง Flash Sale",
     soldNum: 267,
     soldLabel: "ขายแล้ว 267 เครื่อง",
     href: "/th/reviews/panasonic-cs-cu-yu9zkt-air-conditioner/",
@@ -123,8 +118,7 @@ const acExtras: Record<
     blurb: "ร้าน official ที่แจกแจงค่าติดตั้งทุกรายการชัดที่สุดในกลุ่ม"
   },
   "panasonic-cs-cu-yn9ykt": {
-    priceNum: 12750,
-    priceLabel: "~12,750.- ช่วง Flash Sale",
+    priceNote: "ช่วง Flash Sale",
     soldNum: 428,
     soldLabel: "ขายแล้ว 428 เครื่อง",
     href: "/th/reviews/panasonic-cs-cu-yn9ykt-air-conditioner/",
@@ -182,14 +176,20 @@ const rainySectionHref: Record<string, string> = {
 const acItems: SearchItem[] = airConditioners.map((product) => {
   const extra = acExtras[product.slug];
   if (!extra) throw new Error(`searchIndex: missing acExtras for ${product.slug}`);
+  // ราคาจาก ledger CSV แหล่งเดียว — ถ้ารุ่นไหนไม่มีใน CSV ให้ build พังทันที ดีกว่าราคาเงียบ ๆ หาย
+  const ledger = latestSeenPrice[product.slug];
+  if (!ledger) throw new Error(`searchIndex: missing price ledger entry for ${product.slug} in price-history/air-conditioners.csv`);
+  const priceLabel =
+    extra.priceLabelOverride ??
+    `~${ledger.price.toLocaleString("th-TH")}.-${extra.priceNote ? ` ${extra.priceNote}` : ""}`;
   return {
     id: product.slug,
     name: product.name,
     shortName: product.shortName,
     category: "แอร์",
     keywords: [...AC_KEYWORDS, ...(extra.inverter ? INVERTER_KEYWORDS : []), ...extra.extraKeywords],
-    priceNum: extra.priceNum,
-    priceLabel: extra.priceLabel,
+    priceNum: ledger.price,
+    priceLabel,
     soldNum: extra.soldNum,
     soldLabel: extra.soldLabel,
     rating: product.rating,
