@@ -4,7 +4,8 @@
 // ราคาเป็นราคาโดยประมาณ ณ วันเก็บ — ปุ่มซื้อคือ short link affiliate ที่สร้างจริงต่อรายการ
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
-import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
+import VideoClip from "../../../components/VideoClip.astro";
+import { faqSchema, breadcrumbSchema, videoSchema } from "../../../utils/jsonLd";
 
 export async function getStaticPaths() {
   const modules = import.meta.glob("../../../data/catalog/*.json", { eager: true });
@@ -87,6 +88,11 @@ const breadcrumbJsonLd = breadcrumbSchema([
   { name: "สินค้ายอดฮิต", item: "https://friendsay.com/th/c/" },
   { name: catalog.title, item: `https://friendsay.com/th/c/${catalog.slug}/` }
 ]);
+
+// คลิปรีวิวสั้น (hidden-until-data): หมวดไหนมี field "video" ใน JSON ค่อยโชว์ — ดูโครง field ใน VideoClip.astro
+const videoJsonLd = catalog.video
+  ? videoSchema(catalog.video, `https://friendsay.com/th/c/${catalog.slug}/`)
+  : null;
 ---
 
 <BaseLayout
@@ -98,6 +104,7 @@ const breadcrumbJsonLd = breadcrumbSchema([
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   {catalog.faqs?.length ? <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} /> : null}
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  {videoJsonLd ? <script type="application/ld+json" set:html={JSON.stringify(videoJsonLd)} /> : null}
 
   <section class="page-hero cat-hero">
     <div class="container">
@@ -151,6 +158,21 @@ const breadcrumbJsonLd = breadcrumbSchema([
       </div>
     </div>
   </section>
+
+  {catalog.video ? (
+    <section class="section" id="clip">
+      <div class="container">
+        <p class="eyebrow">ดูก่อนตัดสินใจ</p>
+        <h2 class="headline">คลิปสรุปหมวดนี้ใน 30 วินาที</h2>
+        <div style="margin-top: 18px;">
+          <VideoClip video={catalog.video} context={`catalog-${catalog.slug}`} />
+        </div>
+        <p class="compare-note" style="margin-top: 12px;">
+          คลิปสรุปจากข้อมูลชุดเดียวกับหน้านี้ — ตัวเลขทั้งหมดตรวจย้อนได้ในตารางด้านล่าง
+        </p>
+      </div>
+    </section>
+  ) : null}
 
   <section class="section" id="overview">
     <div class="container">

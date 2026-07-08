@@ -14,6 +14,38 @@ export const faqSchema = (faqs: FaqItem[]) => ({
   }))
 });
 
+export type VideoInfo = {
+  platform: "youtube" | "tiktok";
+  id: string;
+  title: string;
+  description: string;
+  uploadDate: string; // YYYY-MM-DD
+  duration?: string; // ISO 8601 เช่น "PT28S"
+  thumbnail?: string; // path ในเว็บ — youtube ไม่ใส่ก็ได้ (ใช้ i.ytimg.com อัตโนมัติ)
+};
+
+export const videoEmbedUrl = (video: VideoInfo) =>
+  video.platform === "youtube"
+    ? `https://www.youtube-nocookie.com/embed/${video.id}`
+    : `https://www.tiktok.com/embed/v2/${video.id}`;
+
+export const videoThumbnailUrl = (video: VideoInfo) =>
+  video.thumbnail ?? (video.platform === "youtube" ? `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg` : "");
+
+export const videoSchema = (video: VideoInfo, pageUrl: string) => ({
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  name: video.title,
+  description: video.description,
+  thumbnailUrl: videoThumbnailUrl(video).startsWith("/")
+    ? `https://friendsay.com${videoThumbnailUrl(video)}`
+    : videoThumbnailUrl(video),
+  uploadDate: video.uploadDate,
+  ...(video.duration ? { duration: video.duration } : {}),
+  embedUrl: videoEmbedUrl(video),
+  url: pageUrl
+});
+
 export type BreadcrumbItem = { name: string; item: string };
 
 export const breadcrumbSchema = (items: BreadcrumbItem[]) => ({

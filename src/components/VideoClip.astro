@@ -1,0 +1,152 @@
+---
+// คลิปรีวิวสั้นแบบ facade: หน้าเว็บโหลดแค่ภาพ thumbnail + ปุ่มเล่น (ไม่มี iframe/JS ภายนอก)
+// กดเล่นแล้วค่อยสลับเป็น iframe จริง — ไม่ถ่วง LCP และไม่ยิง request ไป YouTube/TikTok ก่อนผู้ใช้ตั้งใจดู
+//
+// วิธีใช้กับหมวด catalog: เติม field "video" ใน src/data/catalog/<slug>.json แล้วทุกอย่างโผล่เอง
+//   "video": {
+//     "platform": "youtube",            // youtube | tiktok
+//     "id": "<video id>",
+//     "title": "หม้อหุงข้าว 10 อันดับขายดีจริงบน Shopee",
+//     "description": "สรุป 3 อันดับแรก + จุดระวังก่อนซื้อ ใน 30 วินาที",
+//     "uploadDate": "2026-07-08",
+//     "duration": "PT30S",              // (ไม่บังคับ) ISO 8601
+//     "thumbnail": "/images/..."        // (ไม่บังคับ) youtube ดึงจาก i.ytimg.com ให้เอง
+//   }
+// หมายเหตุ CSP: อนุญาตเฉพาะ youtube-nocookie.com กับ tiktok.com ใน frame-src แล้ว (public/_headers)
+import { videoEmbedUrl, videoThumbnailUrl, type VideoInfo } from "../utils/jsonLd";
+
+type Props = { video: VideoInfo; context: string };
+const { video, context } = Astro.props;
+
+const embedUrl = videoEmbedUrl(video);
+const thumbUrl = videoThumbnailUrl(video);
+// TikTok คลิปแนวตั้ง 9:16 / YouTube แนวนอน 16:9
+const isVertical = video.platform === "tiktok";
+---
+
+<div
+  class={`video-clip ${isVertical ? "is-vertical" : ""}`}
+  data-video-facade
+  data-video-embed={embedUrl}
+  data-video-context={context}
+>
+  <button class="video-clip-face" type="button" aria-label={`เล่นคลิป: ${video.title}`}>
+    {thumbUrl ? (
+      <img src={thumbUrl} alt={`ตัวอย่างคลิป ${video.title}`} loading="lazy" width={isVertical ? 405 : 480} height={isVertical ? 720 : 360} />
+    ) : (
+      <span class="video-clip-blank" aria-hidden="true"></span>
+    )}
+    <span class="video-clip-play" aria-hidden="true">▶</span>
+    <span class="video-clip-note">คลิปสรุปสั้น · โหลดเมื่อกดเล่น</span>
+  </button>
+</div>
+
+{/* data-astro-rerun: ผูกกับ element ในหน้า ต้องรันใหม่ทุกครั้งที่ ClientRouter สลับหน้า */}
+<script is:inline data-astro-rerun>
+  (() => {
+    for (const box of document.querySelectorAll("[data-video-facade]:not([data-video-ready])")) {
+      box.setAttribute("data-video-ready", "1");
+      const face = box.querySelector(".video-clip-face");
+      if (!face) continue;
+      face.addEventListener("click", () => {
+        const iframe = document.createElement("iframe");
+        iframe.src = box.getAttribute("data-video-embed") + (box.getAttribute("data-video-embed").includes("youtube") ? "?autoplay=1" : "");
+        iframe.title = face.getAttribute("aria-label") || "คลิปรีวิว";
+        iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture");
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("loading", "lazy");
+        box.replaceChildren(iframe);
+        // gtag ต้องเรียกตรง ๆ (dataLayer object push ไปไม่ถึง GA4) — dev ไม่มี gtag ให้ข้ามเงียบ ๆ
+        if (typeof window.gtag === "function") {
+          window.gtag("event", "friendsay_video_play", { video_context: box.getAttribute("data-video-context") || "" });
+        }
+      }, { once: true });
+    }
+  })();
+</script>
+
+<style>
+  .video-clip {
+    position: relative;
+    overflow: hidden;
+    max-width: 640px;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: #17202a;
+    box-shadow: var(--shadow-soft);
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-clip.is-vertical {
+    max-width: 320px;
+    aspect-ratio: 9 / 16;
+  }
+
+  .video-clip :global(iframe) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .video-clip-face {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .video-clip-face img,
+  .video-clip-blank {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition: opacity 180ms ease, transform 220ms ease;
+  }
+
+  .video-clip-face:hover img {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+
+  .video-clip-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    background: rgba(255, 107, 90, 0.94);
+    color: #fff;
+    font-size: 1.4rem;
+    transform: translate(-50%, -50%);
+    transition: transform 180ms ease;
+    padding-left: 5px;
+  }
+
+  .video-clip-face:hover .video-clip-play {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+
+  .video-clip-note {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    border-radius: 999px;
+    background: rgba(23, 32, 42, 0.85);
+    padding: 4px 12px;
+    color: #fff;
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+</style>
