@@ -38,9 +38,9 @@
 | 1 | versus: หน้า X vs Y programmatic + "ทำไม X ดีกว่า Y" ระบุตัวเลข 2 ทิศ + ตาข่ายคู่เทียบ | **/th/vs/<a>-vs-<b>/ 45 คู่จากคลังแอร์ 10 รุ่น** — สร้างจาก verdict engine + 8 แกนคะแนน + ledger ราคา + ยอดขาย | ✅ ทำรอบนี้ |
 | 2 | versus: "N FACTS IN COMPARISON" | ป้าย "เทียบจาก N จุดข้อมูลจริง" บนหน้า vs | ✅ ทำรอบนี้ |
 | 3 | versus: คำอธิบายรายแกน "ค่านี้สำคัญยังไง" | คำอธิบายสั้นใต้ 8 แกนคะแนนบนหน้า vs | ✅ ทำรอบนี้ |
-| 4 | rtings: ตัวเลข bought-and-tested | แถบ "ตรวจจริง X รุ่น · บันทึก Y จุดราคา · รีวิวที่ไล่อ่าน Z รายการ" บน hub — คำนวณจาก data | ⬜ คิวถัดไป |
-| 5 | rtings: Review Pipeline สาธารณะ | รีเฟรมหน้าคิวรีวิว (/th/reviews/air-conditioners/) เป็น "Pipeline: กำลังตรวจอะไร" + ลิงก์จาก hub | ⬜ คิวถัดไป |
-| 6 | Wirecutter: changelog ต่อหน้า | บล็อก "ประวัติอัปเดตหน้านี้" (เก็บเป็น array ใน data) | ⬜ รอ |
+| 4 | rtings: ตัวเลข bought-and-tested | แถบ "ตรวจจริง X รุ่น · บันทึก Y จุดราคา · รีวิวที่ไล่อ่าน Z รายการ" บน hub — คำนวณจาก data | ✅ trust-strip บน hub (trustModelCount/trustRatingsTotal/trustPricePoints จาก data) |
+| 5 | rtings: Review Pipeline สาธารณะ | รีเฟรมหน้าคิวรีวิว (/th/reviews/air-conditioners/) เป็น "Pipeline: กำลังตรวจอะไร" + ลิงก์จาก hub | ✅ Review Pipeline บน index รีวิว |
+| 6 | Wirecutter: changelog ต่อหน้า | บล็อก "ประวัติอัปเดตหน้านี้" (เก็บเป็น array ใน data) | ✅ `PageChangelog.astro` + `src/data/pageUpdates.ts` บน 3 หน้าหลัก (แอร์ hub/งบต่ำกว่าหมื่น/หน้าฝน) — เพิ่ม entry ใหม่ทุกครั้งที่เก็บข้อมูลรอบใหม่ + ต้องตรงกับ updatedLabel |
 | 7 | idealo: ตัวชี้ราคาดี/แพง | "ราคานี้ดีไหม" chip เมื่อ ledger มี >3 จุด/รุ่น | ⬜ รอข้อมูลสะสม |
 | 8 | Wirecutter: ตัวตนผู้เขียน/ทีม | หน้า "เราเป็นใคร ทำงานยังไง" มีรูป/เรื่องจริงของเจ้าของ | ⬜ รอเจ้าของ |
 

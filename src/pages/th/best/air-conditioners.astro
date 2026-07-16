@@ -3,6 +3,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PriceButtons from "../../../components/PriceButtons.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import PageChangelog from "../../../components/PageChangelog.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { faqSchema } from "../../../utils/jsonLd";
 import acPriceCsvRaw from "../../../data/price-history/air-conditioners.csv?raw";
@@ -246,6 +247,7 @@ const faqJsonLd = faqSchema(faqs);
           <p>รีวิวเดี่ยวต้องตอบว่าเหมาะกับใคร ไม่เหมาะกับใคร และมีเช็กลิสต์ก่อนกดซื้อ</p>
         </article>
       </div>
+      <PageChangelog pageKey="air-conditioners" />
     </div>
   </section>
 

@@ -3,6 +3,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PriceButtons from "../../../components/PriceButtons.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import PageChangelog from "../../../components/PageChangelog.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { faqSchema } from "../../../utils/jsonLd";
 
@@ -363,6 +364,7 @@ const scenarioCards = scenarios.map((s) => ({
       <p class="eyebrow">เกณฑ์คัดเลือก</p>
       <h2 class="headline">ทำไมเหลือแค่ 6 รุ่นนี้</h2>
       <p class="muted" style="max-width: 760px;">{intro.methodologyNote}</p>
+      <PageChangelog pageKey="air-conditioners-under-10000" />
     </div>
   </section>
 
