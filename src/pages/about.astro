@@ -1,35 +1,216 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pillars = [
+  {
+    key: "verdict",
+    tag: "ฟันธง",
+    title: "บอกว่ารุ่นไหนควรซื้อ — และรุ่นไหนควรเลี่ยง",
+    body: "เว็บเทียบราคาบอกได้แค่ 'ที่ไหนถูก' แต่ไม่บอก 'อันไหนดีกว่า' เราคัดให้เหลือตัวเด่นต่อโจทย์ พร้อมกล้าบอกตัวที่ไม่ควรซื้อและเหตุผล"
+  },
+  {
+    key: "evidence",
+    tag: "พิสูจน์ย้อนได้",
+    title: "ทุกคำฟันธงมีหลักฐานกำกับ",
+    body: "ราคา ยอดขาย รีวิว มีวันเก็บข้อมูลกำกับทุกจุด มีตารางเทียบ กราฟ price ledger และประวัติอัปเดตให้ตรวจย้อน — ไม่ใช่ความรู้สึก"
+  },
+  {
+    key: "neutral",
+    tag: "เป็นกลาง",
+    title: "เราไม่มีของขาย จึงเชียร์ได้ทุกยี่ห้อ",
+    body: "ร้านออนไลน์จัดอันดับได้เฉพาะของที่ตัวเองสต็อก สื่อบางเจ้ารับสปอนเซอร์ Friendsay ไม่สต็อกสินค้าเอง ไม่รับเงินจัดอันดับ อันดับจึงซื้อไม่ได้"
+  }
+];
+
+const howWeWork = [
+  { n: "01", t: "เปิดหน้าร้านจริงทีละหน้า", d: "เก็บราคา ยอดขาย รีวิว ภาพสินค้าจริง พร้อมวันที่เก็บข้อมูล ถ้า Shopee ไม่โชว์ยอดขาย เราเขียน 'ไม่แสดง' ตรง ๆ ไม่เดาตัวเลข" },
+  { n: "02", t: "คัดด้วยเกณฑ์ที่ประกาศไว้", d: "รุ่นที่ขึ้นอันดับต้องมีรีวิว/ยอดขายมากพอและร้านน่าเชื่อถือ คะแนนถ่วงน้ำหนักจากความนิยม ความคุ้ม ประกัน ความเสี่ยงติดตั้ง ฯลฯ" },
+  { n: "03", t: "บอกจุดระวังก่อนปุ่มซื้อ", d: "ค่าติดตั้งที่บวกเพิ่ม เงื่อนไขเคลม สเปกที่ตั้งชื่อหลอก คำเคลมการตลาดที่เกินจริง — เราชี้ให้เห็นก่อนจ่าย" },
+  { n: "04", t: "เปิดเผยรายได้ทุกจุด", d: "ลิงก์ไปร้านเป็นลิงก์พันธมิตร (affiliate) ถ้าซื้อผ่านเราได้ค่าคอมเล็กน้อยโดยคุณไม่จ่ายแพงขึ้น — ค่าคอมไม่มีผลต่ออันดับ" }
+];
 ---
 
 <BaseLayout
-  title="About Friendsay"
-  description="Friendsay คือเว็บรีวิวสินค้าแบบเพื่อนช่วยเลือก ที่ให้ความสำคัญกับความจริงใจและประโยชน์ของคนซื้อ"
+  title="เราไม่มีของขาย เราถึงเชียร์ได้ทุกยี่ห้อ | เกี่ยวกับ Friendsay"
+  description="Friendsay เป็นเว็บช่วยตัดสินใจซื้อที่ฟันธงได้ พิสูจน์ย้อนได้ และเป็นกลางเพราะไม่มีของขายเอง — อ่านว่าเราทำงานยังไง คัดยังไง และหาเงินยังไงแบบโปร่งใส"
   canonical="https://friendsay.com/about/"
 >
-  <section class="page-hero band">
+  <section class="page-hero band about-hero">
     <div class="container">
-      <p class="eyebrow">About</p>
-      <h1 class="headline">Friendsay คือเพื่อนที่ช่วยเลือกของ แต่ทำการบ้านเหมือนมืออาชีพ</h1>
+      <p class="eyebrow">เกี่ยวกับ Friendsay</p>
+      <h1 class="headline">เราไม่มีของขาย เราถึงเชียร์ได้ทุกยี่ห้อ<br />และกล้าบอกตัวที่ไม่ควรซื้อ</h1>
       <p class="subhead">
-        เป้าหมายของเราคือทำให้คนซื้อของตัดสินใจได้ดีขึ้น ประหยัดเวลา ลดโอกาสซื้อพลาด และเข้าใจข้อแลกเปลี่ยนก่อนกดสั่งซื้อ
+        Friendsay คือเว็บช่วยตัดสินใจซื้อของภาษาไทย ที่พยายามยืนอยู่ตรงกลางระหว่าง "เว็บเทียบราคาที่ไม่ฟันธง"
+        กับ "สื่อรีวิวที่มีของขายหรือมีสปอนเซอร์" — เราคัดให้ ฟันธงให้ พร้อมหลักฐานให้ตรวจย้อน โดยไม่มีแรงจูงใจให้บิดคำแนะนำ
       </p>
     </div>
   </section>
-  <section class="section">
-    <div class="container grid-3">
-      <div class="policy-card">
-        <h2>จริงใจ</h2>
-        <p>ทุกรีวิวต้องมีข้อดี ข้อเสีย เหมาะกับใคร และไม่เหมาะกับใคร</p>
+
+  <section class="section" id="pillars">
+    <div class="container">
+      <p class="eyebrow">จุดยืน 3 ขา</p>
+      <h2 class="headline">สิ่งที่ทำให้ Friendsay ต่างจากทั้งเว็บราคาและสื่อรีวิว</h2>
+      <div class="about-pillars">
+        {pillars.map((p) => (
+          <article class="about-pillar" id={p.key}>
+            <span class="badge badge-teal">{p.tag}</span>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </article>
+        ))}
       </div>
-      <div class="policy-card">
-        <h2>ตรวจสอบได้</h2>
-        <p>คำแนะนำต้องมีที่มาจากข้อมูลสินค้า รีวิวผู้ใช้ ราคา หรือการใช้งานจริง</p>
+    </div>
+  </section>
+
+  <section class="section band" id="how-we-work">
+    <div class="container">
+      <p class="eyebrow">เราทำงานยังไง</p>
+      <h2 class="headline">ทุกคำแนะนำมาจากการเปิดหน้าร้านจริง ไม่ใช่การเดา</h2>
+      <div class="about-steps">
+        {howWeWork.map((s) => (
+          <article class="about-step">
+            <span>{s.n}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </article>
+        ))}
       </div>
-      <div class="policy-card">
-        <h2>ใช้งานง่าย</h2>
-        <p>ข้อมูลต้องอ่านง่าย เทียบง่าย และช่วยให้ตัดสินใจได้เร็วขึ้นจริง</p>
+      <div class="about-honesty">
+        <strong>พูดกันตรง ๆ เรื่องวิธีทำงาน:</strong>
+        Friendsay ทำโดยทีมเล็กร่วมกับ AI ช่วยวิเคราะห์และเรียบเรียง — <b>เราไม่มีสินค้าจริงในมือ ไม่ได้จับเครื่องทดสอบเอง</b>
+        เราจึงไม่โชว์ตัวเลข "ทดสอบมาแล้ว X ชิ้น" หรืออ้างว่าใช้เอง สิ่งที่เราทำคือ <b>อ่านหลักฐานและรีวิวจริงแทนคุณทั้งหมด</b>
+        แล้วสรุปให้ตัดสินใจได้เร็วขึ้น คนเป็นคนตั้งเกณฑ์และตรวจตัวเลขก่อนเผยแพร่เสมอ
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="neutral">
+    <div class="container about-neutral">
+      <p class="eyebrow">ความเป็นกลาง</p>
+      <h2 class="headline">ทำไมอันดับของเรา "ซื้อไม่ได้"</h2>
+      <p class="about-neutral-lead">
+        เราไม่ได้สต็อกสินค้าเอง ไม่รับเงินหรือของแลกกับการจัดอันดับ และไม่มี "ป้ายแนะนำ" ให้แบรนด์เช่า
+        แบดจ์ <span class="neutral-inline">ไม่มีของขาย · จัดอันดับได้ทุกยี่ห้อ</span> ที่คุณเห็นบนหน้าจัดอันดับ หมายความตามนั้นจริง ๆ
+      </p>
+      <ul class="about-neutral-list">
+        <li>อันดับมาจากหลักฐานตามเกณฑ์ที่ประกาศไว้ ไม่ใช่ค่าคอมสูงสุด — รุ่นที่เราเตือนว่า "ควรเลี่ยง" จะไม่มีลิงก์ affiliate ให้กด</li>
+        <li>เราเปิดเผยลิงก์พันธมิตรทุกจุด อ่านรายละเอียดได้ที่ <a href="/affiliate-disclosure/">หน้าความโปร่งใส affiliate</a></li>
+        <li>เกณฑ์การให้คะแนนและน้ำเสียงอยู่ที่ <a href="/editorial-policy/">มาตรฐานรีวิว</a> ตรวจสอบย้อนได้</li>
+      </ul>
+      <div class="roundup-actions" style="margin-top: 20px;">
+        <a class="button button-primary" href="/th/best/air-conditioners/">ดูตัวอย่างหน้าจัดอันดับ</a>
+        <a class="button" href="/affiliate-disclosure/">อ่านนโยบายความโปร่งใส</a>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .about-hero .headline {
+    max-width: 900px;
+    line-height: 1.14;
+  }
+  .about-hero .subhead {
+    max-width: 780px;
+  }
+  .about-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 22px;
+  }
+  .about-pillar {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.94);
+    padding: 22px;
+    box-shadow: var(--shadow-soft);
+  }
+  .about-pillar h3 {
+    margin: 0;
+    font-size: 1.16rem;
+    line-height: 1.3;
+  }
+  .about-pillar p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .about-steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .about-step {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    border: 1px solid rgba(223, 208, 186, 0.9);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 18px;
+  }
+  .about-step span {
+    color: var(--coral);
+    font-size: 1.2rem;
+    font-weight: 950;
+  }
+  .about-step h3 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  .about-step p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .about-honesty {
+    max-width: 900px;
+    margin-top: 22px;
+    border-left: 3px solid var(--coral);
+    border-radius: 8px;
+    background: rgba(255, 240, 234, 0.55);
+    padding: 18px 20px;
+    color: #5a4a44;
+    line-height: 1.72;
+  }
+  .about-neutral-lead {
+    max-width: 820px;
+    color: var(--ink-soft);
+    font-size: 1.06rem;
+    line-height: 1.7;
+  }
+  .neutral-inline {
+    display: inline-block;
+    border-radius: 999px;
+    background: var(--mint);
+    padding: 2px 12px;
+    color: #08756e;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .about-neutral-list {
+    display: grid;
+    gap: 10px;
+    max-width: 820px;
+    margin: 18px 0 0;
+    padding-left: 20px;
+  }
+  .about-neutral-list li {
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  @media (max-width: 900px) {
+    .about-pillars { grid-template-columns: 1fr; }
+    .about-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
+    .about-steps { grid-template-columns: 1fr; }
+  }
+</style>

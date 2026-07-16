@@ -1,0 +1,44 @@
+---
+// แบดจ์จุดยืน "ไม่มีของขาย · จัดอันดับได้ทุกยี่ห้อ" → ลิงก์หน้า About ส่วนความเป็นกลาง
+// ใช้บนหน้าจัดอันดับ/เทียบ/catalog เพื่อชูจุดขายที่คู่แข่งลอกไม่ได้ (ร้าน/สื่อรับสปอนเซอร์ทำไม่ได้)
+---
+
+<a class="neutrality-badge" href="/about/#neutral" title="ทำไมอันดับของเราซื้อไม่ได้">
+  <span class="neutrality-badge-mark" aria-hidden="true">⚖︎</span>
+  <span>ไม่มีของขาย · จัดอันดับได้ทุกยี่ห้อ</span>
+</a>
+
+<style>
+  .neutrality-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(46, 196, 182, 0.4);
+    border-radius: 999px;
+    background: var(--mint);
+    padding: 6px 14px 6px 10px;
+    color: #08756e;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  }
+
+  .neutrality-badge:hover {
+    transform: translateY(-1px);
+    border-color: rgba(46, 196, 182, 0.7);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .neutrality-badge-mark {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: #08756e;
+    color: #fff;
+    font-size: 0.8rem;
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import NeutralityBadge from "../../../components/NeutralityBadge.astro";
 import PriceButtons from "../../../components/PriceButtons.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
@@ -165,6 +166,7 @@ const scenarioCards = scenarios.map((s) => ({
         <span class="badge badge-teal">อัปเดต {updatedLabel}</span>
         <span class="badge badge-blue">6 รุ่นตรวจหลักฐานแล้ว</span>
       </div>
+      <div style="margin-top: 14px;"><NeutralityBadge /></div>
       <h1>แอร์ต่ำกว่า 10,000 บาท 2026: 6 รุ่นอินเวอร์เตอร์ที่ตรวจหลักฐานจริงมาแล้ว</h1>
       <p class="muted budget-hero-kicker">{intro.heroKicker}</p>
       <div class="roundup-actions">

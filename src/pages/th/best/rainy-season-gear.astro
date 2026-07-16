@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import NeutralityBadge from "../../../components/NeutralityBadge.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import PageChangelog from "../../../components/PageChangelog.astro";
 
@@ -69,6 +70,7 @@ const faqJsonLd = faqSchema(faqs);
         <span class="badge badge-teal">ฤดูฝน 2026</span>
         <span class="badge badge-coral">อัปเดต {updatedLabel}</span>
       </div>
+      <div style="margin-top: 14px;"><NeutralityBadge /></div>
       <h1>ของสู้หน้าฝน: 7 ตัวช่วยผ้าแห้ง รองเท้าหอม บ้านไม่ขึ้นรา</h1>
       <p class="muted">
         ทุกชิ้นในหน้านี้เราเปิดหน้าสินค้าจริงและเห็นยอดขายจริงก่อนแนะนำ (ต่ำสุด 772 ชิ้น สูงสุด 10,000+ ชิ้น)
