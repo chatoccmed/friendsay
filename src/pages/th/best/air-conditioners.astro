@@ -94,6 +94,22 @@ const compareExtras: Record<string, { priceShort: string; soldLabel: string; war
   "panasonic-cs-cu-yn9ykt": { priceShort: "~12,750.-", soldLabel: "428", warrantyShort: "ผู้ผลิต (ถามปีคอม)", fitShort: "ตัวธรรมดา Non-Inverter เปิดใช้ช่วงสั้น ๆ" }
 };
 
+// ตาข่ายลิงก์ภายใน: roundup -> หน้าเทียบรายคู่ (versus-style mesh) — pair slug เรียงตาม index ให้ตรงกับที่ /th/vs/ generate
+const acIdxOf = (slug: string) => airConditioners.findIndex((p) => p.slug === slug);
+const vsPairHref = (x: string, y: string) => {
+  const [first, second] = acIdxOf(x) < acIdxOf(y) ? [x, y] : [y, x];
+  return `/th/vs/${first}-vs-${second}/`;
+};
+const sn = (slug: string) => airConditioners.find((p) => p.slug === slug)?.shortName ?? slug;
+const popularVsPairs = [
+  { a: "daikin-ftkb-sabai-series", b: "hisense-ce-series", note: "อันดับ 1 ปะทะตัวคุ้มสุดต่ำหมื่น" },
+  { a: "candy-vpct-vpgt-series", b: "tcl-savein-ai-series", note: "สองตัวคุมงบรีวิวแน่นที่คนชั่งใจบ่อย" },
+  { a: "hisense-ce-series", b: "haier-vqec-series", note: "official ต่ำหมื่นชนกัน ประกันคอมยาวทั้งคู่" },
+  { a: "mitsubishi-msy-ka-vf-series", b: "panasonic-cs-cu-yu9zkt", note: "ญี่ปุ่นเงียบ vs official ที่แจงค่าติดตั้งชัด" },
+  { a: "daikin-ftkb-sabai-series", b: "mitsubishi-msy-ka-vf-series", note: "ญี่ปุ่นตัวท็อป รีวิวแน่น vs เงียบสุด" },
+  { a: "xiaomi-mijia-air-inverter-eco", b: "midea-celest-msce", note: "สาย smart home vs ตัวเริ่มถูกสุด" }
+].map((p) => ({ href: vsPairHref(p.a, p.b), label: `${sn(p.a)} vs ${sn(p.b)}`, note: p.note }));
+
 const faqs = [
   {
     q: "ราคาในหน้านี้ใช้ได้ถึงเมื่อไหร่?",
@@ -365,6 +381,23 @@ const faqJsonLd = faqSchema(faqs);
               <a class="button" href={product.links.shopee} target="_blank" rel="sponsored noopener" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context="best-air-open-shopee">เปิด Shopee</a>
             </div>
           </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="compare-pairs">
+    <div class="wide-container">
+      <p class="eyebrow">เทียบแบบตัวต่อตัว</p>
+      <h2 class="headline">คู่ที่คนเทียบบ่อย — เปิดหน้าเทียบเต็มได้เลย</h2>
+      <p class="muted" style="max-width: 780px;">อยากชนสองรุ่นให้เห็นภาพชัด ๆ? นี่คือคู่ยอดนิยม แต่ละหน้าเทียบจาก 26 จุดข้อมูลจริง พร้อมคำตัดสินว่าเอาตัวไหนถ้าโจทย์คุณคืออะไร</p>
+      <div class="compare-pairs-grid">
+        {popularVsPairs.map((pair) => (
+          <a class="compare-pair-card" href={pair.href}>
+            <strong>{pair.label}</strong>
+            <span>{pair.note}</span>
+            <em>เปิดหน้าเทียบ →</em>
+          </a>
         ))}
       </div>
     </div>

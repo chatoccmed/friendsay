@@ -10080,3 +10080,46 @@ a.trust-link strong {
 @media (max-width: 900px) {
   .avoid-grid { grid-template-columns: 1fr; }
 }
+
+/* ---------- ตาข่ายลิงก์ roundup -> vs: การ์ดคู่เทียบยอดนิยม (competitive study P0#1 mesh) ---------- */
+.compare-pairs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+.compare-pair-card {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  border: 1px solid rgba(223, 208, 186, 0.9);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 18px;
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+.compare-pair-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 107, 90, 0.45);
+  box-shadow: var(--shadow);
+}
+.compare-pair-card strong {
+  font-size: 1.04rem;
+  line-height: 1.25;
+}
+.compare-pair-card span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.compare-pair-card em {
+  color: var(--coral-dark);
+  font-size: 0.86rem;
+  font-weight: 800;
+  font-style: normal;
+}
+@media (max-width: 900px) {
+  .compare-pairs-grid { grid-template-columns: 1fr; }
+}

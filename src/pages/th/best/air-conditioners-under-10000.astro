@@ -64,6 +64,19 @@ const scenarios = [
   { title: "เน้นประหยัดไฟ อยากเห็นค่า SEER ชัด", recommendedSlugs: ["haier-vqec-series"], reason: "แจ้งค่า SEER รายขนาดชัดบนหน้าสินค้า (9K=18.29 ถึง 24K=18.08) มี Eco Mode และ Self-Cleaning ประกันคอม 10 ปี จากร้าน official ใหญ่ ข้อควรรู้ ในกล่องไม่มีขาแขวน ต้องเตรียมเพิ่มหน้างาน และถ้าจะเคลมกรณีขนส่งต้องมีวิดีโอตอนแกะกล่องแบบถ่ายต่อเนื่อง" }
 ];
 
+// ตาข่ายลิงก์: หน้างบต่ำกว่าหมื่น -> หน้าเทียบรายคู่ (pair slug เรียง index ให้ตรงกับที่ /th/vs/ generate)
+const acIdxOf = (slug: string) => airConditioners.findIndex((p) => p.slug === slug);
+const vsPairHref = (x: string, y: string) => {
+  const [first, second] = acIdxOf(x) < acIdxOf(y) ? [x, y] : [y, x];
+  return `/th/vs/${first}-vs-${second}/`;
+};
+const sn = (slug: string) => airConditioners.find((p) => p.slug === slug)?.shortName ?? slug;
+const popularVsPairs = [
+  { a: "hisense-ce-series", b: "haier-vqec-series", note: "official ต่ำหมื่นที่เห็นยอดขายจริงทั้งคู่ ประกันคอมยาว" },
+  { a: "candy-vpct-vpgt-series", b: "tcl-savein-ai-series", note: "สองตัวรีวิวแน่นสุดในกลุ่มงบประหยัด" },
+  { a: "xiaomi-mijia-air-inverter-eco", b: "midea-celest-msce", note: "สาย smart home vs ตัวเริ่มถูกสุดในลิสต์" }
+].map((p) => ({ href: vsPairHref(p.a, p.b), label: `${sn(p.a)} vs ${sn(p.b)}`, note: p.note }));
+
 const faqs = [
   { q: "แอร์ต่ำกว่าหมื่นเป็น inverter จริงไหม แล้วทนพอใช้ยาว ๆ ไหม?", a: "จริง ทั้ง 6 รุ่นที่คัดมาเป็น inverter หมด เช่น TCL SaveIN เป็น Full DC Inverter ส่วน Xiaomi Mijia Air Inverter Eco ที่ราคาราว 7,924.- ก็เป็น inverter จากร้าน official ตัวชี้เรื่องความทนที่ดูง่ายสุดคือประกันคอมเพรสเซอร์ ในกลุ่มนี้ Hisense CE ให้ 12 ปียาวสุด รองมาคือ Haier VQEC 10 ปี ส่วน Xiaomi/Candy/TCL อยู่ที่ 5 ปี (Xiaomi หน้าสินค้าเขียนรวม 5 ปี ควรถามร้านว่าเป็นส่วนไหน) ส่วน Midea Celest หน้าสินค้าพูดถึงประกันหลายช่วง เรายังไม่ฟันธงตัวเลข ต้องให้ร้านยืนยันเป็นข้อความก่อนซื้อ ประกันยาวไม่ได้แปลว่าไม่พังเลย แต่ช่วยลดค่าใช้จ่ายถ้าคอมมีปัญหาในช่วงนั้น" },
   { q: "ถูกขนาดนี้ ต่างจากแอร์แพงตรงไหน ต้องยอมตัดอะไรบ้าง?", a: "ส่วนใหญ่ที่ต่างคือฟีเจอร์ปลีกย่อยกับสเปกบางจุด ไม่ใช่ว่าไม่เย็น ที่เห็นชัดในกลุ่มนี้ เช่น Hisense CE บานสวิงปรับได้เฉพาะขึ้น-ลง ไม่ส่ายซ้าย-ขวาอัตโนมัติ ถ้าติดมุมห้องลมอาจกระจายด้านข้างไม่เต็มที่ ของแถมในกล่องก็ต่างกัน อย่าง Haier VQEC ไม่มีขาแขวนแอร์มาให้ ต้องซื้อเพิ่มหน้างาน และถ้าอยากได้ smart home ต้องเลือกให้ตรง เช่น Xiaomi Mijia ต่อแอป Mi Home ดูค่าไฟได้ แต่ถ้าไม่ใช้แอปเลย จุดเด่นนี้ก็หายไป" },
@@ -338,6 +351,23 @@ const scenarioCards = scenarios.map((s) => ({
           })}
         </svg>
         <p class="compare-note">ความยาวแท่ง = ราคาที่พบ (สั้น = ถูกกว่า) · <span style="color:#0ea5a0">■</span> ถูกสุดในลิสต์ · ตัวเลขท้ายแท่งคือราคาและจำนวนรีวิว</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="compare-pairs">
+    <div class="wide-container">
+      <p class="eyebrow">เทียบแบบตัวต่อตัว</p>
+      <h2 class="headline">คู่งบต่ำกว่าหมื่นที่คนเทียบบ่อย</h2>
+      <p class="muted" style="max-width: 780px;">ชั่งใจอยู่สองตัว? เปิดหน้าเทียบเต็มที่เทียบจาก 26 จุดข้อมูลจริง พร้อมคำตัดสินว่าเอาตัวไหนถ้าโจทย์คุณคืออะไร</p>
+      <div class="compare-pairs-grid">
+        {popularVsPairs.map((pair) => (
+          <a class="compare-pair-card" href={pair.href}>
+            <strong>{pair.label}</strong>
+            <span>{pair.note}</span>
+            <em>เปิดหน้าเทียบ →</em>
+          </a>
+        ))}
       </div>
     </div>
   </section>
