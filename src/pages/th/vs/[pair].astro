@@ -222,10 +222,24 @@ const expertParagraphs = (() => {
   return paras;
 })();
 
+// คำตอบ "ทำไม X ดีกว่า Y" สำหรับ FAQ + schema (ดัก featured snippet / PAA คีย์ "ทำไม A ดีกว่า B")
+const whyBetter = (adv: string[], x: any, y: any, priceX: any, priceY: any) =>
+  adv.length
+    ? `${x.shortName} ได้เปรียบ ${y.shortName} ที่: ${adv.join("; ")} — ทุกข้อคิดจากตัวเลขจริงที่ต่างกันเกินเกณฑ์ 0.3 คะแนน ราคาช่วงโปรเปลี่ยนได้ทุกวัน กดเช็กราคาสดก่อนตัดสินใจ`
+    : `ในข้อมูลที่เรามี ${x.shortName} ยังไม่มีด้านที่ดีกว่า ${y.shortName} ชัดพอจะเคลม (ทุกด้านต่างกันน้อยกว่าเกณฑ์ 0.3 คะแนน) — จะเลือก ${x.shortName} ก็ต่อเมื่อ${verdictReason(x, y, priceX, priceY)}`;
+
 const faqs = [
   {
     q: `${a.shortName} กับ ${b.shortName} ตัวไหนดีกว่ากัน?`,
     a: `${winnerLine} สรุปแบบเพื่อน: เอา ${a.shortName} ถ้า${verdictReason(a, b, priceA, priceB)} และเอา ${b.shortName} ถ้า${verdictReason(b, a, priceB, priceA)}`
+  },
+  {
+    q: `ทำไม ${a.shortName} ดีกว่า ${b.shortName}?`,
+    a: whyBetter(advA, a, b, priceA, priceB)
+  },
+  {
+    q: `ทำไม ${b.shortName} ดีกว่า ${a.shortName}?`,
+    a: whyBetter(advB, b, a, priceB, priceA)
   },
   {
     q: `ตัวไหนถูกกว่า?`,
@@ -384,12 +398,12 @@ const faqJsonLd = faqSchema(faqs);
       <h2 class="headline">จุดที่แต่ละตัวเหนือกว่า</h2>
       <div class="vs-adv-grid">
         <div class="vs-adv-col">
-          <h3>ทำไม {a.shortName} น่าสนใจกว่า</h3>
-          {advA.length ? <ul>{advA.map((s) => <li>{s}</li>)}</ul> : <p class="muted">ไม่มีด้านที่ต่างชัดพอให้เคลม (ต่างน้อยกว่าเกณฑ์ 0.3 คะแนน)</p>}
+          <h3>ทำไม {a.shortName} ดีกว่า {b.shortName}?</h3>
+          {advA.length ? <ul>{advA.map((s) => <li>{s}</li>)}</ul> : <p class="muted">ในข้อมูลที่เรามี ยังไม่มีด้านที่ {a.shortName} ดีกว่า {b.shortName} ชัดพอจะเคลม (ทุกด้านต่างน้อยกว่าเกณฑ์ 0.3 คะแนน)</p>}
         </div>
         <div class="vs-adv-col">
-          <h3>ทำไม {b.shortName} น่าสนใจกว่า</h3>
-          {advB.length ? <ul>{advB.map((s) => <li>{s}</li>)}</ul> : <p class="muted">ไม่มีด้านที่ต่างชัดพอให้เคลม (ต่างน้อยกว่าเกณฑ์ 0.3 คะแนน)</p>}
+          <h3>ทำไม {b.shortName} ดีกว่า {a.shortName}?</h3>
+          {advB.length ? <ul>{advB.map((s) => <li>{s}</li>)}</ul> : <p class="muted">ในข้อมูลที่เรามี ยังไม่มีด้านที่ {b.shortName} ดีกว่า {a.shortName} ชัดพอจะเคลม (ทุกด้านต่างน้อยกว่าเกณฑ์ 0.3 คะแนน)</p>}
         </div>
       </div>
       <div class="vs-verdict">
