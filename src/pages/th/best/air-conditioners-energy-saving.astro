@@ -4,7 +4,7 @@ import PriceButtons from "../../../components/PriceButtons.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
-import { faqSchema } from "../../../utils/jsonLd";
+import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
 
 const updatedLabel = "5 กรกฎาคม 2026";
 const dataRoundLabel = "2 กรกฎาคม 2026";
@@ -308,6 +308,11 @@ const jsonLd = {
 };
 
 const faqJsonLd = faqSchema(faqs);
+const breadcrumbJsonLd = breadcrumbSchema([
+  { name: "หน้าแรก", item: "https://friendsay.com/th/" },
+  { name: "แอร์ยี่ห้อไหนดี 2026", item: "https://friendsay.com/th/best/air-conditioners/" },
+  { name: "แอร์ประหยัดไฟที่สุด 2026", item: "https://friendsay.com/th/best/air-conditioners-energy-saving/" }
+]);
 
 const scenarioCards = scenarios.map((s) => ({
   ...s,
@@ -332,6 +337,7 @@ const chartRows = [
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
   <section class="page-hero energy-hero">
     <div class="container">
