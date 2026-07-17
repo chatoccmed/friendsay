@@ -5,6 +5,7 @@ import ScoreBars from "../../../components/ScoreBars.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import RelatedVsLinks from "../../../components/RelatedVsLinks.astro";
+import { breadcrumbSchema } from "../../../utils/jsonLd";
 import ReadingAids from "../../../components/ReadingAids.astro";
 import { airConditioners, candyAirConditioner as product } from "../../../data/airConditioners";
 
@@ -280,6 +281,11 @@ const jsonLd = {
   headline: "CANDY VPCT/VPGT แอร์รีวิวแน่น ราคาเริ่มดี ตัวคุ้มที่ต้องเช็กค่าติดตั้งก่อนซื้อ"
 };
 
+const breadcrumbJsonLd = breadcrumbSchema([
+  { name: "หน้าแรก", item: "https://friendsay.com/th/" },
+  { name: "แอร์ยี่ห้อไหนดี 2026", item: "https://friendsay.com/th/best/air-conditioners/" },
+  { name: airConditioners.find((p) => p.slug === "candy-vpct-vpgt-series")?.shortName ?? "รีวิวแอร์", item: "https://friendsay.com/th/reviews/candy-vpct-vpgt-air-conditioner/" }
+]);
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -301,6 +307,7 @@ const faqJsonLd = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
   <section class="air-review-hero">
     <a class="air-image-link air-hero-image-link" {...imageLinkAttrs}>

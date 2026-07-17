@@ -5,6 +5,7 @@ import ScoreBars from "../../../components/ScoreBars.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import RelatedVsLinks from "../../../components/RelatedVsLinks.astro";
+import { breadcrumbSchema } from "../../../utils/jsonLd";
 import ReadingAids from "../../../components/ReadingAids.astro";
 import { airConditioners } from "../../../data/airConditioners";
 
@@ -327,6 +328,12 @@ const scoreItems = [
   { label: "ความเสี่ยงคำบ่น", value: 7.8 }
 ];
 
+const breadcrumbJsonLd = breadcrumbSchema([
+  { name: "หน้าแรก", item: "https://friendsay.com/th/" },
+  { name: "แอร์ยี่ห้อไหนดี 2026", item: "https://friendsay.com/th/best/air-conditioners/" },
+  { name: airConditioners.find((p) => p.slug === "midea-celest-msce")?.shortName ?? "รีวิวแอร์", item: "https://friendsay.com/th/reviews/midea-celest-msce-air-conditioner/" }
+]);
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Review",
@@ -355,6 +362,7 @@ const jsonLd = {
   canonical="https://friendsay.com/th/reviews/midea-celest-msce-air-conditioner/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
   <article class="pilot-review">
     <section class="air-review-hero">
