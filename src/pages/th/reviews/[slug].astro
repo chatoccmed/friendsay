@@ -28,6 +28,10 @@ const hasReviewProof = review.proofCount > 0;
 // noindex จนกว่ารุ่นนั้นจะมีหลักฐาน Shopee ระดับ detail_verified — กัน scaled content abuse
 const shopeeProof = airConditionerShopeeProofByKey[review.productKey];
 const isIndexable = shopeeProof?.status === "detail_verified";
+// ถ้ารุ่นนี้มี affiliate short link ที่ mint ไว้แล้วใน proof ledger ให้ปุ่ม Shopee ใช้ลิงก์ tracked แทนลิงก์ค้นหา (ไม่งั้นคลิกที่ได้จะไม่นับค่าคอม)
+const trackedLinks = shopeeProof?.affiliateUrl
+  ? { ...review.links, shopee: shopeeProof.affiliateUrl }
+  : review.links;
 const proofBadgeText = hasReviewProof ? `${proofCountText}+ ข้อมูลให้ตรวจ` : "เช็กสเปก ราคา และร้านก่อนซื้อ";
 const titleOverrides: Record<string, string> = {
   "mitsubishi-msy-gt09vf": "Mitsubishi MSY-GT09VF: แอร์แบรนด์ไว้ใจง่ายสำหรับห้องนอน ก่อนจ่ายต้องเช็ก BTU กับงานติดตั้ง",
@@ -65,7 +69,7 @@ const product = {
   statusLabel: hasReviewProof ? `${review.sourceName} มีข้อมูลให้เทียบ ${proofCountText}+ รายการ` : "เช็กสเปก ราคา และร้านก่อนซื้อ",
   score: review.score,
   priceLabel: review.priceLabel,
-  links: review.links,
+  links: trackedLinks,
   installNotes: [
     "ถามว่าราคารวมติดตั้งมาตรฐานกี่เมตร และถ้าเกินคิดเพิ่มอย่างไร",
     "ให้ร้านสรุปค่าท่อ ราง ขาแขวน สายไฟ เบรกเกอร์ งานเจาะ และค่าเดินทางเป็นข้อความก่อนจ่าย",
@@ -81,7 +85,7 @@ const product = {
 };
 
 const imageLinkAttrs = {
-  href: review.links.shopee,
+  href: trackedLinks.shopee,
   target: "_blank",
   rel: "sponsored noopener",
   "aria-label": `ดู ${review.name} บน Shopee`,
@@ -1031,7 +1035,7 @@ const jsonLd = {
               เปิดหลายร้านแล้วดูให้ครบทั้งราคา โปร วันติดตั้ง การตอบแชท และเงื่อนไขประกันครับ ถ้าราคาใกล้กัน
               ผมให้ร้านที่ตอบเรื่องติดตั้งและประกันชัดกว่าชนะ เพราะเวลามีปัญหาจะช่วยประหยัดเวลามาก
             </p>
-            <PriceButtons links={review.links} label={`เช็กราคา ${review.name}`} context={`${review.productKey}-article-buy`} />
+            <PriceButtons links={trackedLinks} label={`เช็กราคา ${review.name}`} context={`${review.productKey}-article-buy`} />
           </section>
 
           <section class="air-faq-section" id="faq">
@@ -1085,7 +1089,7 @@ const jsonLd = {
 
   <nav class="air-sticky-buy" aria-label={`ปุ่มซื้อ ${review.shortName} แบบลอยตามหน้าจอ`}>
     <span>เช็กราคาด่วน</span>
-    <a class="shopee" href={review.links.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`${review.productKey}-sticky-buy`}>Shopee</a>
+    <a class="shopee" href={trackedLinks.shopee} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="shopee" data-affiliate-context={`${review.productKey}-sticky-buy`}>Shopee</a>
     <a class="lazada" href={review.links.lazada} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="lazada" data-affiliate-context={`${review.productKey}-sticky-buy`}>Lazada</a>
     <a class="tiktok" href={review.links.tiktok} rel="sponsored noopener" target="_blank" data-affiliate-link data-affiliate-store="tiktok" data-affiliate-context={`${review.productKey}-sticky-buy`}>TikTok</a>
   </nav>
