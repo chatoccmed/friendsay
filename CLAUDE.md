@@ -2,6 +2,8 @@
 
 Friendsay คือเว็บรีวิวสินค้า affiliate ภาษาไทย สร้างด้วย Astro (static site) deploy ผ่าน GitHub → Cloudflare Pages (push `main` แล้ว deploy อัตโนมัติ)
 
+> **มาทำต่อ/ตรวจสอบโปรเจกต์ อ่าน `docs/PROJECT-HANDOFF.md` ก่อนเสมอ** — สถานะ live, สถาปัตยกรรม, วิธีเพิ่มหน้าแต่ละแบบ, backlog P0-P3, หนี้เทคนิค, credentials ครบในไฟล์เดียว
+
 ## Source of truth
 
 - **repo นี้ (`.github-ready`) คือตัวจริงสำหรับขึ้นเว็บ** — ทำงานที่นี่เท่านั้น

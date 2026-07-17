@@ -1,5 +1,8 @@
 # Friendsay v2
 
+> **📄 Picking up this project? Start here → [`docs/PROJECT-HANDOFF.md`](docs/PROJECT-HANDOFF.md)**
+> That single document is the living handoff: current live state, architecture, how to add each page type, full P0–P3 backlog with blockers, known debt, and operational access. Read it before anything else. On Windows use `npm.cmd` (not `npm`).
+
 Friendsay v2 is a premium friendly review platform for Thai shoppers and tourists in Thailand. The project is designed for GitHub + Cloudflare Pages with Astro.
 
 ## Commands
