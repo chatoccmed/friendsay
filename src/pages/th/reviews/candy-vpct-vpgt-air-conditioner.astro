@@ -4,6 +4,7 @@ import PriceButtons from "../../../components/PriceButtons.astro";
 import ScoreBars from "../../../components/ScoreBars.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import RelatedVsLinks from "../../../components/RelatedVsLinks.astro";
 import ReadingAids from "../../../components/ReadingAids.astro";
 import { airConditioners, candyAirConditioner as product } from "../../../data/airConditioners";
 
@@ -744,6 +745,7 @@ const faqJsonLd = {
   </nav>
 
   <ReadingAids />
+  <RelatedVsLinks slug="candy-vpct-vpgt-series" />
   <AffiliateClickTracker />
   <AirCompareTray products={airConditioners} />
 </BaseLayout>

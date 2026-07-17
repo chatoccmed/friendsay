@@ -4,6 +4,7 @@ import PriceButtons from "../../../components/PriceButtons.astro";
 import ScoreBars from "../../../components/ScoreBars.astro";
 import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
+import RelatedVsLinks from "../../../components/RelatedVsLinks.astro";
 import ReadingAids from "../../../components/ReadingAids.astro";
 import { airConditioners } from "../../../data/airConditioners";
 
@@ -768,6 +769,7 @@ const jsonLd = {
 
   <AirCompareTray products={airConditioners.map((item) => ({ slug: item.slug, name: item.name, shortName: item.shortName }))} />
   <ReadingAids />
+  <RelatedVsLinks slug="midea-celest-msce" />
   <AffiliateClickTracker />
 
   <script is:inline>

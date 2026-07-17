@@ -1,0 +1,42 @@
+---
+// "เทียบรุ่นนี้กับตัวอื่น" บนหน้ารีวิว -> หน้า vs (ปิด edge review->vs ในตาข่ายลิงก์)
+// แสดงเฉพาะรุ่นที่อยู่ในคลัง 10 รุ่นหลัก (มีหน้า vs จริง) — pair slug เรียง index ให้ตรงกับที่ /th/vs/ generate
+import { airConditioners } from "../data/airConditioners";
+
+interface Props {
+  slug: string;
+  max?: number;
+}
+
+const { slug, max = 3 } = Astro.props;
+
+const idxOf = (s: string) => airConditioners.findIndex((p) => p.slug === s);
+const self = airConditioners.find((p) => p.slug === slug);
+const hasVs = idxOf(slug) >= 0;
+const pairHref = (x: string, y: string) => {
+  const [first, second] = idxOf(x) < idxOf(y) ? [x, y] : [y, x];
+  return `/th/vs/${first}-vs-${second}/`;
+};
+const others = hasVs
+  ? airConditioners.filter((p) => p.slug !== slug).sort((a, b) => b.score - a.score).slice(0, max)
+  : [];
+---
+
+{self && others.length > 0 && (
+  <section class="section band" aria-label="เทียบกับรุ่นอื่น">
+    <div class="container">
+      <p class="eyebrow">ยังชั่งใจอยู่?</p>
+      <h2 class="headline">เทียบ {self.shortName} กับรุ่นอื่นแบบตัวต่อตัว</h2>
+      <p class="muted" style="max-width: 720px;">แต่ละหน้าเทียบจาก 26 จุดข้อมูลจริง พร้อมคำตัดสินว่าเอาตัวไหนถ้าโจทย์คุณคืออะไร</p>
+      <div class="compare-pairs-grid">
+        {others.map((o) => (
+          <a class="compare-pair-card" href={pairHref(slug, o.slug)}>
+            <strong>{self.shortName} vs {o.shortName}</strong>
+            <span>อีกตัวได้คะแนนรวม {o.score.toFixed(1)}/10 — {o.statusLabel}</span>
+            <em>เปิดหน้าเทียบ →</em>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
