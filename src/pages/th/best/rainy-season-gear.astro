@@ -7,7 +7,7 @@ import PageChangelog from "../../../components/PageChangelog.astro";
 const updatedLabel = "2 กรกฎาคม 2026";
 
 import { rainySections, type RainyPick, type RainySection } from "../../../data/rainyGear";
-import { faqSchema } from "../../../utils/jsonLd";
+import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
 
 const sections: RainySection[] = rainySections;
 
@@ -54,6 +54,10 @@ const jsonLd = {
 };
 
 const faqJsonLd = faqSchema(faqs);
+const breadcrumbJsonLd = breadcrumbSchema([
+  { name: "หน้าแรก", item: "https://friendsay.com/th/" },
+  { name: "ของสู้หน้าฝน 2026", item: "https://friendsay.com/th/best/rainy-season-gear/" }
+]);
 ---
 
 <BaseLayout
@@ -63,6 +67,7 @@ const faqJsonLd = faqSchema(faqs);
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
   <section class="page-hero">
     <div class="container">

@@ -6,7 +6,7 @@ import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import PageChangelog from "../../../components/PageChangelog.astro";
 import { airConditioners } from "../../../data/airConditioners";
-import { faqSchema } from "../../../utils/jsonLd";
+import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
 import acPriceCsvRaw from "../../../data/price-history/air-conditioners.csv?raw";
 
 const updatedLabel = "2 กรกฎาคม 2026";
@@ -134,6 +134,10 @@ const faqs = [
 ];
 
 const faqJsonLd = faqSchema(faqs);
+const breadcrumbJsonLd = breadcrumbSchema([
+  { name: "หน้าแรก", item: "https://friendsay.com/th/" },
+  { name: "แอร์ยี่ห้อไหนดี 2026", item: "https://friendsay.com/th/best/air-conditioners/" }
+]);
 ---
 
 <BaseLayout
@@ -144,6 +148,7 @@ const faqJsonLd = faqSchema(faqs);
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
   <section class="roundup-hero air-roundup-hero">
     <img class="roundup-hero-image" src="/images/air-conditioners/wall-ac-condo-hero.jpg" alt="แอร์ติดผนังในคอนโดสว่างสบาย" loading="eager" />

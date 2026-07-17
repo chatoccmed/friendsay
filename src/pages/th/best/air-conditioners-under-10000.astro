@@ -6,7 +6,7 @@ import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import PageChangelog from "../../../components/PageChangelog.astro";
 import { airConditioners } from "../../../data/airConditioners";
-import { faqSchema } from "../../../utils/jsonLd";
+import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
 
 const updatedLabel = "2 กรกฎาคม 2026";
 
@@ -153,6 +153,11 @@ const jsonLd = {
 };
 
 const faqJsonLd = faqSchema(faqs);
+const breadcrumbJsonLd = breadcrumbSchema([
+  { name: "หน้าแรก", item: "https://friendsay.com/th/" },
+  { name: "แอร์ยี่ห้อไหนดี 2026", item: "https://friendsay.com/th/best/air-conditioners/" },
+  { name: "แอร์ต่ำกว่า 10,000 บาท", item: "https://friendsay.com/th/best/air-conditioners-under-10000/" }
+]);
 
 const scenarioCards = scenarios.map((s) => ({
   ...s,
@@ -171,6 +176,7 @@ const scenarioCards = scenarios.map((s) => ({
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
   <section class="page-hero budget-hero">
     <div class="container">
