@@ -5,6 +5,7 @@ import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
+import NeutralityBadge from "../../../components/NeutralityBadge.astro";
 
 const updatedLabel = "5 กรกฎาคม 2026";
 const dataRoundLabel = "2 กรกฎาคม 2026";
@@ -346,6 +347,7 @@ const chartRows = [
         <span class="badge badge-teal">อัปเดต {updatedLabel}</span>
         <span class="badge badge-blue">9 รุ่นอินเวอร์เตอร์ตรวจหลักฐานแล้ว</span>
       </div>
+      <div style="margin-top:14px;"><NeutralityBadge /></div>
       <h1>แอร์<em class="accent-underline">ประหยัดไฟที่สุด</em> 2026: จัดอันดับ 9 รุ่นอินเวอร์เตอร์จากหลักฐานจริง</h1>
       <p class="muted energy-hero-kicker">{intro.heroKicker}</p>
       <div class="roundup-actions">

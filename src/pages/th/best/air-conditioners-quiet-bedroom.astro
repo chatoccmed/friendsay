@@ -5,6 +5,7 @@ import AirCompareTray from "../../../components/AirCompareTray.astro";
 import AffiliateClickTracker from "../../../components/AffiliateClickTracker.astro";
 import { airConditioners } from "../../../data/airConditioners";
 import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
+import NeutralityBadge from "../../../components/NeutralityBadge.astro";
 
 const updatedLabel = "6 กรกฎาคม 2026";
 const dataRoundLabel = "2 กรกฎาคม 2026";
@@ -309,6 +310,7 @@ const chartMax = Math.max(...quietProducts.map((p) => p.priceNum));
         <span class="badge badge-teal">อัปเดต {updatedLabel}</span>
         <span class="badge badge-blue">คัดจากรีวิวผู้ซื้อจริง</span>
       </div>
+      <div style="margin-top:14px;"><NeutralityBadge /></div>
       <h1>แอร์ห้องนอนเสียงเงียบ 2026: 6 รุ่นที่รีวิวผู้ซื้อชมเรื่องเสียงจริง</h1>
       <p class="muted quiet-hero-kicker">{intro.heroKicker}</p>
       <div class="roundup-actions">
