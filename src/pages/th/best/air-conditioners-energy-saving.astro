@@ -11,6 +11,19 @@ import PageChangelog from "../../../components/PageChangelog.astro";
 const updatedLabel = "5 กรกฎาคม 2026";
 const dataRoundLabel = "2 กรกฎาคม 2026";
 
+// ตาข่ายลิงก์ภายใน: spoke -> หน้าเทียบรายคู่ (versus mesh) — pair slug เรียงตาม index ให้ตรงกับที่ /th/vs/ generate
+const vsIdxOf = (slug: string) => airConditioners.findIndex((p) => p.slug === slug);
+const vsHref = (x: string, y: string) => {
+  const [first, second] = vsIdxOf(x) < vsIdxOf(y) ? [x, y] : [y, x];
+  return `/th/vs/${first}-vs-${second}/`;
+};
+const vsShort = (slug: string) => airConditioners.find((p) => p.slug === slug)?.shortName ?? slug;
+const spokeVsPairs = [
+  { a: "daikin-ftkb-sabai-series", b: "mitsubishi-msy-ka-vf-series", note: "สองญี่ปุ่นเบอร์ต้น เทียบประหยัดไฟ-ความเงียบชนกัน" },
+  { a: "haier-vqec-series", b: "midea-celest-msce", note: "สองตัวคุ้มที่ชูประหยัดไฟ ราคาเบากว่าญี่ปุ่น" },
+  { a: "daikin-ftkb-sabai-series", b: "haier-vqec-series", note: "ตัวท็อปประหยัดไฟ vs ตัวคุ้มที่แจง SEER รายขนาด" }
+].map((p) => ({ href: vsHref(p.a, p.b), label: `${vsShort(p.a)} vs ${vsShort(p.b)}`, note: p.note }));
+
 // ข้อมูลเสริมรายรุ่นที่ไม่มีใน airConditioners.ts — ราคา/ยอดขายยึดหลักฐานรอบ 2026-07-02 (ชุดเดียวกับหน้าแอร์ต่ำกว่าหมื่น + priceLabel ใน data)
 // seerLabel = ค่า SEER ที่ร้านแจ้งและเราบันทึกไว้เท่านั้น ("–" คือเราไม่ได้บันทึก ไม่ได้แปลว่าร้านไม่แจ้ง)
 const energyExtras: Record<
@@ -571,6 +584,23 @@ const chartRows = [
               ))} — {sc.reason}
             </p>
           </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="compare-pairs">
+    <div class="wide-container">
+      <p class="eyebrow">เทียบแบบตัวต่อตัว</p>
+      <h2 class="headline">คู่ที่คนสายประหยัดไฟเทียบบ่อย — เปิดหน้าเทียบเต็มได้เลย</h2>
+      <p class="muted" style="max-width: 780px;">อยากรู้ว่าสองรุ่นประหยัดไฟต่างกันตรงไหนจริง ๆ? นี่คือคู่ที่คนชั่งใจบ่อยในสายนี้ แต่ละหน้าเทียบจากข้อมูลจริงรายจุด พร้อมคำตัดสินตามโจทย์ของคุณ</p>
+      <div class="compare-pairs-grid">
+        {spokeVsPairs.map((pair) => (
+          <a class="compare-pair-card" href={pair.href}>
+            <strong>{pair.label}</strong>
+            <span>{pair.note}</span>
+            <em>เปิดหน้าเทียบ →</em>
+          </a>
         ))}
       </div>
     </div>

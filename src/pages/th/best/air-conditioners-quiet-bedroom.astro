@@ -11,6 +11,19 @@ import PageChangelog from "../../../components/PageChangelog.astro";
 const updatedLabel = "6 กรกฎาคม 2026";
 const dataRoundLabel = "2 กรกฎาคม 2026";
 
+// ตาข่ายลิงก์ภายใน: spoke -> หน้าเทียบรายคู่ (versus mesh) — pair slug เรียงตาม index ให้ตรงกับที่ /th/vs/ generate
+const vsIdxOf = (slug: string) => airConditioners.findIndex((p) => p.slug === slug);
+const vsHref = (x: string, y: string) => {
+  const [first, second] = vsIdxOf(x) < vsIdxOf(y) ? [x, y] : [y, x];
+  return `/th/vs/${first}-vs-${second}/`;
+};
+const vsShort = (slug: string) => airConditioners.find((p) => p.slug === slug)?.shortName ?? slug;
+const spokeVsPairs = [
+  { a: "mitsubishi-msy-ka-vf-series", b: "daikin-ftkb-sabai-series", note: "สองญี่ปุ่นที่รีวิวชมเรื่องเสียงเงียบบ่อยสุด" },
+  { a: "mitsubishi-msy-ka-vf-series", b: "panasonic-cs-cu-yu9zkt", note: "เงียบสุด vs official ที่แจงสเปกชัด" },
+  { a: "daikin-ftkb-sabai-series", b: "haier-vqec-series", note: "ญี่ปุ่นเงียบ vs ตัวคุ้มที่รีวิวชมความนิ่ง" }
+].map((p) => ({ href: vsHref(p.a, p.b), label: `${vsShort(p.a)} vs ${vsShort(p.b)}`, note: p.note }));
+
 // ข้อมูลเสริมรายรุ่นที่ไม่มีใน airConditioners.ts — ราคา/ยอดขายยึดหลักฐานรอบ 2026-07-02 (ชุดเดียวกับหน้าแอร์ต่ำกว่าหมื่น/แอร์ประหยัดไฟ)
 // quietQuote = สัญญาณรีวิวเรื่องเสียงตามที่บันทึกไว้จริงใน reviewSignals/pros/watch — ไม่มีการแต่งเพิ่ม
 const quietExtras: Record<
@@ -533,6 +546,23 @@ const chartMax = Math.max(...quietProducts.map((p) => p.priceNum));
               ))} — {sc.reason}
             </p>
           </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="compare-pairs">
+    <div class="wide-container">
+      <p class="eyebrow">เทียบแบบตัวต่อตัว</p>
+      <h2 class="headline">คู่ห้องนอนเงียบที่คนเทียบบ่อย — เปิดหน้าเทียบเต็มได้เลย</h2>
+      <p class="muted" style="max-width: 780px;">อยากได้ห้องนอนที่เงียบจริง? นี่คือคู่ที่คนสายเงียบเทียบบ่อย แต่ละหน้าเทียบจากธีมรีวิวเรื่องเสียงและสเปกจริง พร้อมคำตัดสินตามโจทย์ห้องคุณ</p>
+      <div class="compare-pairs-grid">
+        {spokeVsPairs.map((pair) => (
+          <a class="compare-pair-card" href={pair.href}>
+            <strong>{pair.label}</strong>
+            <span>{pair.note}</span>
+            <em>เปิดหน้าเทียบ →</em>
+          </a>
         ))}
       </div>
     </div>
