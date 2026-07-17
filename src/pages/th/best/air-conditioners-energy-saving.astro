@@ -6,6 +6,7 @@ import AffiliateClickTracker from "../../../components/AffiliateClickTracker.ast
 import { airConditioners } from "../../../data/airConditioners";
 import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
 import NeutralityBadge from "../../../components/NeutralityBadge.astro";
+import PageChangelog from "../../../components/PageChangelog.astro";
 
 const updatedLabel = "5 กรกฎาคม 2026";
 const dataRoundLabel = "2 กรกฎาคม 2026";
@@ -580,6 +581,7 @@ const chartRows = [
       <p class="eyebrow">เกณฑ์การจัดอันดับ</p>
       <h2 class="headline">คะแนนประหยัดไฟของเรามาจากไหน</h2>
       <p class="muted" style="max-width: 760px;">{intro.methodologyNote}</p>
+      <PageChangelog pageKey="air-conditioners-energy-saving" />
     </div>
   </section>
 

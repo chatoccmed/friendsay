@@ -6,6 +6,7 @@ import AffiliateClickTracker from "../../../components/AffiliateClickTracker.ast
 import { airConditioners } from "../../../data/airConditioners";
 import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
 import NeutralityBadge from "../../../components/NeutralityBadge.astro";
+import PageChangelog from "../../../components/PageChangelog.astro";
 
 const updatedLabel = "6 กรกฎาคม 2026";
 const dataRoundLabel = "2 กรกฎาคม 2026";
@@ -542,6 +543,7 @@ const chartMax = Math.max(...quietProducts.map((p) => p.priceNum));
       <p class="eyebrow">เกณฑ์การคัด</p>
       <h2 class="headline">ทำไมไม่ให้คะแนนความเงียบเป็นตัวเลข</h2>
       <p class="muted" style="max-width: 760px;">{intro.methodologyNote}</p>
+      <PageChangelog pageKey="air-conditioners-quiet-bedroom" />
     </div>
   </section>
 

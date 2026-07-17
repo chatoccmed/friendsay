@@ -6,6 +6,7 @@ import AffiliateClickTracker from "../../../components/AffiliateClickTracker.ast
 import { airConditioners } from "../../../data/airConditioners";
 import { faqSchema, breadcrumbSchema } from "../../../utils/jsonLd";
 import NeutralityBadge from "../../../components/NeutralityBadge.astro";
+import PageChangelog from "../../../components/PageChangelog.astro";
 
 const updatedLabel = "6 กรกฎาคม 2026";
 const dataRoundLabel = "2 กรกฎาคม 2026";
@@ -437,6 +438,7 @@ const chartMax = Math.max(...jpProducts.map((p) => p.priceNum));
       <p class="eyebrow">เกณฑ์ของหน้านี้</p>
       <h2 class="headline">ทำไมมีแค่ 4 รุ่น และเรียงยังไง</h2>
       <p class="muted" style="max-width: 760px;">{intro.methodologyNote}</p>
+      <PageChangelog pageKey="air-conditioners-japanese-brands" />
     </div>
   </section>
 
