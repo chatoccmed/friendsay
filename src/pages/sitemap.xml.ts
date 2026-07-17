@@ -33,8 +33,8 @@ const staticPaths = [
   "/th/guides/btu-calculator/",
   "/th/guides/price-history/",
   "/th/compare/air-conditioners/",
-  "/th/best/air-fryers/",
-  "/th/best/water-heaters/",
+  // air-fryers + water-heaters: ยัง "รอรีเฟรชมาตรฐานใหม่" (air-fryers เป็นหน้าตัวอย่าง data สมมติ)
+  // → noindex + ตัดออกจาก sitemap จนกว่าจะรีเฟรชด้วยข้อมูลจริงตามมาตรฐาน B+D
   "/th/c/",
   "/th/reviews/air-conditioners/",
   "/th/reviews/refrigerators/",
