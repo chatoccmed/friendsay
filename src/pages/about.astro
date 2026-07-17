@@ -52,7 +52,7 @@ const howWeWork = [
       <h2 class="headline">สิ่งที่ทำให้ Friendsay ต่างจากทั้งเว็บราคาและสื่อรีวิว</h2>
       <div class="about-pillars">
         {pillars.map((p) => (
-          <article class="about-pillar" id={p.key}>
+          <article class="about-pillar" id={`pillar-${p.key}`}>
             <span class="badge badge-teal">{p.tag}</span>
             <h3>{p.title}</h3>
             <p>{p.body}</p>
